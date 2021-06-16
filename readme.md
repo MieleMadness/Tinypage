@@ -17,7 +17,7 @@
 	</a>
 </p>
 
-<img src="client/static/gh-hero.png"/>
+<img src="editor/static/gh-hero.png"/>
 
 <div align="center">
 
@@ -45,7 +45,6 @@ Optionally, you can also provide API credentials for the following providers to 
 
 - <a href="https://mixpanel.com" target="_blank">Mixpanel</a> (Event tracking)
 - <a href="https://www.simplefileupload.com/" target="_blank">SimpleFileUpload</a> (Avatar upload/file storage)
-- <a href="https://capture.neutron.so" target="_blank">Neutron Capture</a> (Profile OG image screenshots)
 
 ### Setup with NPM
 1. Clone the repository
@@ -85,9 +84,9 @@ npm run dev
 ```
 
 ## Screenshots
-<img src="client/static/screenshot-01.png"/>
-<img src="client/static/screenshot-02.png"/>
-<img src="client/static/screenshot-03.png"/>
+<img src="editor/static/screenshot-01.png"/>
+<img src="editor/static/screenshot-02.png"/>
+<img src="editor/static/screenshot-03.png"/>
 
 ## Roadmap
 See our <a href="https://github.com/Neutron-Creative/Singlelink/issues" target="_blank">open issues</a> to see what we're building next, alongside a list of known bugs and suggestions. <br>Don't see what you're looking for? <a href="https://github.com/Neutron-Creative/Singlelink/issues/new" target="_blank">Submit an issue!</a>
@@ -107,9 +106,6 @@ To make your first contribution, follow these steps:
 5. Open a pull request
 
 **Bonus:** Make your first contribution to get added to the readme, and after three successful merges we'll send you a t-shirt! 🎉<br>*Promotion only valid while supplies last. <a href="https://discord.gg/BUbmgV4" target="_blank">Send us a message on Discord</a> to confirm availability!*
-
-## License
-Proudly distributed under the GNU GPL v3 License. See `LICENSE` for more information.
 
 ## Acknowledgements
 Special thanks to everyone who helps make <a target="_blank" href="https://singlelink.co">Singlelink</a> great!

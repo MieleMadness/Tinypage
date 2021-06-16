@@ -1,0 +1,5 @@
+.idea
+.nuxt
+node_modules
+**/config.json
+.env

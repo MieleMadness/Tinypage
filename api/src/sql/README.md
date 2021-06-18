@@ -6,7 +6,6 @@ The SQL scripts must be run in this order:
 2) setup-application.sql
 3) setup-analytics.sql
 4) setup-marketplace.sql
-5) setup-jobs.sql
-6) setup-enterprise.sql
+5) setup-enterprise.sql
 
 This will properly setup and migrate your database. The server should automatically do this every startup.

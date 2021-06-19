@@ -48,6 +48,36 @@ spec:
       port: 80
       targetPort: 80
   type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: singlelink-api
+  labels:
+    app: singlelink-api
+  namespace: singlelink
+spec:
+  selector:
+    matchLabels:
+      app: singlelink-api
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: singlelink-api
+      namespace: singlelink
+    spec:
+      containers:
+        - name: singlelink-api
+          image: registry.digitalocean.com/neutroncreative/singlelink-api:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: singlelink-api-secrets
+            - configMapRef:
+                name: singlelink-api-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -69,7 +99,7 @@ spec:
     spec:
       containers:
         - name: singlelink-editor
-          image: neutroncreative/singlelink-editor:latest
+          image: registry.digitalocean.com/neutroncreative/singlelink-editor:latest
           ports:
             - containerPort: 80
           envFrom:
@@ -79,28 +109,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: singlelink-api
+  name: singlelink-renderer
   labels:
-    app: singlelink-api
+    app: singlelink-renderer
   namespace: singlelink
 spec:
   selector:
     matchLabels:
-      app: singlelink-api
-  replicas: 16
+      app: singlelink-renderer
+  replicas: 8
   template:
     metadata:
       labels:
-        app: singlelink-api
+        app: singlelink-renderer
       namespace: singlelink
     spec:
       containers:
-        - name: singlelink-api
-          image: neutroncreative/singlelink-api:latest
+        - name: singlelink-renderer
+          image: registry.digitalocean.com/neutroncreative/singlelink-renderer:latest
           ports:
             - containerPort: 80
           envFrom:
             - secretRef:
-                name: singlelink-api-secrets
+                name: singlelink-renderer-secrets
             - configMapRef:
-                name: singlelink-api-config
+                name: singlelink-renderer-config
+

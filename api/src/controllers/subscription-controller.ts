@@ -238,6 +238,11 @@ export class SubscriptionController extends Controller {
       let body = request.body;
 
       reply.type('application/json');
+
+      if (body.tier == "enterprise") {
+        return reply.code(StatusCodes.FORBIDDEN).send(ReplyUtils.error("Enterprise tier cannot be added through the API! It must be done directly through the Stripe backend."))
+      }
+
       return await this.subService.setStripeSubscription(request.body.authUser, body.tier ?? "free");
     } catch (e) {
       if (e instanceof HttpError) {

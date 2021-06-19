@@ -1,8 +1,8 @@
 version: "3.1"
 
 services:
-  singlelink-api:
-    image: neutroncreative/singlelink-api-enterprise:latest
+  singlelink-api-enterprise:
+    image: registry.digitalocean.com/neutroncreative/singlelink-api-enterprise:latest
     build:
       context: api
       dockerfile: api.Dockerfile
@@ -13,13 +13,13 @@ services:
     networks:
       - singlelink
 
-  singlelink-editor:
-    image: neutroncreative/singlelink-editor-enterprise:latest
+  singlelink-editor-enterprise:
+    image: registry.digitalocean.com/neutroncreative/singlelink-editor-enterprise:latest
     build:
       context: editor
       dockerfile: editor.Dockerfile
     depends_on:
-      - singlelink-api
+      - singlelink-api-enterprise
     env_file:
       - editor-config.env
     ports:
@@ -27,13 +27,13 @@ services:
     networks:
       - singlelink
 
-  singlelink-renderer:
-    image: neutroncreative/singlelink-renderer-enterprise:latest
+  singlelink-renderer-enterprise:
+    image: registry.digitalocean.com/neutroncreative/singlelink-renderer-enterprise:latest
     build:
       context: renderer
       dockerfile: renderer.Dockerfile
     depends_on:
-      - singlelink-api
+      - singlelink-api-enterprise
     env_file:
       - renderer-config.env
     ports:

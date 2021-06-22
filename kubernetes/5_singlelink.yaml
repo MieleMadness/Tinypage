@@ -70,7 +70,7 @@ spec:
     spec:
       containers:
         - name: singlelink-api
-          image: registry.digitalocean.com/neutroncreative/singlelink-api:latest
+          image: registry.digitalocean.com/neutroncreative/singlelink-api-enterprise:latest
           ports:
             - containerPort: 80
           envFrom:
@@ -99,7 +99,7 @@ spec:
     spec:
       containers:
         - name: singlelink-editor
-          image: registry.digitalocean.com/neutroncreative/singlelink-editor:latest
+          image: registry.digitalocean.com/neutroncreative/singlelink-editor-enterprise:latest
           ports:
             - containerPort: 80
           envFrom:
@@ -126,7 +126,7 @@ spec:
     spec:
       containers:
         - name: singlelink-renderer
-          image: registry.digitalocean.com/neutroncreative/singlelink-renderer:latest
+          image: registry.digitalocean.com/neutroncreative/singlelink-renderer-enterprise:latest
           ports:
             - containerPort: 80
           envFrom:

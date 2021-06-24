@@ -1,10 +1,15 @@
 export const state = () => ({
-  token: null
+  token: null,
+  email: ''
 });
 
 export const getters = {
   getToken(state) {
     return state.token;
+  },
+
+  getEmail(state) {
+    return state.email;
   }
 };
 
@@ -31,5 +36,9 @@ export const mutations = {
 
   setToken(state, token) {
     state.token = token;
+  },
+
+  setEmail(state, email) {
+    state.email = email;
   }
 };

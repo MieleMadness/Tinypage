@@ -30,8 +30,8 @@ type linktype_t = 'link' | 'social' | 'image' | 'video' | string
 interface DbUser {
   id: string,
   email_hash: string, // Used for gravatar, it could be better but this is how the service works
-  full_name: string | null,
-  active_profile_id: string | null,
+  full_name: string | null | undefined,
+  active_profile_id: string | null | undefined,
   inventory: unknown | null,
 
   // The metadata tag will grow over time as functionality is added.
@@ -45,9 +45,9 @@ interface DbSensitiveUser extends DbUser {
 
   private_metadata: {
     favorites: string[],
-    googleId: string | null | undefined,
-    githubId: string | null | undefined,
-    stripeId: string | null | undefined,
+    googleId: string | null | undefined | undefined,
+    githubId: string | null | undefined | undefined,
+    stripeId: string | null | undefined | undefined,
     emailNotifications: {
       major: boolean,
       minor: boolean,
@@ -88,8 +88,8 @@ interface DbTheme {
       secondary: string
     }
   } | null,
-  custom_css: string | null,
-  custom_html: string | null,
+  custom_css: string | null | undefined,
+  custom_html: string | null | undefined,
   user_id: string,
   created_on: string
 }
@@ -122,9 +122,9 @@ interface DbProfile {
   id: string,
   handle: string,
   user_id: string,
-  image_url: string | null,
-  headline: string | null,
-  subtitle: string | null,
+  image_url: string | null | undefined,
+  headline: string | null | undefined,
+  subtitle: string | null | undefined,
   social: {
     icon: string,
     link: string,
@@ -186,9 +186,9 @@ interface DbLink {
   url: string,
   sort_order: number,
   label: string,
-  subtitle: string | null,
-  style: string | null,
-  custom_css: string | null,
+  subtitle: string | null | undefined,
+  style: string | null | undefined,
+  custom_css: string | null | undefined,
   use_deep_link: boolean,
   metadata: unknown,
   created_on: string

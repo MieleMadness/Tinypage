@@ -15,8 +15,6 @@ export default Vue.extend({
   components: {
     UserProfileView
   },
-
-
 });
 </script>
 

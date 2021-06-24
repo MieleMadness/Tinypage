@@ -1,7 +1,7 @@
 <template>
   <section class="flex flex-col items-center h-full  flex-shrink-0">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/House.svg"/>
+      <img class="w-8" src="/House.svg" alt="House icon">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         Site links
       </h1>
@@ -14,9 +14,9 @@
         This micro-site doesn't have any links to display.<br>Click the button below to create one! 👇
       </div>
       <n-link
+        id="add-new-link-btn"
         type="button"
         class="button"
-        id="add-new-link-btn"
         to="/dashboard/link/"
       >
         Add new link
@@ -156,8 +156,8 @@
             class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
           >
             <button
-              type="button"
               id="save-and-add-link-btn"
+              type="button"
               class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
               @click="saveAndClose"
             >
@@ -206,6 +206,28 @@ import Vue from "vue";
 export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
+  data() {
+    const pendingLink: EditorLink = {
+      id: "",
+      sortOrder: 0,
+      type: "link",
+      label: "",
+      subtitle: "",
+      customCss: "",
+      url: "",
+      useDeepLink: false
+    };
+
+    return {
+      links: new Array<EditorLink>(),
+      modalActive: false,
+      modalIntent: 'create',
+      pendingLink,
+      user: '',
+      error: '',
+      sortedLinks: new Array<EditorLink>()
+    };
+  },
   head: {
     title: 'Dashboard - ' + process.env.APP_NAME,
     meta: [
@@ -235,28 +257,6 @@ export default Vue.extend({
         content: 'View, manage, and create new microsites from your ' + process.env.APP_NAME + ' dashboard'
       },
     ],
-  },
-  data() {
-    const pendingLink: EditorLink = {
-      id: "",
-      sortOrder: 0,
-      type: "link",
-      label: "",
-      subtitle: "",
-      customCss: "",
-      url: "",
-      useDeepLink: false
-    };
-
-    return {
-      links: new Array<EditorLink>(),
-      modalActive: false,
-      modalIntent: 'create',
-      pendingLink,
-      user: '',
-      error: '',
-      sortedLinks: new Array<EditorLink>()
-    };
   },
 
   async mounted() {

@@ -138,8 +138,8 @@ export default Vue.extend({
       error: '',
       intent: '',
       builderLoaded: false,
-      builderCss: null as string | null | undefined,
-      editorCss: null as string | null | undefined,
+      builderCss: null as string | null | undefined | undefined,
+      editorCss: null as string | null | undefined | undefined,
       sortedLinks: new Array<EditorLink>()
     };
   },

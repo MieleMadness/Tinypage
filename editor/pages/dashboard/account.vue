@@ -1,7 +1,7 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/Settings.svg">
+      <img class="w-8" src="/Settings.svg" alt="settings svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         Account settings
       </h1>
@@ -44,40 +44,39 @@
       </p>
     </div>
 
-    <!-- Debug Info -->
     <div
-      v-show="debug.subInfo || debug.cardInfo"
+      v-if="subInfo || (savedCard && savedCard.last4)"
       class="p-3 rounded-2xl bg-white shadow w-full mb-8"
     >
-      <h2 class="text-black font-bold text-lg w-full">
-        Debug mode information
+      <h2 v-show="subInfo" class="text-black font-bold text-lg w-full">
+        Subscription Info
       </h2>
-
       <!-- Subscription Info -->
       <div
-        v-show="debug.subInfo"
-        class="justify-center items-center p-3 rounded-2xl bg-gray-300 shadow w-full mb-8"
+        v-if="subInfo"
+        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"
       >
-        <p class="text-black opacity-70 font-semibold">
-          Subscription Info <br>
-          {{ debug.subInfo }}
-        </p>
+        {{ subInfo }}
       </div>
 
+      <h2 v-show="(savedCard && savedCard.last4)" class="text-black font-bold text-lg w-full">
+        Card Info
+      </h2>
       <!-- Card Info -->
       <div
-        v-show="debug.cardInfo"
-        class="justify-center items-center p-3 rounded-2xl bg-gray-300 shadow w-full mb-8"
+        v-if="savedCard && savedCard.last4"
+        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"
       >
         <p class="text-black opacity-70 font-semibold">
           Card Info <br>
-          {{ debug.cardInfo }}
+          Name: {{ savedCard.name }}<br>
+          Exp: {{ savedCard.expDate }}<br>
+          Last4: *{{ savedCard.last4 }}<br>
         </p>
       </div>
-
-      <p class="text-black opacity-70 font-semibold">
-        Use this section to figure out how to format and display relevant information to the user.
-      </p>
+      <div v-else>
+        No card saved
+      </div>
     </div>
 
     <!-- Select billing tier -->
@@ -93,13 +92,21 @@
         <div class="flex flex-col lg:flex-row items-center justify-start space-y-4 lg:space-y-0 lg:space-x-4 w-full">
           <select
             id="tierSelect"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl font-bold border w-full lg:w-auto flex-grow lg:max-w-md"
             v-model="selectedBillingTier"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl font-bold border w-full lg:w-auto flex-grow lg:max-w-md"
           >
-            <option value="free">Forever free - $0/Month</option>
-            <option value="pro">Pro - $8/Month</option>
-            <option value="team">Team - $8/Seat - minimum 3 seats @ $25/mo</option>
-            <option value="enterprise">Enterprise - Contact sales</option>
+            <option value="free">
+              Forever free - $0/Month
+            </option>
+            <option value="pro">
+              Pro - $8/Month
+            </option>
+            <option value="team">
+              Team - $8/Seat - minimum 3 seats @ $25/mo
+            </option>
+            <option value="enterprise">
+              Enterprise - Contact sales
+            </option>
           </select>
           <button
             type="button"
@@ -113,7 +120,7 @@
     </div>
 
     <!-- Billing information -->
-    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
+    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start mb-8">
       <h2 class="text-black font-bold text-lg w-full">
         Billing information
       </h2>
@@ -940,7 +947,7 @@
         Card information
       </h2>
       <p class="text-black font-bold opacity-70 max-w-xl">
-        Update your card information below.
+        Update your card information below. Leave blank to remove a saved card.
       </p>
       <div class="w-full flex flex-col lg:flex-row grid grid-cols-3 gap-4">
         <div class="flex flex-col mt-4 mb-2 w-full col-span-2">
@@ -985,23 +992,33 @@
       <h2 class="text-black font-bold text-lg w-full px-6 mb-6">
         Manage your team
       </h2>
-      <div class="w-full bg-gray-200" style="height:1px;"></div>
-      <div v-for="member in teamMembers"
-           class="flex flex-row py-2 px-8 cursor-pointer w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-t-0 border-l-0 border-r-0">
-        <div class="w-12 h-12 rounded-full mr-6"
-             style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"></div>
-        <p class="font-bold text-black text-lg mr-auto">{{ member.email }}</p>
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+      <div
+        v-for="member in teamMembers"
+        :key="member.email"
+        class="flex flex-row py-2 px-8 cursor-pointer w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-t-0 border-l-0 border-r-0"
+      >
         <div
+          class="w-12 h-12 rounded-full mr-6"
+          style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
+        />
+        <p class="font-bold text-black text-lg mr-auto">
+          {{ member.email }}
+        </p>
+        <div
+          v-if="member.status === 'pending'"
           class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight cursor-pointer grow"
-          v-if="member.status === 'pending'">pending
+        >pending
         </div>
         <div
+          v-if="member.status === 'accepted'"
           class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight cursor-pointer grow"
-          v-if="member.status === 'accepted'">member
+        >member
         </div>
         <div
+          v-if="member.status === 'upgraded'"
           class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
-          v-if="member.status === 'upgraded'">admin
+        >admin
         </div>
       </div>
       <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
@@ -1022,8 +1039,39 @@
           <button
             type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
-            @click="setPasswordModalActive(true)">
+            @click="setPasswordModalActive(true)"
+          >
             Send invitation email and add seat (+$8/mo)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Email Address -->
+    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
+      <h2 class="text-black font-bold text-lg w-full">
+        Update your email address
+      </h2>
+      <p class="text-black font-bold opacity-70">
+        An email will be sent to you with a confirmation link. Please type your new email in the form below to coninue.
+      </p>
+      <div class="flex flex-col mt-4 mb-2 w-full">
+        <label class="font-bold text-black opacity-70 mb-3">New email address</label>
+        <div class="flex flex-col items-center justify-start space-y-4 w-full">
+          <input
+            id="resetEmail"
+            v-model="resetNewEmail"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            type="text"
+            placeholder="e.g. jane@gmail.com"
+            aria-label="password reset email"
+          >
+          <button
+            type="button"
+            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            @click="setPasswordModalActive(true)"
+          >
+            Send email change confirmation email
           </button>
         </div>
       </div>
@@ -1034,7 +1082,7 @@
       <h2 class="text-black font-bold text-lg w-full">
         Reset your password
       </h2>
-      <p class="text-black font-bold opacity-70 max-w-xl">
+      <p class="text-black font-bold opacity-70">
         An email will be sent to you with a password reset link. Please type in the same email you used to sign up
         for this account to confirm.
       </p>
@@ -1175,14 +1223,29 @@
 </template>
 
 <script lang="ts">
-import crypto from "crypto";
 import Vue from "vue";
 import {StatusCodes} from "http-status-codes";
+
+type SubInfo = {
+  type: string | null | undefined,
+  status: string,
+  billingDisplay: string,
+  amountDue: number,
+  amountPaid: number,
+  amountRemaining: number,
+  periodEndDate: string | undefined,
+  dueDate: string | undefined,
+  cancelAtPeriodEnd: boolean | undefined,
+  downgrading: boolean,
+  downgradeDate: string | undefined,
+  downgradingTier: string | undefined,
+};
 
 export default Vue.extend({
   name: 'DashboardSettings',
   layout: 'dashboard',
   middleware: 'authenticated',
+
   data() {
     return {
       loaded: false,
@@ -1207,7 +1270,8 @@ export default Vue.extend({
       teamMembers: [],
       error: '',
       passwordError: '',
-      passwordEmail: '',
+      passwordEmail: '' as string | null | undefined,
+      resetNewEmail: '',
       teamMemberEmail: '',
       showWatermarkNotice: false,
       hostname: process.env.HOSTNAME,
@@ -1228,6 +1292,7 @@ export default Vue.extend({
         expDate: '',
         securityCode: ''
       },
+      subInfo: undefined as SubInfo | undefined,
       savedCard: {
         name: '',
         last4: '',
@@ -1239,10 +1304,6 @@ export default Vue.extend({
         successSaveInfo: false,
         failedSaveInfo: false
       },
-      debug: {
-        subInfo: undefined as string | undefined,
-        cardInfo: undefined as string | undefined
-      }
     };
   },
   head: {
@@ -1320,6 +1381,8 @@ export default Vue.extend({
         this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);
 
         this.originalHandle = this.user.activeProfile.handle;
+
+        this.passwordEmail = localStorage.getItem("email");
       } catch (err) {
         console.log('Error getting user data');
         console.log(err);
@@ -1365,26 +1428,11 @@ export default Vue.extend({
       this.billingModalActive = active;
 
       if (active) {
-        if (!this.passwordEmail) {
-          this.passwordError = "Please enter a valid email.";
-          return;
-        } else {
-          this.passwordError = '';
-        }
-
-        const md5 = crypto.createHash('md5').update(this.passwordEmail).digest('hex');
-
-        console.log(md5);
-        console.log(this.user.emailHash);
-
-        if (md5 !== this.user.emailHash) {
-          this.passwordError = "Please enter the same email you used for this account.";
-          return;
-        }
-        this.requestPasswordReset();
+        setTimeout(() => {
+          this.billingModalActive = false;
+        }, 2000);
       }
     },
-
 
     setPasswordModalActive(active: boolean) {
       this.resetPasswordModalActive = active;
@@ -1397,15 +1445,6 @@ export default Vue.extend({
           this.passwordError = '';
         }
 
-        const md5 = crypto.createHash('md5').update(this.passwordEmail).digest('hex');
-
-        console.log(md5);
-        console.log(this.user.emailHash);
-
-        if (md5 !== this.user.emailHash) {
-          this.passwordError = "Please enter the same email you used for this account.";
-          return;
-        }
         this.requestPasswordReset();
       }
     },
@@ -1459,7 +1498,7 @@ export default Vue.extend({
       const token = this.$store.getters['auth/getToken'];
 
       try {
-        this.debug.subInfo = await this.$axios.$post('/payments/sub-info', {
+        this.subInfo = await this.$axios.$post<SubInfo>('/payments/sub-info', {
           token
         });
       } catch (e) {
@@ -1509,10 +1548,6 @@ export default Vue.extend({
         const ccName = response.name;
         const ccLast4 = response.last4;
         const ccExpDate = response.expDate;
-
-        this.debug.cardInfo = `Name: ${ccName}
-        Last 4: ${ccLast4}
-        ExpDate: ${ccExpDate}`;
 
         this.savedCard.name = ccName;
         this.savedCard.last4 = ccLast4;

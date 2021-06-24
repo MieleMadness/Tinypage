@@ -14,7 +14,7 @@ export default {
   target: 'server',
 
   loading: {
-    color: '#4C51BF',
+    color: '#5353ec',
     height: '3px'
   },
 
@@ -97,7 +97,7 @@ export default {
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap'
+        href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap'
       }
     ],
     script: [
@@ -131,8 +131,8 @@ export default {
       ssr: true
     },
     {
-      src: '~plugins/cssjson.js',
-      srr: true,
+      src: '~plugins/cssjson.ts',
+      ssr: true,
     },
     {
       src: '~plugins/monaco.js',
@@ -181,6 +181,8 @@ export default {
   env: {
     API_URL: process.env.API_URL ?? 'https://api.singlelink.co',
     HOSTNAME: process.env.HOSTNAME ?? 'app.singlelink.co',
+    LEADERBOARD: process.env.LEADERBOARD ?? false,
+    SUPPORT: process.env.SUPPORT ?? 'https://discord.gg/wqjKmsRP39',
     PORT: process.env.PORT ?? 3000,
     APP_NAME: process.env.APP_NAME ?? 'Singlelink',
     LOGO_URL: process.env.LOGO_URL ?? '/logo.svg',

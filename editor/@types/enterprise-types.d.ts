@@ -1,7 +1,7 @@
 interface DbSubscription {
   user_id: string,
   tier: SubscriptionTier,
-  stripe_sub_id: string | null
+  stripe_sub_id: string | null | undefined
 }
 
 interface DbSeat {

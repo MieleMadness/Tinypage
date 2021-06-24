@@ -22,7 +22,7 @@
       <h2 class="text-black font-bold text-xl w-full mb-2">
         Site details
       </h2>
-      <form class="flex flex-col">
+      <form class="flex flex-col w-full">
         <div class="flex flex-col lg:flex-row mb-3">
           <div class="flex flex-col w-full lg:w-1/2 mr-4 mb-3 lg:mb-0">
             <label class="font-bold opacity-70 text-sm text-black" for="name">Headline</label>
@@ -120,7 +120,8 @@
             <a
               href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
               class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
-            >Need help? Read our documentation</a>
+            >Need help? Read our
+              documentation</a>
           </div>
           <input
             id="custom_domain"
@@ -152,9 +153,8 @@
               v-show="showWatermarkNotice"
               class="mt-2 flex text-gdp p-1 px-4 rounded-full bg-opaqueIndigo font-bold text-xs lg:text-sm"
             >
-              This is completely optional, but it really helps us out! Would you help us spread the word about {{
-                app_name
-              }}?
+              This is completely optional, but it really helps us out! Would you help us spread the word about
+              {{ app_name }}?
             </span>
           </label>
         </div>
@@ -213,7 +213,7 @@
       </div>
       <div>
         <a
-          class="flex flex-row items-center font-bold justify-center rounded-full px-8 py-2 my-2 text-md border-gray-300 hover:border-gray-600"
+          class="flex flex-row items-center font-bold justify-center cursor-pointer rounded-full px-8 py-2 my-2 text-md border-gray-300 hover:border-gray-600"
           style="border-width:3px;border-style:solid;"
           @click="assignGoogleAccount()"
         >
@@ -237,11 +237,8 @@
         <h2 class="text-black font-bold text-lg w-full">
           Delete this site
         </h2>
-        <p class="text-black opacity-70 font-semibold">
-          Done with this site? Click the button on your right to delete
-          this
-          site and all related content.
-        </p>
+        <p class="text-black opacity-70 font-semibold">Done with this site? Click the button on your right to delete
+          this site and all related content.</p>
       </div>
       <button
         type="button"
@@ -257,9 +254,7 @@
         <h2 class="text-black font-bold text-lg w-full">
           Account settings
         </h2>
-        <p class="text-black opacity-70 font-semibold">
-          Need to configure the account managing your micro-sites?
-        </p>
+        <p class="text-black opacity-70 font-semibold">Need to configure the account managing your micro-sites?</p>
       </div>
       <n-link
         to="/dashboard/account"
@@ -294,43 +289,10 @@
         </div>
       </div>
     </transition>
-
-    <transition name="fade">
-      <!-- Password reset confirmation modal -->
-      <div
-        v-if="resetPasswordModalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setPasswordModalActive(false)"
-      >
-        <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
-          <h2 class="text-black font-semibold text-xl">
-            {{ passwordError ? "Error on password request!" : "Password reset requested" }}
-          </h2>
-          <p v-if="!passwordError" class="text-gray-800 text-sm">A password reset link has been sent to your account
-            email inbox successfully.
-            Make sure to check your spam folder.</p>
-
-          <p v-if="passwordError" class="text-gray-800 text-sm">
-            <i class="fas fa-exclamation-triangle"/>
-            {{ passwordError }}
-          </p>
-          <button
-            type="button"
-            class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
-            @click="setPasswordModalActive(false)"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </transition>
-
   </section>
 </template>
 
 <script lang="ts">
-import crypto from "crypto";
 import Vue from "vue";
 import {StatusCodes} from "http-status-codes";
 
@@ -362,7 +324,6 @@ export default Vue.extend({
       },
       error: '',
       passwordError: '',
-      passwordEmail: '',
       showWatermarkNotice: false,
       hostname: process.env.HOSTNAME,
       app_name: process.env.APP_NAME,
@@ -543,30 +504,6 @@ export default Vue.extend({
       }
     },
 
-    setPasswordModalActive(active: boolean) {
-      this.resetPasswordModalActive = active;
-
-      if (active) {
-        if (!this.passwordEmail) {
-          this.passwordError = "Please enter a valid email.";
-          return;
-        } else {
-          this.passwordError = '';
-        }
-
-        const md5 = crypto.createHash('md5').update(this.passwordEmail).digest('hex');
-
-        console.log(md5);
-        console.log(this.user.emailHash);
-
-        if (md5 !== this.user.emailHash) {
-          this.passwordError = "Please enter the same email you used for this account.";
-          return;
-        }
-        this.requestPasswordReset();
-      }
-    },
-
     setDeleteProfileModalActive(active: boolean) {
       this.deleteProfileModalActive = active;
     },
@@ -581,35 +518,6 @@ export default Vue.extend({
       this.$nuxt.$loading.finish();
 
       location.reload();
-    },
-
-    async requestPasswordReset() {
-      try {
-        const request = await this.$axios.post('/user/request-reset-password', {
-          email: this.passwordEmail
-        });
-        if (request.status && request.status === 200) {
-          this.passwordError = '';
-        }
-      } catch (err) {
-        console.error(err);
-
-        this.passwordError = err.toString();
-
-        if (err.response) {
-          if (err.response.status === StatusCodes.NOT_FOUND) {
-            this.passwordError = "The email couldn't be found, please make sure it's correct.";
-          }
-
-          if (err.response.status === StatusCodes.TOO_MANY_REQUESTS) {
-            this.passwordError = `Whoa, slow down! Error: ${err.response.data.message}`;
-          }
-
-          return;
-        }
-
-        throw err;
-      }
     },
 
     async assignGoogleAccount() {

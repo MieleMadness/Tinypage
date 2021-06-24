@@ -1,6 +1,5 @@
 html {
-    font-family: 'Nunito',
-    'Inter',
+    font-family: 'Manrope',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -17,14 +16,14 @@ html {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
   }
-  
+
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     outline: none !important;
   }
-  
+
 
   html, body {
     overflow: hidden !important;

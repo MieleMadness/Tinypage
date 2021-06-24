@@ -39,8 +39,8 @@ type LinkType = 'link' | 'social' | 'image' | 'video' | string;
 interface User {
   id: string,
   emailHash: string, // Used for gravatar, it could be better but this is how the service works
-  fullName: string | null,
-  activeProfileId: string | null,
+  fullName: string | null | undefined,
+  activeProfileId: string | null | undefined,
   inventory: unknown | null,
 
   // The metadata tag will grow over time as functionality is added.
@@ -57,9 +57,9 @@ interface SensitiveUser extends User {
 
   privateMetadata: {
     favorites: string[],
-    googleId: string | null | undefined,
-    githubId: string | null | undefined,
-    stripeId: string | null | undefined,
+    googleId: string | null | undefined | undefined,
+    githubId: string | null | undefined | undefined,
+    stripeId: string | null | undefined | undefined,
     emailNotifications: {
       major: boolean,
       minor: boolean,
@@ -90,8 +90,8 @@ interface Theme {
       secondary: string
     }
   } | null,
-  customCss: string | null,
-  customHtml: string | null,
+  customCss: string | null | undefined,
+  customHtml: string | null | undefined,
   userId: string,
   createdOn: string
 }
@@ -100,9 +100,9 @@ interface Profile {
   id: string,
   handle: string,
   userId: string,
-  imageUrl: string | null,
-  headline: string | null,
-  subtitle: string | null,
+  imageUrl: string | null | undefined,
+  headline: string | null | undefined,
+  subtitle: string | null | undefined,
   social: {
     icon: string,
     link: string,
@@ -135,9 +135,9 @@ interface Link {
   url: string,
   sortOrder: number,
   label: string,
-  subtitle: string | null,
-  style: string | null,
-  customCss: string | null,
+  subtitle: string | null | undefined,
+  style: string | null | undefined,
+  customCss: string | null | undefined,
   useDeepLink: boolean,
   metadata: unknown,
   createdOn: string

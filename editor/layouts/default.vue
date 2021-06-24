@@ -2,15 +2,15 @@
   <div>
     <Nuxt/>
 
-    <GDPRContentModal/>
+    <GDPRConsentPopup/>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import GDPRContentModal from "~/components/utilities/GDPRConsentPopup.vue";
+import GDPRConsentPopup from "~/components/utilities/GDPRConsentPopup.vue";
 
 export default Vue.extend({
-  components: {GDPRContentModal}
+  components: {GDPRConsentPopup}
 });
 </script>

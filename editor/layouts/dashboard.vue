@@ -205,6 +205,7 @@
           >
             <iframe
               v-if="user.activeProfile.handle"
+              id="preview-frame"
               style="z-index:2;pointer-events: none;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
               :src="'/u-preview/' + user.activeProfile.handle"
             />

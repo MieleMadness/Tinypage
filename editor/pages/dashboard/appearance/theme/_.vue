@@ -139,7 +139,7 @@ export default {
   },
   head() {
     return {
-      title: 'Theme editing - ' + process.env.APP_NAME,
+      title: 'Theme editing - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',

@@ -61,6 +61,9 @@ create table if not exists enterprise.customization
         "mainTextColor": "",
         "secondaryTextColor": ""
       },
+      "metaTitle": "",
+      "metaDescription": "",
+      "metaImageUrl": "",
       "customHtml": "",
       "customCss": "",
       "metadata": {}

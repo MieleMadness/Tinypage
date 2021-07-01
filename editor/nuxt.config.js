@@ -28,78 +28,6 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: process.env.META_TITLE ?? 'Singlelink - The open-source Linktree alternative & micro-site platform',
-    meta: [
-      {charset: 'utf-8'},
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: process.env.META_DESCRIPTION ?? "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!"
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: process.env.META_DESCRIPTION ?? "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!"
-      },
-      {
-        hid: 'og:image',
-        name: 'og:image',
-        content: process.env.META_IMAGE ?? 'https://singlelink-22fp7.ondigitalocean.app/open-graph-image-v2.png'
-      },
-      {
-        hid: 'twitter:image',
-        name: 'twitter:image',
-        content: process.env.META_IMAGE ?? 'https://singlelink-22fp7.ondigitalocean.app/open-graph-image-v2.png'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: process.env.META_TITLE ?? "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!"
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: process.env.META_TITLE ?? "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!"
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: process.env.META_DESCRIPTION ?? "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!"
-      },
-      {
-        hid: 'twitter:url',
-        name: 'twitter:url',
-        content: ('https://' + process.env.HOSTNAME) ?? 'https://app.singlelink.co'
-      },
-      {
-        hid: 'twitter:card',
-        name: 'twitter:card',
-        content: 'summary_large_image'
-      }
-    ],
-    link: [
-      {
-        rel: 'icon',
-        type: 'image/x-icon',
-        href: process.env.FAVICON ?? '/sl-icon.svg'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'
-      },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap'
-      }
-    ],
     script: [
       {
         hid: 'slpa',
@@ -132,6 +60,10 @@ export default {
     },
     {
       src: '~plugins/cssjson.ts',
+      ssr: true,
+    },
+    {
+      src: '~plugins/server-customization.ts',
       ssr: true,
     },
     {
@@ -179,18 +111,15 @@ export default {
   },
 
   env: {
+    ENABLE_WHITELABEL: process.env.ENABLE_WHITELABEL === 'true',
     API_URL: process.env.API_URL ?? 'https://api.singlelink.co',
     HOSTNAME: process.env.HOSTNAME ?? 'app.singlelink.co',
-    LEADERBOARD: process.env.LEADERBOARD ?? false,
+    LEADERBOARD: process.env.LEADERBOARD === 'true',
     SUPPORT: process.env.SUPPORT ?? 'https://discord.gg/wqjKmsRP39',
     PORT: process.env.PORT ?? 3000,
-    APP_NAME: process.env.APP_NAME ?? 'Singlelink',
-    LOGO_URL: process.env.LOGO_URL ?? '/logo.svg',
     LOGO_WIDTH: process.env.LOGO_WIDTH ?? '200px',
-    ICON_URL: process.env.ICON_URL ?? '/icon.svg',
     ICON_WIDTH: process.env.ICON_WIDTH ?? '46px',
-    ORGANIZATION: process.env.ORGANIZATION ?? 'Neutron Creative Inc.',
-    FREE_SIGNUP: process.env.FREE_SIGNUP || true,
+    FREE_SIGNUP: process.env.FREE_SIGNUP ? (process.env.FREE_SIGNUP === 'true') : true,
     QR_API: process.env.QR_API || null,
   },
 

@@ -151,8 +151,7 @@ export default Vue.extend({
       links: null as any,
       hostname: process.env.HOSTNAME,
       api_url: process.env.API_URL,
-      app_name: process.env.APP_NAME,
-      icon_url: process.env.ICON_URL,
+      app_name: this.$customSettings.productName,
       free_signup: process.env.FREE_SIGNUP
     };
   },

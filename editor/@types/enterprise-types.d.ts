@@ -11,13 +11,12 @@ interface DbSeat {
   expired: boolean
 }
 
-interface DbServerSettings {
+interface DbServerCustomization {
   title: string,
   brandName: string,
   productName: string,
   company: string,
   contactEmail: string,
-  mergePublicMarketplace: boolean,
   icons: {
     mainIcon: string,
     favicon: string,
@@ -28,8 +27,16 @@ interface DbServerSettings {
     mainTextColor: string,
     secondaryTextColor: string
   },
+  metaTitle: string,
+  metaDescription: string,
+  metaImageUrl: string,
   customHtml: string,
   customCss: string,
+  metadata: unknown
+}
+
+interface DbServerSettings {
+  mergePublicMarketplace: boolean,
   messages: {
     passwordResetEmail: string,
     inviteConfirmationEmail: string,

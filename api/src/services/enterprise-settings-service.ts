@@ -57,13 +57,16 @@ export class EnterpriseSettingsService extends DatabaseService {
 
   private static createEmptyCustomization(): DbServerCustomization {
     return {
+      metaDescription: "",
+      metaImageUrl: "",
+      metaTitle: "",
       brandName: "",
       colors: {mainColor: "", mainTextColor: "", secondaryColor: "", secondaryTextColor: ""},
       company: "",
       contactEmail: "",
       customCss: "",
       customHtml: "",
-      icons: {favicon: "", mainIcon: ""},
+      icons: {favicon: "/sl-icon.svg", mainIcon: "/sl-icon.svg"},
       metadata: undefined,
       productName: "",
       title: ""

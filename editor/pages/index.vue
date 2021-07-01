@@ -6,7 +6,8 @@
           Login
         </h1>
         <p class="opacity-70 font-bold text-2xl mb-8">
-          Manage and monitor your Singlelink sites.
+          Manage and monitor your
+          {{ $customSettings.productName }} sites.
         </p>
         <a
           href="#"
@@ -26,7 +27,7 @@
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Email address</label>
-          <input v-model="email" type="text" placeholder="e.g. jane@singlelink.co">
+          <input v-model="email" type="text" placeholder="e.g. jane@email.com">
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Password</label>
@@ -59,7 +60,9 @@
           class="mx-auto text-center font-bold text-indigo-500 mb-4 text-sm hover:underline font-bold"
         >Don't have an
           account? Get started free</a>
-        <span class="mx-auto font-bold text-center opacity-50 text-sm">©{{ new Date().getFullYear() }} Neutron Creative Inc., All rights reserved.</span>
+        <span class="mx-auto font-bold text-center opacity-50 text-sm">©{{
+            new Date().getFullYear()
+          }} {{ $customSettings.company }}, All rights reserved.</span>
       </div>
     </section>
     <section
@@ -88,52 +91,52 @@ export default Vue.extend({
   name: 'Index',
   middleware: 'unauthenticated',
 
-  head: {
-    title: 'Login - ' + process.env.APP_NAME,
-    meta: [
-      {charset: 'utf-8'},
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Login to your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Login to your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Login - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Login - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Login to your ' + process.env.APP_NAME + ' account.'
-      },
-    ],
+  head() {
+    return {
+      title: 'Login - ' + this.$customSettings.productName,
+      meta: [
+        {charset: 'utf-8'},
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no'
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Login to your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Login to your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Login - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Login - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Login to your ' + this.$customSettings.productName + ' account.'
+        },
+      ],
+    };
   },
 
-  data: () => {
+  data() {
     return {
       email: '',
       password: '',
       error: '',
       rememberMe: false,
       hostname: process.env.HOSTNAME,
-      app_name: process.env.APP_NAME,
-      icon_url: process.env.ICON_URL,
-      organization: process.env.ORGANIZATION,
+      app_name: this.$customSettings.productName,
       free_signup: process.env.FREE_SIGNUP,
       icon_width: process.env.ICON_WIDTH
     };

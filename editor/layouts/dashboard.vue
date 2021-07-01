@@ -1,10 +1,17 @@
 <template>
   <div class="white-gradient flex flex-col items-center justify-center">
+    <component :is="'style'" v-if="$customSettings.customCss">
+      {{ $customSettings.customCss }}
+    </component>
+
     <div
       class="flex flex-row w-full py-6 justify-between relative"
       style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
-      <n-link to="/dashboard"><img src="/sl-icon.svg" class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);">
+      <n-link to="/dashboard"><img
+        :src="`${$customSettings.icons.mainIcon}`" class="w-10"
+        style="filter: drop-shadow(0px 10px 25px #5353EC);" alt="main icon"
+      >
       </n-link>
       <!--<div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md" style="border: solid 2px rgba(0,0,0,.15);">
         <img src="/Compass.svg" style="width: 16px;height:auto;"/>
@@ -215,6 +222,8 @@
 
       <GDPRConsentPopup/>
     </div>
+
+    <div id="custom-global-html" v-html="$customSettings.customHtml"/>
   </div>
 </template>
 
@@ -226,6 +235,83 @@ import GDPRConsentPopup from "~/components/utilities/GDPRConsentPopup.vue";
 export default Vue.extend({
   components: {
     GDPRConsentPopup,
+  },
+
+  head() {
+    return {
+      title: this.$customSettings.metaTitle,
+      meta: [
+        {charset: 'utf-8'},
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no'
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$customSettings.metaDescription
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.$customSettings.metaDescription
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: this.$customSettings.metaImageUrl
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content: this.$customSettings.metaImageUrl
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: this.$customSettings.metaTitle
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: this.$customSettings.metaTitle
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: this.$customSettings.metaDescription
+        },
+        {
+          hid: 'twitter:url',
+          name: 'twitter:url',
+          content: ('https://' + process.env.HOSTNAME) ?? 'https://app.singlelink.co'
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        }
+      ],
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$customSettings.icons.favicon
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'
+        },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com'
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap'
+        }
+      ],
+    };
   },
 
   data() {
@@ -253,9 +339,6 @@ export default Vue.extend({
       errorIntervalHandler: undefined as any,
       profile_visibility: '' as String,
       isAdmin: false,
-      app_name: process.env.APP_NAME,
-      icon_url: process.env.ICON_URL,
-      logo_url: process.env.LOGO_URL,
       hostname: process.env.HOSTNAME,
       leaderboard: process.env.LEADERBOARD,
       support: process.env.SUPPORT,
@@ -355,9 +438,9 @@ export default Vue.extend({
 
     async createNewProfile() {
       try {
-        const profile = await this.$axios.$post<EditorProfile>('/profile/create', {
+        const profile = await this.$axios.$post('/profile/create', {
           token: this.$store.getters['auth/getToken']
-        });
+        }) as EditorProfile;
 
         this.profiles.push(profile);
 

@@ -143,7 +143,7 @@
             v-model="billing.companyName"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
             type="text"
-            placeholder="ex: Neutron Creative Inc."
+            :placeholder="`ex: ${$customSettings.company}`"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -1275,8 +1275,6 @@ export default Vue.extend({
       teamMemberEmail: '',
       showWatermarkNotice: false,
       hostname: process.env.HOSTNAME,
-      app_name: process.env.APP_NAME,
-      icon_url: process.env.ICON_URL,
       selectedBillingTier: "free" as SubscriptionTier,
       billing: {
         fullName: '',
@@ -1306,35 +1304,38 @@ export default Vue.extend({
       },
     };
   },
-  head: {
-    title: 'Account settings - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Manage your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Manage your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Account settings - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Account settings - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Manage your ' + process.env.APP_NAME + ' account.'
-      },
-    ],
+
+  head() {
+    return {
+      title: 'Account settings - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Manage your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Manage your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Account settings - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Account settings - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Manage your ' + this.$customSettings.productName + ' account.'
+        },
+      ],
+    };
   },
 
   watch: {
@@ -1498,9 +1499,9 @@ export default Vue.extend({
       const token = this.$store.getters['auth/getToken'];
 
       try {
-        this.subInfo = await this.$axios.$post<SubInfo>('/payments/sub-info', {
+        this.subInfo = await this.$axios.$post('/payments/sub-info', {
           token
-        });
+        }) as SubInfo;
       } catch (e) {
         if (e.response?.status === StatusCodes.NOT_FOUND) {
           console.log("No billing info set.");

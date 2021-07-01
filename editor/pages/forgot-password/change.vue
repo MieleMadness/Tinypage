@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
     <section class="flex items-center justify-center flex-col mt-auto w-screen">
-      <img src="/icon.svg" alt="icon">
+      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon">
       <h1 class="font-semibold text-3xl mt-2">
         Set your new password
       </h1>
@@ -56,7 +56,7 @@
       </form>
     </section>
     <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2020
-      Neutron Creative Inc.
+      {{ $customSettings.company }}
     </section>
   </div>
 </template>
@@ -76,35 +76,37 @@ export default Vue.extend({
     };
   },
 
-  head: {
-    title: 'Password reset - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Reset the password of your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Reset the password of your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Password reset - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Password reset - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Reset the password of your ' + process.env.APP_NAME + ' account.'
-      },
-    ],
+  head() {
+    return {
+      title: 'Password reset - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Reset the password of your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Reset the password of your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Password reset - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Password reset - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Reset the password of your ' + this.$customSettings.productName + ' account.'
+        },
+      ],
+    };
   },
 
   mounted() {

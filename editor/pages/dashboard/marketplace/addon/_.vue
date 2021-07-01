@@ -51,7 +51,7 @@
             v-model="addon.description"
             rows="6"
             class="p-3 rounded-xl bg-white text-sm text-gray-700"
-            placeholder="e.g. Your favorite beatufiul theme for Singlelink."
+            :placeholder="`e.g. Your favorite beautiful theme for ${$customSettings.productName}.`"
           />
           <p v-if="intent === 'view'" class="text-gray-600 text-lg leading-relaxed">
             {{ addon.description }}
@@ -250,32 +250,32 @@ export default Vue.extend({
     }
 
     return {
-      title: displayName + ' theme - ' + process.env.APP_NAME,
+      title: displayName + ' theme - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: description + '... Download this theme in seconds for free by creating a free ' + process.env.APP_NAME + 'account!'
+          content: description + '... Download this theme in seconds for free by creating a free ' + this.$customSettings.productName + 'account!'
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: description + '... Download this theme in seconds for free by creating a free ' + process.env.APP_NAME + 'account!'
+          content: description + '... Download this theme in seconds for free by creating a free ' + this.$customSettings.productName + 'account!'
         },
         {
           hid: 'og:title',
           name: 'og:title',
-          content: displayName + ' theme - ' + process.env.APP_NAME
+          content: displayName + ' theme - ' + this.$customSettings.productName
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: displayName + ' theme - ' + process.env.APP_NAME
+          content: displayName + ' theme - ' + this.$customSettings.productName
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: description + '... Download this theme in seconds for free by creating a free ' + process.env.APP_NAME + 'account!'
+          content: description + '... Download this theme in seconds for free by creating a free ' + this.$customSettings.productName + 'account!'
         },
       ],
     };

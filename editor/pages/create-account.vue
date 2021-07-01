@@ -7,7 +7,8 @@
           Create an account
         </h1>
         <p class="opacity-70 font-bold text-2xl mb-8">
-          Create your first Singlelink site for free!
+          Create your first {{ $customSettings.productName }}
+          site for free!
         </p>
         <a
           href="#"
@@ -27,7 +28,7 @@
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Email address</label>
-          <input v-model="email" type="text" placeholder="e.g. jane@singlelink.co">
+          <input v-model="email" type="text" placeholder="e.g. jane@email.com">
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Handle</label>
@@ -56,7 +57,9 @@
         </div>
         <a href="/" class="mx-auto text-center text-indigo-500 mb-4 text-sm hover:underline font-bold">Already have an
           account? Click here to login</a>
-        <span class="mx-auto text-center opacity-50 font-bold text-sm">©{{ new Date().getFullYear() }} Neutron Creative Inc., All rights reserved.</span>
+        <span class="mx-auto text-center opacity-50 font-bold text-sm">©{{
+            new Date().getFullYear()
+          }} {{ $customSettings.company }}, All rights reserved.</span>
       </div>
     </section>
     <section
@@ -85,6 +88,7 @@ import {StatusCodes} from "http-status-codes";
 export default Vue.extend({
   name: 'CreateAccount',
   middleware: 'unauthenticated',
+
   data() {
     return {
       email: '',
@@ -92,47 +96,47 @@ export default Vue.extend({
       handle: '',
       error: '',
       hostname: process.env.HOSTNAME,
-      app_name: process.env.APP_NAME,
-      logo_url: process.env.LOGO_URL,
-      organization: process.env.ORGANIZATION,
       logo_width: process.env.LOGO_WIDTH,
       rememberMe: false
     };
   },
-  head: {
-    title: 'Create your free account - ' + process.env.APP_NAME,
-    meta: [
-      {charset: 'utf-8'},
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Create your free ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Create your free ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Create your free account - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Create your free account - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Create your free ' + process.env.APP_NAME + ' account.'
-      },
-    ],
+
+  head() {
+    return {
+      title: 'Create your free account - ' + this.$customSettings.productName,
+      meta: [
+        {charset: 'utf-8'},
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no'
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Create your free ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Create your free ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Create your free account - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Create your free account - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Create your free ' + this.$customSettings.productName + ' account.'
+        },
+      ],
+    };
   },
 
   computed: {

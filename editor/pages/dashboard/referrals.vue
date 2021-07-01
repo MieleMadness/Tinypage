@@ -5,7 +5,7 @@
         <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
           Referrals
         </h1>
-        <p class="font-semibold opacity-60 text-black">Do you love Singlelink? Tell your friends and get paid! Earn $10
+        <p class="font-semibold opacity-60 text-black">Do you love {{ $customSettings.productName }}? Tell your friends and get paid! Earn $10
           for each pro membership you refer when your friends sign up with your link!</p>
       </div>
       <div class="flex flex-col jutify-center items-center text-center rounded-2xl ml-8" style="min-width:350px;">

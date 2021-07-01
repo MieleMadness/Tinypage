@@ -30,7 +30,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Marketplace theme preview - ' + process.env.APP_NAME,
+      title: 'Marketplace theme preview - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',

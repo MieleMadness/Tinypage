@@ -7,7 +7,7 @@ import Vue from "vue";
 export default Vue.extend({
   head() {
     return {
-      title: 'Analytics - ' + process.env.APP_NAME,
+      title: 'Analytics - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',

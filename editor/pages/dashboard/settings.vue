@@ -312,35 +312,37 @@ export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
 
-  head: {
-    title: 'Site settings - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Take administrative control over your microsites through the settings panel.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Take administrative control over your microsites through the settings panel.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Site settings - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Site settings - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Take administrative control over your microsites through the settings panel.'
-      },
-    ],
+  head() {
+    return {
+      title: 'Site settings - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Take administrative control over your microsites through the settings panel.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Take administrative control over your microsites through the settings panel.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Site settings - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Site settings - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Take administrative control over your microsites through the settings panel.'
+        },
+      ],
+    };
   },
 
   data() {
@@ -370,8 +372,7 @@ export default Vue.extend({
       passwordError: '',
       showWatermarkNotice: false,
       hostname: process.env.HOSTNAME,
-      app_name: process.env.APP_NAME,
-      icon_url: process.env.ICON_URL,
+      app_name: this.$customSettings.productName,
       alerts: {
         googleLinked: null as boolean | null
       }

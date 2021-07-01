@@ -27,6 +27,9 @@ interface DbServerCustomization {
     mainTextColor: string,
     secondaryTextColor: string
   },
+  metaTitle: string,
+  metaDescription: string,
+  metaImageUrl: string,
   customHtml: string,
   customCss: string,
   metadata: unknown

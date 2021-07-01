@@ -7,7 +7,9 @@
       </h1>
     </div>
     <p class="font-bold text-black opacity-70 text-2xl mb-4">
-      Ready to upgrade Singlelink sites and experience?
+      Ready to upgrade
+      {{ $customSettings.productName }} sites and
+      experience?
     </p>
 
     <!-- Alerts-->
@@ -39,7 +41,9 @@
         </h3>
         <div class="grid grid-cols-2 space-x-4">
           <li class="flex flex-row items-center mb-1">
-            <img src="/Check mark.svg" class="w-4 mr-1">No ads or Singlelink branding
+            <img src="/Check mark.svg" class="w-4 mr-1">No ads or
+            {{ $customSettings.productName }}
+            branding
           </li>
           <li class="flex flex-row items-center mb-1">
             <img src="/Check mark.svg" class="w-4 mr-1">Enhanced analytics & graphs
@@ -72,7 +76,7 @@
             v-model="billing.companyName"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
             type="text"
-            placeholder="ex: Neutron Creative Inc."
+            :placeholder="`ex: ${$customSettings.company}`"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -891,7 +895,7 @@
         </div>
       </div>
       <h2 class="text-black font-bold opacity-90 text-center text-lg w-full mt-4 mb-3">
-        Ready to experience Singelink Pro?
+        Ready to experience {{ $customSettings.productName }} Pro?
       </h2>
       <button
         type="button"

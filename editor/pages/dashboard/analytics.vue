@@ -119,35 +119,38 @@ export default Vue.extend({
       },
     };
   },
-  head: {
-    title: 'Site Analytics - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'View your site analytics from your analytics dashboard.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'View your site analytics from your analytics dashboard.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Site Analytics - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Site Analytics - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'View your site analytics from your analytics dashboard.'
-      },
-    ],
+
+  head() {
+    return {
+      title: 'Site Analytics - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'View your site analytics from your analytics dashboard.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'View your site analytics from your analytics dashboard.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Site Analytics - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Site Analytics - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'View your site analytics from your analytics dashboard.'
+        },
+      ],
+    };
   },
 
   async mounted() {

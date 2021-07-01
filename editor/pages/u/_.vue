@@ -98,23 +98,23 @@ export default Vue.extend({
     const profile: EditorProfile = this.profile;
 
     return {
-      title: profile.headline + ' - ' + process.env.APP_NAME ?? '',
+      title: profile.headline + ' - ' + this.$customSettings.productName ?? '',
 
       meta: [
         {
           hid: 'title',
           name: 'title',
-          content: profile.headline + ' - ' + process.env.APP_NAME ?? ''
+          content: profile.headline + ' - ' + this.$customSettings.productName ?? ''
         },
         {
           hid: 'og:title',
           name: 'og:title',
-          content: profile.headline + ' - ' + process.env.APP_NAME ?? ''
+          content: profile.headline + ' - ' + this.$customSettings.productName ?? ''
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: profile.headline + ' - ' + process.env.APP_NAME ?? ''
+          content: profile.headline + ' - ' + this.$customSettings.productName ?? ''
         },
         {
           hid: 'description',

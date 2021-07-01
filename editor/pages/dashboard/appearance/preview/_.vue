@@ -26,7 +26,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Theme preview - ' + process.env.APP_NAME,
+      title: 'Theme preview - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',

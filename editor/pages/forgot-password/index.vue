@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
     <section class="flex items-center justify-center flex-col mt-auto w-screen">
-      <img src="/icon.svg" alt="icon">
+      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon">
       <h1 class="font-semibold text-3xl mt-2">
         Request a password reset
       </h1>
@@ -48,7 +48,7 @@
       </form>
     </section>
     <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2020
-      Neutron Creative Inc.
+      {{ $customSettings.company }}
     </section>
   </div>
 </template>
@@ -60,40 +60,42 @@ import {StatusCodes} from "http-status-codes";
 export default Vue.extend({
   name: 'ForgotPassword',
 
-  head: {
-    title: 'Forgot your password? - ' + process.env.APP_NAME,
-    meta: [
-      {charset: 'utf-8'},
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Request a password rest for your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'Request a password rest for your ' + process.env.APP_NAME + ' account.'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Forgot your password? - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Forgot your password? - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'Request a password rest for your ' + process.env.APP_NAME + ' account.'
-      },
-    ],
+  head() {
+    return {
+      title: 'Forgot your password? - ' + this.$customSettings.productName,
+      meta: [
+        {charset: 'utf-8'},
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no'
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Request a password rest for your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'Request a password rest for your ' + this.$customSettings.productName + ' account.'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Forgot your password? - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Forgot your password? - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'Request a password rest for your ' + this.$customSettings.productName + ' account.'
+        },
+      ],
+    };
   },
 
   data: () => {

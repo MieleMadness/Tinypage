@@ -10,12 +10,14 @@
     <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
       <label class="font-semibold mb-2">Label</label>
       <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.label"
-             placeholder="e.g. My blog" type="text"/>
+             placeholder="e.g. My blog" type="text"
+      />
     </div>
     <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
       <label class="font-semibold mb-2">Link type</label>
       <select class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              v-model="pendingLink.type">
+              v-model="pendingLink.type"
+      >
         <option disabled selected>Select a link type</option>
         <option value="link">Vanilla link (default)</option>
         <option value="image">Image</option>
@@ -27,12 +29,14 @@
     <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
       <label class="font-semibold mb-2">Subtitle (optional)</label>
       <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.subtitle"
-             placeholder="e.g. Read more about my adverntures in Peru!" type="text"/>
+             placeholder="e.g. Read more about my adverntures in Peru!" type="text"
+      />
     </div>
     <div class="flex flex-col mb-8 justify-start w-full" v-if="intent!=='view'">
       <label class="font-semibold mb-2">Link URL</label>
       <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.url"
-             placeholder="e.g. https://janedoe.com/blog" type="url"/>
+             placeholder="e.g. https://janedoe.com/blog" type="url"
+      />
     </div>
     <!--<div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">
         <div class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">
@@ -45,13 +49,15 @@
     </div>-->
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">
+        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+      >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom CSS
         </h2>
         <a
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our
+          target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+        >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
@@ -69,11 +75,13 @@
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
       <div v-if="intent==='create'" @click="addNewLink" class="button cursor-pointer">Create link</div>
       <div v-if="intent==='edit'" @click="saveLinkChanges"
-           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer">
+           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+      >
         Save changes
       </div>
       <div v-if="intent==='edit'" @click="deleteLink"
-           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 cursor-pointer">
+           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 cursor-pointer"
+      >
         Delete link
       </div>
     </div>
@@ -86,36 +94,40 @@ import Vue from "vue";
 export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
-  head: {
-    title: 'Link panel - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'View, manage, and create new links from your ' + process.env.APP_NAME + ' link panel'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'View, manage, and create new links from your ' + process.env.APP_NAME + ' link panel'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Link panel - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Link panel - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'View, manage, and create new links from your ' + process.env.APP_NAME + ' link panel'
-      },
-    ],
+
+  head() {
+    return {
+      title: 'Link panel - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'View, manage, and create new links from your ' + this.$customSettings.productName + ' link panel'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'View, manage, and create new links from your ' + this.$customSettings.productName + ' link panel'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Link panel - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Link panel - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'View, manage, and create new links from your ' + this.$customSettings.productName + ' link panel'
+        },
+      ],
+    };
   },
+
   data() {
     const pendingLink: EditorLink = {
       id: "",
@@ -184,6 +196,7 @@ export default Vue.extend({
         console.log(err);
       }
     },
+
     async deleteLink() {
       try {
         await this.$axios.$post('/link/delete', {
@@ -198,12 +211,13 @@ export default Vue.extend({
 
         //this.closeModal();
 
-        return this.$router.push('/dashboard/');
+        await this.$router.push('/dashboard/');
       } catch (err) {
         console.log('Link destruction unsuccessful');
         console.log(err);
       }
     },
+
     async saveLinkChanges() {
       try {
         await this.$axios.$post('/link/update', {
@@ -223,7 +237,7 @@ export default Vue.extend({
         this.links[index] = this.pendingLink;
 
         //this.closeModal();
-        return this.$router.push('/dashboard/');
+        await this.$router.push('/dashboard/');
       } catch (err) {
         console.log('Link changes unsuccessful');
         console.log(err);

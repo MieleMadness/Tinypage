@@ -228,35 +228,38 @@ export default Vue.extend({
       sortedLinks: new Array<EditorLink>()
     };
   },
-  head: {
-    title: 'Dashboard - ' + process.env.APP_NAME,
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'View, manage, and create new microsites from your ' + process.env.APP_NAME + ' dashboard'
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: 'View, manage, and create new microsites from your ' + process.env.APP_NAME + ' dashboard'
-      },
-      {
-        hid: 'og:title',
-        name: 'og:title',
-        content: 'Dashboard - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: 'Dashboard - ' + process.env.APP_NAME
-      },
-      {
-        hid: 'og:description',
-        name: 'og:description',
-        content: 'View, manage, and create new microsites from your ' + process.env.APP_NAME + ' dashboard'
-      },
-    ],
+
+  head() {
+    return {
+      title: 'Dashboard - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'View, manage, and create new microsites from your ' + this.$customSettings.productName + ' dashboard'
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: 'View, manage, and create new microsites from your ' + this.$customSettings.productName + ' dashboard'
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: 'Dashboard - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Dashboard - ' + this.$customSettings.productName
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: 'View, manage, and create new microsites from your ' + this.$customSettings.productName + ' dashboard'
+        },
+      ],
+    };
   },
 
   async mounted() {

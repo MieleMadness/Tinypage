@@ -94,7 +94,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Admin - ' + process.env.APP_NAME,
+      title: 'Admin - ' + this.$customSettings.productName,
       meta: [
         {hid: 'robots', name: 'robots', content: 'noindex'}
       ]

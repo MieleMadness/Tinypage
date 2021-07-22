@@ -11,7 +11,7 @@
     </a>
 	<a href="https://twitter.com/singlelink">
 		<img alt="Twitter Follow" height=20 src="https://img.shields.io/twitter/follow/singlelink?color=%2300acee&label=Follow%20us%20on%20Twitter&style=plastic">
-	</a
+	</a>
 	<a href="https://discord.gg/BUbmgV4">
 		<img src="https://img.shields.io/discord/739822478276165675?color=%237289da&label=Join%20our%20community%20on%20Discord"/>
 	</a>
@@ -21,21 +21,19 @@
 
 <div align="center">
 
-<h4>Try out <a href="https://singlelink.co" target="_blank">Singlelink</a> for free in seconds 👇</h4>
-
-<a title="Deploy to DigitalOcean" href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/Neutron-Creative/Singlelink/tree/master" target="_blank"><img src="client/static/deploy-do.svg" height="45"/></a>
-<a title="Deploy to Heroku" href="https://app.singlelink.co/create-account" target="_blank"><img src="client/static/deploy-heroku.svg" height="45"/></a>
-<a title="Deploy to Singlelink Cloud" href="https://app.singlelink.co/create-account" target="_blank"><img src="client/static/deploy-sl.svg" height="45"/></a>
-
 </div>
 
 <br><br>
 
 ## Getting started
-To install <a target="_blank" href="https://singlelink.co">Singlelink</a> locally, follow our steps below or watch one of our available <a href="https://youtube.com/" target="_blank">video installation guides! 👉</a>
+
+To install <a target="_blank" href="https://singlelink.co">Singlelink</a> locally, follow our steps below or watch one
+of our available <a href="https://youtube.com/" target="_blank">video installation guides! 👉</a>
 
 ### Pre-requisites
-To install <a target="_blank" href="https://singlelink.co">Singlelink</a>, please ensure you have the following installed.
+
+To install <a target="_blank" href="https://singlelink.co">Singlelink</a>, please ensure you have the following
+installed.
 
 - <a href="https://www.postgresql.org/" target="_blank">PostgreSQL</a>
 - <a href="https://nodejs.org/en/" target="_blank">NPM/Node.JS</a>
@@ -53,15 +51,36 @@ git clone https://github.com/Neutron-Creative/Singlelink.git
 ```
 2. Install the dependencies with NPM
 ```bash
-cd client;npm install;cd ../server;npm install;cd ../;
+cd api;npm install;cd ../editor;npm install;cd ../renderer;npm install;cd ../
 ```
 3. Run the setup script
 ```bash
 npm run setup
 ```
 4. Build & launch <a target="_blank" href="https://singlelink.co">Singlelink</a>
+
+Build all the modules
+
 ```bash
-npm run build;npm run start;
+npm run build
+```
+
+Start the API in one terminal:
+
+```bash
+cd api; npm run start;
+```
+
+Start the editor in another terminal:
+
+```bash
+cd editor; PORT=8080 API_URL=http://localhost:5566 npm run start
+```
+
+Start the renderer in another terminal:
+
+```bash
+cd renderer; PORT=8081 API_URL=http://localhost:5566 npm run start
 ```
 
 ### Development setup
@@ -72,15 +91,30 @@ git clone https://github.com/Neutron-Creative/Singlelink.git
 ```
 2. Install the dependencies with NPM
 ```bash
-cd client;npm install;cd ../server;npm install;cd ../;
+cd api;npm install;cd ../editor;npm install;cd ../renderer;npm install;cd ../
 ```
 3. Run the setup script
 ```bash
 npm run setup
 ```
 4. Launch <a target="_blank" href="https://singlelink.co">Singlelink</a> with hot-reloading enabled
+
+Start the API in one terminal:
+
 ```bash
-npm run dev
+cd api; npm run dev;
+```
+
+Start the editor in another terminal:
+
+```bash
+cd editor; PORT=8080 API_URL=http://localhost:5566 npm run dev
+```
+
+Start the renderer in another terminal:
+
+```bash
+cd renderer; PORT=8081 API_URL=http://localhost:5566 npm run dev
 ```
 
 ## Screenshots

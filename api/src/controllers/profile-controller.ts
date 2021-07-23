@@ -368,7 +368,9 @@ export class ProfileController extends Controller {
       if (this.mixpanel)
         this.mixpanel.track('new profile created', {
           distinct_id: newProfile.userId,
-          $ip: request.ip,
+          $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
           profile: newProfile.id,
           profileObject: newProfile
         });
@@ -450,7 +452,9 @@ export class ProfileController extends Controller {
       if (this.mixpanel) {
         this.mixpanel.track('profile updated', {
           distinct_id: newProfile.userId,
-          $ip: request.ip,
+          $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
           profile: newProfile.id,
           profileObject: newProfile
         });
@@ -458,7 +462,9 @@ export class ProfileController extends Controller {
         if (prevWatermarkStatus !== newProfile.showWatermark) {
           this.mixpanel.track('watermark status toggled', {
             distinct_id: newProfile.userId,
-            $ip: request.ip,
+            $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
             profile: newProfile.id,
             showWatermark: newProfile.showWatermark
           });
@@ -528,7 +534,9 @@ export class ProfileController extends Controller {
       if (this.mixpanel)
         this.mixpanel.track('profile deleted', {
           distinct_id: deletedProfile.userId,
-          $ip: request.ip,
+          $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
           profile: deletedProfile.id,
           profileObject: deletedProfile
         });
@@ -594,7 +602,9 @@ export class ProfileController extends Controller {
       if (this.mixpanel)
         this.mixpanel.track('set profile active theme', {
           distinct_id: request.body.authUser.id,
-          $ip: request.ip,
+          $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
           profile: request.body.authProfile.id,
           theme: theme
         });
@@ -631,7 +641,9 @@ export class ProfileController extends Controller {
         if (this.mixpanel)
           this.mixpanel.track('toggle privacy mode', {
             distinct_id: profile.userId,
-            $ip: request.ip,
+            $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
             profile: profile.id,
             privacyMode: request.body.privacyMode
           });
@@ -671,7 +683,9 @@ export class ProfileController extends Controller {
         if (this.mixpanel)
           this.mixpanel.track('toggle unlisted mode', {
             distinct_id: profile.userId,
-            $ip: request.ip,
+            $ip: (config.allowXForwardHeader ?
+            request.headers['cf-connecting-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress :
+            request.connection.remoteAddress),
             profile: profile.id,
             unlisted: request.body.unlisted
           });

@@ -162,6 +162,10 @@ if (process.env.GOOGLE_REDIRECT_DOMAIN) {
   config.google.redirectDomain = process.env.GOOGLE_REDIRECT_DOMAIN;
 }
 
+if (process.env.ALLOW_X_FORWARD_HEADER) {
+  config.allowXForwardHeader = process.env.ALLOW_X_FORWARD_HEADER == "true";
+}
+
 /**
  * Stripe Secret
  */

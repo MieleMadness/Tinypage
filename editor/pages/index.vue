@@ -52,13 +52,12 @@
           </div>
           <a href="#" class="text-indigo-500 hover:underline ml-auto font-bold">Forgot your password?</a>
         </div>
-        <div class="button cursor-pointer" @click="attemptEmailLogin">
-          Login to your account
+        <div @click="attemptEmailLogin()" class="button cursor-pointer">Login to your account</div>
+        <div v-if="error" class="error">
+          {{ error }}
         </div>
-        <a
-          href="/create-account"
-          class="mx-auto text-center font-bold text-indigo-500 mb-4 text-sm hover:underline font-bold"
-        >Don't have an
+        <a href="/create-account"
+           class="mx-auto text-center font-bold text-indigo-500 mb-4 text-sm hover:underline font-bold">Don't have an
           account? Get started free</a>
         <span class="mx-auto font-bold text-center opacity-50 text-sm">©{{
             new Date().getFullYear()
@@ -86,10 +85,27 @@
 
 <script lang="ts">
 import Vue from "vue";
+import {StatusCodes} from "http-status-codes";
 
 export default Vue.extend({
   name: 'Index',
   middleware: 'unauthenticated',
+
+  data: () => {
+    return {
+      email: '',
+      password: '',
+      error: '',
+      rememberMe: false,
+      hostname: process.env.HOSTNAME,
+      app_name: process.env.APP_NAME,
+      icon_url: process.env.ICON_URL,
+      organization: process.env.ORGANIZATION,
+      free_signup: process.env.FREE_SIGNUP,
+      icon_width: process.env.ICON_WIDTH,
+      errorIntervalHandler: undefined as any
+    };
+  },
 
   head() {
     return {
@@ -129,31 +145,30 @@ export default Vue.extend({
     };
   },
 
-  data() {
-    return {
-      email: '',
-      password: '',
-      error: '',
-      rememberMe: false,
-      hostname: process.env.HOSTNAME,
-      app_name: this.$customSettings.productName,
-      free_signup: process.env.FREE_SIGNUP,
-      icon_width: process.env.ICON_WIDTH
-    };
-  },
-
   methods: {
     async attemptEmailLogin() {
       this.$nuxt.$loading.start();
 
       if (!this.email) {
         this.error = 'Email address is required to login.';
+
+        if (this.errorIntervalHandler !== undefined)
+          clearInterval(this.errorIntervalHandler);
+
+        this.errorIntervalHandler = setInterval(this.clearErrors, 2000);
+
         this.$nuxt.$loading.finish();
         return;
       }
 
       if (!this.password) {
         this.error = 'Password is required to login.';
+
+        if (this.errorIntervalHandler !== undefined)
+          clearInterval(this.errorIntervalHandler);
+
+        this.errorIntervalHandler = setInterval(this.clearErrors, 2000);
+
         this.$nuxt.$loading.finish();
         return;
       }
@@ -173,9 +188,29 @@ export default Vue.extend({
         await this.$router.push('/dashboard');
       } catch (err) {
         console.log('Login failed');
-        console.log(err);
 
-        this.error = 'Your email or password is incorrect!';
+        if (err.response.status === StatusCodes.FORBIDDEN) {
+          this.error = err.response.data.error;
+
+          if (this.errorIntervalHandler !== undefined)
+            clearInterval(this.errorIntervalHandler);
+
+          this.errorIntervalHandler = setInterval(this.clearErrors, 2000);
+
+          await this.$nuxt.$loading.finish();
+          return;
+        } else if (err.response.status === StatusCodes.UNAUTHORIZED) {
+          this.error = 'Your email or password is incorrect!';
+
+          if (this.errorIntervalHandler !== undefined)
+            clearInterval(this.errorIntervalHandler);
+
+          this.errorIntervalHandler = setInterval(this.clearErrors, 2000);
+
+          await this.$nuxt.$loading.finish();
+          return;
+        }
+
         await this.$nuxt.$loading.finish();
       }
     },
@@ -258,4 +293,13 @@ label {
   transform: scale(1);
   box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgba(83, 83, 267, .95);
 }
+
+.error {
+  @apply bottom-0 rounded-lg shadow border border-gray-200;
+  color: mintcream;
+  background-color: #ff4a4a;
+  padding: 7px;
+  z-index: 25;
+}
+
 </style>

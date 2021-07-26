@@ -18,6 +18,7 @@ import {SubscriptionController} from "./controllers/subscription-controller";
 import {StripeCallbacksController} from "./controllers/stripe-callbacks-controller";
 import {EnterpriseSettingsController} from "./controllers/enterprise-settings-controller";
 import {ScreenshotUtils} from "./utils/screenshot-utils";
+import {LogUtils} from "./utils/log-utils";
 import {MarketplaceController} from "./controllers/marketplace-controller";
 
 console.log("Initializing Singlelink Enterprise");
@@ -40,6 +41,9 @@ async function start() {
   Auth.initialize(database.pool);
   SecurityUtils.initialize(database.pool);
   CustomDomainHandler.initialize(database.pool);
+  LogUtils.initialize(database.pool);
+
+  // Initialize screenshot API
   await ScreenshotUtils.initialize();
 
   // Initialize Job System

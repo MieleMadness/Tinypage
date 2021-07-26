@@ -72,13 +72,17 @@
                     profiles
                   </div>
 
-                </div>
+              <div v-if="error" class="error">
+                {{ error }}
               </div>
-              <ul
-                v-if="selectingProfile"
-                class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
-                style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
-              >
+
+            </div>
+          </div>
+          <ul
+            v-if="selectingProfile"
+            class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
+            style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
+          >
 
                 <li class="flex flex-row items-center justify-left profile-search text-black">
                   <!-- Create new profile-->
@@ -765,18 +769,6 @@ html {
   border-bottom: solid 2px rgba(235, 244, 255, var(--bg-opacity));
 }
 
-.error {
-  @apply bottom-0 rounded-lg shadow border border-gray-200;
-  position: absolute;
-  width: 30em;
-  bottom: 5px;
-  left: 70px;
-  color: mintcream;
-  background-color: red;
-  padding: 7px;
-  z-index: 25;
-}
-
 .profile-list {
   max-height: 400px !important;
   overflow-y: scroll;
@@ -938,6 +930,14 @@ a.nav-link svg {
   background: -webkit-linear-gradient(180deg, rgba(254, 254, 254, 1) 0%, rgba(237, 244, 252, 1) 100%);
   background: linear-gradient(180deg, rgba(254, 254, 254, 1) 0%, rgba(237, 244, 252, 1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fefefe", endColorstr="#edf4fc", GradientType=1);
+}
+
+.error {
+  @apply bottom-0 rounded-lg shadow border border-gray-200;
+  color: mintcream;
+  background-color: #ff4a4a;
+  padding: 7px;
+  z-index: 25;
 }
 
 </style>

@@ -599,7 +599,6 @@ export class AuthController extends Controller {
           email: body.email,
           validateRegex: true,
           validateMx: true,
-          validateDisposable: true,
           validateSMTP: true
         });
 
@@ -612,10 +611,6 @@ export class AuthController extends Controller {
 
           if (result.validators.mx && !result.validators.mx.valid) {
             errString += `Email is not a valid domain. \n`;
-          }
-
-          if (result.validators.disposable && !result.validators.disposable.valid) {
-            errString += `Email cannot be a disposable email. \n`;
           }
 
           if (result.validators.smtp && !result.validators.smtp.valid) {

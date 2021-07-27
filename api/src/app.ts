@@ -72,6 +72,5 @@ async function start() {
   // Server utility controllers
   server.addController(new InfoController(server.fastify, database));
 
-
   server.startServer();
 }

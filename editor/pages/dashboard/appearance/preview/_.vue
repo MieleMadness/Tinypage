@@ -56,8 +56,6 @@ export default Vue.extend({
             this.theme = this.themes[i];
           }
         }
-
-        console.log(this.themes);
       } catch (error) {
         console.log('Failed to get themes');
         console.log(error);

@@ -112,8 +112,6 @@ export default Vue.extend({
           detailed: true,
           limit: 8
         }));
-        console.log('Addons');
-        console.log(this.addons);
       } catch (error) {
         console.log('Failed to get addons');
         console.log(error);

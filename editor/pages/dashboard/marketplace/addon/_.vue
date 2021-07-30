@@ -292,8 +292,6 @@ export default Vue.extend({
     await this.getUserData();
     await this.loadThemes();
 
-    console.log(this.addon);
-
     // If user is author
     if (this.intent !== 'submit' && this.addon.userId === this.id) {
       // Set intent to edit
@@ -302,11 +300,6 @@ export default Vue.extend({
       // Else, set intent to view
       this.intent = 'view';
     }
-
-    console.log('Intent');
-    console.log(this.intent);
-    console.log('Loaded!');
-    console.log(this.addon);
 
     await this.getInstalledAddons();
     await this.getFavoritedAddons();

@@ -190,7 +190,6 @@ export default {
             }
           }
         }
-        console.log(this.themes);
       } catch (error) {
         console.log('Failed to get themes');
         console.log(error);

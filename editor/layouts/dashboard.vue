@@ -72,17 +72,17 @@
                     profiles
                   </div>
 
-              <div v-if="error" class="error">
-                {{ error }}
-              </div>
+                  <div v-if="error" class="error">
+                    {{ error }}
+                  </div>
 
-            </div>
-          </div>
-          <ul
-            v-if="selectingProfile"
-            class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
-            style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
-          >
+                </div>
+              </div>
+              <ul
+                v-if="selectingProfile"
+                class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
+                style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
+              >
 
                 <li class="flex flex-row items-center justify-left profile-search text-black">
                   <!-- Create new profile-->
@@ -388,7 +388,7 @@ export default Vue.extend({
     await this.listProfiles();
 
     try {
-      this.profileUrl = window.location.origin + '/u/' + this.user.activeProfile.handle;
+      this.profileUrl = process.env.RENDERER_URL + this.user.activeProfile.handle;
       this.profile_visibility = this.user.activeProfile.visibility;
     } catch (err) {
       console.log(err);
@@ -406,7 +406,7 @@ export default Vue.extend({
       try {
         const qrRequest = await this.$axios.post('https://api.qr.io/v1/create', {
           apikey: process.env.QR_API,
-          data: "https://singlel.ink/u/" + this.user.activeProfile.handle,
+          data: process.env.RENDERER_URL + this.user.activeProfile.handle,
           transparent: "on",
           frontcolor: "#5353EC",
           marker_out_color: "#09FDFD",
@@ -580,7 +580,7 @@ export default Vue.extend({
         }
 
         if (!text || text === 'https://null') {
-          text = 'https://singlel.ink/u/' + this.user.activeProfile.handle;
+          text = 'https://singlel.ink/' + this.user.activeProfile.handle;
         }
 
         await window.navigator.clipboard.writeText(text);
@@ -593,7 +593,7 @@ export default Vue.extend({
         }
 
         if (!text || text === 'https://null') {
-          text = 'https://singlel.ink/u/' + this.user.activeProfile.handle;
+          text = 'https://singlel.ink/' + this.user.activeProfile.handle;
         }
 
         prompt('Copy this url to the clipboard: Ctrl+C, Enter\n', text);

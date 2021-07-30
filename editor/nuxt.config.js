@@ -119,6 +119,7 @@ export default {
     ENABLE_WHITELABEL: process.env.ENABLE_WHITELABEL === 'true',
     API_URL: process.env.API_URL ?? 'https://api.singlelink.co',
     HOSTNAME: process.env.HOSTNAME ?? 'app.singlelink.co',
+    RENDERER_URL: process.env.RENDERER_URL ?? 'https://singlel.ink',
     LEADERBOARD: process.env.LEADERBOARD === 'true',
     SUPPORT: process.env.SUPPORT ?? 'https://discord.gg/wqjKmsRP39',
     PORT: process.env.PORT ?? 3000,

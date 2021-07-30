@@ -1,82 +1,119 @@
 <template>
-  <section class="flex flex-col p-8 items-center flex-grow overflow-x-hidden overflow-y-scroll">
-    <h1 class="text-gray-800 font-extrabold tracking-tight text-3xl w-full mb-4">
-      Admin dashboard
-    </h1>
-    <form class="flex flex-col w-full bg-white shadow p-8 rounded-xl">
-      <div class="flex flex-col lg:flex-row mb-3">
-        <div class="flex flex-col w-full lg:w-1/2 mr-4 mb-3 lg:mb-0">
-          <label class="font-bold opacity-70 text-sm text-black" for="name">Platform name</label>
+  <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
+    <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
+      <img class="w-8" src="/Person.svg">
+      <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
+        Admin dashboard
+      </h1>
+    </div>
+
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+
+    <!-- Banned User Controls -->
+    <div class="flex flex-col py-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
+      <h2 class="text-black font-bold text-lg w-full px-6 mb-6">
+        Manage Banned Users
+      </h2>
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+
+      <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
+        <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-            id="name"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+            id="banUserId"
+            v-model="banUserId"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
             type="text"
-            placeholder="e.g. Singlelink"
+            placeholder="e.g. 1273"
+            aria-label="ban user id"
           >
-        </div>
-        <div class="flex flex-col w-full lg:w-1/2">
-          <label class="font-bold opacity-70 text-sm text-black" for="subtitle">Platform slogan</label>
           <input
-            id="subtitle"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+            id="banUseReason"
+            v-model="banUserReason"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
             type="text"
-            placeholder="e.g. Tiny pages, big impact."
+            placeholder="e.g. Phishing"
+            aria-label="ban user reason"
           >
-        </div>
-      </div>
-      <div class="flex flex-col lg:flex-row mb-3">
-        <div class="flex flex-col w-full lg:w-1/2 mr-4 mb-3 lg:mb-0">
-          <label class="font-bold opacity-70 text-sm text-black" for="primaryColor">Primary color</label>
-          <input
-            id="primaryColor"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-            type="text"
-            placeholder="e.g. #5353EC"
+          <button
+            type="button"
+            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
           >
-        </div>
-        <div class="flex flex-col w-full lg:w-1/2">
-          <label class="font-bold opacity-70 text-sm text-black" for="secondaryColor">Secondary color</label>
-          <input
-            id="secondaryColor"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-            type="text"
-            placeholder="e.g. #C4C4C4"
-          >
-        </div>
-      </div>
-      <div class="flex flex-row items-center justify-center space-x-4 mb-4">
-        <input type="hidden" name="avatar_url" id="avatar_url" class="simple-file-upload"
-               v-model="user.activeProfile.imageUrl">
-        <div class="flex flex-col w-auto flex-grow flex-1">
-          <label class="font-bold opacity-70 text-sm text-black" for="image_url">Logo image URL</label>
-          <input
-            id="image_url"
-            v-model="user.activeProfile.imageUrl"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-            type="text"
-            placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
-          >
-          <div
-            v-if="!isProfileValid"
-            class="py-3 px-4 rounded-2xl bg-red-200 border border-red-400 text-red-500 flex flex-col items-start mt-2 text-sm"
-          >
-            <span class="font-semibold">Warning!</span>
-            <span class="text-xs font-semibold">Your site picture may be improperly formatted! Please ensure your image is loaded via an SSL and ends in .gif, .png, .jpg, .jpeg, or another supported file extension.<a
-              href="https://www.notion.so/neutroncreative/Troubleshooting-9a162db4a8ce482d89b3d3e1bc9825ba"
-              target="_blank"
-              class="ml-2 font-semibold underline hover:text-red-700"
-            >Learn more</a></span>
-          </div>
+            Ban User
+          </button>
         </div>
       </div>
-      <button
-        type="button"
-        class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
-        @click="saveChanges"
+
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+
+      <div class="flex flex-row items-center justify-start">
+        <h2 class="text-black font-bold text-lg px-6 mb-6 mt-6">
+          Banned users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
+        </h2>
+        <button
+          type="button"
+          class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+          @click="showBanned = !showBanned; refreshBannedUsersFirstTime()"
+        >
+          {{ showBanned ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+      <div
+        v-if="showBanned"
+        v-for="banned in bannedUsers"
+        :key="banned.ban.user_id"
+        class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
       >
-        Save changes
-      </button>
-    </form>
+        <p class="font-bold text-black text-lg mr-auto">
+          Id: {{ banned.ban.user_id }}
+        </p>
+
+        <div class="flex flex-row items-center justify-start w-full">
+          <div>
+            <div
+              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Email: {{ banned.userData.email }}
+            </div>
+            <div
+              v-if="banned.ban.reason"
+              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Reason: {{ banned.ban.reason }}
+            </div>
+            <div
+              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Active Profile Id: {{ banned.userData.activeProfileId }}
+            </div>
+            <div
+              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Created On: {{ new Date(banned.userData.createdOn).toUTCString() }}
+            </div>
+            <div
+              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Banned on: {{ new Date(banned.ban.created_on).toUTCString() }}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
+            @click="unbanUser(banned.ban.user_id)"
+          >
+            Unban User
+          </button>
+
+        </div>
+
+      </div>
+    </div>
 
   </section>
 </template>
@@ -91,54 +128,27 @@ export default Vue.extend({
   name: 'DashboardAdmin',
   layout: 'dashboard',
   middleware: 'authenticated',
-
   head() {
     return {
       title: 'Admin - ' + this.$customSettings.productName,
       meta: [
         {hid: 'robots', name: 'robots', content: 'noindex'}
       ]
-    }
+    };
   },
 
   data() {
     return {
-      originalHandle: '',
-      user: {
-        name: '',
-        email: '',
-        activeProfile: {
-          imageUrl: '',
-          headline: '',
-          subtitle: '',
-          handle: '',
-          customDomain: '',
-          visibility: ''
-        }
-      },
-      pendingTheme: {
-        id: '',
-        label: '',
-        global: true,
-        colors: {
-          fill: {
-            primary: '',
-            secondary: ''
-          },
-          text: {
-            primary: '',
-            secondary: ''
-          }
-        },
-        customCss: undefined,
-        customHtml: undefined,
-      } as EditorTheme,
-      themeError: '',
-      themes: new Array<Theme>(),
-      themeModalActive: false,
-      themeModalIntent: 'create' as ThemeModalIntent,
-      isAdmin: false,
-      isProfileValid: false,
+      loadedBanned: false,
+      showBanned: false,
+      bannedUsers: [] as { ban: DbBanned, userData: SensitiveUser | undefined }[],
+      banUserId: null as null | string,
+      banUserReason: null as null | string,
+
+      error: null as null | string,
+      errorIntervalHandler: undefined as any,
+
+      isAdmin: false
     };
   },
 
@@ -153,28 +163,61 @@ export default Vue.extend({
   },
 
   async mounted() {
-    //await this.loadThemes();
-    await this.getUserData();
   },
 
   methods: {
-    async getUserData() {
-      try {
-        const token = this.$store.getters['auth/getToken'];
-        const userResponse = await this.$axios.$post('/user', {
-          token
-        });
-        const profileResponse = await this.$axios.$post('/profile/active-profile', {
-          token
-        });
-        this.user = userResponse;
-        this.user.activeProfile = profileResponse;
-        this.originalHandle = this.user.activeProfile.handle;
-      } catch (err) {
-        console.log('Error getting user data');
-        console.log(err);
+    async refreshBannedUsersFirstTime() {
+      if (!this.loadedBanned) {
+        await this.refreshBannedUsers();
+        this.loadedBanned = true;
       }
     },
+
+    async refreshBannedUsers() {
+      let token = this.$store.getters['auth/getToken'];
+
+      this.bannedUsers = (await this.$axios.post('/admin/bans', {
+        token
+      })).data as { ban: DbBanned, userData: SensitiveUser | undefined }[];
+    },
+
+    async banUser(id: string, reason?: string) {
+      let token = this.$store.getters['auth/getToken'];
+
+      try {
+        await this.$axios.post('/admin/set-banned', {
+          token,
+          userId: id,
+          reason: reason,
+          banned: true
+        });
+
+        await this.refreshBannedUsers();
+
+        console.log(`Banned user: ${id}${reason ? " for reason: " + reason : ""}`);
+      } catch (err) {
+        this.error = err.response.data.error;
+
+        if (this.errorIntervalHandler !== undefined)
+          clearInterval(this.errorIntervalHandler);
+
+        this.errorIntervalHandler = setInterval(() => this.error = '', 2000);
+      }
+    },
+
+    async unbanUser(id: string) {
+      let token = this.$store.getters['auth/getToken'];
+
+      await this.$axios.post('/admin/set-banned', {
+        token,
+        userId: id,
+        banned: false
+      });
+
+      await this.refreshBannedUsers();
+
+      console.log(`Unbanned user: ${id}`);
+    }
   }
 });
 </script>
@@ -234,5 +277,13 @@ export default Vue.extend({
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.error {
+  @apply bottom-0 rounded-lg shadow border border-gray-200;
+  color: mintcream;
+  background-color: #ff4a4a;
+  padding: 7px;
+  z-index: 25;
 }
 </style>

@@ -147,7 +147,7 @@ interface DbProfile {
 }
 
 interface DbSensitiveProfile extends DbProfile {
-  private_metadata: unknown
+  private_metadata: unknown;
 }
 
 /**
@@ -195,7 +195,7 @@ interface DbLink {
 }
 
 interface DbSensitiveLink extends DbLink {
-  private_metadata: unknown
+  private_metadata: unknown;
 }
 
 /**
@@ -285,9 +285,8 @@ interface DbAddon {
 }
 
 interface DbSensitiveAddon extends DbAddon {
-  private_metadata: unknown
+  private_metadata: unknown;
 }
-
 
 interface DbAddonInstall {
   id: string,
@@ -295,3 +294,18 @@ interface DbAddonInstall {
   addon_id: string,
   created_on: string
 }
+
+interface DbBanned {
+  id: string,
+  user_id: string,
+  reason: string
+  created_on: string
+}
+
+interface DbIpLog {
+  id: string,
+  user_id: string,
+  ip: string,
+  created_on: string
+}
+

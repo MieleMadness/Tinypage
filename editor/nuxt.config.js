@@ -13,6 +13,11 @@ export default {
   */
   target: 'server',
 
+  i18n: {
+    locales: ['en-US'],
+    defaultLocale: 'en-US'
+  },
+
   loading: {
     color: '#5353ec',
     height: '3px'

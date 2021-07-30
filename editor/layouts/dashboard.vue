@@ -601,7 +601,7 @@ export default Vue.extend({
         console.log('Error getting user data');
         console.log(err);
 
-        if (err.response.status === StatusCodes.UNAUTHORIZED) {
+        if (err.response.status === StatusCodes.UNAUTHORIZED || err.response.status === StatusCodes.FORBIDDEN) {
           console.log("Token is probably expired, resetting...");
           this.$cookies.removeAll();
 

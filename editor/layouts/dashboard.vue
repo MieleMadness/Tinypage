@@ -13,10 +13,12 @@
         style="filter: drop-shadow(0px 10px 25px #5353EC);" alt="main icon"
       >
       </n-link>
-      <!--<div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md" style="border: solid 2px rgba(0,0,0,.15);">
-        <img src="/Compass.svg" style="width: 16px;height:auto;"/>
-        <input type="text" class="font-bold flex-grow flex-1 text-sm ml-2" style="background:transparent;" placeholder="Search pages, guides, and documentation..."/>
-      </div>-->
+      <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
+      <!--           style="border: solid 2px rgba(0,0,0,.15);">-->
+      <!--        <img src="/Compass.svg" style="width: 16px;height:auto;"/>-->
+      <!--        <input type="text" class="font-bold flex-grow flex-1 text-sm ml-2" style="background:transparent;"-->
+      <!--               placeholder="Search pages, guides, and documentation..."/>-->
+      <!--      </div>-->
       <!--<n-link to="/dashboard/referrals" class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight mx-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo">Refer a friend and get $10!</n-link>-->
 
       <n-link
@@ -173,12 +175,6 @@
               <!--   <span class="ml-4 font-extrabold">Search & discover</span>-->
               <!-- </n-link>-->
 
-              <!-- Disabled, but visible-->
-              <a href="#" :class="getActiveStyles('dashboard-discover')">
-                <img src="/Compass.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Search & discover</span>
-              </a>
-
               <a v-if="support" :href="support" target="_blank" :class="getActiveStyles('dashboard-support')">
                 <img src="/Cowboy hat face.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Contact support</span>
@@ -190,6 +186,14 @@
               <n-link to="/dashboard/settings" :class="getActiveStyles('dashboard-settings')">
                 <img src="/Settings.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Settings</span>
+              </n-link>
+              <n-link v-if="isAdmin" to="/dashboard/admin" :class="getActiveStyles('dashboard-admin')">
+                <img src="/Person.svg" style="width:24px;height:24px;"/>
+                <span class="ml-4 font-extrabold">Admin Settings</span>
+              </n-link>
+              <n-link v-if="isAdmin" to="/dashboard/enterprise" :class="getActiveStyles('dashboard-enterprise')">
+                <img src="/Person.svg" style="width:24px;height:24px;"/>
+                <span class="ml-4 font-extrabold">Enterprise Settings</span>
               </n-link>
               <n-link to="/logout" :class="getActiveStyles('logout')">
                 <img src="/Waving hand.svg" style="width:24px;height:24px;">
@@ -218,7 +222,7 @@
               v-if="user.activeProfile.handle"
               id="preview-frame"
               style="z-index:2;pointer-events: none;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
-              :src="'/u-preview/' + user.activeProfile.handle"
+              :src="rendererUrl + '/' + user.activeProfile.handle"
             />
           </div>
         </div>
@@ -322,6 +326,7 @@ export default Vue.extend({
     return {
       active: "dashboard",
       originalHandle: '',
+
       user: {
         emailHash: '',
         activeProfile: {
@@ -330,6 +335,8 @@ export default Vue.extend({
           customDomain: '',
         },
       },
+
+      rendererUrl: '' as string | undefined,
       preview: false,
       share_modal: false,
       qr_src: null,
@@ -339,8 +346,6 @@ export default Vue.extend({
       profileUrl: "",
       version: "Version loading...",
       previewMode: 'mobile',
-      error: '',
-      errorIntervalHandler: undefined as any,
       profile_visibility: '' as String,
       isAdmin: false,
       hostname: process.env.HOSTNAME,
@@ -349,6 +354,9 @@ export default Vue.extend({
       mobile_menu: false,
       mobile_preview: false,
       previewVisible: true,
+
+      error: '',
+      errorIntervalHandler: undefined as any,
       // usetiful_script
       // (function (w, d, s) {
       //   const a = d.getElementsByTagName('head')[0];
@@ -388,7 +396,8 @@ export default Vue.extend({
     await this.listProfiles();
 
     try {
-      this.profileUrl = process.env.RENDERER_URL + this.user.activeProfile.handle;
+      this.rendererUrl = process.env.RENDERER_URL;
+      this.profileUrl = this.rendererUrl + '/' + this.user.activeProfile.handle;
       this.profile_visibility = this.user.activeProfile.visibility;
     } catch (err) {
       console.log(err);

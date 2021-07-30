@@ -59,21 +59,21 @@ if (process.env.PORT) {
  * The domain that the api will be hosted on.
  */
 if (process.env.API_URL) {
-  config.apiDomain = process.env.API_URL;
+  config.apiUrl = process.env.API_URL;
 }
 
 /**
  * The domain that the editor is hosted at.
  */
 if (process.env.EDITOR_URL) {
-  config.editorDomain = process.env.EDITOR_URL;
+  config.editorUrl = process.env.EDITOR_URL;
 }
 
 /**
  * The domain that the renderer is hosted at.
  */
 if (process.env.RENDERER_URL) {
-  config.rendererDomain = process.env.RENDERER_URL;
+  config.rendererUrl = process.env.RENDERER_URL;
 }
 
 /**

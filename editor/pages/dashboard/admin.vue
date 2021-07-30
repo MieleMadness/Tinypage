@@ -118,7 +118,6 @@
   </section>
 </template>
 
-
 <script lang="ts">
 import Vue from "vue";
 
@@ -130,13 +129,12 @@ export default Vue.extend({
   middleware: 'authenticated',
   head() {
     return {
-      title: 'Admin - ' + this.$customSettings.productName,
+      title: 'Admin - ' + process.env.APP_NAME,
       meta: [
         {hid: 'robots', name: 'robots', content: 'noindex'}
       ]
     };
   },
-
   data() {
     return {
       loadedBanned: false,
@@ -264,11 +262,13 @@ export default Vue.extend({
   &:active {
     transform: scale(1);
   }
+
 }
 
 /**
   Animations
  */
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .25s;
 }

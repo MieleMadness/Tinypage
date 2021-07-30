@@ -83,7 +83,7 @@ export class ProfileService extends DatabaseService {
       screenshotOptions.crop = true;
 
       return await ScreenshotUtils.getOrCreateScreenshot(
-        `${config.rendererDomain}/${handle}`,
+        `${config.rendererUrl}/${handle}`,
         [`${resolution.x}x${resolution.y}`],
         ScreenshotUtils.DEFAULT_TTL,
         false,

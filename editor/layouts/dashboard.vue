@@ -585,6 +585,7 @@ export default Vue.extend({
       try {
         const token = this.$store.getters['auth/getToken'];
 
+
         const userResponse = await this.$axios.$post('/user', {
           token
         });
@@ -599,6 +600,13 @@ export default Vue.extend({
       } catch (err) {
         console.log('Error getting user data');
         console.log(err);
+
+        if (err.response.status === StatusCodes.UNAUTHORIZED) {
+          console.log("Token is probably expired, resetting...");
+          this.$cookies.removeAll();
+
+          window.location.replace("/");
+        }
       }
     },
 

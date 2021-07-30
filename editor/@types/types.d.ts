@@ -57,9 +57,9 @@ interface SensitiveUser extends User {
 
   privateMetadata: {
     favorites: string[],
-    googleId: string | null | undefined | undefined,
-    githubId: string | null | undefined | undefined,
-    stripeId: string | null | undefined | undefined,
+    googleId: string | null | undefined,
+    githubId: string | null | undefined,
+    stripeId: string | null | undefined,
     emailNotifications: {
       major: boolean,
       minor: boolean,

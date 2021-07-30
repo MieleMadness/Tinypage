@@ -172,7 +172,6 @@ interface DbProfileMember {
  subtitle      text,
  style         text,
  custom_css    text,
- use_deep_link bool               default false not null,
  metadata      jsonb     not null default '{}',
  created_on    timestamp not null default current_timestamp
 
@@ -189,7 +188,6 @@ interface DbLink {
   subtitle: string | null,
   style: string | null,
   custom_css: string | null,
-  use_deep_link: boolean,
   metadata: unknown,
   created_on: string
 }

@@ -135,10 +135,9 @@ interface Link {
   url: string,
   sortOrder: number,
   label: string,
-  subtitle: string | null | undefined,
-  style: string | null | undefined,
-  customCss: string | null | undefined,
-  useDeepLink: boolean,
+  subtitle: string | null,
+  style: string | null,
+  customCss: string | null
   metadata: unknown,
   createdOn: string
 }

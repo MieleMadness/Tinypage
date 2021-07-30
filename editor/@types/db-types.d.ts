@@ -45,9 +45,9 @@ interface DbSensitiveUser extends DbUser {
 
   private_metadata: {
     favorites: string[],
-    googleId: string | null | undefined | undefined,
-    githubId: string | null | undefined | undefined,
-    stripeId: string | null | undefined | undefined,
+    googleId: string | null | undefined,
+    githubId: string | null | undefined,
+    stripeId: string | null | undefined,
     emailNotifications: {
       major: boolean,
       minor: boolean,
@@ -172,7 +172,6 @@ interface DbProfileMember {
  subtitle      text,
  style         text,
  custom_css    text,
- use_deep_link bool               default false not null,
  metadata      jsonb     not null default '{}',
  created_on    timestamp not null default current_timestamp
 
@@ -186,10 +185,9 @@ interface DbLink {
   url: string,
   sort_order: number,
   label: string,
-  subtitle: string | null | undefined,
-  style: string | null | undefined,
-  custom_css: string | null | undefined,
-  use_deep_link: boolean,
+  subtitle: string | null,
+  style: string | null,
+  custom_css: string | null,
   metadata: unknown,
   created_on: string
 }

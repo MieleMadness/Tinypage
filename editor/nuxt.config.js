@@ -46,7 +46,21 @@ export default {
         src: 'https://app.simplefileupload.com/buckets/299048f4bf460802e90ea160f0c46064.js',
         defer: true
       }
-    ]
+    ],
+    link: [
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap'
+      }
+    ],
   },
   /*
   ** Global CSS

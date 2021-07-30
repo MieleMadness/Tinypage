@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-shrink-0 flex-col p-8 items-center flex-grow overflow-x-hidden overflow-y-scroll">
+  <section class="flex flex-col p-8 items-center flex-grow overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-col lg:flex-row justify-start lg:justify-between items-center mb-4 w-full">
       <h1 v-if="intent!=='view'" class="text-gray-800 font-extrabold tracking-tight text-3xl">
         Submission details
@@ -188,8 +188,6 @@ export default Vue.extend({
       intent: 'view'
     } as any;
 
-    console.log(addonResponse.addon.id);
-
     if (ctx.route.path.replace('/dashboard/marketplace/addon/', '') === 'submit') {
       // set intent to submit
       addonResponse.intent = 'submit';
@@ -314,7 +312,6 @@ export default Vue.extend({
         });
         this.activeProfileId = userResponse.activeProfileId;
         this.id = userResponse.id;
-        console.log(userResponse);
       } catch (err) {
         console.log('Error getting user data');
         console.log(err);
@@ -328,7 +325,7 @@ export default Vue.extend({
           token: this.$store.getters['auth/getToken'],
           includeGlobal: false,
         }));
-        console.log(this.getUserData);
+
         /* this.globalThemes = (await this.$axios.$post<Theme[]>('/themes', {
             token: this.$store.getters['auth/getToken'],
             onlyGlobal: true
@@ -356,8 +353,6 @@ export default Vue.extend({
           // global: this.addon.global
         }
       });
-      console.log('Done!');
-      console.log(submission);
       window.location.href = '/dashboard/marketplace/addon/' + submission.id;
     },
 
@@ -374,8 +369,6 @@ export default Vue.extend({
           global: this.addon.global
         }
       });
-      console.log('Done!');
-      console.log(changed);
     },
 
     async deleteAddon() {
@@ -383,8 +376,6 @@ export default Vue.extend({
         token: this.$store.getters['auth/getToken'],
         id: this.$route.path.replace('/dashboard/marketplace/addon/', '')
       });
-      console.log('Done!');
-      console.log(deleted);
       window.location.href = '/dashboard/marketplace';
     },
 
@@ -393,7 +384,7 @@ export default Vue.extend({
         token: this.$store.getters['auth/getToken'],
         // profileId: this.activeProfileId
       });
-      console.log(installed);
+
       for (let i = 0; i < installed.length; i++) {
         this.installed.push(Number(installed[i].addonId));
       }

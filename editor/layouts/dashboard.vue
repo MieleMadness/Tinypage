@@ -494,7 +494,7 @@ export default Vue.extend({
       }
     },
 
-    getProfilePreviewUrl() {
+    getProfilePreviewUrl(): string {
       let token = this.$store.getters['auth/getToken'];
 
       let queryParams = new URLSearchParams({

@@ -158,8 +158,6 @@ export default Vue.extend({
     });
 
     this.isAdmin = permGroup["groupName"] === 'admin';
-
-    this.isProfileValid = this.isAdmin;
   },
 
   async mounted() {

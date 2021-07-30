@@ -1077,12 +1077,29 @@
       </div>
     </div>
 
+    <!-- Request GDPR package-->
+    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col mr-auto w-full lg:w-1/2">
+        <h2 class="text-black font-bold text-lg w-full">
+          Request GDPR Package
+        </h2>
+        <p class="text-black font-bold opacity-70">Download a data package containing all of your recorded data.</p>
+      </div>
+      <button
+        type="button"
+        class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-green-600 hover:bg-green-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+        @click="downloadGDPRPackage"
+      >
+        Download
+      </button>
+    </div>
+
     <!-- Reset Password -->
     <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
       <h2 class="text-black font-bold text-lg w-full">
         Reset your password
       </h2>
-      <p class="text-black font-bold opacity-70">
+      <p class="text-black font-bold opacity-70 max-w-xl">
         An email will be sent to you with a password reset link. Please type in the same email you used to sign up
         for this account to confirm.
       </p>
@@ -1100,8 +1117,7 @@
           <button
             type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
-            @click="setPasswordModalActive(true)"
-          >
+            @click="setPasswordModalActive(true)">
             Request password reset link
           </button>
         </div>
@@ -1121,7 +1137,7 @@
       <button
         type="button"
         class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-red-600 hover:bg-red-400 rounded-2xl font-bold w-1/3 justify-center align-center"
-        @click="setDeleteAccountModalActive(true)"
+        @click="setDeleteUserModalActive(true)"
       >
         Delete this account
       </button>
@@ -1162,7 +1178,7 @@
       <!-- Password reset confirmation modal -->
       <div
         v-if="resetPasswordModalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
         style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
         @click="setPasswordModalActive(false)"
       >
@@ -1184,6 +1200,40 @@
             @click="setPasswordModalActive(false)"
           >
             Close
+          </button>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="fade">
+      <!-- user deletion reset modal -->
+      <div
+        v-if="deleteUserModalActive"
+        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+        @click="setDeleteUserModalActive(false)"
+      >
+        <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
+          <h2 class="text-black font-bold text-xl">
+            Are you sure?
+          </h2>
+
+          <p class="text-gray-600 text-sm">There is NO UNDO for this operation! All your profiles will be deleted!</p>
+
+          <button
+            type="button"
+            class="mt-4 p-3 text-center text-md text-white bg-red-700 hover:bg-red-400 rounded-2xl font-bold"
+            @click="deleteUser"
+          >
+            Delete User
+          </button>
+
+          <button
+            type="button"
+            class="mt-4 p-3 text-center text-md text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-bold"
+            @click="setDeleteUserModalActive(false)"
+          >
+            Cancel
           </button>
         </div>
       </div>
@@ -1246,65 +1296,6 @@ export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
 
-  data() {
-    return {
-      loaded: false,
-      billingModalActive: false,
-      resetPasswordModalActive: false,
-      deleteAccountModalActive: false,
-      originalHandle: '',
-      user: {
-        name: '',
-        emailHash: '',
-        email: '',
-        activeProfile: {
-          imageUrl: '',
-          headline: '',
-          subtitle: '',
-          handle: '',
-          customDomain: '',
-          visibility: '',
-          showWatermark: false,
-        }
-      },
-      teamMembers: [],
-      error: '',
-      passwordError: '',
-      passwordEmail: '' as string | null | undefined,
-      resetNewEmail: '',
-      teamMemberEmail: '',
-      showWatermarkNotice: false,
-      hostname: process.env.HOSTNAME,
-      selectedBillingTier: "free" as SubscriptionTier,
-      billing: {
-        fullName: '',
-        companyName: '',
-        phone: '',
-        address: '',
-        city: '',
-        zipCode: '',
-        country: '',
-      },
-      card: {
-        number: '',
-        expDate: '',
-        securityCode: ''
-      },
-      subInfo: undefined as SubInfo | undefined,
-      savedCard: {
-        name: '',
-        last4: '',
-        expDate: '',
-      },
-      alerts: {
-        successUpdateSub: false,
-        failedUpdateSub: false,
-        successSaveInfo: false,
-        failedSaveInfo: false
-      },
-    };
-  },
-
   head() {
     return {
       title: 'Account settings - ' + this.$customSettings.productName,
@@ -1335,6 +1326,95 @@ export default Vue.extend({
           content: 'Manage your ' + this.$customSettings.productName + ' account.'
         },
       ],
+    };
+  },
+
+  data() {
+    return {
+      team: [
+        {
+          email: 'jane@gmail.com',
+          sent: '4 days',
+          status: 'pending'
+        },
+        {
+          email: 'joe@gmail.com',
+          sent: '6 days',
+          status: 'accepted'
+        },
+        {
+          email: 'greg@gmail.com',
+          sent: '7 days',
+          status: 'accepted'
+        },
+        {
+          email: 'phil@gmail.com',
+          sent: '9 days',
+          status: 'pending'
+        },
+        {
+          email: 'drew@gmail.com',
+          sent: '11 days',
+          status: 'upgraded'
+        },
+      ],
+
+      loaded: false,
+      billingModalActive: false,
+      resetPasswordModalActive: false,
+      deleteUserModalActive: false,
+      originalHandle: '',
+
+      user: {
+        name: '',
+        emailHash: '',
+        email: '',
+        activeProfile: {
+          imageUrl: '',
+          headline: '',
+          subtitle: '',
+          handle: '',
+          customDomain: '',
+          visibility: '',
+          showWatermark: false,
+        }
+      },
+      teamMembers: [],
+
+      error: '',
+      passwordError: '',
+      passwordEmail: '' as string | null | undefined,
+      resetNewEmail: '',
+      teamMemberEmail: '',
+      showWatermarkNotice: false,
+      app_name: process.env.APP_NAME,
+      selectedBillingTier: "free" as SubscriptionTier,
+      billing: {
+        fullName: '',
+        companyName: '',
+        phone: '',
+        address: '',
+        city: '',
+        zipCode: '',
+        country: '',
+      },
+      card: {
+        number: '',
+        expDate: '',
+        securityCode: ''
+      },
+      subInfo: undefined as SubInfo | undefined,
+      savedCard: {
+        name: '',
+        last4: '',
+        expDate: '',
+      },
+      alerts: {
+        successUpdateSub: false,
+        failedUpdateSub: false,
+        successSaveInfo: false,
+        failedSaveInfo: false
+      },
     };
   },
 
@@ -1450,20 +1530,22 @@ export default Vue.extend({
       }
     },
 
-    setDeleteAccountModalActive(active: boolean) {
-      this.deleteAccountModalActive = active;
+    setDeleteUserModalActive(active: boolean) {
+      this.deleteUserModalActive = active;
     },
 
-    async deleteProfile() {
+    async deleteUser() {
       this.$nuxt.$loading.start();
 
-      await this.$axios.$post('/profile/delete', {
+      await this.$axios.$post('/user/delete', {
         token: this.$store.getters['auth/getToken']
       });
 
       this.$nuxt.$loading.finish();
 
-      location.reload();
+      this.$cookies.removeAll();
+
+      window.location.replace('/');
     },
 
     async requestPasswordReset() {
@@ -1492,6 +1574,37 @@ export default Vue.extend({
         }
 
         throw err;
+      }
+    },
+
+    async downloadGDPRPackage() {
+      if (process.client) {
+        let token = this.$store.getters['auth/getToken'];
+
+        const response = await this.$axios.post('/user/data-package', {
+          token
+        });
+
+        let filename = "data.json";
+        const disposition = response.headers['content-disposition'];
+        if (disposition && disposition.indexOf('filename') !== -1) {
+          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          const matches = filenameRegex.exec(disposition);
+          if (matches != null && matches[1]) {
+            filename = matches[1].replace(/['"]/g, '');
+          }
+        }
+
+        const blob = new Blob([response.data], {type: 'application/pdf'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
       }
     },
 

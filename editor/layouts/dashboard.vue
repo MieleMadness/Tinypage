@@ -56,9 +56,9 @@
                     <span
                       v-if="!user.activeProfile.customDomain && user.activeProfile.handle"
                       class="font-bold text-lg opacity-60"
-                    >singlel.ink/{{
-                        user.activeProfile.handle
-                      }}</span>
+                    >
+                      {{ rendererDomain }}/{{ user.activeProfile.handle }}
+                    </span>
                   </div>
                   <div
                     v-if="user.activeProfile.handle"
@@ -222,8 +222,9 @@
               v-if="user.activeProfile.handle"
               id="preview-frame"
               title="Profile Preview"
+              scrolling="yes"
               style="z-index:2;pointer-events: none;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
-              :src="rendererUrl + '/' + user.activeProfile.handle"
+              :src="getProfilePreviewUrl()"
             />
           </div>
         </div>
@@ -338,6 +339,7 @@ export default Vue.extend({
       },
 
       rendererUrl: '' as string | undefined,
+      rendererDomain: '' as string | undefined,
       preview: false,
       share_modal: false,
       qr_src: null,
@@ -349,7 +351,6 @@ export default Vue.extend({
       previewMode: 'mobile',
       profile_visibility: '' as String,
       isAdmin: false,
-      hostname: process.env.HOSTNAME,
       leaderboard: process.env.LEADERBOARD,
       support: process.env.SUPPORT,
       mobile_menu: false,
@@ -389,6 +390,16 @@ export default Vue.extend({
     });
 
     this.isAdmin = permGroup["groupName"] === 'admin';
+
+    this.rendererUrl = process.env.RENDERER_URL;
+
+    if (this.rendererUrl) {
+      this.rendererDomain = this.rendererUrl
+        .replaceAll("https://", '')
+        .replaceAll("http://", '');
+    } else {
+      this.rendererDomain = "singlel.ink";
+    }
   },
 
   async mounted() {
@@ -397,7 +408,6 @@ export default Vue.extend({
     await this.listProfiles();
 
     try {
-      this.rendererUrl = process.env.RENDERER_URL;
       this.profileUrl = this.rendererUrl + '/' + this.user.activeProfile.handle;
       this.profile_visibility = this.user.activeProfile.visibility;
     } catch (err) {
@@ -482,6 +492,16 @@ export default Vue.extend({
           this.error = '';
         }, 5000);
       }
+    },
+
+    getProfilePreviewUrl() {
+      let token = this.$store.getters['auth/getToken'];
+
+      let queryParams = new URLSearchParams({
+        token
+      });
+
+      return `${this.rendererUrl}/${this.user.activeProfile.handle}?${queryParams}`;
     },
 
     async selectProfile(profile: any) {
@@ -590,7 +610,7 @@ export default Vue.extend({
         }
 
         if (!text || text === 'https://null') {
-          text = 'https://singlel.ink/' + this.user.activeProfile.handle;
+          text = `${this.rendererUrl}/${this.user.activeProfile.handle}`;
         }
 
         await window.navigator.clipboard.writeText(text);
@@ -603,7 +623,7 @@ export default Vue.extend({
         }
 
         if (!text || text === 'https://null') {
-          text = 'https://singlel.ink/' + this.user.activeProfile.handle;
+          text = `${this.rendererUrl}/${this.user.activeProfile.handle}`;
         }
 
         prompt('Copy this url to the clipboard: Ctrl+C, Enter\n', text);

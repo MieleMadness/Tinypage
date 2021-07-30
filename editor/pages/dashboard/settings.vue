@@ -342,6 +342,38 @@
         </div>
       </div>
     </transition>
+
+    <transition name="fade">
+      <!-- Password reset confirmation modal -->
+      <div
+        v-if="resetPasswordModalActive"
+        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+        @click="setPasswordModalActive(false)"
+      >
+        <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
+          <h2 class="text-black font-semibold text-xl">
+            {{ passwordError ? "Error on password request!" : "Password reset requested" }}
+          </h2>
+          <p v-if="!passwordError" class="text-gray-800 text-sm">A password reset link has been sent to your account
+            email inbox successfully.
+            Make sure to check your spam folder.</p>
+
+          <p v-if="passwordError" class="text-gray-800 text-sm">
+            <i class="fas fa-exclamation-triangle"/>
+            {{ passwordError }}
+          </p>
+          <button
+            type="button"
+            class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
+            @click="setPasswordModalActive(false)"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </transition>
+
   </section>
 </template>
 

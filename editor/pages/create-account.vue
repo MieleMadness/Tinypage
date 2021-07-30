@@ -96,8 +96,6 @@ export default Vue.extend({
       password: '',
       handle: '',
       error: '',
-      hostname: process.env.HOSTNAME,
-      logo_width: process.env.LOGO_WIDTH,
       rememberMe: false
     };
   },

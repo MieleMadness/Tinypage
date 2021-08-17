@@ -552,12 +552,18 @@ export class Auth {
   /**
    * Validates ownership of the requested resource.
    */
-  static async checkProfileOwnership(service: DatabaseService, userId: string, profile: Profile): Promise<boolean> {
+  static async checkProfileOwnership(service: DatabaseService, profileId: string, userId: string, includeMemberOf: boolean): Promise<boolean> {
     const pool = service.pool;
 
-    let queryResult = await pool.query<{ count: number }>("select count(*) from app.profiles where id=$1 and user_id=$2", [profile.id, userId]);
+    let queryResult;
 
-    return queryResult.rows[0].count > 0;
+    if (includeMemberOf) {
+      queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1))", [profileId, userId]);
+    } else {
+      queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2)", [profileId, userId]);
+    }
+
+    return queryResult.rowCount > 0;
   }
 
   /**
@@ -587,23 +593,6 @@ export class Auth {
     }
 
     return queryResult.rows[0].count > 0;
-  }
-
-  /**
-   * Validates ownership of the requested resource.
-   */
-  static async checkProfileOwnership(service: DatabaseService, profileId: string, user: User, includeMemberOf: boolean): Promise<boolean> {
-    const pool = service.pool;
-
-    let queryResult;
-
-    if (includeMemberOf) {
-      queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1))", [profileId, user.id]);
-    } else {
-      queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2)", [profileId, user.id]);
-    }
-
-    return queryResult.rowCount > 0;
   }
 
   /**

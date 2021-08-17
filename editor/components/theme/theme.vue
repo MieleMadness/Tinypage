@@ -1,18 +1,18 @@
 <template>
   <div :class="'w-full flex flex-col items-center justify-center ' + active_styles">
     <div class="relative rounded" style="width: 201px;height:217px;overflow:hidden;">
-      <iframe
-        v-if="!theme"
-        scrolling="no"
-        style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"
-        :src="'/dashboard/marketplace/preview/' + id"
-      />
-      <iframe
-        v-if="theme"
-        scrolling="no"
-        style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"
-        :src="'/dashboard/appearance/preview/' + id"
-      />
+      <!--      <iframe-->
+      <!--        scrolling="no"-->
+      <!--        style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"-->
+      <!--        :src="'/dashboard/marketplace/preview/' + id"-->
+      <!--      />-->
+      <div class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg">
+        <UserProfileView
+          v-if="addon.resource"
+          :preview="true"
+          :profile-data="addon.resource"
+        />
+      </div>
       <a
         v-if="theme"
         :href="'/dashboard/appearance/theme/' + id"
@@ -77,6 +77,23 @@ export default Vue.extend({
     }
   },
 
+  data() {
+    return {
+      addon: {resource: null} as { resource: Addon | null }
+    }
+  },
+
+  async mounted() {
+    if (this.profileData) {
+      // something here eventually?
+    }
+
+    this.addon = await this.$axios.$post('/marketplace/addon/' + this.id, {
+      token: this.$store.getters['auth/getToken'],
+      detailed: false
+    });
+  },
+
   computed: {
     active_styles() {
       if (!this.active) {
@@ -100,12 +117,7 @@ export default Vue.extend({
         }
       };
     }
-  },
-
-  mounted() {
-    if (this.profileData) {
-      // something here eventually?
-    }
   }
+
 });
 </script>

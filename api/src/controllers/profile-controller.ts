@@ -196,7 +196,7 @@ export class ProfileController extends Controller {
 
         let toCheck = await this.profileService.getProfileByHandle(params.handle, false);
 
-        if (await Auth.checkProfileOwnership(this.profileService, dAuthToken.userId, toCheck)) {
+        if (await Auth.checkProfileOwnership(this.profileService, toCheck.id, dAuthToken.userId, true)) {
           profile = toCheck;
         }
       }

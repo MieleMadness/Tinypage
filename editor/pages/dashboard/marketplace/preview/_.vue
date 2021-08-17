@@ -19,15 +19,6 @@ export default Vue.extend({
 
   middleware: 'authenticated',
 
-  data() {
-    return {
-      id: null,
-      addon: {
-        resource: null
-      }
-    };
-  },
-
   head() {
     return {
       title: 'Marketplace theme preview - ' + this.$customSettings.productName,
@@ -40,13 +31,23 @@ export default Vue.extend({
       ]
     };
   },
+
+  data() {
+    return {
+      id: null,
+      addon: {
+        resource: null
+      }
+    };
+  },
+
   async mounted() {
     this.id = this.$route.path.replace('/dashboard/marketplace/preview/', '');
+
     this.addon = await this.$axios.$post('/marketplace/addon/' + this.id, {
       token: this.$store.getters['auth/getToken'],
-      detailed: true
+      detailed: false
     });
-  },
-  methods: {}
+  }
 });
 </script>

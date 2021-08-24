@@ -44,40 +44,40 @@
       </p>
     </div>
 
-    <div
-      v-if="subInfo || (savedCard && savedCard.last4)"
-      class="p-3 rounded-2xl bg-white shadow w-full mb-8"
-    >
-      <h2 v-show="subInfo" class="text-black font-bold text-lg w-full">
-        Subscription Info
-      </h2>
-      <!-- Subscription Info -->
-      <div
-        v-if="subInfo"
-        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"
-      >
-        {{ subInfo }}
-      </div>
+    <!--    <div-->
+    <!--      v-if="subInfo || (savedCard && savedCard.last4)"-->
+    <!--      class="p-3 rounded-2xl bg-white shadow w-full mb-8"-->
+    <!--    >-->
+    <!--      <h2 v-show="subInfo" class="text-black font-bold text-lg w-full">-->
+    <!--        Subscription Info-->
+    <!--      </h2>-->
+    <!--      &lt;!&ndash; Subscription Info &ndash;&gt;-->
+    <!--      <div-->
+    <!--        v-if="subInfo"-->
+    <!--        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"-->
+    <!--      >-->
+    <!--        {{ subInfo }}-->
+    <!--      </div>-->
 
-      <h2 v-show="(savedCard && savedCard.last4)" class="text-black font-bold text-lg w-full">
-        Card Info
-      </h2>
-      <!-- Card Info -->
-      <div
-        v-if="savedCard && savedCard.last4"
-        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"
-      >
-        <p class="text-black opacity-70 font-semibold">
-          Card Info <br>
-          Name: {{ savedCard.name }}<br>
-          Exp: {{ savedCard.expDate }}<br>
-          Last4: *{{ savedCard.last4 }}<br>
-        </p>
-      </div>
-      <div v-else>
-        No card saved
-      </div>
-    </div>
+    <!--      <h2 v-show="(savedCard && savedCard.last4)" class="text-black font-bold text-lg w-full">-->
+    <!--        Card Info-->
+    <!--      </h2>-->
+    <!--      &lt;!&ndash; Card Info &ndash;&gt;-->
+    <!--      <div-->
+    <!--        v-if="savedCard && savedCard.last4"-->
+    <!--        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"-->
+    <!--      >-->
+    <!--        <p class="text-black opacity-70 font-semibold">-->
+    <!--          Card Info <br>-->
+    <!--          Name: {{ savedCard.name }}<br>-->
+    <!--          Exp: {{ savedCard.expDate }}<br>-->
+    <!--          Last4: *{{ savedCard.last4 }}<br>-->
+    <!--        </p>-->
+    <!--      </div>-->
+    <!--      <div v-else>-->
+    <!--        No card saved-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <!-- Select billing tier -->
     <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">

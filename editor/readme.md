@@ -70,6 +70,7 @@ git clone git@github.com:Neutron-Creative/Singlelink-Client.git
 cd Singlelink-Client
 npm install
 ```
+
 <h4>Installing Singlelink on your Static File Host</h4>
 
 ```bash

@@ -5,5 +5,5 @@
 import {Pool} from "pg";
 
 export interface Service {
-  pool: Pool;
+    pool: Pool;
 }

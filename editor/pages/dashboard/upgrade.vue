@@ -41,18 +41,18 @@
         </h3>
         <div class="grid grid-cols-2 space-x-4">
           <li class="flex flex-row items-center mb-1">
-            <img src="/Check mark.svg" class="w-4 mr-1">No ads or
+            <img class="w-4 mr-1" src="/Check mark.svg">No ads or
             {{ $customSettings.productName }}
             branding
           </li>
           <li class="flex flex-row items-center mb-1">
-            <img src="/Check mark.svg" class="w-4 mr-1">Enhanced analytics & graphs
+            <img class="w-4 mr-1" src="/Check mark.svg">Enhanced analytics & graphs
           </li>
           <li class="flex flex-row items-center mb-1">
-            <img src="/Check mark.svg" class="w-4 mr-1">Enhanced business support
+            <img class="w-4 mr-1" src="/Check mark.svg">Enhanced business support
           </li>
           <li class="flex flex-row items-center">
-            <img src="/Check mark.svg" class="w-4 mr-1">Anonymous privacy mode
+            <img class="w-4 mr-1" src="/Check mark.svg">Anonymous privacy mode
           </li>
         </div>
         <span class="opacity-70 mt-2">and so much more...</span>
@@ -66,17 +66,17 @@
           <input
             v-model="billing.fullName"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: Jane Doe"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Company name</label>
           <input
             v-model="billing.companyName"
+            :placeholder="`ex: ${$customSettings.company}`"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
             type="text"
-            :placeholder="`ex: ${$customSettings.company}`"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -84,8 +84,8 @@
           <input
             v-model="billing.phone"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: (919) 653-0790"
+            type="text"
           >
         </div>
       </div>
@@ -95,8 +95,8 @@
           <input
             v-model="billing.address"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 120 Preston Executive Dr."
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -104,8 +104,8 @@
           <input
             v-model="billing.city"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: Cary"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -113,8 +113,8 @@
           <input
             v-model="billing.zipCode"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 27519"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -871,8 +871,8 @@
           <input
             v-model="billing.cardNumber"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 4242 4242 4242"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -880,8 +880,8 @@
           <input
             v-model="billing.expDate"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 10/25"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -889,8 +889,8 @@
           <input
             v-model="billing.securityCode"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 320"
+            type="text"
           >
         </div>
       </div>
@@ -898,11 +898,11 @@
         Ready to experience {{ $customSettings.productName }} Pro?
       </h2>
       <button
-        type="button"
         class="button flex flex-row items-center justify-center"
+        type="button"
         @click="saveBillingInfo()"
       >
-        <img src="/High voltage.svg" class="w-6 mr-2">
+        <img class="w-6 mr-2" src="/High voltage.svg">
         Make the upgrade!
       </button>
     </div>

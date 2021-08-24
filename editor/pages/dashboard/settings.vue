@@ -12,7 +12,7 @@
           v-if="error"
           class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
         >
-          <img style="width: 12px;" src="/caution.svg" alt="caution">
+          <img alt="caution" src="/caution.svg" style="width: 12px;">
           <div class="flex flex-col ml-2">
             {{ error }}
           </div>
@@ -30,8 +30,8 @@
               id="name"
               v-model="user.activeProfile.headline"
               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              type="text"
               placeholder="e.g. Jane Doe, 21"
+              type="text"
             >
           </div>
           <div class="flex flex-col w-full lg:w-1/2">
@@ -40,8 +40,8 @@
               id="subtitle"
               v-model="user.activeProfile.subtitle"
               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              type="text"
               placeholder="e.g. Developer at Neutron from Raleigh NC"
+              type="text"
             >
           </div>
         </div>
@@ -55,10 +55,10 @@
               <input
                 id="handle"
                 v-model="user.activeProfile.handle"
-                class="p-2 flex-grow"
-                type="text"
-                placeholder="e.g. janedoe"
                 autocomplete="off"
+                class="p-2 flex-grow"
+                placeholder="e.g. janedoe"
+                type="text"
               >
             </div>
           </div>
@@ -85,9 +85,9 @@
           <input
             id="avatar_url"
             v-model="user.activeProfile.imageUrl"
-            type="hidden"
-            name="avatar_url"
             class="simple-file-upload"
+            name="avatar_url"
+            type="hidden"
           >
           <div class="flex flex-col w-auto flex-grow flex-1">
             <label class="font-bold opacity-70 text-sm text-black" for="image_url">Avatar Image URL</label>
@@ -95,8 +95,8 @@
               id="image_url"
               v-model="user.activeProfile.imageUrl"
               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              type="text"
               placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
+              type="text"
             >
             <div
               v-if="!profileValid"
@@ -104,9 +104,9 @@
             >
               <span class="font-semibold">Warning!</span>
               <span class="text-xs font-semibold">Your site picture may be improperly formatted! Please ensure your image is loaded via an SSL and ends in .gif, .png, .jpg, .jpeg, or another supported file extension.<a
+                class="ml-2 font-semibold underline hover:text-red-700"
                 href="https://www.notion.so/neutroncreative/Troubleshooting-9a162db4a8ce482d89b3d3e1bc9825ba"
                 target="_blank"
-                class="ml-2 font-semibold underline hover:text-red-700"
               >Learn more</a></span>
             </div>
           </div>
@@ -119,8 +119,8 @@
           >
             <label class="font-bold text-sm text-black opacity-70" for="custom_domain">Custom domain</label>
             <a
-              href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
               class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
+              href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
             >Need help? Read our
               documentation</a>
           </div>
@@ -129,8 +129,8 @@
             id="custom_domain"
             v-model="user.activeProfile.customDomain"
             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-            type="text"
             placeholder="e.g. neutroncreative.com (no http/https)"
+            type="text"
           >
 
           <div
@@ -148,14 +148,14 @@
           <input
             id="themeGlobal"
             v-model="user.activeProfile.showWatermark"
-            type="checkbox"
-            style="margin-top:3px;"
             class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+            style="margin-top:3px;"
+            type="checkbox"
           >
 
           <label
-            for="themeGlobal"
             class="ml-4 flex font-bold text-sm leading-5 opacity-70 w-full lg:w-auto flex-col"
+            for="themeGlobal"
             style="max-width:calc(100% - 32px)"
           >
             Display Watermark ("Proudly built with {{ app_name }}!")
@@ -174,10 +174,10 @@
         <div class="flex flex-row w-full mb-6 items-start">
           <input
             v-model="user.activeProfile.metadata.privacyMode"
-            type="checkbox"
-            style="margin-top:3px;"
-            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
             aria-label="privacy mode"
+            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+            style="margin-top:3px;"
+            type="checkbox"
           >
 
           <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
@@ -186,8 +186,8 @@
         </div>
 
         <button
-          type="button"
           class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+          type="button"
           @click="saveChanges"
         >
           Save changes
@@ -228,7 +228,7 @@
           style="border-width:3px;border-style:solid;"
           @click="assignGoogleAccount()"
         >
-          <img src="/google-icon.png" class="w-5 mr-4">
+          <img class="w-5 mr-4" src="/google-icon.png">
           Link with Google
         </a>
         <!--        <a-->
@@ -259,16 +259,16 @@
           >https://linktr.ee/</span>
           <input
             id="linktreeUrl"
-            class="p-2 flex-grow"
-            type="text"
-            placeholder="e.g. janedoe"
             autocomplete="off"
+            class="p-2 flex-grow"
+            placeholder="e.g. janedoe"
+            type="text"
           >
         </div>
         <button
           v-if="alerts.linktreeImported === null"
-          type="button"
           class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+          type="button"
           @click="importLinktree"
         >
           Import
@@ -294,8 +294,8 @@
           this site and all related content.</p>
       </div>
       <button
-        type="button"
         class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
+        type="button"
         @click="setDeleteProfileModalActive(true)"
       >
         Delete this site
@@ -310,8 +310,8 @@
         <p class="text-black opacity-70 font-semibold">Need to configure the account managing your micro-sites?</p>
       </div>
       <n-link
-        to="/dashboard/account"
         class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-1/3 justify-center align-center"
+        to="/dashboard/account"
       >
         Go to account settings
       </n-link>
@@ -333,8 +333,8 @@
             Deleting this site is irreversible, please confirm to continue.
           </p>
           <button
-            type="button"
             class="mt-4 w-full p-4 text-center text-md text-black bg-red-600 hover:bg-red-700 rounded-2xl font-semibold"
+            type="button"
             @click="deleteProfile"
           >
             Yes, delete this site
@@ -364,8 +364,8 @@
             {{ passwordError }}
           </p>
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
+            type="button"
             @click="setPasswordModalActive(false)"
           >
             Close

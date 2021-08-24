@@ -40,7 +40,8 @@
     "object-curly-spacing": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "no-array-constructor": "off",
-    "no-undef": "off" // not needed because of TypeScript
+    "no-undef": "off"
+    // not needed because of TypeScript
   },
   "ignorePatterns": [
     "**/*.min.*"

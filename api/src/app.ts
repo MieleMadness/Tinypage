@@ -27,50 +27,50 @@ let server: SingleLinkServer = new SingleLinkServer();
 let database = new DatabaseManager();
 
 start().then(() => {
-  // do nothing
+    // do nothing
 });
 
 async function start() {
-  await database.initialize();
+    await database.initialize();
 
-  // Singlelink Utils
-  // Initialize Lock System
-  await DbLocks.initialize(database.pool);
+    // Singlelink Utils
+    // Initialize Lock System
+    await DbLocks.initialize(database.pool);
 
-  // Initialize Utilities
-  Auth.initialize(database.pool);
-  SecurityUtils.initialize(database.pool);
-  CustomDomainHandler.initialize(database.pool);
-  LogUtils.initialize(database.pool);
+    // Initialize Utilities
+    Auth.initialize(database.pool);
+    SecurityUtils.initialize(database.pool);
+    CustomDomainHandler.initialize(database.pool);
+    LogUtils.initialize(database.pool);
 
-  // Initialize screenshot API
-  await ScreenshotUtils.initialize();
+    // Initialize screenshot API
+    await ScreenshotUtils.initialize();
 
-  // Initialize Job System
-  await JobSystem.initialize(database.pool);
+    // Initialize Job System
+    await JobSystem.initialize(database.pool);
 
-  // Singlelink main controllers
-  server.addController(new AnalyticsController(server.fastify, database));
-  server.addController(new AuthController(server.fastify, database));
-  server.addController(new LinkController(server.fastify, database));
-  server.addController(new ProfileController(server.fastify, database));
-  server.addController(new ThemeController(server.fastify, database));
-  server.addController(new UserController(server.fastify, database));
+    // Singlelink main controllers
+    server.addController(new AnalyticsController(server.fastify, database));
+    server.addController(new AuthController(server.fastify, database));
+    server.addController(new LinkController(server.fastify, database));
+    server.addController(new ProfileController(server.fastify, database));
+    server.addController(new ThemeController(server.fastify, database));
+    server.addController(new UserController(server.fastify, database));
 
-  // Management controllers
-  server.addController(new PermissionController(server.fastify, database));
-  server.addController(new MarketplaceController(server.fastify, database));
+    // Management controllers
+    server.addController(new PermissionController(server.fastify, database));
+    server.addController(new MarketplaceController(server.fastify, database));
 
-  // Admin controllers
-  server.addController(new AdminController(server.fastify, database));
+    // Admin controllers
+    server.addController(new AdminController(server.fastify, database));
 
-  // Load Enterprise features
-  server.addController(new SubscriptionController(server.fastify, database));
-  server.addController(new StripeCallbacksController(server.fastify, database));
-  server.addController(new EnterpriseSettingsController(server.fastify, database));
+    // Load Enterprise features
+    server.addController(new SubscriptionController(server.fastify, database));
+    server.addController(new StripeCallbacksController(server.fastify, database));
+    server.addController(new EnterpriseSettingsController(server.fastify, database));
 
-  // Server utility controllers
-  server.addController(new InfoController(server.fastify, database));
+    // Server utility controllers
+    server.addController(new InfoController(server.fastify, database));
 
-  server.startServer();
+    server.startServer();
 }

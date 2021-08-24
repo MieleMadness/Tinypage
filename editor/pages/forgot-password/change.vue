@@ -12,7 +12,7 @@
         v-if="error"
         class="flex flex-row p-2 mt-4 mb-2 bg-orange-200 text-orange-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
-        <img style="width: 12px;" src="/caution.svg" alt="caution">
+        <img alt="caution" src="/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
           {{ error }}
         </div>
@@ -30,25 +30,25 @@
           <label class="font-medium text-sm">Password</label>
           <input
             v-model="password"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
-            type="password"
-            placeholder="e.g. Your secure password"
             aria-label="password"
+            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
+            placeholder="e.g. Your secure password"
+            type="password"
           >
         </div>
         <div class="flex flex-col mb-4">
           <label class="font-medium text-sm">Confirm password</label>
           <input
             v-model="passwordConfirmation"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
-            type="password"
-            placeholder="e.g. Your secure password"
             aria-label="password confirmation"
+            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
+            placeholder="e.g. Your secure password"
+            type="password"
           >
         </div>
         <button
-          type="button"
           class="mt-2 w-full p-3 text-center text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded font-semibold"
+          type="button"
           @click="resetPassword"
         >
           Reset password

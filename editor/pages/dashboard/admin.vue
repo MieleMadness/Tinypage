@@ -23,22 +23,22 @@
           <input
             id="banUserId"
             v-model="banUserId"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            type="text"
-            placeholder="e.g. 1273"
             aria-label="ban user id"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            placeholder="e.g. 1273"
+            type="text"
           >
           <input
             id="banUseReason"
             v-model="banUserReason"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            type="text"
-            placeholder="e.g. Phishing"
             aria-label="ban user reason"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            placeholder="e.g. Phishing"
+            type="text"
           >
           <button
-            type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            type="button"
             @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
           >
             Ban User
@@ -53,8 +53,8 @@
           Banned users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
         </h2>
         <button
-          type="button"
           class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+          type="button"
           @click="showBanned = !showBanned; refreshBannedUsersFirstTime()"
         >
           {{ showBanned ? 'Hide' : 'Show' }}
@@ -63,8 +63,8 @@
 
       <div class="w-full bg-gray-200" style="height:1px;"/>
       <div
-        v-if="showBanned"
         v-for="banned in bannedUsers"
+        v-if="showBanned"
         :key="banned.ban.user_id"
         class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
       >
@@ -103,8 +103,8 @@
           </div>
 
           <button
-            type="button"
             class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
+            type="button"
             @click="unbanUser(banned.ban.user_id)"
           >
             Unban User

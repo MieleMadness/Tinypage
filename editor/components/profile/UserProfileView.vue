@@ -42,9 +42,9 @@
 
       <img
         v-if="profile.imageUrl || user.avatarUrl || user.emailHash"
-        class="nc-avatar mb-2"
         :src="profile.imageUrl || user.avatarUrl || 'https://www.gravatar.com/avatar/' + user.emailHash"
         alt="profile image"
+        class="nc-avatar mb-2"
         onerror="this.src='https://www.gravatar.com/avatar'"
       >
       <h1 class="text-black font-semibold text-2xl sl-headline">
@@ -63,8 +63,8 @@
         target="_blank"
       >
         <div
-          class="rounded shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
           :style="link.customCss"
+          class="rounded shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
         >
           <span class="font-medium text-gray-900 sl-label">{{ link.label }}</span>
           <span v-if="link.subtitle" class="text-sm text-gray-700 sl-link-subtitle mt-1">{{ link.subtitle }}</span>
@@ -85,13 +85,13 @@
         <p v-if="theme" :style="`color:${theme.colors.text.primary}`" class="mt-4 text-sm">
           Proudly built with {{ app_name }} 🔗
         </p>
-        <p v-else style="color:rgba(0,0,0,1);" class="mt-4 text-sm">
+        <p v-else class="mt-4 text-sm" style="color:rgba(0,0,0,1);">
           Proudly built with {{ app_name }} 🔗
         </p>
         <a
           v-if="free_signup"
-          class="text-indigo-600 hover:underline text-sm"
           :href="'https://' + hostname + '/create-account'"
+          class="text-indigo-600 hover:underline text-sm"
           target="_blank"
         >Create your
           free profile in seconds</a>

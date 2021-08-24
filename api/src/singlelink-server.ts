@@ -8,128 +8,127 @@ import {CustomDomainHandler} from "./utils/custom-domain-handler";
  * The server contains a Fastify instance and a list of Controllers, which registers routes with Fastify.
  */
 export class SingleLinkServer {
-  private readonly controllers: Controller[];
-
-  fastify = fastifyInit({
-    logger: true,
-    ignoreTrailingSlash: true,
-    trustProxy: config.allowXForwardHeader
-  });
-
-  /**
-   *
-   * @param controllers Any controllers that should be passed with the constructor. Otherwise, they can be added later with addController(controller).
-   * @constructor
-   */
-  constructor(controllers?: Controller[]) {
-    if (controllers)
-      this.controllers = controllers;
-    else
-      this.controllers = [];
-
-    AWS.config.update({
-      region: config.aws.region,
-      credentials: {
-        accessKeyId: config.aws.accessKey,
-        secretAccessKey: config.aws.secretKey
-      },
-      apiVersion: '2010-12-01'
+    fastify = fastifyInit({
+        logger: true,
+        ignoreTrailingSlash: true,
+        trustProxy: config.allowXForwardHeader
     });
-  }
+    private readonly controllers: Controller[];
 
-  /**
-   * Starts the fastify server with the controllers provided.
-   */
-  startServer() {
-    this.fastify.listen(config.port, config.host, (err: Error, address: string) => {
-      if (err)
-        throw err;
-    });
+    /**
+     *
+     * @param controllers Any controllers that should be passed with the constructor. Otherwise, they can be added later with addController(controller).
+     * @constructor
+     */
+    constructor(controllers?: Controller[]) {
+        if (controllers)
+            this.controllers = controllers;
+        else
+            this.controllers = [];
 
-    this.registerDefaultRoutes();
-
-    for (let controller of this.controllers) {
-      controller.registerRoutes();
+        AWS.config.update({
+            region: config.aws.region,
+            credentials: {
+                accessKeyId: config.aws.accessKey,
+                secretAccessKey: config.aws.secretKey
+            },
+            apiVersion: '2010-12-01'
+        });
     }
 
-    console.log("SingleLink Enterprise is listening for requests!");
-  }
+    /**
+     * Starts the fastify server with the controllers provided.
+     */
+    startServer() {
+        this.fastify.listen(config.port, config.host, (err: Error, address: string) => {
+            if (err)
+                throw err;
+        });
 
-  registerDefaultRoutes() {
-    this.fastify.register(require('fastify-favicon'), {
-      path: `${__dirname}/../assets/`
-    });
+        this.registerDefaultRoutes();
 
-    this.fastify.register(require('fastify-rate-limit'), {
-      max: 200,
-      timeWindow: '1 minute'
-    });
+        for (let controller of this.controllers) {
+            controller.registerRoutes();
+        }
 
-    // Allow anyone
-    this.fastify.register(require('fastify-cors'), {
-      origin: '*',
-      exposedHeaders: ['Content-Disposition']
-    });
+        console.log("SingleLink Enterprise is listening for requests!");
+    }
 
-    this.fastify.register(require('fastify-raw-body'), {
-      field: 'rawBody', // change the default request.rawBody property name
-      global: false, // add the rawBody to every request. **Default true**
-      encoding: 'utf8', // set it to false to set rawBody as a Buffer **Default utf8**
-      runFirst: true // get the body before any preParsing hook change/uncompress it. **Default false**
-    });
+    registerDefaultRoutes() {
+        this.fastify.register(require('fastify-favicon'), {
+            path: `${__dirname}/../assets/`
+        });
 
-    /*
-     We have to do this because JS does weird things when you pass functions. So instead of passing the function directly,
-     you need to pass call the function from an arrow function instead.
+        this.fastify.register(require('fastify-rate-limit'), {
+            max: 200,
+            timeWindow: '1 minute'
+        });
 
-     Unlike the controllers where you can bind(this) to the function to change the context, that won't work here since the
-     context is irrelevant.
-    */
-    this.fastify.addHook('preHandler', ((request, reply) => {
-      try {
-        return CustomDomainHandler.checkRoute(request, reply);
-      } catch (e) {
-        // Fail-safe
-        console.error(e);
-      }
-    }));
+        // Allow anyone
+        this.fastify.register(require('fastify-cors'), {
+            origin: '*',
+            exposedHeaders: ['Content-Disposition']
+        });
 
-    this.fastify.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
-      return this.Index(request, reply);
-    });
-  }
+        this.fastify.register(require('fastify-raw-body'), {
+            field: 'rawBody', // change the default request.rawBody property name
+            global: false, // add the rawBody to every request. **Default true**
+            encoding: 'utf8', // set it to false to set rawBody as a Buffer **Default utf8**
+            runFirst: true // get the body before any preParsing hook change/uncompress it. **Default false**
+        });
 
-  /**
-   * Add a controller.
-   * @param controller
-   */
-  addController(controller: Controller) {
-    this.controllers.push(controller);
-  }
+        /*
+         We have to do this because JS does weird things when you pass functions. So instead of passing the function directly,
+         you need to pass call the function from an arrow function instead.
 
-  /**
-   * Remove a controller.
-   * @param controller
-   */
-  removeController(controller: Controller) {
-    let index = this.controllers.indexOf(controller);
+         Unlike the controllers where you can bind(this) to the function to change the context, that won't work here since the
+         context is irrelevant.
+        */
+        this.fastify.addHook('preHandler', ((request, reply) => {
+            try {
+                return CustomDomainHandler.checkRoute(request, reply);
+            } catch (e) {
+                // Fail-safe
+                console.error(e);
+            }
+        }));
 
-    if (index > -1)
-      this.controllers.splice(index, 1);
-  }
+        this.fastify.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
+            return this.Index(request, reply);
+        });
+    }
 
-  /**
-   * Index route for the server.
-   *
-   * @param request
-   * @param reply
-   * @constructor
-   */
-  async Index(request: FastifyRequest, reply: FastifyReply) {
-    reply.type('text/html').code(200);
+    /**
+     * Add a controller.
+     * @param controller
+     */
+    addController(controller: Controller) {
+        this.controllers.push(controller);
+    }
 
-    //language=HTML
-    return `
+    /**
+     * Remove a controller.
+     * @param controller
+     */
+    removeController(controller: Controller) {
+        let index = this.controllers.indexOf(controller);
+
+        if (index > -1)
+            this.controllers.splice(index, 1);
+    }
+
+    /**
+     * Index route for the server.
+     *
+     * @param request
+     * @param reply
+     * @constructor
+     */
+    async Index(request: FastifyRequest, reply: FastifyReply) {
+        reply.type('text/html').code(200);
+
+        //language=HTML
+        return `
       <html lang="en">
       <head>
         <meta charset="UTF-8">
@@ -170,6 +169,6 @@ export class SingleLinkServer {
       </body>
       </html>
     `;
-  }
+    }
 
 }

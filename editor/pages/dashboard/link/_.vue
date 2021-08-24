@@ -7,16 +7,16 @@
         <span v-if="intent==='edit'">Edit link</span>
       </h1>
     </div>
-    <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
+    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Label</label>
-      <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.label"
+      <input v-model="pendingLink.label" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
              placeholder="e.g. My blog" type="text"
       />
     </div>
-    <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
+    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Link type</label>
-      <select class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              v-model="pendingLink.type"
+      <select v-model="pendingLink.type"
+              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
       >
         <option disabled selected>Select a link type</option>
         <option value="link">Vanilla link (default)</option>
@@ -26,15 +26,15 @@
         <option value="youtube">Youtube video</option>
       </select>
     </div>
-    <div class="flex flex-col mb-4 justify-start w-full" v-if="intent!=='view'">
+    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Subtitle (optional)</label>
-      <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.subtitle"
+      <input v-model="pendingLink.subtitle" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
              placeholder="e.g. Read more about my adverntures in Peru!" type="text"
       />
     </div>
-    <div class="flex flex-col mb-8 justify-start w-full" v-if="intent!=='view'">
+    <div v-if="intent!=='view'" class="flex flex-col mb-8 justify-start w-full">
       <label class="font-semibold mb-2">Link URL</label>
-      <input class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border" v-model="pendingLink.url"
+      <input v-model="pendingLink.url" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
              placeholder="e.g. https://janedoe.com/blog" type="url"
       />
     </div>
@@ -55,32 +55,35 @@
           Custom CSS
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+          target="_blank"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
-        height="350"
-        language="css"
-        theme="vs-dark"
+        v-model="editorCss"
         :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
-        v-model="editorCss"
+        height="350"
+        language="css"
+        theme="vs-dark"
       ></MonacoEditor>
     </div>
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
-      <div v-if="intent==='create'" @click="addNewLink" class="button cursor-pointer">Create link</div>
-      <div v-if="intent==='edit'" @click="saveLinkChanges"
+      <div v-if="intent==='create'" class="button cursor-pointer" @click="addNewLink">Create link</div>
+      <div v-if="intent==='edit'"
            class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+           @click="saveLinkChanges"
       >
         Save changes
       </div>
-      <div v-if="intent==='edit'" @click="deleteLink"
+      <div v-if="intent==='edit'"
            class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 cursor-pointer"
+           @click="deleteLink"
       >
         Delete link
       </div>
@@ -210,7 +213,8 @@ export default Vue.extend({
 
         //this.closeModal();
 
-        await this.$router.push('/dashboard/');
+        this.$router.push('/dashboard/');
+        this.$root.$emit('refreshUserProfileView');
       } catch (err) {
         console.log('Link destruction unsuccessful');
         console.log(err);
@@ -235,7 +239,8 @@ export default Vue.extend({
         this.links[index] = this.pendingLink;
 
         //this.closeModal();
-        await this.$router.push('/dashboard/');
+        this.$router.push('/dashboard/');
+        this.$root.$emit('refreshUserProfileView');
       } catch (err) {
         console.log('Link changes unsuccessful');
         console.log(err);
@@ -272,6 +277,7 @@ export default Vue.extend({
 
         //this.resortLinks();
 
+        this.$router.push('/dashboard/');
         this.$root.$emit('refreshUserProfileView');
         return true;
       } catch (err) {

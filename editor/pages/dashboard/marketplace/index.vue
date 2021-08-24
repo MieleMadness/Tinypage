@@ -7,8 +7,8 @@
     >
       <div class="relative rounded-xl" style="width: 201px; height: 217px; overflow: hidden;">
         <iframe
-          scrolling="no"
           :src="'/dashboard/marketplace/preview/' + addons.featured[0].id"
+          scrolling="no"
           style="pointer-events: none; width: 375px; height: 406px; transform: scale(0.536) translate(-163px, -175px); top: 0px; left: 0px; position: absolute;"
         /> <!----> <!----></div>
       <div class="flex flex-col">
@@ -29,30 +29,30 @@
     <!-- End featured section -->
     <theme-list
       v-if="addons.hot.length>0"
-      name="Trending themes"
-      :preview="false"
-      :themes="addons.hot"
       :addon="true"
       :extended="false"
+      :preview="false"
+      :themes="addons.hot"
       class="mb-8"
+      name="Trending themes"
     />
     <theme-list
       v-if="addons.new.length>0"
-      name="Newest themes"
-      :preview="false"
-      :themes="addons.new"
       :addon="true"
       :extended="false"
+      :preview="false"
+      :themes="addons.new"
       class="mb-8"
+      name="Newest themes"
     />
     <theme-list
       v-if="addons.submissions.length>0"
-      name="Your submissions"
-      :preview="false"
-      :themes="addons.submissions"
       :addon="true"
       :extended="false"
+      :preview="false"
+      :themes="addons.submissions"
       class="mb-8"
+      name="Your submissions"
     />
   </section>
 </template>

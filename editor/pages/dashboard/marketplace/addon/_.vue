@@ -21,8 +21,8 @@
           <span class="text-sm text-indigo-500 font-medium mx-auto">Save addon for preview</span>
           <iframe
             v-if="addon.id"
-            style="z-index:2;pointer-events: none;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
             :src="'/dashboard/marketplace/preview/' + addon.id"
+            style="z-index:2;pointer-events: none;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
           />
         </div>
       </div>
@@ -49,9 +49,9 @@
           <textarea
             v-if="intent !== 'view'"
             v-model="addon.description"
-            rows="6"
-            class="p-3 rounded-xl bg-white text-sm text-gray-700"
             :placeholder="`e.g. Your favorite beautiful theme for ${$customSettings.productName}.`"
+            class="p-3 rounded-xl bg-white text-sm text-gray-700"
+            rows="6"
           />
           <p v-if="intent === 'view'" class="text-gray-600 text-lg leading-relaxed">
             {{ addon.description }}

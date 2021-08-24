@@ -2,8 +2,8 @@
   <div class="flex flex-col items-center justify-center bg-gray-50 min-h-screen">
     <div class="privacy-container">
       <a href="https://neutroncreative.com" target="_blank"><img class="w-48 mb-8 opacity-75 lg:mt-16"
-                                                                 style="filter:invert(1);"
                                                                  src="https://neutroncreative.com/Sidebar-brandmark.svg"
+                                                                 style="filter:invert(1);"
       /></a>
       <div class="privacy-policy">
         <h1>Privacy Policy for {{ organization }}</h1>
@@ -173,9 +173,9 @@
       <div class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8 items-center jusitfy-center">
         <a
           class="w-full text-center lg:w-auto text-lg bg-indigo-600 hover:bg-indigo-500 py-4 px-8 rounded-lg font-semibold"
-          style="color:#FFF !important;" href="/"
+          href="/" style="color:#FFF !important;"
         >Return to {{ app_name }}</a>
-        <a href="https://neutroncreative.com" target="_blank" class="inline">Or, learn more about
+        <a class="inline" href="https://neutroncreative.com" target="_blank">Or, learn more about
           {{ $customSettings.company }}</a>
       </div>
     </div>

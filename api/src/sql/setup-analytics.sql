@@ -52,13 +52,13 @@ $$
          Creates an analytics view for use with the server analytics.
          */
         create materialized view analytics.global_stats as
-            select count(app.users.*)                                                                         as total_users,
-                   (select count(app.profiles.*) from app.profiles)                                           as total_profiles,
-                   (select count(app.profiles.*) filter ( where visibility = 'published' )
-                    from app.profiles)                                                                        as profiles_published,
-                   (select count(app.links.*) from app.links)                                                 as total_links,
-                   (select count(app.themes.*) from app.themes)                                               as total_themes
-            from app.users;
+        select count(app.users.*)                               as total_users,
+               (select count(app.profiles.*) from app.profiles) as total_profiles,
+               (select count(app.profiles.*) filter ( where visibility = 'published' )
+                from app.profiles)                              as profiles_published,
+               (select count(app.links.*) from app.links)       as total_links,
+               (select count(app.themes.*) from app.themes)     as total_themes
+        from app.users;
     exception
         when duplicate_table then raise notice 'analytics.analytics_view already added.';
     end;

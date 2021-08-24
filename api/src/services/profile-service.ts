@@ -14,350 +14,350 @@ import {ScreenshotOptions, ScreenshotUtils} from "../utils/screenshot-utils";
  */
 export class ProfileService extends DatabaseService {
 
-  constructor(databaseManager: DatabaseManager) {
-    super(databaseManager);
-  }
-
-  /**
-   * Gets a profile by id.
-   *
-   * @param profileId
-   */
-  async getProfile(profileId: string): Promise<Profile> {
-    let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where id=$1", [profileId]);
-
-    if (profileResult.rowCount < 1) {
-      throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
+    constructor(databaseManager: DatabaseManager) {
+        super(databaseManager);
     }
 
-    let profileRow = profileResult.rows[0];
+    /**
+     * Gets a profile by id.
+     *
+     * @param profileId
+     */
+    async getProfile(profileId: string): Promise<Profile> {
+        let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where id=$1", [profileId]);
 
-    return DbTypeConverter.toProfile(profileRow);
-  }
-
-  /**
-   * Gets a profile by handle.
-   *
-   * @param handle The handle of the profile.
-   * @param checkVisibility Throw an HttpError if the profile is unpublished.
-   */
-  async getProfileByHandle(handle: string, checkVisibility: boolean): Promise<Profile> {
-    let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where handle=$1", [handle]);
-
-    if (profileResult.rowCount < 1) {
-      throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
-    }
-
-    let profileRow = profileResult.rows[0];
-
-    if (checkVisibility) {
-      if (profileRow.visibility === 'unpublished') {
-        throw new HttpError(StatusCodes.FORBIDDEN, "This profile is unpublished.");
-      }
-    }
-
-    return DbTypeConverter.toProfile(profileRow);
-  }
-
-  /**
-   * Uses Neutron Capture to generate a thumbnail image of a profile.
-   *
-   * @param handle
-   */
-  async getThumbnailByHandle(handle: string): Promise<Buffer> {
-    let scale = 3;
-
-    let final_size = {
-      x: 1200,
-      y: 630
-    };
-
-    let resolution = {
-      x: final_size.x / scale,
-      y: final_size.y / scale
-    };
-
-    try {
-      let screenshotOptions = new ScreenshotOptions();
-      screenshotOptions.scale = scale;
-      screenshotOptions.crop = true;
-
-      return await ScreenshotUtils.getOrCreateScreenshot(
-        `${config.rendererUrl}/${handle}`,
-        [`${resolution.x}x${resolution.y}`],
-        ScreenshotUtils.DEFAULT_TTL,
-        false,
-        screenshotOptions
-      );
-    } catch (err) {
-      console.error(err);
-      throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "An internal error occurred while fetching the thumbnail.");
-    }
-  }
-
-  /**
-   * Creates a new profile.
-   *
-   * @param userId The userId that owns this profile.
-   * @param handle The handle that is given to the newly created profile for this account Ex: singlel.ink/neutroncreative
-   * @param imageUrl
-   * @param headline
-   * @param subtitle
-   */
-  async createProfile(userId: string, handle?: string, imageUrl?: string, headline?: string, subtitle?: string): Promise<Profile> {
-    if (!handle) {
-      handle = StringUtils.generateRandomSlug();
-    }
-
-    let queryResult = await this.pool.query<DbProfile>("insert into app.profiles (handle, user_id, image_url, headline, subtitle) values ($1, $2, $3, $4, $5) on conflict do nothing returning *",
-      [
-        handle,
-        userId,
-        imageUrl,
-        headline,
-        subtitle
-      ]);
-
-    if (queryResult.rowCount < 1)
-      throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because it is already being used.");
-
-    return DbTypeConverter.toProfile(queryResult.rows[0]);
-  }
-
-  /**
-   * Gets all the profiles that an account is associated with.
-   *
-   * @param userId
-   * @param listMemberOf List the profiles that this user is a member of?
-   */
-  async listProfiles(userId: string, listMemberOf: boolean = false): Promise<Profile[]> {
-    if (!listMemberOf) {
-      let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1", [userId]);
-
-      if (queryResult.rowCount < 1)
-        throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");
-
-      return queryResult.rows.map(x => {
-        return DbTypeConverter.toProfile(x);
-      });
-    } else {
-      let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1)", [userId]);
-
-      if (queryResult.rowCount < 1)
-        throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");
-
-      return queryResult.rows.map(x => {
-        return DbTypeConverter.toProfile(x);
-      });
-    }
-  }
-
-  /**
-   * Sets the active theme for a profile. Clears it if the themeId is null.
-   *
-   * @param profileId
-   * @param themeId
-   */
-  async setActiveTheme(profileId: string, themeId: string): Promise<Profile> {
-    let queryResult = await this.pool.query<DbProfile>("update app.profiles set theme_id=$1 where id=$2 returning *", [themeId, profileId]);
-
-    if (queryResult.rowCount < 1)
-      throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
-
-    return DbTypeConverter.toProfile(queryResult.rows[0]);
-  }
-
-  /**
-   * Returns the amounts on a account.
-   *
-   * @param userId The user id associated with the profiles.
-   */
-  async getProfileCount(userId: string): Promise<number> {
-    return (await this.pool.query<{ count: number }>("select count(*) from app.profiles where user_id=$1", [userId])).rows[0].count;
-  }
-
-  /**
-   * Updates a profile.
-   *
-   * @param profileId
-   * @param imageUrl
-   * @param headline
-   * @param subtitle
-   * @param handle
-   * @param visibility
-   * @param showWatermark
-   * @param customCss
-   * @param customHtml
-   * @param customDomain
-   */
-  async updateProfile(
-    profileId: string,
-    imageUrl?: string,
-    headline?: string,
-    subtitle?: string,
-    handle?: string,
-    visibility?: string,
-    showWatermark?: boolean,
-    customCss?: string,
-    customHtml?: string,
-    customDomain: string | null | undefined = null
-  ): Promise<Profile> {
-    let queryResult: QueryResult<DbProfile>;
-
-    try {
-      queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9\nwhere id = $10\nreturning *;",
-        [
-          imageUrl,
-          headline,
-          subtitle,
-          handle,
-          visibility,
-          showWatermark,
-          customCss,
-          customHtml,
-          customDomain ?? null,
-          profileId
-        ]);
-    } catch (err) {
-      if (err instanceof DatabaseError) {
-        if (err.message.includes("duplicate key")) {
-          throw new HttpError(StatusCodes.CONFLICT, "This handle is already being used.");
+        if (profileResult.rowCount < 1) {
+            throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
         }
-      }
 
-      throw err;
+        let profileRow = profileResult.rows[0];
+
+        return DbTypeConverter.toProfile(profileRow);
     }
 
-    if (queryResult.rowCount < 1)
-      throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
+    /**
+     * Gets a profile by handle.
+     *
+     * @param handle The handle of the profile.
+     * @param checkVisibility Throw an HttpError if the profile is unpublished.
+     */
+    async getProfileByHandle(handle: string, checkVisibility: boolean): Promise<Profile> {
+        let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where handle=$1", [handle]);
 
-    return DbTypeConverter.toProfile(queryResult.rows[0]);
-  }
+        if (profileResult.rowCount < 1) {
+            throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
+        }
 
-  /**
-   * Deletes a profile. The user cannot delete a profile if they only have one.
-   *
-   * @param userId
-   * @param profileId
-   */
-  async deleteProfile(userId: string, profileId: string): Promise<Profile> {
-    let profilesResult = await this.listProfiles(userId);
+        let profileRow = profileResult.rows[0];
 
-    let profileRow: Profile | undefined = profilesResult.find(x => x.id === profileId);
+        if (checkVisibility) {
+            if (profileRow.visibility === 'unpublished') {
+                throw new HttpError(StatusCodes.FORBIDDEN, "This profile is unpublished.");
+            }
+        }
 
-    if (!profileRow) {
-      throw new HttpError(StatusCodes.NOT_FOUND, "The user doesn't own this profile.");
+        return DbTypeConverter.toProfile(profileRow);
     }
 
-    profilesResult.splice(profilesResult.indexOf(profileRow), 1);
+    /**
+     * Uses Neutron Capture to generate a thumbnail image of a profile.
+     *
+     * @param handle
+     */
+    async getThumbnailByHandle(handle: string): Promise<Buffer> {
+        let scale = 3;
 
-    if (await this.getProfileCount(userId) <= 1) {
-      throw new HttpError(StatusCodes.BAD_REQUEST, "You cannot delete your only profile.");
+        let final_size = {
+            x: 1200,
+            y: 630
+        };
+
+        let resolution = {
+            x: final_size.x / scale,
+            y: final_size.y / scale
+        };
+
+        try {
+            let screenshotOptions = new ScreenshotOptions();
+            screenshotOptions.scale = scale;
+            screenshotOptions.crop = true;
+
+            return await ScreenshotUtils.getOrCreateScreenshot(
+                `${config.rendererUrl}/${handle}`,
+                [`${resolution.x}x${resolution.y}`],
+                ScreenshotUtils.DEFAULT_TTL,
+                false,
+                screenshotOptions
+            );
+        } catch (err) {
+            console.error(err);
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "An internal error occurred while fetching the thumbnail.");
+        }
     }
 
-    let deletedProfile = await this.pool.query<DbProfile>("delete from app.profiles where id=$1", [profileId]);
+    /**
+     * Creates a new profile.
+     *
+     * @param userId The userId that owns this profile.
+     * @param handle The handle that is given to the newly created profile for this account Ex: singlel.ink/neutroncreative
+     * @param imageUrl
+     * @param headline
+     * @param subtitle
+     */
+    async createProfile(userId: string, handle?: string, imageUrl?: string, headline?: string, subtitle?: string): Promise<Profile> {
+        if (!handle) {
+            handle = StringUtils.generateRandomSlug();
+        }
 
-    if (deletedProfile.rowCount < 1) {
-      throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to delete the profile because of an internal error.");
+        let queryResult = await this.pool.query<DbProfile>("insert into app.profiles (handle, user_id, image_url, headline, subtitle) values ($1, $2, $3, $4, $5) on conflict do nothing returning *",
+            [
+                handle,
+                userId,
+                imageUrl,
+                headline,
+                subtitle
+            ]);
+
+        if (queryResult.rowCount < 1)
+            throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because it is already being used.");
+
+        return DbTypeConverter.toProfile(queryResult.rows[0]);
     }
 
-    let nextProfile = profilesResult[0];
+    /**
+     * Gets all the profiles that an account is associated with.
+     *
+     * @param userId
+     * @param listMemberOf List the profiles that this user is a member of?
+     */
+    async listProfiles(userId: string, listMemberOf: boolean = false): Promise<Profile[]> {
+        if (!listMemberOf) {
+            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1", [userId]);
 
-    await this.pool.query("update app.users set active_profile_id=$1 where id=$2", [nextProfile.id, userId]);
+            if (queryResult.rowCount < 1)
+                throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");
 
-    return nextProfile;
-  }
+            return queryResult.rows.map(x => {
+                return DbTypeConverter.toProfile(x);
+            });
+        } else {
+            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1)", [userId]);
 
-  /**
-   * Enables/Disables privacy mode for a profile. (Hide from analytics and visibility from certain areas.)
-   *
-   * @param profileId
-   * @param privacyModeEnabled
-   */
-  async setPrivacyMode(profileId: string, privacyModeEnabled: boolean): Promise<Profile> {
-    let queryResult = await this.pool.query<DbProfile>(`update app.profiles
-                                                        set metadata = jsonb_set(metadata::jsonb, '{privacyMode}', $1, true)
-                                                        where id = $2
-                                                        returning *;`,
-      [JSON.stringify(privacyModeEnabled), profileId]);
+            if (queryResult.rowCount < 1)
+                throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");
 
-    if (queryResult.rowCount < 1) {
-      throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");
+            return queryResult.rows.map(x => {
+                return DbTypeConverter.toProfile(x);
+            });
+        }
     }
 
-    return DbTypeConverter.toProfile(queryResult.rows[0]);
-  }
+    /**
+     * Sets the active theme for a profile. Clears it if the themeId is null.
+     *
+     * @param profileId
+     * @param themeId
+     */
+    async setActiveTheme(profileId: string, themeId: string): Promise<Profile> {
+        let queryResult = await this.pool.query<DbProfile>("update app.profiles set theme_id=$1 where id=$2 returning *", [themeId, profileId]);
 
-  /**
-   * Enables/Disables unlisted mode for a profile. (Hide from promotional featuring.)
-   *
-   * @param profileId
-   * @param unlisted
-   */
-  async setUnlisted(profileId: string, unlisted: boolean): Promise<Profile> {
-    let queryResult = await this.pool.query<DbProfile>(`update app.profiles
-                                                        set metadata = jsonb_set(metadata::jsonb, '{unlisted}', $1, true)
-                                                        where id = $2
-                                                        returning *;`,
-      [JSON.stringify(unlisted), profileId]);
+        if (queryResult.rowCount < 1)
+            throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
 
-    if (queryResult.rowCount < 1) {
-      throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");
+        return DbTypeConverter.toProfile(queryResult.rows[0]);
     }
 
-    return DbTypeConverter.toProfile(queryResult.rows[0]);
-  }
-
-  /**
-   * Gets the top profiles by views. Also returns total link clicks.
-   *
-   * You can only get a max of 500 results.
-   * @param limit
-   */
-  async getTopProfiles(limit?: number): Promise<(Profile & { totalViews: number, totalClicks: number })[]> {
-    if (!limit) {
-      limit = 25;
+    /**
+     * Returns the amounts on a account.
+     *
+     * @param userId The user id associated with the profiles.
+     */
+    async getProfileCount(userId: string): Promise<number> {
+        return (await this.pool.query<{ count: number }>("select count(*) from app.profiles where user_id=$1", [userId])).rows[0].count;
     }
 
-    if (limit > 500) {
-      limit = 500;
+    /**
+     * Updates a profile.
+     *
+     * @param profileId
+     * @param imageUrl
+     * @param headline
+     * @param subtitle
+     * @param handle
+     * @param visibility
+     * @param showWatermark
+     * @param customCss
+     * @param customHtml
+     * @param customDomain
+     */
+    async updateProfile(
+        profileId: string,
+        imageUrl?: string,
+        headline?: string,
+        subtitle?: string,
+        handle?: string,
+        visibility?: string,
+        showWatermark?: boolean,
+        customCss?: string,
+        customHtml?: string,
+        customDomain: string | null | undefined = null
+    ): Promise<Profile> {
+        let queryResult: QueryResult<DbProfile>;
+
+        try {
+            queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9\nwhere id = $10\nreturning *;",
+                [
+                    imageUrl,
+                    headline,
+                    subtitle,
+                    handle,
+                    visibility,
+                    showWatermark,
+                    customCss,
+                    customHtml,
+                    customDomain ?? null,
+                    profileId
+                ]);
+        } catch (err) {
+            if (err instanceof DatabaseError) {
+                if (err.message.includes("duplicate key")) {
+                    throw new HttpError(StatusCodes.CONFLICT, "This handle is already being used.");
+                }
+            }
+
+            throw err;
+        }
+
+        if (queryResult.rowCount < 1)
+            throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
+
+        return DbTypeConverter.toProfile(queryResult.rows[0]);
     }
 
-    let profileQueryResult = await this.pool.query<DbProfile & { total_views: string }>(`select *,
-                                                                                                (select count(*)
-                                                                                                 from analytics.visits
-                                                                                                 where referral_id = app.profiles.id
-                                                                                                   and type = 'page') as total_views
-                                                                                         from app.profiles
-                                                                                         where ((metadata -> 'unlisted')::bool = true or metadata -> 'unlisted' is null)
-                                                                                           and visibility = 'published'
-                                                                                         order by total_views desc
-                                                                                         limit $1;`,
-      [limit]);
+    /**
+     * Deletes a profile. The user cannot delete a profile if they only have one.
+     *
+     * @param userId
+     * @param profileId
+     */
+    async deleteProfile(userId: string, profileId: string): Promise<Profile> {
+        let profilesResult = await this.listProfiles(userId);
 
-    let profiles: (Profile & { totalViews: number, totalClicks: number })[] = [];
+        let profileRow: Profile | undefined = profilesResult.find(x => x.id === profileId);
 
-    for (let dbProfile of profileQueryResult.rows) {
-      let profile = <Profile & { totalViews: number, totalClicks: number }>DbTypeConverter.toProfile(dbProfile);
-      profile.totalViews = Number.parseInt(dbProfile.total_views);
-      profile.totalClicks = 0;
+        if (!profileRow) {
+            throw new HttpError(StatusCodes.NOT_FOUND, "The user doesn't own this profile.");
+        }
 
-      let linkQueryResult = await this.pool.query<DbLink>("select id from app.links where profile_id=$1",
-        [profile.id]);
+        profilesResult.splice(profilesResult.indexOf(profileRow), 1);
 
-      if (linkQueryResult.rowCount > 0) {
-        let linkIds = linkQueryResult.rows.map(x => x.id);
+        if (await this.getProfileCount(userId) <= 1) {
+            throw new HttpError(StatusCodes.BAD_REQUEST, "You cannot delete your only profile.");
+        }
 
-        let queryResult = await this.pool.query<{ count: string }>("select count(*) from analytics.visits where referral_id=any($1) and type='link'",
-          [linkIds]);
+        let deletedProfile = await this.pool.query<DbProfile>("delete from app.profiles where id=$1", [profileId]);
 
-        let count: number = Number.parseInt(queryResult.rows[0].count);
-        profile.totalClicks += count;
-      }
+        if (deletedProfile.rowCount < 1) {
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to delete the profile because of an internal error.");
+        }
 
-      profiles.push(profile);
+        let nextProfile = profilesResult[0];
+
+        await this.pool.query("update app.users set active_profile_id=$1 where id=$2", [nextProfile.id, userId]);
+
+        return nextProfile;
     }
 
-    return profiles;
-  }
+    /**
+     * Enables/Disables privacy mode for a profile. (Hide from analytics and visibility from certain areas.)
+     *
+     * @param profileId
+     * @param privacyModeEnabled
+     */
+    async setPrivacyMode(profileId: string, privacyModeEnabled: boolean): Promise<Profile> {
+        let queryResult = await this.pool.query<DbProfile>(`update app.profiles
+                                                            set metadata = jsonb_set(metadata::jsonb, '{privacyMode}', $1, true)
+                                                            where id = $2
+                                                            returning *;`,
+            [JSON.stringify(privacyModeEnabled), profileId]);
+
+        if (queryResult.rowCount < 1) {
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");
+        }
+
+        return DbTypeConverter.toProfile(queryResult.rows[0]);
+    }
+
+    /**
+     * Enables/Disables unlisted mode for a profile. (Hide from promotional featuring.)
+     *
+     * @param profileId
+     * @param unlisted
+     */
+    async setUnlisted(profileId: string, unlisted: boolean): Promise<Profile> {
+        let queryResult = await this.pool.query<DbProfile>(`update app.profiles
+                                                            set metadata = jsonb_set(metadata::jsonb, '{unlisted}', $1, true)
+                                                            where id = $2
+                                                            returning *;`,
+            [JSON.stringify(unlisted), profileId]);
+
+        if (queryResult.rowCount < 1) {
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");
+        }
+
+        return DbTypeConverter.toProfile(queryResult.rows[0]);
+    }
+
+    /**
+     * Gets the top profiles by views. Also returns total link clicks.
+     *
+     * You can only get a max of 500 results.
+     * @param limit
+     */
+    async getTopProfiles(limit?: number): Promise<(Profile & { totalViews: number, totalClicks: number })[]> {
+        if (!limit) {
+            limit = 25;
+        }
+
+        if (limit > 500) {
+            limit = 500;
+        }
+
+        let profileQueryResult = await this.pool.query<DbProfile & { total_views: string }>(`select *,
+                                                                                                    (select count(*)
+                                                                                                     from analytics.visits
+                                                                                                     where referral_id = app.profiles.id
+                                                                                                       and type = 'page') as total_views
+                                                                                             from app.profiles
+                                                                                             where ((metadata -> 'unlisted')::bool = true or metadata -> 'unlisted' is null)
+                                                                                               and visibility = 'published'
+                                                                                             order by total_views desc
+                                                                                             limit $1;`,
+            [limit]);
+
+        let profiles: (Profile & { totalViews: number, totalClicks: number })[] = [];
+
+        for (let dbProfile of profileQueryResult.rows) {
+            let profile = <Profile & { totalViews: number, totalClicks: number }>DbTypeConverter.toProfile(dbProfile);
+            profile.totalViews = Number.parseInt(dbProfile.total_views);
+            profile.totalClicks = 0;
+
+            let linkQueryResult = await this.pool.query<DbLink>("select id from app.links where profile_id=$1",
+                [profile.id]);
+
+            if (linkQueryResult.rowCount > 0) {
+                let linkIds = linkQueryResult.rows.map(x => x.id);
+
+                let queryResult = await this.pool.query<{ count: string }>("select count(*) from analytics.visits where referral_id=any($1) and type='link'",
+                    [linkIds]);
+
+                let count: number = Number.parseInt(queryResult.rows[0].count);
+                profile.totalClicks += count;
+            }
+
+            profiles.push(profile);
+        }
+
+        return profiles;
+    }
 }

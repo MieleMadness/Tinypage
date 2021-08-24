@@ -24,9 +24,9 @@
           Customization
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           target="_blank"
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
         >Need help? Read our documentation</a>
       </div>
       <builder v-if="builderLoaded" v-model="builderCss"/>
@@ -39,21 +39,21 @@
           Custom HTML
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           target="_blank"
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
         >Need help? Read our documentation</a>
       </div>
       <MonacoEditor
         v-model="theme.customHtml"
-        height="350"
-        language="html"
-        theme="vs-dark"
         :options="{
                     extraEditorClassName: 'rounded overflow-hidden mb-2',
                     autoIndent: 'full',
                     autoClosingQuotes: true,
                     }"
+        height="350"
+        language="html"
+        theme="vs-dark"
       />
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full">
@@ -64,21 +64,21 @@
           Custom CSS
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           target="_blank"
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
         >Need help? Read our documentation</a>
       </div>
       <MonacoEditor
         v-model="editorCss"
-        height="350"
-        language="css"
-        theme="vs-dark"
         :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
+        height="350"
+        language="css"
+        theme="vs-dark"
       />
     </div>
 

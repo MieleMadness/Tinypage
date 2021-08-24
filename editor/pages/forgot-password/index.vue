@@ -13,7 +13,7 @@
         v-if="error"
         class="flex flex-row p-2 mt-4 mb-2 bg-orange-200 text-orange-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
-        <img style="width: 12px;" src="/caution.svg" alt="caution">
+        <img alt="caution" src="/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
           {{ error }}
         </div>
@@ -31,16 +31,16 @@
           <label class="font-medium text-sm">Email Address</label>
           <input
             v-model="email"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
-            type="email"
-            placeholder="e.g. jane@gmail.com"
             aria-label="email"
+            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
+            placeholder="e.g. jane@gmail.com"
+            type="email"
             @keyup.enter="requestReset"
           >
         </div>
         <button
-          type="button"
           class="mt-2 w-full p-3 text-center text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded font-semibold"
+          type="button"
           @click="requestReset"
         >
           Request reset link

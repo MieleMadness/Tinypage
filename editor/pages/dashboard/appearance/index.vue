@@ -15,14 +15,14 @@
           Customization
         </h2>
         <a
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
         >Need help? Read our documentation</a>
       </div>
       <builder v-if="builderCssLoaded" v-model="builderCss"/>
       <button
-        type="button"
         class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+        type="button"
         @click="saveChanges"
       >
         Save changes
@@ -42,27 +42,27 @@
           Custom HTML
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           target="_blank"
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
         v-model="customHtml"
-        height="350"
-        language="html"
-        theme="vs-dark"
         :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
+        height="350"
+        language="html"
+        theme="vs-dark"
       />
       <button
-        type="button"
         class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+        type="button"
         @click="saveChanges"
       >
         Save changes
@@ -77,27 +77,27 @@
           Custom CSS
         </h2>
         <a
+          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
           href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
           target="_blank"
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
         v-model="editorCss"
-        height="350"
-        language="css"
-        theme="vs-dark"
         :options="{
                   extraEditorClassName: 'rounded overflow-hidden',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
+        height="350"
+        language="css"
+        theme="vs-dark"
       />
       <button
-        type="button"
         class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+        type="button"
         @click="saveChanges"
       >
         Save changes
@@ -108,16 +108,16 @@
     <div class="flex flex-col p-6 bg-white shadow rounded-xl w-full mt-8 mb-8">
       <theme-list
         :active="activeThemeId"
-        name="Your themes"
         :cols="2"
-        :themes="themes"
         :extended="false"
+        :themes="themes"
         icon="edit"
+        name="Your themes"
       />
       <a
-        type="button"
         class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
         href="/dashboard/appearance/theme/create"
+        type="button"
       >
         Create new theme
       </a>

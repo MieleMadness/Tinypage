@@ -8,9 +8,9 @@ import {Service} from "./service";
  * and has access to the database.
  */
 export abstract class DatabaseService implements Service {
-  pool: Pool;
+    pool: Pool;
 
-  protected constructor(databaseManager: DatabaseManager) {
-    this.pool = databaseManager.pool;
-  }
+    protected constructor(databaseManager: DatabaseManager) {
+        this.pool = databaseManager.pool;
+    }
 }

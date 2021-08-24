@@ -28,14 +28,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.page_styles.max_width"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -44,14 +44,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.page_styles.padding"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -65,14 +65,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.page_styles.avatar_size"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -81,14 +81,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.page_styles.avatar_radius"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="35px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -114,14 +114,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.page_styles.avatar_border_width"
-                  min="0"
                   class="p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="4px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -212,9 +212,9 @@
               <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
               <input
                 v-model="meta.page_styles.background_image"
-                type="text"
                 class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 placeholder="e.g. https://singlelink.co/og-image.png"
+                type="text"
               >
             </div>
           </div>
@@ -393,14 +393,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.headline_size"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -456,9 +456,9 @@
               <label class="font-semibold text-gray-700 mb-2">Font family</label>
               <select
                 v-model="meta.typography.headline_family"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 disabled
                 placeholder="Coming soon..."
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
               />
             </div>
           </div>
@@ -468,14 +468,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.headline_height"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="135%"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >%</span>
               </div>
             </div>
@@ -484,14 +484,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.headline_spacing"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="3px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -522,14 +522,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.subtitle_size"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -585,9 +585,9 @@
               <label class="font-semibold text-gray-700 mb-2">Font family</label>
               <select
                 v-model="meta.typography.subtitle_family"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 disabled
                 placeholder="Coming soon..."
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
               />
             </div>
           </div>
@@ -597,14 +597,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.subtitle_height"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="135%"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >%</span>
               </div>
             </div>
@@ -613,14 +613,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.typography.subtitle_spacing"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="3px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -671,14 +671,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.padding"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -687,14 +687,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.border_radius"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -720,14 +720,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.border_width"
-                  min="0"
                   class="p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="4px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -813,9 +813,9 @@
               <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
               <input
                 v-model="meta.link_styles.background_image"
-                type="text"
                 class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 placeholder="e.g. https://singlelink.co/og-image.png"
+                type="text"
               >
             </div>
           </div>
@@ -991,14 +991,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.headline_size"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -1054,9 +1054,9 @@
               <label class="font-semibold text-gray-700 mb-2">Font family</label>
               <select
                 v-model="meta.link_styles.headline_family"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 disabled
                 placeholder="Coming soon..."
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
               />
             </div>
           </div>
@@ -1066,14 +1066,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.headline_height"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="135%"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >%</span>
               </div>
             </div>
@@ -1082,14 +1082,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.headline_spacing"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="3px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -1120,14 +1120,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.subtitle_size"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="70px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>
@@ -1183,9 +1183,9 @@
               <label class="font-semibold text-gray-700 mb-2">Font family</label>
               <select
                 v-model="meta.link_styles.subtitle_family"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
                 disabled
                 placeholder="Coming soon..."
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
               />
             </div>
           </div>
@@ -1195,14 +1195,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.subtitle_height"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="135%"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >%</span>
               </div>
             </div>
@@ -1211,14 +1211,14 @@
               <div class="flex flex-row overflow-hidden rounded-lg items-center">
                 <input
                   v-model="meta.link_styles.subtitle_spacing"
-                  min="0"
                   class="flex-grow p-3 bg-white text-sm text-gray-700"
+                  min="0"
                   placeholder="3px"
                   type="number"
                 >
                 <span
-                  style="height:46px;"
                   class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                  style="height:46px;"
                 >px</span>
               </div>
             </div>

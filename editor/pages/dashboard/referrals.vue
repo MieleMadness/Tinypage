@@ -5,13 +5,14 @@
         <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
           Referrals
         </h1>
-        <p class="font-semibold opacity-60 text-black">Do you love {{ $customSettings.productName }}? Tell your friends and get paid! Earn $10
+        <p class="font-semibold opacity-60 text-black">Do you love {{ $customSettings.productName }}? Tell your friends
+          and get paid! Earn $10
           for each pro membership you refer when your friends sign up with your link!</p>
       </div>
       <div class="flex flex-col jutify-center items-center text-center rounded-2xl ml-8" style="min-width:350px;">
         <div
-          title="Click to copy!"
           class="flex cursor-pointer flex-row items-center justify-center bg-opaqueIndigo font-bold px-4 py-2 text-center rounded-full w-full mt-2 text-gdp max-w-md border-2 border-gdp"
+          title="Click to copy!"
           type="text"
           @click="copyUrl"
         >https://singlel.ink/s/{{ user.activeProfile.handle }}
@@ -73,7 +74,7 @@
           <div
             v-if="referral.status === 'upgraded'"
             class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
-          ><img src="/Star.svg" class="w-4 mr-1">upgraded!
+          ><img class="w-4 mr-1" src="/Star.svg">upgraded!
           </div>
         </div>
       </div>

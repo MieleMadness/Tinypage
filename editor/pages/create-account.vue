@@ -11,12 +11,12 @@
           site for free!
         </p>
         <a
-          href="#"
           class="flex flex-row items-center font-bold justify-center rounded-full w-full px-8 py-4 text-lg border-gray-300 hover:border-gray-600"
+          href="#"
           style="border-width:3px;border-style:solid;"
           @click="attemptGoogleRegister"
         >
-          <img src="/google-icon.png" class="w-5 mr-4" alt="google-icon">
+          <img alt="google-icon" class="w-5 mr-4" src="/google-icon.png">
           Sign up with Google
         </a>
         <div class="w-full flex flex-row items-center justify-center opacity-60 my-4">
@@ -28,15 +28,15 @@
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Email address</label>
-          <input v-model="email" type="text" placeholder="e.g. jane@email.com">
+          <input v-model="email" placeholder="e.g. jane@email.com" type="text">
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Handle</label>
-          <input v-model="handle" type="text" placeholder="e.g. jim">
+          <input v-model="handle" placeholder="e.g. jim" type="text">
         </div>
         <div class="input-group flex flex-col w-full mb-4">
           <label>Password</label>
-          <input v-model="password" type="password" placeholder="Minimum 8 characters">
+          <input v-model="password" placeholder="Minimum 8 characters" type="password">
         </div>
         <div class="flex flex-row items-center justify-apart w-full my-4">
           <div class="flex flex-row justify-start items-center" style="width:150px;">
@@ -44,19 +44,19 @@
               id="remember-me"
               v-model="rememberMe"
               name="remember-me"
-              type="checkbox"
               style="border-radius:3px;width:15px;height:15px;"
+              type="checkbox"
             >
-            <label for="remember-me" class="opacity-50 ml-3" style="margin-bottom:0;width:105px;font-size: 14px;">
+            <label class="opacity-50 ml-3" for="remember-me" style="margin-bottom:0;width:105px;font-size: 14px;">
               <nobr>Remember me?</nobr>
             </label>
           </div>
         </div>
-        <div @click="attemptEmailRegister" class="button cursor-pointer">Get started free</div>
+        <div class="button cursor-pointer" @click="attemptEmailRegister">Get started free</div>
         <div v-if="error" class="error">
           {{ error }}
         </div>
-        <a href="/" class="mx-auto text-center text-indigo-500 mb-4 text-sm hover:underline font-bold">Already have an
+        <a class="mx-auto text-center text-indigo-500 mb-4 text-sm hover:underline font-bold" href="/">Already have an
           account? Click here to login</a>
         <span class="mx-auto text-center opacity-50 font-bold text-sm">©{{
             new Date().getFullYear()
@@ -66,7 +66,7 @@
     <section
       class="order-first lg:order-last right w-full lg:w-1/2 xl:w-7/12 flex flex-col lg:h-screen text-center items-center justify-center p-12 text-white"
     >
-      <img src="/integrations.png" class="w-full max-w-sm">
+      <img class="w-full max-w-sm" src="/integrations.png">
       <h3 class="text-4xl font-bold max-w-sm mb-4">
         Integrations for all of your favorite apps
       </h3>

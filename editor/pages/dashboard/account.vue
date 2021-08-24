@@ -1,7 +1,7 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/Settings.svg" alt="settings svg">
+      <img alt="settings svg" class="w-8" src="/Settings.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         Account settings
       </h1>
@@ -109,8 +109,8 @@
             </option>
           </select>
           <button
-            type="button"
             class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            type="button"
             @click="setBillingModalActive(true)"
           >
             Save changes
@@ -133,17 +133,17 @@
           <input
             v-model="billing.fullName"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: Jane Doe"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Company name</label>
           <input
             v-model="billing.companyName"
+            :placeholder="`ex: ${$customSettings.company}`"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
             type="text"
-            :placeholder="`ex: ${$customSettings.company}`"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -151,8 +151,8 @@
           <input
             v-model="billing.phone"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: (919) 653-0790"
+            type="text"
           >
         </div>
       </div>
@@ -162,8 +162,8 @@
           <input
             v-model="billing.address"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 120 Preston Executive Dr."
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -171,8 +171,8 @@
           <input
             v-model="billing.city"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: Cary"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -180,8 +180,8 @@
           <input
             v-model="billing.zipCode"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 27519"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -933,8 +933,8 @@
         </div>
       </div>
       <button
-        type="button"
         class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+        type="button"
         @click="saveBillingInfo()"
       >
         Save changes
@@ -955,8 +955,8 @@
           <input
             v-model="card.number"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 4242 4242 4242"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -964,8 +964,8 @@
           <input
             v-model="card.expDate"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 10/25"
+            type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
@@ -973,14 +973,14 @@
           <input
             v-model="card.securityCode"
             class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
             placeholder="ex: 320"
+            type="text"
           >
         </div>
       </div>
       <button
-        type="button"
         class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+        type="button"
         @click="saveCardInfo()"
       >
         Save changes
@@ -1031,14 +1031,14 @@
           <input
             id="sendInvite"
             v-model="teamMemberEmail"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            type="text"
-            placeholder="e.g. jane@gmail.com"
             aria-label="password reset email"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            placeholder="e.g. jane@gmail.com"
+            type="text"
           >
           <button
-            type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            type="button"
             @click="setPasswordModalActive(true)"
           >
             Send invitation email and add seat (+$8/mo)
@@ -1061,14 +1061,14 @@
           <input
             id="resetEmail"
             v-model="resetNewEmail"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            type="text"
-            placeholder="e.g. jane@gmail.com"
             aria-label="password reset email"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            placeholder="e.g. jane@gmail.com"
+            type="text"
           >
           <button
-            type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            type="button"
             @click="setPasswordModalActive(true)"
           >
             Send email change confirmation email
@@ -1086,8 +1086,8 @@
         <p class="text-black font-bold opacity-70">Download a data package containing all of your recorded data.</p>
       </div>
       <button
-        type="button"
         class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-green-600 hover:bg-green-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+        type="button"
         @click="downloadGDPRPackage"
       >
         Download
@@ -1109,14 +1109,14 @@
           <input
             id="passwordResetEmail"
             v-model="passwordEmail"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            type="text"
-            placeholder="e.g. jane@gmail.com"
             aria-label="password reset email"
+            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+            placeholder="e.g. jane@gmail.com"
+            type="text"
           >
           <button
-            type="button"
             class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+            type="button"
             @click="setPasswordModalActive(true)">
             Request password reset link
           </button>
@@ -1135,8 +1135,8 @@
           profile and all related content.</p>
       </div>
       <button
-        type="button"
         class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-red-600 hover:bg-red-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+        type="button"
         @click="setDeleteUserModalActive(true)"
       >
         Delete this account
@@ -1164,8 +1164,8 @@
             {{ passwordError }}
           </p>
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-bold"
+            type="button"
             @click="setPasswordModalActive(false)"
           >
             Close
@@ -1195,8 +1195,8 @@
             {{ passwordError }}
           </p>
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-bold"
+            type="button"
             @click="setPasswordModalActive(false)"
           >
             Close
@@ -1221,16 +1221,16 @@
           <p class="text-gray-600 text-sm">There is NO UNDO for this operation! All your profiles will be deleted!</p>
 
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-white bg-red-700 hover:bg-red-400 rounded-2xl font-bold"
+            type="button"
             @click="deleteUser"
           >
             Delete User
           </button>
 
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-bold"
+            type="button"
             @click="setDeleteUserModalActive(false)"
           >
             Cancel
@@ -1260,8 +1260,8 @@
             {{ passwordError }}
           </p>
           <button
-            type="button"
             class="mt-4 p-3 text-center text-md text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-bold"
+            type="button"
             @click="setPasswordModalActive(false)"
           >
             Close

@@ -9,8 +9,8 @@
       style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
       <n-link to="/dashboard"><img
-        :src="`${$customSettings.icons.mainIcon}`" class="w-10"
-        style="filter: drop-shadow(0px 10px 25px #5353EC);" alt="main icon"
+        :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
+        class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);"
       >
       </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
@@ -22,8 +22,8 @@
       <!--<n-link to="/dashboard/referrals" class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight mx-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo">Refer a friend and get $10!</n-link>-->
 
       <n-link
-        to="/dashboard/upgrade"
         class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight ml-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo"
+        to="/dashboard/upgrade"
       >
         Upgrade and go pro!
       </n-link>
@@ -35,14 +35,14 @@
             <div class="profile-bay p-4 flex flex-col items-start relative">
               <div
                 v-if="user.activeProfile.imageUrl || user.emailHash"
-                style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
-                class="rounded-full"
                 :style="'background-image:url(' + (user.activeProfile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');background-size:cover;background-position:center;'"
+                class="rounded-full"
+                style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
               />
               <div
                 v-if="!user.activeProfile.imageUrl && !user.emailHash"
-                style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
                 class="rounded-full"
+                style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
               />
 
               <div class="flex flex-col justify-start">
@@ -89,11 +89,11 @@
                 <li class="flex flex-row items-center justify-left profile-search text-black">
                   <!-- Create new profile-->
                   <input
-                    type="text"
-                    placeholder="Filter profiles..."
                     aria-label="Filter profiles"
                     class="text-sm p-2 mr-auto font-bold"
+                    placeholder="Filter profiles..."
                     style="outline:none !important;background:transparent;"
+                    type="text"
                     @input="onFilterProfilesInput"
                   >
                   <i class="search-icon fas fa-search text-sm p-2 opacity-50"/>
@@ -102,15 +102,15 @@
                 <li
                   v-for="profile in filteredProfiles"
                   :key="profile.handle"
-                  class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
                   :style="!profile.handle ? 'max-height: 51px;' : ''"
+                  class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
                   @click="selectProfile(profile.id)"
                 >
                   <div
                     v-if="profile.handle"
-                    class="w-8 h-8 rounded-full"
                     :style="'width: 35px;height:35px;background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);margin-right:.75rem;background-size:cover;background-repeat:no-repeat;background-position:center;background-image:url(' + (profile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');'"
                     alt="avatar"
+                    class="w-8 h-8 rounded-full"
                   />
                   <div
                     v-if="!profile.handle"
@@ -145,27 +145,27 @@
               </ul>
             </div>
             <div class="flex flex-col">
-              <n-link to="/dashboard/" :class="getActiveStyles('dashboard')">
+              <n-link :class="getActiveStyles('dashboard')" to="/dashboard/">
                 <img src="/House.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Links</span>
               </n-link>
-              <n-link to="/dashboard/analytics" :class="getActiveStyles('dashboard-analytics')">
+              <n-link :class="getActiveStyles('dashboard-analytics')" to="/dashboard/analytics">
                 <img src="/Rocket.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Analytics</span>
               </n-link>
-              <n-link to="/dashboard/appearance" :class="getActiveStyles('dashboard-appearance')">
+              <n-link :class="getActiveStyles('dashboard-appearance')" to="/dashboard/appearance">
                 <img src="/Rainbow.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Appearance</span>
               </n-link>
-              <n-link to="/dashboard/marketplace" :class="getActiveStyles('dashboard-marketplace')">
+              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">
                 <img src="/High voltage.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Marketplace</span>
               </n-link>
               <a
                 v-if="leaderboard"
+                :class="getActiveStyles('dashboard-leaderboard')"
                 :href="leaderboard"
                 target="_blank"
-                :class="getActiveStyles('dashboard-leaderboard')"
               >
                 <img src="/Fire.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Leaderboard</span>
@@ -175,27 +175,27 @@
               <!--   <span class="ml-4 font-extrabold">Search & discover</span>-->
               <!-- </n-link>-->
 
-              <a v-if="support" :href="support" target="_blank" :class="getActiveStyles('dashboard-support')">
+              <a v-if="support" :class="getActiveStyles('dashboard-support')" :href="support" target="_blank">
                 <img src="/Cowboy hat face.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Contact support</span>
               </a>
-              <n-link to="/dashboard/referrals" :class="getActiveStyles('dashboard-referrals')">
+              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">
                 <img src="/Heart.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Referrals</span>
               </n-link>
-              <n-link to="/dashboard/settings" :class="getActiveStyles('dashboard-settings')">
+              <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
                 <img src="/Settings.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Settings</span>
               </n-link>
-              <n-link v-if="isAdmin" to="/dashboard/admin" :class="getActiveStyles('dashboard-admin')">
+              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
                 <img src="/Person.svg" style="width:24px;height:24px;"/>
                 <span class="ml-4 font-extrabold">Admin Settings</span>
               </n-link>
-              <n-link v-if="isAdmin" to="/dashboard/enterprise" :class="getActiveStyles('dashboard-enterprise')">
+              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">
                 <img src="/Person.svg" style="width:24px;height:24px;"/>
                 <span class="ml-4 font-extrabold">Enterprise Settings</span>
               </n-link>
-              <n-link to="/logout" :class="getActiveStyles('logout')">
+              <n-link :class="getActiveStyles('logout')" to="/logout">
                 <img src="/Waving hand.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Logout</span>
               </n-link>
@@ -203,8 +203,8 @@
           </div>
           <Nuxt
             id="child"
-            style="top:-88px;padding-top:6.5rem !important;"
             class="relative p-16 flex-grow flex-1 w-auto lg:overflow-y-scroll lg:h-screen"
+            style="top:-88px;padding-top:6.5rem !important;"
           />
         </div>
       </div>
@@ -221,10 +221,10 @@
             <iframe
               v-if="user.activeProfile.handle"
               id="preview-frame"
-              title="Profile Preview"
+              :src="getProfilePreviewUrl()"
               scrolling="yes"
               style="z-index:2;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
-              :src="getProfilePreviewUrl()"
+              title="Profile Preview"
             />
           </div>
         </div>
@@ -684,7 +684,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 @media(min-width: 1024px) {
   .middle {

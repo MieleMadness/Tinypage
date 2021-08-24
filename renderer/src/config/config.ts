@@ -4,26 +4,26 @@ import {config as dotenvConfig} from "dotenv";
 dotenvConfig();
 
 let config = {
-  // Host IP
-  host: process.env.HOST ?? "0.0.0.0",
+    // Host IP
+    host: process.env.HOST ?? "0.0.0.0",
 
-  // Define port for launch
-  port: process.env.PORT ?? 80,
+    // Define port for launch
+    port: process.env.PORT ?? 80,
 
-  // Define app name
-  appName: process.env.APP_NAME ?? 'Singlelink',
+    // Define app name
+    appName: process.env.APP_NAME ?? 'Singlelink',
 
-  // Define free signup
-  freeSignup: process.env.FREE_SIGNUP ?? true,
+    // Define free signup
+    freeSignup: process.env.FREE_SIGNUP ?? true,
 
-  // Define hostname
-  hostname: process.env.HOSTNAME ?? 'singlel.ink',
+    // Define hostname
+    hostname: process.env.HOSTNAME ?? 'singlel.ink',
 
-  // Define API URL
-  apiUrl: process.env.API_URL ?? 'https://api.singlelink.co',
+    // Define API URL
+    apiUrl: process.env.API_URL ?? 'https://api.singlelink.co',
 
-  // Define API URL
-  editorUrl: process.env.EDITOR_URL ?? 'https://app.singlelink.co'
+    // Define API URL
+    editorUrl: process.env.EDITOR_URL ?? 'https://app.singlelink.co'
 };
 
 export default config;

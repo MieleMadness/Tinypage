@@ -20,6 +20,7 @@ import {EnterpriseSettingsController} from "./controllers/enterprise-settings-co
 import {ScreenshotUtils} from "./utils/screenshot-utils";
 import {LogUtils} from "./utils/log-utils";
 import {MarketplaceController} from "./controllers/marketplace-controller";
+import {config} from "./config/config";
 
 console.log("Initializing Singlelink Enterprise");
 
@@ -65,8 +66,11 @@ async function start() {
     server.addController(new AdminController(server.fastify, database));
 
     // Load Enterprise features
-    server.addController(new SubscriptionController(server.fastify, database));
-    server.addController(new StripeCallbacksController(server.fastify, database));
+    if (config.payments.stripeSecret && config.payments.stripeWebhookSecret) {
+        server.addController(new SubscriptionController(server.fastify, database));
+        server.addController(new StripeCallbacksController(server.fastify, database));
+    }
+
     server.addController(new EnterpriseSettingsController(server.fastify, database));
 
     // Server utility controllers

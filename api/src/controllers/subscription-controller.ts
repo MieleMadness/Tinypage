@@ -110,6 +110,8 @@ export class SubscriptionController extends Controller {
 
         this.subService = new SubscriptionService(databaseManager, this.stripe);
         this.userService = new UserService(databaseManager);
+
+        console.log("Stripe subscription controller enabled");
     }
 
     registerRoutes(): void {

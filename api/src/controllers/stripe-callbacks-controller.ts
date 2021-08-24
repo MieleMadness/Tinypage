@@ -27,6 +27,8 @@ export class StripeCallbacksController extends Controller {
 
         this.userService = new UserService(databaseManager);
         this.paymentsService = new SubscriptionService(databaseManager, this.stripe);
+
+        console.log("Stripe callbacks controller enabled");
     }
 
     registerRoutes(): void {

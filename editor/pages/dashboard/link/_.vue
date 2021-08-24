@@ -88,6 +88,18 @@
         Delete link
       </div>
     </div>
+
+    <transition name="fade">
+      <div
+        v-if="error"
+        class="flex flex-row p-2 mb-4 bg-red-300 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
+      >
+        <img alt="caution" src="/caution.svg" style="width: 12px;">
+        <div class="flex flex-col ml-2">
+          {{ error }}
+        </div>
+      </div>
+    </transition>
   </section>
 </template>
 
@@ -252,11 +264,6 @@ export default Vue.extend({
     async addNewLink(): Promise<boolean> {
       if (!this.pendingLink.label) {
         this.error = 'Link label required';
-        return false;
-      }
-
-      if (!this.pendingLink.url) {
-        this.error = 'Link URL required';
         return false;
       }
 

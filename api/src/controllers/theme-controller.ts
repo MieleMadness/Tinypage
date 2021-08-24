@@ -11,10 +11,16 @@ import {config} from "../config/config";
 import {MarketplaceService} from "../services/marketplace-service";
 import {IpUtils} from "../utils/ip-utils";
 
-interface GetThemeRequest extends AuthenticatedRequest {
+interface GetThemesRequest extends AuthenticatedRequest {
     Body: {
         includeGlobal: boolean,
         onlyGlobal: boolean
+    } & AuthenticatedRequest["Body"]
+}
+
+interface GetThemeRequest extends AuthenticatedRequest {
+    Params: {
+        id: string
     } & AuthenticatedRequest["Body"]
 }
 
@@ -76,7 +82,8 @@ export class ThemeController extends Controller {
 
     registerRoutes(): void {
         // Authenticated
-        this.fastify.post<GetThemeRequest>('/themes', Auth.ValidateWithData, this.GetThemes.bind(this));
+        this.fastify.post<GetThemesRequest>('/themes', Auth.ValidateWithData, this.GetThemes.bind(this));
+        this.fastify.post<GetThemeRequest>('/theme/:id', Auth.ValidateWithData, this.GetTheme.bind(this));
         this.fastify.post<CreateThemeRequest>('/theme/create', Auth.ValidateWithData, this.CreateTheme.bind(this));
         this.fastify.post<UpdateThemeRequest>('/theme/update', Auth.ValidateWithData, this.UpdateTheme.bind(this));
         this.fastify.post<DeleteThemeRequest>('/theme/delete', Auth.ValidateWithData, this.DeleteTheme.bind(this));
@@ -93,7 +100,7 @@ export class ThemeController extends Controller {
      * @param request
      * @param reply
      */
-    async GetThemes(request: FastifyRequest<GetThemeRequest>, reply: FastifyReply) {
+    async GetThemes(request: FastifyRequest<GetThemesRequest>, reply: FastifyReply) {
         try {
             let body = request.body;
 
@@ -101,6 +108,35 @@ export class ThemeController extends Controller {
                 return this.themeService.listGlobalThemes();
             } else {
                 return this.themeService.listUserThemes(body.authUser.id, body.includeGlobal);
+            }
+        } catch (e) {
+            if (e instanceof HttpError) {
+                reply.code(e.statusCode);
+                return ReplyUtils.error(e.message, e);
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Route for /theme/:id
+     * @param request
+     * @param reply
+     */
+    async GetTheme(request: FastifyRequest<GetThemeRequest>, reply: FastifyReply) {
+        try {
+            let body = request.body;
+            let params = request.params;
+            const themeId = params.id;
+
+            let owned = await Auth.checkThemeOwnership(this.themeService, themeId, body.authUser, true);
+
+            if (owned) {
+                return await this.themeService.getTheme(themeId);
+            } else {
+                reply.status(StatusCodes.UNAUTHORIZED);
+                return ReplyUtils.error("The user does not have permission to view the requested resource.");
             }
         } catch (e) {
             if (e instanceof HttpError) {

@@ -122,6 +122,13 @@
         Create new theme
       </a>
 
+      <button
+        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+        @click="resetTheme"
+      >
+        Set Default Theme (will erase settings!)
+      </button>
+
     </div>
 
   </section>
@@ -224,6 +231,7 @@ export default Vue.extend({
         console.log(err);
       }
     },
+
     async loadThemes() {
       try {
         // Grab themes from response
@@ -236,6 +244,7 @@ export default Vue.extend({
         console.log(error);
       }
     },
+
     setPending(theme: EditorTheme | null) {
       if (!theme) {
         this.pendingTheme = this.getNewTheme();
@@ -243,14 +252,17 @@ export default Vue.extend({
         this.pendingTheme = theme;
       }
     },
+
     openModal(intent: ThemeModalIntent) {
       this.modalIntent = intent;
       this.modalActive = true;
     },
+
     closeModal() {
       this.setPending(null);
       this.modalActive = false;
     },
+
     async saveChanges() {
       try {
         // console.log('Builder CSS');
@@ -285,6 +297,22 @@ export default Vue.extend({
         customHtml: undefined,
       };
     },
+
+    async resetTheme() {
+      try {
+        const response = await this.$axios.$post('/profile/activate-theme', {
+          token: this.$store.getters['auth/getToken'],
+          id: null,
+        });
+
+        this.activeThemeId = response.themeId;
+        // window.location.reload();
+        this.$root.$emit('refreshUserProfileView');
+      } catch (error) {
+        console.log('Failed to activate theme');
+        console.log(error);
+      }
+    }
   },
 });
 </script>

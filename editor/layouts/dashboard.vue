@@ -20,13 +20,6 @@
       <!--               placeholder="Search pages, guides, and documentation..."/>-->
       <!--      </div>-->
       <!--<n-link to="/dashboard/referrals" class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight mx-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo">Refer a friend and get $10!</n-link>-->
-
-      <n-link
-        class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight ml-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo"
-        to="/dashboard/upgrade"
-      >
-        Upgrade and go pro!
-      </n-link>
     </div>
     <div class="flex flex-row items-center justify-center w-full" style="max-width:1440px;">
       <div class="flex flex-col items-center justify-center flex-shrink flex-grow">
@@ -156,10 +149,10 @@
                 <img src="/Rainbow.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Appearance</span>
               </n-link>
-              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">
-                <img src="/High voltage.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Marketplace</span>
-              </n-link>
+              <!--              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">-->
+              <!--                <img src="/High voltage.svg" style="width:24px;height:24px;">-->
+              <!--                <span class="ml-4 font-extrabold">Marketplace</span>-->
+              <!--              </n-link>-->
               <a
                 v-if="leaderboard"
                 :class="getActiveStyles('dashboard-leaderboard')"
@@ -178,10 +171,10 @@
                 <img src="/Cowboy hat face.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Contact support</span>
               </a>
-              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">
-                <img src="/Heart.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Referrals</span>
-              </n-link>
+              <!--              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">-->
+              <!--                <img src="/Heart.svg" style="width:24px;height:24px;">-->
+              <!--                <span class="ml-4 font-extrabold">Referrals</span>-->
+              <!--              </n-link>-->
               <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
                 <img src="/Settings.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Settings</span>
@@ -190,10 +183,10 @@
                 <img src="/Person.svg" style="width:24px;height:24px;"/>
                 <span class="ml-4 font-extrabold">Admin Settings</span>
               </n-link>
-              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">
-                <img src="/Person.svg" style="width:24px;height:24px;"/>
-                <span class="ml-4 font-extrabold">Enterprise Settings</span>
-              </n-link>
+              <!--              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">-->
+              <!--                <img src="/Person.svg" style="width:24px;height:24px;"/>-->
+              <!--                <span class="ml-4 font-extrabold">Enterprise Settings</span>-->
+              <!--              </n-link>-->
               <n-link :class="getActiveStyles('logout')" to="/logout">
                 <img src="/Waving hand.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Logout</span>
@@ -221,7 +214,7 @@
               v-if="user.activeProfile.handle"
               id="preview-frame"
               :src="getProfilePreviewUrl()"
-              scrolling="yes"
+              scrolling="no"
               style="z-index:2;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
               title="Profile Preview"
             />

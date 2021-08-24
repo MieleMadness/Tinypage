@@ -452,15 +452,15 @@
                 </option>
               </select>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font family</label>
-              <select
-                v-model="meta.typography.headline_family"
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                disabled
-                placeholder="Coming soon..."
-              />
-            </div>
+<!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+<!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+<!--              <select-->
+<!--                v-model="meta.typography.headline_family"-->
+<!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+<!--                disabled-->
+<!--                placeholder="Coming soon..."-->
+<!--              />-->
+<!--            </div>-->
           </div>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -581,15 +581,15 @@
                 </option>
               </select>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font family</label>
-              <select
-                v-model="meta.typography.subtitle_family"
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                disabled
-                placeholder="Coming soon..."
-              />
-            </div>
+<!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+<!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+<!--              <select-->
+<!--                v-model="meta.typography.subtitle_family"-->
+<!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+<!--                disabled-->
+<!--                placeholder="Coming soon..."-->
+<!--              />-->
+<!--            </div>-->
           </div>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -1050,15 +1050,15 @@
                 </option>
               </select>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font family</label>
-              <select
-                v-model="meta.link_styles.headline_family"
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                disabled
-                placeholder="Coming soon..."
-              />
-            </div>
+<!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+<!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+<!--              <select-->
+<!--                v-model="meta.link_styles.headline_family"-->
+<!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+<!--                disabled-->
+<!--                placeholder="Coming soon..."-->
+<!--              />-->
+<!--            </div>-->
           </div>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -1179,15 +1179,15 @@
                 </option>
               </select>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font family</label>
-              <select
-                v-model="meta.link_styles.subtitle_family"
-                class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                disabled
-                placeholder="Coming soon..."
-              />
-            </div>
+<!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+<!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+<!--              <select-->
+<!--                v-model="meta.link_styles.subtitle_family"-->
+<!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+<!--                disabled-->
+<!--                placeholder="Coming soon..."-->
+<!--              />-->
+<!--            </div>-->
           </div>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -1418,8 +1418,6 @@ export default Vue.extend({
     meta: {
       deep: true,
       handler(): void {
-        console.log('Changes');
-
         // Page Styles
         if (this.meta.page_styles.avatar_size) {
           this.jsonPackage.children["img.nc-avatar"].attributes.width = this.meta.page_styles.avatar_size + 'px';
@@ -1630,7 +1628,6 @@ export default Vue.extend({
         }
 
         // Link padding
-        console.log(this.jsonPackage.children);
         if (this.meta.link_styles.padding) {
           this.jsonPackage.children["a div.sl-item.nc-link"].attributes['padding'] = this.meta.link_styles.padding + 'px';
         } else {
@@ -1709,10 +1706,6 @@ export default Vue.extend({
   },
 
   mounted(): void {
-    if (this.importedCSS) {
-      console.log(this.$transform.toJSON(this.importedCSS));
-    }
-
     if (this.importedCSS) {
       this.jsonPackage = this.$transform.toJSON(this.importedCSS);
 

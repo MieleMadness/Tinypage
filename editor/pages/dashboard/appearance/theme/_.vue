@@ -108,14 +108,23 @@
   </section>
 </template>
 
-<script type="ts">
-export default {
+<script lang="ts">
+import Vue from "vue";
+import Builder from "~/components/no-code/builder.vue";
+
+export default Vue.extend({
   layout: 'dashboard',
+
   middleware: 'authenticated',
+
+  components: {
+    Builder
+  },
+
   data() {
     return {
       id: null,
-      themes: [],
+      themes: [] as EditorTheme[],
       builderCss: '',
       editorCss: '',
       theme: {
@@ -132,9 +141,10 @@ export default {
         },
         customHtml: null,
         customCss: null
-      },
+      } as unknown as EditorTheme,
       intent: 'edit',
       builderLoaded: false,
+      error: '',
     };
   },
   head() {
@@ -169,6 +179,10 @@ export default {
         for (let i = 0; i < this.themes.length; i++) {
           if (this.themes[i].id === this.id) {
             this.theme = this.themes[i];
+
+            if (!this.theme)
+              continue;
+
             if (!this.theme.colors) {
               this.theme.colors = {
                 fill: {
@@ -181,13 +195,17 @@ export default {
                 }
               };
             }
-            this.editorCss = this.theme.customCss.split('/* SL-NO-CODE */')[0];
-            if (this.theme.customCss.split('/* SL-NO-CODE */').length > 1) {
-              this.builderCss = this.theme.customCss.split('/* SL-NO-CODE */')[1];
-              this.builderLoaded = true;
-            } else {
-              this.builderLoaded = true;
+
+            if (this.theme.customCss) {
+              this.editorCss = this.theme.customCss.split('/* SL-NO-CODE */')[0];
+              if (this.theme.customCss.split('/* SL-NO-CODE */').length > 1) {
+                this.builderCss = this.theme.customCss.split('/* SL-NO-CODE */')[1];
+                this.builderLoaded = true;
+              } else {
+                this.builderLoaded = true;
+              }
             }
+
           }
         }
 
@@ -221,7 +239,7 @@ export default {
         } */
         // console.log('Created');
         // console.log(response);
-        window.location.href = '/dashboard/appearance/theme/' + response.id;
+        window.location.replace("/dashboard/appearance");
       } catch (error) {
         this.error = 'Failed to create theme';
         console.log('Failed to create theme');
@@ -257,7 +275,8 @@ export default {
                 global: this.theme.global
             });
         } */
-        window.location.reload();
+
+        window.location.replace("/dashboard/appearance");
         return;
       } catch (error) {
         console.log(error);
@@ -275,13 +294,16 @@ export default {
         const index = this.themes.findIndex(x => x.id === themeId);
         this.themes.splice(index, 1);
         this.closeModal();
-        window.location.href = '/dashboard/appearance/';
+        window.location.replace("/dashboard/appearance");
         return;
       } catch (error) {
         this.error = 'Failed to create theme';
         console.log('Failed to create theme');
       }
     },
+    closeModal() {
+
+    }
   }
-};
+});
 </script>

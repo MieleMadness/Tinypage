@@ -8,11 +8,11 @@
       }}</h2>
     <div v-if="!addon" :class="'grid grid-cols-' + cols + ' mb-2 justify-start w-full'">
       <!-- Show active theme first -->
+      <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string" -->
       <a
         v-for="theme in themes"
         v-if="!icon && getActiveThemeId === theme.id"
         :key="theme.id"
-        :href="'/dashboard/marketplace/addon/'+theme.id+query_string"
         class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
@@ -27,11 +27,11 @@
         <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"/>
       </div>
       <!-- List active themes -->
+      <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"  -->
       <a
         v-for="theme in themes"
         v-if="!icon && getActiveThemeId !== theme.id"
         :key="theme.id"
-        :href="'/dashboard/marketplace/addon/'+theme.id+query_string"
         class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
@@ -48,18 +48,17 @@
     </div>
     <div v-if="addon" :class="'grid grid-cols-' + cols + ' mb-2 justify-start w-full'">
       <!-- Show active theme first -->
+      <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
       <a
         v-for="theme in themes"
         v-if="!icon && getActiveThemeId === theme.id"
         :key="theme.id"
-        :href="'/dashboard/marketplace/addon/'+theme.id+query_string"
         class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
       >
         <theme
           :id="theme.id"
           :colors="theme.resource.colors"
           :label="theme.displayName"
-          :profile-data="theme.resource"
         />
       </a>
       <div
@@ -74,22 +73,20 @@
           :colors="theme.resource.colors"
           :icon="icon"
           :label="theme.displayName"
-          profile-data="theme.resource"
         />
       </div>
       <!-- List active themes -->
+      <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
       <a
         v-for="theme in themes"
         v-if="!icon && active !== theme.id"
         :key="theme.id"
-        :href="'/dashboard/marketplace/addon/'+theme.id+query_string"
         class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
         <theme
           :id="theme.id"
           :colors="theme.resource.colors"
           :label="theme.displayName"
-          :profile-data="theme.resource"
         />
       </a>
       <div
@@ -104,7 +101,6 @@
           :colors="theme.resource.colors"
           :icon="icon"
           :label="theme.displayName"
-          :profile-data="theme.resource"
         />
       </div>
     </div>

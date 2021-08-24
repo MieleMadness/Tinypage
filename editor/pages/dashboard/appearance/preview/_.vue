@@ -46,16 +46,9 @@ export default Vue.extend({
     async loadThemes() {
       try {
         // Grab themes from response
-        this.themes = await this.$axios.$post('/themes', {
-          token: this.$store.getters['auth/getToken'],
-          includeGlobal: false
+        this.theme = await this.$axios.$post('/theme/' + this.id, {
+          token: this.$store.getters['auth/getToken']
         });
-
-        for (let i = 0; i < this.themes.length; i++) {
-          if (this.themes[i].id === this.id) {
-            this.theme = this.themes[i];
-          }
-        }
 
         // console.log(this.themes);
       } catch (error) {

@@ -15,8 +15,7 @@
     </div>
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Link type</label>
-      <select v-model="pendingLink.type"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+      <select v-model="pendingLink.type" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
       >
         <option disabled selected>Select a link type</option>
         <option value="link">Vanilla link (default)</option>

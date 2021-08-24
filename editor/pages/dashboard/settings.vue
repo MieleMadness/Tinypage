@@ -121,8 +121,7 @@
             <a
               class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
               href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
-            >Need help? Read our
-              documentation</a>
+            >Need help? Read our documentation</a>
           </div>
 
           <input
@@ -321,7 +320,7 @@
       <!-- Confirm site deletion modal -->
       <div
         v-if="deleteProfileModalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
         style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
         @click="setDeleteProfileModalActive(false)"
       >
@@ -625,7 +624,7 @@ export default Vue.extend({
 
       this.$nuxt.$loading.finish();
 
-      location.reload();
+      window.location.replace("/dashboard")
     },
 
     async assignGoogleAccount() {

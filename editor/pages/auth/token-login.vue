@@ -34,13 +34,13 @@ export default Vue.extend({
           this.$store.commit('auth/login', message.token);
           localStorage.setItem("email", response.data.user.email);
 
-          await this.$router.push('/dashboard');
+          this.$router.push('/dashboard');
           return;
         }
 
         default:
           console.log("Unknown auth service type.");
-          await this.$router.push('/');
+          this.$router.push('/');
       }
     }
   }

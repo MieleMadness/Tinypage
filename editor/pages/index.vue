@@ -185,7 +185,7 @@ export default Vue.extend({
         localStorage.setItem("email", this.email);
 
         this.$nuxt.$loading.finish();
-        await this.$router.push('/dashboard');
+        this.$router.push('/dashboard');
       } catch (err) {
         console.log('Login failed');
 

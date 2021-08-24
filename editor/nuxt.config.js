@@ -33,20 +33,6 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    script: [
-      {
-        hid: 'slpa',
-        src: 'https://singlelink.co/slpa.js',
-        defer: true,
-        'data-domain': 'singlelink.co',
-        async: true
-      },
-      {
-        hid: 'simplefileupload',
-        src: 'https://app.simplefileupload.com/buckets/299048f4bf460802e90ea160f0c46064.js',
-        defer: true
-      }
-    ],
     link: [
       {
         rel: 'stylesheet',

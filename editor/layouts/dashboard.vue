@@ -70,8 +70,7 @@
                     class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
                     style="color:#6c6c6c;background:rgba(108,108,108,.1);"
                     @click="toggleProfileSelect"
-                  >switch
-                    profiles
+                  >switch profiles
                   </div>
 
                   <div v-if="error" class="error">
@@ -507,7 +506,7 @@ export default Vue.extend({
         newProfileId: profile
       });
 
-      location.reload();
+      window.location.replace('/dashboard');
     },
 
     toggleProfileSelect() {

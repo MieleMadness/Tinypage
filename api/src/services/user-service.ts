@@ -291,7 +291,7 @@ export class UserService extends DatabaseService {
             activeProfile = DbTypeConverter.toProfile(profileQuery.rows[0]);
         }
 
-        let valid = await bcrypt.compare(password, user.passHash);
+        let valid = bcrypt.compare(password, user.passHash);
 
         if (!valid) {
             throw new HttpError(StatusCodes.UNAUTHORIZED, "The password was incorrect.");

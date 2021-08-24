@@ -82,13 +82,13 @@
           </div>
         </div>
         <div class="flex flex-row items-center justify-center space-x-4 mb-4">
-          <input
-            id="avatar_url"
-            v-model="user.activeProfile.imageUrl"
-            class="simple-file-upload"
-            name="avatar_url"
-            type="hidden"
-          >
+          <!--          <input-->
+          <!--            id="avatar_url"-->
+          <!--            v-model="user.activeProfile.imageUrl"-->
+          <!--            class="simple-file-upload"-->
+          <!--            name="avatar_url"-->
+          <!--            type="hidden"-->
+          <!--          >-->
           <div class="flex flex-col w-auto flex-grow flex-1">
             <label class="font-bold opacity-70 text-sm text-black" for="image_url">Avatar Image URL</label>
             <input

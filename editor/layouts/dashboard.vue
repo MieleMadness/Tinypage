@@ -5,12 +5,12 @@
     </component>
 
     <div
-      class="flex flex-row w-full py-6 justify-between relative"
-      style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
+        class="flex flex-row w-full py-6 justify-between relative"
+        style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
       <n-link to="/dashboard"><img
-        :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
-        class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);"
+          :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
+          class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);"
       >
       </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
@@ -27,15 +27,15 @@
           <div class="flex flex-col text-black font-semibold nav justify-start">
             <div class="profile-bay p-4 flex flex-col items-start relative">
               <div
-                v-if="user.activeProfile.imageUrl || user.emailHash"
-                :style="'background-image:url(' + (user.activeProfile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');background-size:cover;background-position:center;'"
-                class="rounded-full"
-                style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
+                  v-if="user.activeProfile.imageUrl || user.emailHash"
+                  :style="'background-image:url(' + (user.activeProfile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');background-size:cover;background-position:center;'"
+                  class="rounded-full"
+                  style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
               />
               <div
-                v-if="!user.activeProfile.imageUrl && !user.emailHash"
-                class="rounded-full"
-                style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
+                  v-if="!user.activeProfile.imageUrl && !user.emailHash"
+                  class="rounded-full"
+                  style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
               />
 
               <div class="flex flex-col justify-start">
@@ -43,26 +43,26 @@
                 <div class="flex flex-row items-center justify-start flex-wrap" style="max-width:300px;">
                   <div class="mb-1">
                     <span
-                      v-if="user.activeProfile.customDomain"
-                      class="font-bold text-lg opacity-60"
+                        v-if="user.activeProfile.customDomain"
+                        class="font-bold text-lg opacity-60"
                     >{{ user.activeProfile.customDomain }}</span>
                     <span
-                      v-if="!user.activeProfile.customDomain && user.activeProfile.handle"
-                      class="font-bold text-lg opacity-60"
+                        v-if="!user.activeProfile.customDomain && user.activeProfile.handle"
+                        class="font-bold text-lg opacity-60"
                     >
                       {{ rendererDomain }}/{{ user.activeProfile.handle }}
                     </span>
                   </div>
                   <div
-                    v-if="user.activeProfile.handle"
-                    class="py-1 px-2 mb-1 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight mx-2 cursor-pointer grow"
-                    @click="copyUrl"
+                      v-if="user.activeProfile.handle"
+                      class="py-1 px-2 mb-1 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight mx-2 cursor-pointer grow"
+                      @click="copyUrl"
                   >copy
                   </div>
                   <div
-                    class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
-                    style="color:#6c6c6c;background:rgba(108,108,108,.1);"
-                    @click="toggleProfileSelect"
+                      class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
+                      style="color:#6c6c6c;background:rgba(108,108,108,.1);"
+                      @click="toggleProfileSelect"
                   >switch profiles
                   </div>
 
@@ -73,41 +73,41 @@
                 </div>
               </div>
               <ul
-                v-if="selectingProfile"
-                class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
-                style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
+                  v-if="selectingProfile"
+                  class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
+                  style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
               >
 
                 <li class="flex flex-row items-center justify-left profile-search text-black">
                   <!-- Create new profile-->
                   <input
-                    aria-label="Filter profiles"
-                    class="text-sm p-2 mr-auto font-bold"
-                    placeholder="Filter profiles..."
-                    style="outline:none !important;background:transparent;"
-                    type="text"
-                    @input="onFilterProfilesInput"
+                      aria-label="Filter profiles"
+                      class="text-sm p-2 mr-auto font-bold"
+                      placeholder="Filter profiles..."
+                      style="outline:none !important;background:transparent;"
+                      type="text"
+                      @input="onFilterProfilesInput"
                   >
                   <i class="search-icon fas fa-search text-sm p-2 opacity-50"/>
                 </li>
 
                 <li
-                  v-for="profile in filteredProfiles"
-                  :key="profile.handle"
-                  :style="!profile.handle ? 'max-height: 51px;' : ''"
-                  class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
-                  @click="selectProfile(profile.id)"
+                    v-for="profile in filteredProfiles"
+                    :key="profile.handle"
+                    :style="!profile.handle ? 'max-height: 51px;' : ''"
+                    class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
+                    @click="selectProfile(profile.id)"
                 >
                   <div
-                    v-if="profile.handle"
-                    :style="'width: 35px;height:35px;background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);margin-right:.75rem;background-size:cover;background-repeat:no-repeat;background-position:center;background-image:url(' + (profile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');'"
-                    alt="avatar"
-                    class="w-8 h-8 rounded-full"
+                      v-if="profile.handle"
+                      :style="'width: 35px;height:35px;background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);margin-right:.75rem;background-size:cover;background-repeat:no-repeat;background-position:center;background-image:url(' + (profile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');'"
+                      alt="avatar"
+                      class="w-8 h-8 rounded-full"
                   />
                   <div
-                    v-if="!profile.handle"
-                    class="mr-2 rounded-full"
-                    style="width: 100%; max-width: 35px; max-height: 58px; margin-right: 10px;"
+                      v-if="!profile.handle"
+                      class="mr-2 rounded-full"
+                      style="width: 100%; max-width: 35px; max-height: 58px; margin-right: 10px;"
                   >
                     &nbsp;
                     <br>
@@ -123,14 +123,14 @@
                 <li class="flex flex-row items-center justify-center button-controls">
                   <!-- Create new profile-->
                   <span
-                    class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pl-4 text-xs font-bold text-gray-700"
-                    @click="createNewProfile"
+                      class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pl-4 text-xs font-bold text-gray-700"
+                      @click="createNewProfile"
                   >Create new</span>
 
                   <!-- Logout-->
                   <a
-                    class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pr-4 text-xs font-bold text-gray-700"
-                    href="/logout"
+                      class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pr-4 text-xs font-bold text-gray-700"
+                      href="/logout"
                   >Logout</a>
                 </li>
 
@@ -154,10 +154,10 @@
               <!--                <span class="ml-4 font-extrabold">Marketplace</span>-->
               <!--              </n-link>-->
               <a
-                v-if="leaderboard"
-                :class="getActiveStyles('dashboard-leaderboard')"
-                :href="leaderboard"
-                target="_blank"
+                  v-if="leaderboard"
+                  :class="getActiveStyles('dashboard-leaderboard')"
+                  :href="leaderboard"
+                  target="_blank"
               >
                 <img src="/Fire.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Leaderboard</span>
@@ -194,29 +194,29 @@
             </div>
           </div>
           <Nuxt
-            id="child"
-            class="relative p-16 flex-grow flex-1 w-auto lg:overflow-y-scroll lg:h-screen"
-            style="top:-88px;padding-top:6.5rem !important;"
+              id="child"
+              class="relative p-16 flex-grow flex-1 w-auto lg:overflow-y-scroll lg:h-screen"
+              style="top:-88px;padding-top:6.5rem !important;"
           />
         </div>
       </div>
 
       <div v-if="preview" class="relative ml-8 hidden lg:flex xl:mb-20" style="width:286px;height:592px;">
         <div
-          class="p-3 bg-white absolute my-auto"
-          style="top:0;left:0;border-radius: 50px; overflow:hidden;box-shadow:0 10px 15px -3px rgb(0 0 0), 0 4px 6px -2px rgb(0 0 0), inset 0 0 5px 0 rgba(0,0,0,.1);"
+            class="p-3 bg-white absolute my-auto"
+            style="top:0;left:0;border-radius: 50px; overflow:hidden;box-shadow:0 10px 15px -3px rgb(0 0 0), 0 4px 6px -2px rgb(0 0 0), inset 0 0 5px 0 rgba(0,0,0,.1);"
         >
           <div
-            class="relative text-center rounded flex items-center justify-ceneter p-6 bg-indigo-200"
-            style="border-radius: 40px;width: 262px;height:568px;overflow:hidden;"
+              class="relative text-center rounded flex items-center justify-ceneter p-6 bg-indigo-200"
+              style="border-radius: 40px;width: 262px;height:568px;overflow:hidden;"
           >
             <iframe
-              v-if="user.activeProfile.handle"
-              id="preview-frame"
-              :src="getProfilePreviewUrl()"
-              scrolling="no"
-              style="z-index:2;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
-              title="Profile Preview"
+                v-if="user.activeProfile.handle"
+                id="preview-frame"
+                :src="getProfilePreviewUrl()"
+                scrolling="no"
+                style="z-index:2;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
+                title="Profile Preview"
             />
           </div>
         </div>
@@ -387,8 +387,8 @@ export default Vue.extend({
 
     if (this.rendererUrl) {
       this.rendererDomain = this.rendererUrl
-        .replaceAll("https://", '')
-        .replaceAll("http://", '');
+          .replaceAll("https://", '')
+          .replaceAll("http://", '');
     } else {
       this.rendererDomain = "singlel.ink";
     }
@@ -878,22 +878,6 @@ html {
 
 .wordmark {
   color: #FFF;
-}
-
-@media screen and (prefers-color-scheme: light) {
-  .white-05 {
-    background: rgba(0, 0, 0, .05);
-  }
-  .black-45 {
-    background: rgba(0, 0, 0, .05);
-  }
-  .nav {
-    background: #FFF;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, .05);
-  }
-  .wordmark {
-    color: #000;
-  }
 }
 
 .phone-display {

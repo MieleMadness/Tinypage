@@ -9,21 +9,21 @@
 
     <div class="flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8 mt-4">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Customization
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
         >Need help? Read our documentation</a>
       </div>
       <builder v-if="builderCssLoaded" v-model="builderCss"/>
       <button
-        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-        type="button"
-        @click="saveChanges"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          type="button"
+          @click="saveChanges"
       >
         Save changes
       </button>
@@ -36,34 +36,34 @@
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom HTML
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
-        v-model="customHtml"
-        :options="{
+          v-model="customHtml"
+          :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
-        height="350"
-        language="html"
-        theme="vs-dark"
+          height="350"
+          language="html"
+          theme="vs-dark"
       />
       <button
-        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-        type="button"
-        @click="saveChanges"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          type="button"
+          @click="saveChanges"
       >
         Save changes
       </button>
@@ -71,34 +71,34 @@
 
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom CSS
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
-        v-model="editorCss"
-        :options="{
+          v-model="editorCss"
+          :options="{
                   extraEditorClassName: 'rounded overflow-hidden',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
-        height="350"
-        language="css"
-        theme="vs-dark"
+          height="350"
+          language="css"
+          theme="vs-dark"
       />
       <button
-        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-        type="button"
-        @click="saveChanges"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          type="button"
+          @click="saveChanges"
       >
         Save changes
       </button>
@@ -107,26 +107,26 @@
     <!-- Your Themes-->
     <div class="flex flex-col p-6 bg-white shadow rounded-xl w-full mt-8 mb-8">
       <theme-list
-        :active="activeThemeId"
-        :cols="2"
-        :extended="false"
-        :themes="themes"
-        icon="edit"
-        name="Your themes"
+          :active="activeThemeId"
+          :cols="2"
+          :extended="false"
+          :themes="themes"
+          icon="edit"
+          name="Your themes"
       />
       <a
-        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-        href="/dashboard/appearance/theme/create"
-        type="button"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          href="/dashboard/appearance/theme/create"
+          type="button"
       >
         Create new theme
       </a>
 
       <button
-        class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-        @click="resetTheme"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          @click="resetTheme"
       >
-        Set Default Theme (will erase settings!)
+        Remove Theme
       </button>
 
     </div>

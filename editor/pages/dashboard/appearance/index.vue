@@ -5,7 +5,6 @@
         Appearance
       </h1>
     </div>
-    <!--<p class="font-bold text-black opacity-70 text-xl mt-2">This page isn't ready yet. Check back soon for more updates!</p>-->
 
     <div class="flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8 mt-4">
       <div
@@ -19,7 +18,7 @@
             href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
         >Need help? Read our documentation</a>
       </div>
-      <builder v-if="builderCssLoaded" v-model="builderCss"/>
+      <Builder v-if="builderCssLoaded" v-model="builderCss"/>
       <button
           class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
@@ -136,15 +135,17 @@
 
 <script lang="ts">
 import Vue from "vue";
-import builder from "~/components/no-code/builder.vue";
+import Builder from "~/components/no-code/builder.vue";
 
 type ThemeModalIntent = "create" | "edit" | "view";
 
 export default Vue.extend({
   name: 'DashboardAppearance',
+
   components: {
-    builder
+    Builder
   },
+
   layout: 'dashboard',
   middleware: 'authenticated',
 
@@ -207,10 +208,12 @@ export default Vue.extend({
       builderCssLoaded: false
     };
   },
+
   mounted() {
     this.getUserData();
     this.loadThemes();
   },
+
   methods: {
     async getUserData() {
       try {
@@ -220,10 +223,14 @@ export default Vue.extend({
         });
         this.activeThemeId = profileResponse.themeId ?? null;
         this.customCss = profileResponse.customCss ?? '';
-        this.editorCss = this.customCss.split('/* SL-NO-CODE */')[0];
-        if (this.customCss.split('/* SL-NO-CODE */').length > 1) {
-          this.builderCss = this.customCss.split('/* SL-NO-CODE */')[1];
+        const strings = this.customCss.split('/* SL-NO-CODE */');
+
+        this.editorCss = strings[0];
+
+        if (strings.length > 1) {
+          this.builderCss = strings[1];
         }
+
         this.builderCssLoaded = true;
         this.customHtml = profileResponse.customHtml ?? '';
       } catch (err) {

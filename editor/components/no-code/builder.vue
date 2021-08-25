@@ -133,6 +133,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.page_styles.avatar_border_color"
@@ -199,6 +200,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.page_styles.background_color"
@@ -313,6 +315,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.page_styles.background_gradient_start"
@@ -330,6 +333,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.page_styles.background_gradient_end"
@@ -503,6 +507,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.typography.headline_color"
@@ -632,6 +637,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.typography.subtitle_color"
@@ -739,6 +745,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.border_color"
@@ -800,6 +807,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.background_color"
@@ -914,6 +922,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.background_gradient_start"
@@ -931,6 +940,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.background_gradient_end"
@@ -1101,6 +1111,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.headline_color"
@@ -1230,6 +1241,7 @@
                   class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
                   placeholder="e.g. #FFF"
                   type="text"
+                  data-jscolor="{}"
                 >
                 <input
                   v-model="meta.link_styles.subtitle_color"

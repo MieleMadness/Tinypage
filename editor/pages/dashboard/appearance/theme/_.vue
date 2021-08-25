@@ -1,6 +1,6 @@
 <template>
   <section
-    class="flex flex-shrink-0 flex-col p-8 items-center bg-gray-100 flex-grow overflow-x-hidden overflow-y-scroll"
+      class="flex flex-shrink-0 flex-col p-8 items-center bg-gray-100 flex-grow overflow-x-hidden overflow-y-scroll"
   >
     <div class="flex flex-col lg:flex-row justify-start lg:justify-between items-center mb-4 w-full">
       <h1 class="text-gray-800 font-extrabold tracking-tight text-3xl">
@@ -10,97 +10,97 @@
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Display name</label>
       <input
-        v-model="theme.label"
-        class="p-3 rounded-lg bg-white text-sm text-gray-700"
-        placeholder="e.g. My beautiful theme"
-        type="text"
+          v-model="theme.label"
+          class="p-3 rounded-lg bg-white text-sm text-gray-700"
+          placeholder="e.g. My beautiful theme"
+          type="text"
       >
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full mb-6">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Customization
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our documentation</a>
       </div>
-      <builder v-if="builderLoaded" v-model="builderCss"/>
+      <Builder v-if="builderLoaded" v-model="builderCss"/>
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full mb-6">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom HTML
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our documentation</a>
       </div>
       <MonacoEditor
-        v-model="theme.customHtml"
-        :options="{
+          v-model="theme.customHtml"
+          :options="{
                     extraEditorClassName: 'rounded overflow-hidden mb-2',
                     autoIndent: 'full',
                     autoClosingQuotes: true,
                     }"
-        height="350"
-        language="html"
-        theme="vs-dark"
+          height="350"
+          language="html"
+          theme="vs-dark"
       />
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom CSS
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our documentation</a>
       </div>
       <MonacoEditor
-        v-model="editorCss"
-        :options="{
+          v-model="editorCss"
+          :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
-        height="350"
-        language="css"
-        theme="vs-dark"
+          height="350"
+          language="css"
+          theme="vs-dark"
       />
     </div>
 
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
       <div
-        v-if="intent==='create'"
-        class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-indigo-500 bg-indigo-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
-        @click="saveCreateTheme"
+          v-if="intent==='create'"
+          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-indigo-500 bg-indigo-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+          @click="saveCreateTheme"
       >
         Create theme
       </div>
       <div
-        v-if="intent==='edit'"
-        class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-indigo-500 bg-indigo-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
-        @click="saveEditTheme"
+          v-if="intent==='edit'"
+          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-indigo-500 bg-indigo-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+          @click="saveEditTheme"
       >
         Save changes
       </div>
       <div
-        v-if="intent==='edit'"
-        class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-red-500 bg-red-600 cursor-pointer"
-        @click="deleteTheme"
+          v-if="intent==='edit'"
+          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-red-500 bg-red-600 cursor-pointer"
+          @click="deleteTheme"
       >
         Delete theme
       </div>
@@ -114,11 +114,23 @@ import Builder from "~/components/no-code/builder.vue";
 
 export default Vue.extend({
   layout: 'dashboard',
-
   middleware: 'authenticated',
 
   components: {
     Builder
+  },
+
+  head() {
+    return {
+      title: 'Theme editing - ' + this.$customSettings.productName,
+      meta: [
+        {
+          hid: 'robots',
+          name: 'robots',
+          content: 'noindex'
+        }
+      ]
+    };
   },
 
   data() {
@@ -147,18 +159,7 @@ export default Vue.extend({
       error: '',
     };
   },
-  head() {
-    return {
-      title: 'Theme editing - ' + this.$customSettings.productName,
-      meta: [
-        {
-          hid: 'robots',
-          name: 'robots',
-          content: 'noindex'
-        }
-      ]
-    };
-  },
+
   mounted() {
     this.id = this.$route.path.replace('/dashboard/appearance/theme/', '');
     if (this.id !== 'create') {
@@ -197,15 +198,17 @@ export default Vue.extend({
             }
 
             if (this.theme.customCss) {
-              this.editorCss = this.theme.customCss.split('/* SL-NO-CODE */')[0];
-              if (this.theme.customCss.split('/* SL-NO-CODE */').length > 1) {
-                this.builderCss = this.theme.customCss.split('/* SL-NO-CODE */')[1];
+              const strings = this.theme.customCss.split('/* SL-NO-CODE */');
+
+              this.editorCss = strings[0];
+
+              if (strings.length > 1) {
+                this.builderCss = strings[1];
                 this.builderLoaded = true;
               } else {
                 this.builderLoaded = true;
               }
             }
-
           }
         }
 

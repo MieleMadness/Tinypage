@@ -163,13 +163,13 @@ export class RouteHandler {
                         if (watchId && watchId.length > 0 && watchId[1]) {
                             linkHtml += `
                             <style>.embed-container { border-radius:4px; width:100%; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
-                            <div class='embed-container' style="margin-bottom:.75rem;"><iframe src='https://www.youtube.com/embed/${watchId[1]}' frameborder='0' allowfullscreen></iframe></div>
+                            <div class='embed-container' style="margin-bottom:.75rem;"><iframe src='https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2' frameborder='0' allowfullscreen></iframe></div>
                             `;
                         }
                         break;
                     case 'divider':
                         //language=HTML
-                        linkHtml += '<div class="flex flex-row items-center justify-center w-full" shouldHideScrollbar="margin-bottom:.75rem">';
+                        linkHtml += '<div class="flex flex-row items-center justify-center w-full" style="margin-bottom:.75rem">';
                         linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
                         linkHtml += '<div shouldHideScrollbar="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">' + link.label + '</div>';
                         linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';

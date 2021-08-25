@@ -7,12 +7,8 @@
         <span v-if="intent==='edit'">Edit link</span>
       </h1>
     </div>
-    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
-      <label class="font-semibold mb-2">Label</label>
-      <input v-model="pendingLink.label" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. My blog" type="text"
-      />
-    </div>
+
+    <!-- Type-->
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Link type</label>
       <select v-model="pendingLink.type" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
@@ -25,6 +21,15 @@
         <option value="youtube">Youtube video</option>
       </select>
     </div>
+
+    <!-- Label -->
+    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
+      <label class="font-semibold mb-2">Label</label>
+      <input v-model="pendingLink.label" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+             placeholder="e.g. My blog" type="text"
+      />
+    </div>
+
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Subtitle (optional)</label>
       <input v-model="pendingLink.subtitle" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
@@ -37,39 +42,42 @@
              placeholder="e.g. https://janedoe.com/blog" type="url"
       />
     </div>
-    <!--<div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">
-        <div class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">
-            <h2 class="text-gray-800 font-semibold text-lg">
-            Customization
-            </h2>
-            <a href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432" target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our documentation</a>
-        </div>
-        <builder v-if="builderLoaded" v-model="builderCss"/>
-    </div>-->
+    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">
+      <div
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">
+        <h2 class="text-gray-800 font-semibold text-lg">
+          Customization
+        </h2>
+        <a href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+           target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our
+          documentation</a>
+      </div>
+      <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
+    </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full">
       <div
-        class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
         <h2 class="text-gray-800 font-semibold text-lg">
           Custom CSS
         </h2>
         <a
-          class="text-gray-500 text-xs hover:underline hover:text-gray-600"
-          href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-          target="_blank"
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
         >Need help? Read our
           documentation</a>
       </div>
       <MonacoEditor
-        v-model="editorCss"
-        :options="{
+          v-model="editorCss"
+          :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
-        height="350"
-        language="css"
-        theme="vs-dark"
+          height="350"
+          language="css"
+          theme="vs-dark"
       ></MonacoEditor>
     </div>
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
@@ -90,8 +98,8 @@
 
     <transition name="fade">
       <div
-        v-if="error"
-        class="flex flex-row p-2 mb-4 bg-red-300 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
+          v-if="error"
+          class="flex flex-row p-2 mb-4 bg-red-300 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
         <img alt="caution" src="/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
@@ -138,7 +146,7 @@ export default Vue.extend({
           name: 'og:description',
           content: 'View, manage, and create new links from your ' + this.$customSettings.productName + ' link panel'
         },
-      ],
+      ]
     };
   },
 
@@ -162,9 +170,9 @@ export default Vue.extend({
       user: '',
       error: '',
       intent: '',
-      builderLoaded: false,
-      builderCss: null as string | null | undefined | undefined,
-      editorCss: null as string | null | undefined | undefined,
+      // builderCssLoaded: false,
+      // builderCss: null as string | null | undefined,
+      editorCss: null as string | null | undefined,
       sortedLinks: new Array<EditorLink>()
     };
   },
@@ -174,11 +182,13 @@ export default Vue.extend({
     await this.getLinks();
     // Fetch selected link from links
     this.id = this.$route.params.pathMatch;
+
     if (this.id) {
       this.intent = 'edit';
     } else {
       this.intent = 'create';
     }
+
     for (let i = 0; i < this.links.length; i++) {
       if (this.links[i].id == this.id) {
         this.pendingLink = this.links[i];
@@ -186,6 +196,22 @@ export default Vue.extend({
         break;
       }
     }
+
+    // try {
+    //   const css = this.pendingLink.customCss ?? '';
+    //   let strings = css.split('/* SL-NO-CODE */');
+    //
+    //   this.editorCss = strings[0];
+    //
+    //   if (strings.length > 1) {
+    //     this.builderCss = strings[1];
+    //   }
+    //
+    //   this.builderCssLoaded = true;
+    // } catch (err) {
+    //   console.log('Error getting user data');
+    //   console.log(err);
+    // }
   },
 
   methods: {
@@ -242,7 +268,7 @@ export default Vue.extend({
             type: this.pendingLink.type,
             subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
-            customCss: this.editorCss // + this.builderCss
+            customCss: this.editorCss // + '/* SL-NO-CODE */' + this.builderCss,
           }
         });
 

@@ -21,6 +21,35 @@ export class RouteHandler {
     constructor(fastify: FastifyInstance) {
         this.icon = fs.readFileSync(`${__dirname}/../favicon.png`);
         this.fastify = fastify;
+
+        fastify.setNotFoundHandler((request, reply) => {
+            reply.type('text/html').status(404);
+            reply.send(`
+                <html lang="">
+                    <head>
+                        <title>${config.appName} Web Client</title>
+                        <meta charset="UTF-8">
+                        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+                        <link rel="icon" type="image/png" href="favicon.ico"/>
+                    </head>
+                    <body>
+                        <div class="w-full h-full flex flex-col items-center justify-center">
+                            <h1 class="text-4xl text-gray-900 mb-2 font-extrabold">404 - Not Found</h1>
+                            <h3 class="text-lg text-gray-600 mb-4">We couldn't find what you were looking for, sorry!</h3>
+                            <a class="bg-indigo-600 hover:bg-indigo-500 rounded-2xl shadow text-white py-3 px-6 text-sm font-medium" href="` + request.url + `">Reload page</a>
+                        </div>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.4/tailwind.min.css"/>
+                        <style>
+                            @import url('https://rsms.me/inter/inter.css');
+                            html { font-family: 'Inter', sans-serif; }
+                            @supports (font-variation-settings: normal) {
+                            html { font-family: 'Inter var', sans-serif; }
+                            }
+                        </style>
+                    </body>
+                </html>
+            `);
+        });
     }
 
     /**
@@ -69,7 +98,7 @@ export class RouteHandler {
             }
 
             if (!response) {
-                reply.type('text/html');
+                reply.type('text/html').status(404);
 
                 //language=HTML
                 return reply.send(`
@@ -131,8 +160,11 @@ export class RouteHandler {
                     case 'link':
                         let subtitleHtml = '';
                         //language=HTML
-                        if (link.subtitle) subtitleHtml = `<span
-                                class="text-sm text-gray-700 sl-link-subtitle mt-1">${link.subtitle}</span>`;
+                        if (link.subtitle) {
+                            subtitleHtml = `<span
+                                class="text-sm text-gray-700 sl-link-subtitle mt-1"
+                        >${link.subtitle}</span>`;
+                        }
                         let css = link.customCss ?? '';
                         //language=HTML
                         linkHtml += `
@@ -155,7 +187,8 @@ export class RouteHandler {
                         //language=HTML
                         linkHtml += `
                             <img id="sl-item-${link.id}" src="${link.url}" class="w-full h-auto"
-                                 style="margin-bottom:.75rem;border-radius:4px;" alt="link image"/>
+                                 style="margin-bottom:.75rem;border-radius:4px;" alt="link image"
+                            />
                         `;
                         break;
                     case 'youtube':
@@ -180,9 +213,10 @@ export class RouteHandler {
                                     width: 100%;
                                     height: 100%;
                                 }</style>
-                                <div class='embed-container' style="margin-bottom:.75rem;">
-                                    <iframe src='https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2'
-                                            frameborder='0' allowfullscreen></iframe>
+                                <div class="embed-container" style="margin-bottom:.75rem;">
+                                    <iframe src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
+                                            frameborder="0" allowfullscreen
+                                    ></iframe>
                                 </div>
                             `;
                         }
@@ -197,7 +231,7 @@ export class RouteHandler {
                                 </div>
                                 <div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>
                             </div>
-                        `
+                        `;
                         break;
                 }
             }
@@ -209,13 +243,15 @@ export class RouteHandler {
             // Define subtitle HTML
             let subtitleHtml = ``;
             //language=HTML
-            if (profile.subtitle) subtitleHtml = `<h3 class="text-gray-600 mb-4 sl-subtitle">${profile.subtitle}</h3>`;
+            if (profile.subtitle) {
+                subtitleHtml = `<h3 class="text-gray-600 mb-4 sl-subtitle">${profile.subtitle}</h3>`;
+            }
 
             // Define theme colors html
             let themeColorsHtml = ``;
 
             //language=HTML
-            if (theme && theme.colors)
+            if (theme && theme.colors) {
                 themeColorsHtml = `
                     <style>
                         .sl-headline {
@@ -244,7 +280,7 @@ export class RouteHandler {
                             color: ${theme.colors?.text.secondary ?? 'inherit'};
                         }
                     </style>`;
-
+            }
 
             // Build watermark string
             let watermarkHtml = '';
@@ -268,7 +304,8 @@ export class RouteHandler {
                     //language=HTML
                     watermarkHtml += `
                         <a class="text-indigo-600 hover-underline text-sm" href="${config.editorUrl}/create-account"
-                           target="_blank">
+                           target="_blank"
+                        >
                             Create your free micro-site in minutes!
                         </a>`;
                 }
@@ -277,10 +314,18 @@ export class RouteHandler {
                 watermarkHtml += `</div>`;
             }
 
-            if (profile.customCss === null) profile.customCss = '';
-            if (profile.customHtml === null) profile.customHtml = '';
-            if (theme.customCss === null) theme.customCss = '';
-            if (theme.customHtml === null) theme.customHtml = '';
+            if (profile.customCss === null) {
+                profile.customCss = '';
+            }
+            if (profile.customHtml === null) {
+                profile.customHtml = '';
+            }
+            if (theme.customCss === null) {
+                theme.customCss = '';
+            }
+            if (theme.customHtml === null) {
+                theme.customHtml = '';
+            }
 
             let shouldHideScrollbar = "";
             if (!scrolling) {
@@ -300,12 +345,11 @@ export class RouteHandler {
                     ::-webkit-scrollbar-thumb {
                         background: #FF0000;
                     }
-                `
+                `;
             }
 
             // Send response content type to text/html
             reply.type('text/html');
-
 
             // Send response to client
             // language=HTML
@@ -319,19 +363,22 @@ export class RouteHandler {
                     <!-- Meta -->
                     <meta name="title" content="${profile.headline} - ${config.appName}">
                     <meta name="description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform.">
+                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                    >
 
                     <!-- Open Graph-->
                     <meta property="og:title" content="${profile.headline} - ${config.appName}">
                     <meta property="og:description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform.">
+                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                    >
                     <meta property="og:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta property="og:type" content="website">
 
                     <!-- Twitter Cards -->
                     <meta name="twitter:title" content="${profile.headline} - ${config.appName}">
                     <meta name="twitter:description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform.">
+                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                    >
                     <meta name="twitter:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta name="twitter:card" content="summary_large_image">
 
@@ -340,9 +387,8 @@ export class RouteHandler {
                     <link rel="stylesheet"
                           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
                           integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-                          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-                    <link rel="stylesheet"
-                          href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css"/>
+                          crossorigin="anonymous" referrerpolicy="no-referrer"
+                    />
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <!-- Theme style -->

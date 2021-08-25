@@ -161,19 +161,43 @@ export class RouteHandler {
                     case 'youtube':
                         let watchId = link.url.match(/v=([^&]*)/);
                         if (watchId && watchId.length > 0 && watchId[1]) {
+                            //language=HTML
                             linkHtml += `
-                            <style>.embed-container { border-radius:4px; width:100%; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
-                            <div class='embed-container' style="margin-bottom:.75rem;"><iframe src='https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2' frameborder='0' allowfullscreen></iframe></div>
+                                <style>.embed-container {
+                                    border-radius: 4px;
+                                    width: 100%;
+                                    position: relative;
+                                    padding-bottom: 56.25%;
+                                    height: 0;
+                                    overflow: hidden;
+                                    max-width: 100%;
+                                }
+
+                                .embed-container iframe, .embed-container object, .embed-container embed {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                }</style>
+                                <div class='embed-container' style="margin-bottom:.75rem;">
+                                    <iframe src='https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2'
+                                            frameborder='0' allowfullscreen></iframe>
+                                </div>
                             `;
                         }
                         break;
                     case 'divider':
                         //language=HTML
-                        linkHtml += '<div class="flex flex-row items-center justify-center w-full" style="margin-bottom:.75rem">';
-                        linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
-                        linkHtml += '<div shouldHideScrollbar="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">' + link.label + '</div>';
-                        linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
-                        linkHtml += '</div>';
+                        linkHtml += `
+                            <div class="flex flex-row items-center justify-center w-full" style="margin-bottom:.75rem">
+                                <div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>
+                                <div shouldHideScrollbar="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">
+                                    ${link.label}
+                                </div>
+                                <div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>
+                            </div>
+                        `
                         break;
                 }
             }
@@ -313,6 +337,12 @@ export class RouteHandler {
 
                     <link rel="icon" type="image/x-icon" href="favicon.ico"/>
                     <link rel="icon" type="image/png" href="favicon.ico"/>
+                    <link rel="stylesheet"
+                          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+                          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+                          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+                    <link rel="stylesheet"
+                          href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css"/>
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <!-- Theme style -->

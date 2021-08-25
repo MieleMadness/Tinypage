@@ -8,7 +8,6 @@ type subscription_t = 'free' | 'pro' | 'team' | 'enterprise' | string;
 type visibility_t = 'unpublished' | 'published' | 'published-18+';
 type visit_t = 'link' | 'page';
 type addon_t = 'theme' | 'preset' | 'plugin';
-type linktype_t = 'link' | 'social' | 'image' | 'video' | string
 
 /**
  Tables will sometimes be mapped with the schema name in front of them to prevent collisions with resolved types.
@@ -181,7 +180,7 @@ interface DbProfileMember {
 interface DbLink {
     id: string,
     profile_id: string,
-    type: linktype_t,
+    type: string,
     url: string,
     sort_order: number,
     label: string,

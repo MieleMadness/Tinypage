@@ -34,7 +34,7 @@ type AddonType = 'theme' | 'preset' | 'plugin';
 /**
  * Link type
  */
-type LinkType = 'link' | 'social' | 'image' | 'video' | string;
+type LinkType = 'link' | 'social' | 'image' | 'youtube' | string;
 
 interface User {
     id: string,

@@ -8,41 +8,104 @@
       </h1>
     </div>
 
-    <!-- Type-->
-    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
+    <!-- Type -->
+    <div v-if="intent !=='view'"
+         class="flex flex-col mb-4 justify-start w-full"
+    >
       <label class="font-semibold mb-2">Link type</label>
       <select v-model="pendingLink.type" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
       >
         <option disabled selected>Select a link type</option>
-        <option value="link">Vanilla link (default)</option>
+        <option value="link">URL (default)</option>
+        <option value="social">Social Icon</option>
+        <option value="vcard">vCard/Add To Contacts</option>
         <option value="image">Image</option>
         <option value="divider">Divider</option>
-        <option value="html">HTML snippet</option>
-        <option value="youtube">Youtube video</option>
+        <option value="text">Text</option>
+        <option value="html">HTML Snippet</option>
+        <option value="youtube">Youtube Video</option>
       </select>
     </div>
 
     <!-- Label -->
-    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
-      <label class="font-semibold mb-2">Label</label>
-      <input v-model="pendingLink.label" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. My blog" type="text"
-      />
+    <div v-if="intent !=='view' && showOption(pendingLink.type, 'label')"
+         class="flex flex-col mb-4 justify-start w-full"
+    >
+      <label v-if="pendingLink.type === 'text' || pendingLink.type === 'html'" class="font-semibold mb-2">
+        {{ pendingLink.type === 'text' ? "Text" : pendingLink.type === 'html' ? "HTML" : "Label" }}</label>
+      <label v-else class="font-semibold mb-2">Label</label>
+
+      <client-only>
+        <VueEditor v-if="pendingLink.type === 'text'"
+                   v-model="pendingLink.label"
+                   class="mb-20"
+        />
+
+        <textarea v-else-if="pendingLink.type === 'html'"
+                  v-model="pendingLink.label"
+                  class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                  placeholder="e.g. My blog" type="text"
+                  rows="6"
+        />
+
+        <input v-else v-model="pendingLink.label"
+               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+               placeholder="e.g. Anything" type="text"
+        />
+      </client-only>
     </div>
 
-    <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
+    <!-- Subtitle -->
+    <div v-if="intent!=='view' && showOption(pendingLink.type, 'subtitle')"
+         class="flex flex-col mb-4 justify-start w-full"
+    >
       <label class="font-semibold mb-2">Subtitle (optional)</label>
       <input v-model="pendingLink.subtitle" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
              placeholder="e.g. Read more about my adventures in Peru!" type="text"
       />
     </div>
-    <div v-if="intent!=='view'" class="flex flex-col mb-8 justify-start w-full">
-      <label class="font-semibold mb-2">Link URL</label>
+
+    <!-- URL -->
+    <div v-if="intent!=='view' && showOption(pendingLink.type, 'url')" class="flex flex-col mb-8 justify-start w-full">
+      <label v-if="pendingLink.type === 'link'" class="font-semibold mb-2">Link URL</label>
+      <label v-else-if="pendingLink.type === 'image'" class="font-semibold mb-2">Image URL</label>
+      <label v-else-if="pendingLink.type === 'social'" class="font-semibold mb-2">Social Link URL</label>
+      <label v-else-if="pendingLink.type === 'youtube'" class="font-semibold mb-2">Video URL</label>
+      <label v-else-if="pendingLink.type === 'vcard'" class="font-semibold mb-2">vCard URL</label>
+      <label v-else class="font-semibold mb-2">URL</label>
+
       <input v-model="pendingLink.url" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. https://janedoe.com/blog" type="url"
+             :placeholder="pendingLink.type === 'vcard' ? 'e.g. https://mywebsite.com/vcard.vcf' : 'e.g. https://exampleurl.com/example'"
+             type="url"
       />
     </div>
 
+    <!-- Icon -->
+    <div v-if="intent!=='view' && pendingLink.type === 'social'"
+         class="flex flex-col mb-8 justify-start w-full"
+    >
+      <label class="font-semibold mb-2">Social Icon</label>
+      <select v-model="socialIcon" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+      >
+        <option disabled selected>Select an icon</option>
+
+        <option value="email">Email</option>
+        <option value="text">Text</option>
+        <option value="phone">Phone</option>
+        <option value="facebook">Facebook</option>
+        <option value="twitter">Twitter</option>
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">Tiktok</option>
+        <option value="spotify">Spotify</option>
+        <option value="youtube">YouTube</option>
+        <option value="applemusic">Apple Music</option>
+        <option value="soundcloud">SoundCloud</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="twitch">Twitch</option>
+        <option value="pinterest">Pinterest</option>
+      </select>
+    </div>
+    <!-- No Code Builder-->
     <!--    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">-->
     <!--      <div-->
     <!--          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">-->
@@ -56,6 +119,7 @@
     <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
     <!--    </div>-->
 
+    <!-- Custom CSS-->
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full">
       <div
           class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
@@ -82,6 +146,8 @@
           theme="vs-dark"
       ></MonacoEditor>
     </div>
+
+    <!-- Buttons -->
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
       <div v-if="intent==='create'" class="button cursor-pointer" @click="addNewLink">Create link</div>
       <div v-if="intent==='edit'"
@@ -98,6 +164,7 @@
       </div>
     </div>
 
+    <!-- Popups and Errors-->
     <transition name="fade">
       <div
           v-if="error"
@@ -114,10 +181,33 @@
 
 <script lang="ts">
 import Vue from "vue";
+import {VueEditor} from "vue2-editor";
+
+type LinkField = "label" | "subtitle" | "url" | "icon";
+type LinkTypeOption = "link" | "social" | "vcard" | "image" | "divider" | "text" | "html" | "youtube" | string;
+
+type SocialIcon =
+    "email"
+    | "text"
+    | "phone"
+    | "facebook"
+    | "twitter"
+    | "instagram"
+    | "tiktok"
+    | "spotify"
+    | "youtube"
+    | "applemusic"
+    | "soundcloud"
+    | "linkedin"
+    | "twitch"
+    | "pinterest"
+    | undefined;
 
 export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
+
+  components: {VueEditor},
 
   head() {
     return {
@@ -175,6 +265,8 @@ export default Vue.extend({
 
       customCss: null as string | null | undefined,
 
+      socialIcon: undefined as SocialIcon,
+
       noCode: {
         divBreakColor: ''
       },
@@ -217,9 +309,16 @@ export default Vue.extend({
       console.log('Error getting user data');
       console.log(err);
     }
+
+    this.$nextTick(() => {
+      this.loadTextEditor();
+    });
   },
 
   methods: {
+    async loadTextEditor() {
+
+    },
     async getUserData() {
       try {
         this.user = await this.$axios.$post('/user', {
@@ -343,6 +442,72 @@ export default Vue.extend({
       };
 
       //this.openModal('edit');
+    },
+
+    showOption(linkType: LinkTypeOption, field: LinkField): boolean {
+      switch (linkType) {
+        case "link":
+          switch (field) {
+            case "label":
+            case "subtitle":
+            case "url":
+              return true;
+          }
+          break;
+
+        case "social":
+          switch (field) {
+            case "icon":
+            case "url":
+              return true;
+          }
+          break;
+
+        case "vcard":
+          switch (field) {
+            case "label":
+            case "url":
+              return true;
+          }
+          break;
+
+        case "image":
+          switch (field) {
+            case "url":
+              return true;
+          }
+          break;
+
+        case "divider":
+          switch (field) {
+            case "label":
+              return true;
+          }
+          break;
+
+        case "text":
+          switch (field) {
+            case "label":
+              return true;
+          }
+          break;
+
+        case "html":
+          switch (field) {
+            case "label":
+              return true;
+          }
+          break;
+
+        case "youtube":
+          switch (field) {
+            case "url":
+              return true;
+          }
+          break;
+      }
+
+      return false;
     },
 
     /**

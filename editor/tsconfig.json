@@ -30,7 +30,8 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/axios",
-      "cookie-universal-nuxt"
+      "cookie-universal-nuxt",
+      "@nuxt/vue-app"
     ],
     "typeRoots": [
       "node_modules/@types",

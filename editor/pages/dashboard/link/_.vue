@@ -1,7 +1,7 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/Pencil.svg"/>
+      <img class="w-8" src="/icons/Pencil.svg"/>
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         <span v-if="intent==='create'">Create link</span>
         <span v-if="intent==='edit'">Edit link</span>
@@ -41,12 +41,18 @@
                    class="mb-20"
         />
 
-        <textarea v-else-if="pendingLink.type === 'html'"
-                  v-model="pendingLink.label"
-                  class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-                  placeholder="e.g. My blog" type="text"
-                  rows="6"
-        />
+        <MonacoEditor
+            v-else-if="pendingLink.type === 'html'"
+            v-model="pendingLink.label"
+            :options="{
+                  extraEditorClassName: 'rounded overflow-hidden mb-2',
+                  autoIndent: 'full',
+                  autoClosingQuotes: true,
+                }"
+            height="350"
+            language="html"
+            theme="vs-dark"
+        ></MonacoEditor>
 
         <input v-else v-model="pendingLink.label"
                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
@@ -134,17 +140,19 @@
         >Need help? Read our
           documentation</a>
       </div>
-      <MonacoEditor
-          v-model="customCss"
-          :options="{
+      <client-only>
+        <MonacoEditor
+            v-model="customCss"
+            :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
-          height="350"
-          language="css"
-          theme="vs-dark"
-      ></MonacoEditor>
+            height="350"
+            language="css"
+            theme="vs-dark"
+        ></MonacoEditor>
+      </client-only>
     </div>
 
     <!-- Buttons -->
@@ -170,7 +178,7 @@
           v-if="error"
           class="flex flex-row p-2 mb-4 bg-red-300 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
-        <img alt="caution" src="/caution.svg" style="width: 12px;">
+        <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
           {{ error }}
         </div>
@@ -181,10 +189,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {VueEditor} from "vue2-editor";
 
 type LinkField = "label" | "subtitle" | "url" | "icon";
-type LinkTypeOption = "link" | "social" | "vcard" | "image" | "divider" | "text" | "html" | "youtube" | string;
 
 type SocialIcon =
     "email"
@@ -206,8 +212,6 @@ type SocialIcon =
 export default Vue.extend({
   layout: 'dashboard',
   middleware: 'authenticated',
-
-  components: {VueEditor},
 
   head() {
     return {
@@ -263,6 +267,8 @@ export default Vue.extend({
       error: '',
       intent: '',
 
+      isLoaded: false,
+
       customCss: null as string | null | undefined,
 
       socialIcon: undefined as SocialIcon,
@@ -309,16 +315,9 @@ export default Vue.extend({
       console.log('Error getting user data');
       console.log(err);
     }
-
-    this.$nextTick(() => {
-      this.loadTextEditor();
-    });
   },
 
   methods: {
-    async loadTextEditor() {
-
-    },
     async getUserData() {
       try {
         this.user = await this.$axios.$post('/user', {
@@ -444,7 +443,7 @@ export default Vue.extend({
       //this.openModal('edit');
     },
 
-    showOption(linkType: LinkTypeOption, field: LinkField): boolean {
+    showOption(linkType: LinkType, field: LinkField): boolean {
       switch (linkType) {
         case "link":
           switch (field) {

@@ -86,6 +86,10 @@ export default {
         {
             src: '~plugins/monaco.js',
             ssr: false
+        },
+        {
+            src: '~/plugins/vue-editor.js',
+            ssr: false
         }
     ],
     /*
@@ -169,7 +173,7 @@ export default {
                     '!goToDefinitionMouse',
                     '!referenceSearch'
                 ],
-                languages: ['css', 'html'],
+                languages: ['css', 'html', 'javascript'],
             })
         ],
         extend(config, ctx) {

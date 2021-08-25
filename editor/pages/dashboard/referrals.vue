@@ -74,7 +74,7 @@
           <div
             v-if="referral.status === 'upgraded'"
             class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
-          ><img class="w-4 mr-1" src="/Star.svg">upgraded!
+          ><img class="w-4 mr-1" src="/icons/Star.svg">upgraded!
           </div>
         </div>
       </div>

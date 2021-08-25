@@ -13,7 +13,7 @@
         v-if="error"
         class="flex flex-row p-2 mt-4 mb-2 bg-orange-200 text-orange-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
-        <img alt="caution" src="/caution.svg" style="width: 12px;">
+        <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
           {{ error }}
         </div>

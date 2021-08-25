@@ -47,18 +47,20 @@
         >Need help? Read our
           documentation</a>
       </div>
-      <MonacoEditor
-          v-model="customHtml"
-          :options="{
+      <client-only>
+        <MonacoEditor
+            v-model="customHtml"
+            :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
-          height="350"
-          language="html"
-          theme="vs-dark"
-      />
+            height="350"
+            language="html"
+            theme="vs-dark"
+        />
+      </client-only>
       <button
           class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
@@ -82,18 +84,20 @@
         >Need help? Read our
           documentation</a>
       </div>
-      <MonacoEditor
-          v-model="editorCss"
-          :options="{
+      <client-only>
+        <MonacoEditor
+            v-model="editorCss"
+            :options="{
                   extraEditorClassName: 'rounded overflow-hidden',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                   readOnly: (modalIntent === 'view'),
                 }"
-          height="350"
-          language="css"
-          theme="vs-dark"
-      />
+            height="350"
+            language="css"
+            theme="vs-dark"
+        />
+      </client-only>
       <button
           class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"

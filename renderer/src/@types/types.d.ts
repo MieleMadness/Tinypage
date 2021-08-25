@@ -28,7 +28,7 @@ type AddonType = 'theme' | 'preset' | 'plugin';
 /**
  * Link type
  */
-type LinkType = 'link' | 'social' | 'image' | 'youtube' | string;
+type LinkType = "link" | "social" | "vcard" | "image" | "divider" | "text" | "html" | "youtube" | string;
 
 interface User {
     id: string,

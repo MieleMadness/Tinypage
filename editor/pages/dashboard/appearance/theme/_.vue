@@ -44,17 +44,19 @@
             target="_blank"
         >Need help? Read our documentation</a>
       </div>
-      <MonacoEditor
-          v-model="theme.customHtml"
-          :options="{
+      <client-only>
+        <MonacoEditor
+            v-model="theme.customHtml"
+            :options="{
                     extraEditorClassName: 'rounded overflow-hidden mb-2',
                     autoIndent: 'full',
                     autoClosingQuotes: true,
                     }"
-          height="350"
-          language="html"
-          theme="vs-dark"
-      />
+            height="350"
+            language="html"
+            theme="vs-dark"
+        />
+      </client-only>
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full">
       <div
@@ -69,17 +71,19 @@
             target="_blank"
         >Need help? Read our documentation</a>
       </div>
-      <MonacoEditor
-          v-model="editorCss"
-          :options="{
+      <client-only>
+        <MonacoEditor
+            v-model="editorCss"
+            :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
                 }"
-          height="350"
-          language="css"
-          theme="vs-dark"
-      />
+            height="350"
+            language="css"
+            theme="vs-dark"
+        />
+      </client-only>
     </div>
 
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
@@ -181,8 +185,9 @@ export default Vue.extend({
           if (this.themes[i].id === this.id) {
             this.theme = this.themes[i];
 
-            if (!this.theme)
+            if (!this.theme) {
               continue;
+            }
 
             if (!this.theme.colors) {
               this.theme.colors = {

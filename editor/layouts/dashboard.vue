@@ -15,7 +15,7 @@
       </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
       <!--           style="border: solid 2px rgba(0,0,0,.15);">-->
-      <!--        <img src="/Compass.svg" style="width: 16px;height:auto;"/>-->
+      <!--        <img src="/icons/Compass.svg" style="width: 16px;height:auto;"/>-->
       <!--        <input type="text" class="font-bold flex-grow flex-1 text-sm ml-2" style="background:transparent;"-->
       <!--               placeholder="Search pages, guides, and documentation..."/>-->
       <!--      </div>-->
@@ -141,15 +141,15 @@
 
             <div class="flex flex-col">
               <n-link :class="getActiveStyles('dashboard')" to="/dashboard/">
-                <img src="/House.svg" style="width:24px;height:24px;">
+                <img src="/icons/House.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Links</span>
               </n-link>
               <n-link :class="getActiveStyles('dashboard-analytics')" to="/dashboard/analytics">
-                <img src="/Rocket.svg" style="width:24px;height:24px;">
+                <img src="/icons/Rocket.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Analytics</span>
               </n-link>
               <n-link :class="getActiveStyles('dashboard-appearance')" to="/dashboard/appearance">
-                <img src="/Rainbow.svg" style="width:24px;height:24px;">
+                <img src="/icons/Rainbow.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Appearance</span>
               </n-link>
               <!--              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">-->
@@ -162,7 +162,7 @@
                   :href="leaderboard"
                   target="_blank"
               >
-                <img src="/Fire.svg" style="width:24px;height:24px;">
+                <img src="/icons/Fire.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Leaderboard</span>
               </a>
               <!-- <n-link to="/dashboard/discover" :class="getActiveStyles('dashboard-discover')">-->
@@ -171,7 +171,7 @@
               <!-- </n-link>-->
 
               <a v-if="support" :class="getActiveStyles('dashboard-support')" :href="support" target="_blank">
-                <img src="/Cowboy hat face.svg" style="width:24px;height:24px;">
+                <img src="/icons/Cowboy hat face.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Contact support</span>
               </a>
               <!--              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">-->
@@ -179,11 +179,11 @@
               <!--                <span class="ml-4 font-extrabold">Referrals</span>-->
               <!--              </n-link>-->
               <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
-                <img src="/Settings.svg" style="width:24px;height:24px;">
+                <img src="/icons/Settings.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Settings</span>
               </n-link>
               <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
-                <img src="/Person.svg" style="width:24px;height:24px;"/>
+                <img src="/icons/Person.svg" style="width:24px;height:24px;"/>
                 <span class="ml-4 font-extrabold">Admin Settings</span>
               </n-link>
               <!--              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">-->
@@ -191,7 +191,7 @@
               <!--                <span class="ml-4 font-extrabold">Enterprise Settings</span>-->
               <!--              </n-link>-->
               <n-link :class="getActiveStyles('logout')" to="/logout">
-                <img src="/Waving hand.svg" style="width:24px;height:24px;">
+                <img src="/icons/Waving hand.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Logout</span>
               </n-link>
             </div>

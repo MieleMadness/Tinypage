@@ -1,7 +1,7 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/Settings.svg">
+      <img class="w-8" src="/icons/Settings.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         Site settings
       </h1>
@@ -12,7 +12,7 @@
           v-if="error"
           class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
         >
-          <img alt="caution" src="/caution.svg" style="width: 12px;">
+          <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
           <div class="flex flex-col ml-2">
             {{ error }}
           </div>

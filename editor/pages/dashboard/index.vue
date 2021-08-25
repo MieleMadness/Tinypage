@@ -1,40 +1,41 @@
 <template>
   <section class="flex flex-col items-center h-full  flex-shrink-0">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img alt="House icon" class="w-8" src="/House.svg">
+      <img alt="House icon" class="w-8" src="/icons/House.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
         Site links
       </h1>
     </div>
     <div class="flex flex-col max-w-2xl items-center justify-center w-full flex-shrink-0">
       <div
-        v-if="!links || links.length === 0"
-        class="flex flex-row p-3 mt-4 mb-6 bg-orange-200 text-orange-600 rounded-2xl justify-center items-center text-sm text-center w-full border-3 text-lg font-semibold border-orange-300 shadow-sm"
+          v-if="!links || links.length === 0"
+          class="flex flex-row p-3 mt-4 mb-6 bg-orange-200 text-orange-600 rounded-2xl justify-center items-center text-sm text-center w-full border-3 text-lg font-semibold border-orange-300 shadow-sm"
       >
         This micro-site doesn't have any links to display.<br>Click the button below to create one! 👇
       </div>
       <n-link
-        id="add-new-link-btn"
-        class="button"
-        to="/dashboard/link/"
-        type="button"
+          id="add-new-link-btn"
+          class="button"
+          to="/dashboard/link/"
+          type="button"
       >
         Add new link
       </n-link>
 
       <draggable
-        v-if="links && links.length > 0"
-        v-model="sortedLinks"
-        class="flex flex-col w-full flex-shrink-0"
-        @change="updateLinkOrder"
+          v-if="links && links.length > 0"
+          v-model="sortedLinks"
+          class="flex flex-col w-full flex-shrink-0"
+          @change="updateLinkOrder"
       >
         <n-link
-          v-for="link in sortedLinks"
-          :key="link.id"
-          :to="'/dashboard/link/' + link.id"
-          class="flex flex-col flex-shrink-0 text-sm text-black p-8 bg-white text-center font-medium items-center justify-center rounded-2xl w-full mb-4 opacity-90 hover:opacity-100 cursor-pointer"
-          style="box-shadow: inset 0 0 0 3px rgba(0,0,0,.05), 0 10px 25px rgba(83,83,267,.1);"
+            v-for="link in sortedLinks"
+            :key="link.id"
+            :to="'/dashboard/link/' + link.id"
+            class="flex flex-col flex-shrink-0 text-sm text-black p-8 bg-white text-center font-medium items-center justify-center rounded-2xl w-full mb-4 opacity-90 hover:opacity-100 cursor-pointer"
+            style="box-shadow: inset 0 0 0 3px rgba(0,0,0,.05), 0 10px 25px rgba(83,83,267,.1);"
         >
+          <span class="sl-editor-link-icon">{{ getLinkTypeIcon() }}</span>
           <span class="text-2xl font-bold">{{ link.label }}</span>
           <span v-if="link.subtitle" class="text-xl font-bold opacity-70 sl-subtitle mt-1">
             {{ link.subtitle }}
@@ -45,10 +46,10 @@
 
     <transition name="fade">
       <div
-        v-if="modalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="closeModal"
+          v-if="modalActive"
+          class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="closeModal"
       >
 
         <div class="flex flex-col bg-blackish shadow rounded-lg overflow-hidden w-full max-w-xl" @click.stop>
@@ -71,10 +72,10 @@
 
             <transition name="fade">
               <div
-                v-if="error"
-                class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-lg w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
+                  v-if="error"
+                  class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-lg w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
               >
-                <img alt="caution" src="/caution.svg" style="width: 12px;">
+                <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
                 <div class="flex flex-col ml-2">
                   {{ error }}
                 </div>
@@ -84,85 +85,85 @@
             <div class="flex flex-col mb-4">
               <label class="font-semibold text-base text-black" for="label">Label</label>
               <input
-                id="label"
-                v-model="pendingLink.label"
-                class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
-                placeholder="e.g. My Calendar"
-                type="text"
+                  id="label"
+                  v-model="pendingLink.label"
+                  class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
+                  placeholder="e.g. My Calendar"
+                  type="text"
               >
             </div>
 
             <div class="flex flex-col mb-4">
               <label class="font-semibold text-base text-black" for="subtitle">Subtitle (optional)</label>
               <input
-                id="subtitle"
-                v-model="pendingLink.subtitle"
-                class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
-                placeholder="e.g. A list of all my events and available times"
-                type="text"
+                  id="subtitle"
+                  v-model="pendingLink.subtitle"
+                  class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
+                  placeholder="e.g. A list of all my events and available times"
+                  type="text"
               >
             </div>
 
             <div class="flex flex-col mb-4">
               <label class="font-semibold text-base text-black" for="link">Link URL</label>
               <input
-                id="link"
-                v-model="pendingLink.url"
-                class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
-                placeholder="e.g. Jane Doe"
-                type="text"
+                  id="link"
+                  v-model="pendingLink.url"
+                  class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
+                  placeholder="e.g. Jane Doe"
+                  type="text"
               >
             </div>
 
             <div class="flex flex-col mb-4">
               <label class="font-semibold text-base text-black" for="custom_css">Custom CSS</label>
               <textarea
-                id="custom_css"
-                v-model="pendingLink.customCss"
-                class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
-                placeholder="e.g. background: #5353EC;"
-                rows="3"
+                  id="custom_css"
+                  v-model="pendingLink.customCss"
+                  class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
+                  placeholder="e.g. background: #5353EC;"
+                  rows="3"
               />
             </div>
 
           </form>
 
           <div
-            v-if="modalIntent === 'create'"
-            class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
+              v-if="modalIntent === 'create'"
+              class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
           >
             <button
-              id="save-and-add-link-btn"
-              class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
-              type="button"
-              @click="saveAndClose"
+                id="save-and-add-link-btn"
+                class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                type="button"
+                @click="saveAndClose"
             >
               Save and add link
             </button>
             <button
-              class="inline-flex p-3 text-sm text-black text-center bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold w-auto max-w-xs justify-center align-center"
-              type="button"
-              @click="saveAndContinue"
+                class="inline-flex p-3 text-sm text-black text-center bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold w-auto max-w-xs justify-center align-center"
+                type="button"
+                @click="saveAndContinue"
             >
               Save and continue
             </button>
           </div>
 
           <div
-            v-if="modalIntent === 'edit'"
-            class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
+              v-if="modalIntent === 'edit'"
+              class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
           >
             <button
-              class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
-              type="button"
-              @click="saveLinkChanges"
+                class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                type="button"
+                @click="saveLinkChanges"
             >
               Save changes
             </button>
             <button
-              class="inline-flex p-3 text-sm text-black text-center bg-red-500 hover:bg-red-600 rounded-lg font-semibold w-auto max-w-xs justify-center align-center"
-              type="button"
-              @click="deleteLink"
+                class="inline-flex p-3 text-sm text-black text-center bg-red-500 hover:bg-red-600 rounded-lg font-semibold w-auto max-w-xs justify-center align-center"
+                type="button"
+                @click="deleteLink"
             >
               Delete link
             </button>
@@ -438,6 +439,28 @@ export default Vue.extend({
       } catch (err) {
         console.log(err);
       }
+    },
+
+    getLinkTypeIcon(type: LinkType) {
+      switch (type) {
+        case "link":
+          //language=HTML
+          return "";
+        case "social":
+
+        case "vcard":
+
+        case "image":
+
+        case "divider":
+
+        case "text":
+
+        case "html":
+
+        case "youtube":
+
+      }
     }
   }
 });
@@ -481,5 +504,16 @@ export default Vue.extend({
 .button:focus {
   transform: scale(1);
   box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgba(83, 83, 267, .95);
+}
+
+.sl-editor-link-icon {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+
+  font-weight: bold;
+  font-size: 12px;
 }
 </style>

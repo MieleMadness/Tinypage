@@ -214,8 +214,6 @@
                 v-if="user.activeProfile.handle"
                 id="preview-frame"
                 :src="getProfilePreviewUrl()"
-                scrolling="no"
-                style="z-index:2;width: 376px;height: 813px;transform: scale(0.7) translate(-82px, -175px);top:0;left:0;position:absolute;"
                 title="Profile Preview"
             />
           </div>
@@ -487,6 +485,7 @@ export default Vue.extend({
 
       let queryParams = new URLSearchParams({
         token: token as string,
+        scrolling: "false",
         uid: new Date().toISOString() // necessary to reload the URL...
       });
 
@@ -951,4 +950,13 @@ a.nav-link svg {
   z-index: 25;
 }
 
+#preview-frame {
+  z-index: 2;
+  width: 376px;
+  height: 813px;
+  transform: scale(0.7) translate(-82px, -175px);
+  top: 0;
+  left: 0;
+  position: absolute;
+}
 </style>

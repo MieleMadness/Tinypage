@@ -6,7 +6,8 @@ import config from "./config/config";
 
 interface MicrositeRequest extends FastifyRequest {
     Querystring: {
-        token?: string;
+        token?: string,
+        scrolling: string
     };
 }
 
@@ -47,6 +48,8 @@ export class RouteHandler {
             console.log(`${chalk.cyan.bold(config.appName)}: Request received at /${handle} from ${request.ip}`);
 
             let response: AxiosResponse<{ profile: Profile, links: Link[], user: User, theme: Theme }> | undefined;
+
+            const scrolling = request.query.scrolling === undefined || request.query.scrolling === "true";
 
             try {
                 // Fetch profile from API
@@ -166,10 +169,10 @@ export class RouteHandler {
                         break;
                     case 'divider':
                         //language=HTML
-                        linkHtml += '<div class="flex flex-row items-center justify-center w-full" style="margin-bottom:.75rem">';
-                        linkHtml += '<div style="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
-                        linkHtml += '<div style="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">' + link.label + '</div>';
-                        linkHtml += '<div style="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
+                        linkHtml += '<div class="flex flex-row items-center justify-center w-full" shouldHideScrollbar="margin-bottom:.75rem">';
+                        linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
+                        linkHtml += '<div shouldHideScrollbar="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">' + link.label + '</div>';
+                        linkHtml += '<div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>';
                         linkHtml += '</div>';
                         break;
                 }
@@ -255,8 +258,30 @@ export class RouteHandler {
             if (theme.customCss === null) theme.customCss = '';
             if (theme.customHtml === null) theme.customHtml = '';
 
+            let shouldHideScrollbar = "";
+            if (!scrolling) {
+                //language=CSS
+                shouldHideScrollbar = `
+                    html {
+                        overflow: scroll;
+                        overflow-x: hidden;
+                    }
+
+                    ::-webkit-scrollbar {
+                        width: 0; /* Remove scrollbar space */
+                        background: transparent; /* Optional: just make scrollbar invisible */
+                    }
+
+                    /* Optional: show position indicator in red */
+                    ::-webkit-scrollbar-thumb {
+                        background: #FF0000;
+                    }
+                `
+            }
+
             // Send response content type to text/html
             reply.type('text/html');
+
 
             // Send response to client
             // language=HTML
@@ -511,6 +536,10 @@ export class RouteHandler {
                             box-sizing: border-box;
                             margin: 0;
                         }
+                    </style>
+
+                    <style>
+                        ${shouldHideScrollbar}
                     </style>
                 </head>
                 <body>

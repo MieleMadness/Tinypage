@@ -21,10 +21,12 @@
       <!--      </div>-->
       <!--<n-link to="/dashboard/referrals" class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight mx-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo">Refer a friend and get $10!</n-link>-->
     </div>
+
     <div class="flex flex-row items-center justify-center w-full" style="max-width:1440px;">
       <div class="flex flex-col items-center justify-center flex-shrink flex-grow">
         <div class="flex flex-col lg:flex-row w-full h-screen oveflow-x-hidden">
           <div class="flex flex-col text-black font-semibold nav justify-start">
+
             <div class="profile-bay p-4 flex flex-col items-start relative">
               <div
                   v-if="user.activeProfile.imageUrl || user.emailHash"
@@ -136,6 +138,7 @@
 
               </ul>
             </div>
+
             <div class="flex flex-col">
               <n-link :class="getActiveStyles('dashboard')" to="/dashboard/">
                 <img src="/House.svg" style="width:24px;height:24px;">

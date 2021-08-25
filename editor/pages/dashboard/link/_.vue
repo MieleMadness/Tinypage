@@ -33,7 +33,7 @@
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
       <label class="font-semibold mb-2">Subtitle (optional)</label>
       <input v-model="pendingLink.subtitle" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. Read more about my adverntures in Peru!" type="text"
+             placeholder="e.g. Read more about my adventures in Peru!" type="text"
       />
     </div>
     <div v-if="intent!=='view'" class="flex flex-col mb-8 justify-start w-full">
@@ -42,18 +42,20 @@
              placeholder="e.g. https://janedoe.com/blog" type="url"
       />
     </div>
-    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">
-      <div
-          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">
-        <h2 class="text-gray-800 font-semibold text-lg">
-          Customization
-        </h2>
-        <a href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
-           target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our
-          documentation</a>
-      </div>
-      <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
-    </div>
+
+    <!--    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">-->
+    <!--      <div-->
+    <!--          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">-->
+    <!--        <h2 class="text-gray-800 font-semibold text-lg">-->
+    <!--          Customization-->
+    <!--        </h2>-->
+    <!--        <a href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"-->
+    <!--           target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our-->
+    <!--          documentation</a>-->
+    <!--      </div>-->
+    <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
+    <!--    </div>-->
+
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full">
       <div
           class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
@@ -69,7 +71,7 @@
           documentation</a>
       </div>
       <MonacoEditor
-          v-model="editorCss"
+          v-model="customCss"
           :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
@@ -170,9 +172,13 @@ export default Vue.extend({
       user: '',
       error: '',
       intent: '',
-      // builderCssLoaded: false,
-      // builderCss: null as string | null | undefined,
-      editorCss: null as string | null | undefined,
+
+      customCss: null as string | null | undefined,
+
+      noCode: {
+        divBreakColor: ''
+      },
+
       sortedLinks: new Array<EditorLink>()
     };
   },
@@ -192,26 +198,25 @@ export default Vue.extend({
     for (let i = 0; i < this.links.length; i++) {
       if (this.links[i].id == this.id) {
         this.pendingLink = this.links[i];
-        this.editorCss = this.pendingLink.customCss;
+        this.customCss = this.pendingLink.customCss;
         break;
       }
     }
 
-    // try {
-    //   const css = this.pendingLink.customCss ?? '';
-    //   let strings = css.split('/* SL-NO-CODE */');
-    //
-    //   this.editorCss = strings[0];
-    //
-    //   if (strings.length > 1) {
-    //     this.builderCss = strings[1];
-    //   }
-    //
-    //   this.builderCssLoaded = true;
-    // } catch (err) {
-    //   console.log('Error getting user data');
-    //   console.log(err);
-    // }
+    try {
+      const css = this.pendingLink.customCss ?? '';
+      let strings = css.split('/* SL-NO-CODE */');
+
+      this.customCss = strings[0];
+
+      if (strings.length > 1) {
+        this.noCode = this.deserializeNodeCode(strings[1]);
+      }
+
+    } catch (err) {
+      console.log('Error getting user data');
+      console.log(err);
+    }
   },
 
   methods: {
@@ -225,6 +230,7 @@ export default Vue.extend({
         console.log(err);
       }
     },
+
     async getLinks() {
       try {
         this.links = await this.$axios.$post('/profile/links', {
@@ -260,6 +266,8 @@ export default Vue.extend({
 
     async saveLinkChanges() {
       try {
+        const noCodeCss = this.serializeNoCode(this.noCode);
+
         await this.$axios.$post('/link/update', {
           token: this.$store.getters['auth/getToken'],
           link: {
@@ -268,7 +276,7 @@ export default Vue.extend({
             type: this.pendingLink.type,
             subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
-            customCss: this.editorCss // + '/* SL-NO-CODE */' + this.builderCss,
+            customCss: this.customCss + '/* SL-NO-CODE */' + noCodeCss,
           }
         });
 
@@ -283,9 +291,11 @@ export default Vue.extend({
         console.log(err);
       }
     },
+
     clearErrors() {
       this.error = '';
     },
+
     async addNewLink(): Promise<boolean> {
       if (!this.pendingLink.label) {
         this.error = 'Link label required';
@@ -318,6 +328,7 @@ export default Vue.extend({
         return true;
       }
     },
+
     editLink(link: EditorLink) {
       //this.clearPending();
 
@@ -333,6 +344,22 @@ export default Vue.extend({
 
       //this.openModal('edit');
     },
+
+    /**
+     * Converts a "no-code" object to CSS.
+     * @param object
+     */
+    serializeNoCode(object: any): string {
+      return '';
+    },
+
+    /**
+     * Converts a "no-code" CSS string to an object.
+     * @param code
+     */
+    deserializeNodeCode(code: string): any | null {
+      return null;
+    }
   }
 });
 </script>

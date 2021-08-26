@@ -227,7 +227,7 @@
           style="border-width:3px;border-style:solid;"
           @click="assignGoogleAccount()"
         >
-          <img class="w-5 mr-4" src="/google-icon.png">
+          <img class="w-5 mr-4" src="/icons/google-icon.png">
           Link with Google
         </a>
         <!--        <a-->
@@ -235,7 +235,7 @@
         <!--          style="border-width:3px;border-style:solid;"-->
         <!--          @click="assignGitHubAccount()"-->
         <!--        >-->
-        <!--          <img src="/google-icon.png" class="w-5 mr-4">-->
+        <!--          <img src="/icons/google-icon.png" class="w-5 mr-4">-->
         <!--          Link with GitHub-->
         <!--        </a>-->
       </div>

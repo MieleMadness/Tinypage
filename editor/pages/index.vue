@@ -15,7 +15,7 @@
           style="border-width:3px;border-style:solid;"
           @click="attemptGoogleLogin"
         >
-          <img class="w-5 mr-4" src="/google-icon.png">
+          <img class="w-5 mr-4" src="/icons/google-icon.png">
           Sign in with Google
         </a>
         <div class="w-full flex flex-row items-center justify-center opacity-60 my-4">

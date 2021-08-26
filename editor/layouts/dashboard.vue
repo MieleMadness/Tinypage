@@ -55,17 +55,20 @@
                       {{ rendererDomain }}/{{ user.activeProfile.handle }}
                     </span>
                   </div>
-                  <div
-                      v-if="user.activeProfile.handle"
-                      class="py-1 px-2 mb-1 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight mx-2 cursor-pointer grow"
-                      @click="copyUrl"
-                  >copy
-                  </div>
-                  <div
-                      class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
-                      style="color:#6c6c6c;background:rgba(108,108,108,.1);"
-                      @click="toggleProfileSelect"
-                  >switch profiles
+
+                  <div class="flex flex-row items-center justify-start flex-wrap">
+                    <div
+                        v-if="user.activeProfile.handle"
+                        class="py-1 px-2 mb-1 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
+                        @click="copyUrl"
+                    >copy
+                    </div>
+                    <div
+                        class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
+                        style="color:#6c6c6c;background:rgba(108,108,108,.1);"
+                        @click="toggleProfileSelect"
+                    >switch profiles
+                    </div>
                   </div>
 
                   <div v-if="error" class="error">

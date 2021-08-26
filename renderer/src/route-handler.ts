@@ -551,13 +551,13 @@ export class RouteHandler {
                     <!-- Meta -->
                     <meta name="title" content="${profile.headline} - ${config.appName}">
                     <meta name="description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                          content="${profile.subtitle} | Powered by ${config.appName}"
                     >
 
                     <!-- Open Graph-->
                     <meta property="og:title" content="${profile.headline} - ${config.appName}">
                     <meta property="og:description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                          content="${profile.subtitle} | Powered by ${config.appName}"
                     >
                     <meta property="og:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta property="og:type" content="website">
@@ -565,7 +565,7 @@ export class RouteHandler {
                     <!-- Twitter Cards -->
                     <meta name="twitter:title" content="${profile.headline} - ${config.appName}">
                     <meta name="twitter:description"
-                          content="${profile.subtitle} | Powered by ${config.appName}, the open-source micro-site platform."
+                          content="${profile.subtitle} | Powered by ${config.appName}"
                     >
                     <meta name="twitter:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta name="twitter:card" content="summary_large_image">

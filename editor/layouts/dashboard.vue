@@ -137,6 +137,24 @@
                 </li>
 
               </ul>
+
+
+              <!-- Zoom Level -->
+              <div
+                  class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight"
+                  style="color:#6c6c6c;background:rgba(108,108,108,.1);"
+              >
+                <label class="mr-2">zoom</label>
+                <select v-model="zoomLevel" @change="updateZoomLevel">
+                  <option value="1.0" selected>100%</option>
+                  <option value="1.25">125%</option>
+                  <option value="1.5">150%</option>
+                  <option value="1.75">175%</option>
+                  <option value="2">200%</option>
+                </select>
+
+              </div>
+
             </div>
 
             <div class="flex flex-col">
@@ -348,6 +366,8 @@ export default Vue.extend({
 
       error: '',
       errorIntervalHandler: undefined as any,
+
+      zoomLevel: "1.0",
       // usetiful_script
       // (function (w, d, s) {
       //   const a = d.getElementsByTagName('head')[0];
@@ -438,11 +458,19 @@ export default Vue.extend({
         iFrame.src = this.getProfilePreviewUrl();
       }
     });
+
+    this.zoomLevel = localStorage.getItem("userZoom") ?? "1.0";
   },
 
   methods: {
     attemptLogout() {
       this.$nuxt.$router.push('/logout');
+    },
+
+    updateZoomLevel() {
+      // Doesn't work on all browsers... oh well.
+      document.body.style.zoom = this.zoomLevel;
+      localStorage.setItem("userZoom", this.zoomLevel);
     },
 
     async createNewProfile() {
@@ -571,7 +599,6 @@ export default Vue.extend({
     async getUserData() {
       try {
         const token = this.$store.getters['auth/getToken'];
-
 
         const userResponse = await this.$axios.$post('/user', {
           token

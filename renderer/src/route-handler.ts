@@ -15,22 +15,22 @@ interface MicrositeRequest extends FastifyRequest {
  * Creates all the routes.
  */
 export class RouteHandler {
-    icon: Buffer;
     fastify: FastifyInstance;
 
     constructor(fastify: FastifyInstance) {
-        this.icon = fs.readFileSync(`${__dirname}/../favicon.png`);
         this.fastify = fastify;
 
         fastify.setNotFoundHandler((request, reply) => {
             reply.type('text/html').status(404);
+
+            //language=HTML
             reply.send(`
                 <html lang="">
                     <head>
                         <title>${config.appName} Web Client</title>
                         <meta charset="UTF-8">
-                        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-                        <link rel="icon" type="image/png" href="favicon.ico"/>
+                        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+                        <link rel="icon" type="image/png" href="/favicon.png"/>
                     </head>
                     <body>
                         <div class="w-full h-full flex flex-col items-center justify-center">
@@ -56,15 +56,6 @@ export class RouteHandler {
      * Register routes
      */
     registerRoutes() {
-        /*
-         Favicon route
-         Route /favicon.*
-        */
-        this.fastify.get("/favicon.*", async (request: FastifyRequest, reply: FastifyReply) => {
-            reply.header('Content-Type', 'image/png');
-            reply.send(this.icon);
-        });
-
         /*
          Declare site route
          Route /*
@@ -106,8 +97,8 @@ export class RouteHandler {
                     <head>
                         <title>${config.appName} Web Client</title>
                         <meta charset="UTF-8">
-                        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-                        <link rel="icon" type="image/png" href="favicon.ico"/>
+                        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+                        <link rel="icon" type="image/png" href="/favicon.png"/>
                     </head>
                     <body>
                         <div class="w-full h-full flex flex-col items-center justify-center">
@@ -329,40 +320,6 @@ export class RouteHandler {
                         break;
                     }
 
-                    case 'youtube': {
-                        let css = link.customCss ?? '';
-
-                        let watchId = link.url.match(/v=([^&]*)/);
-                        if (watchId && watchId.length > 0 && watchId[1]) {
-                            //language=HTML
-                            linkHtml += `
-                                <style>.embed-container {
-                                    border-radius: 4px;
-                                    width: 100%;
-                                    position: relative;
-                                    padding-bottom: 56.25%;
-                                    height: 0;
-                                    overflow: hidden;
-                                    max-width: 100%;
-                                }
-
-                                .embed-container iframe, .embed-container object, .embed-container embed {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                }</style>
-                                <div class="embed-container" style="margin-bottom:.75rem;${css}">
-                                    <iframe src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
-                                            frameborder="0" allowfullscreen
-                                    ></iframe>
-                                </div>
-                            `;
-                        }
-                    }
-                        break;
-
                     case 'divider': {
                         if (!link.metadata?.dividerSettings)
                             break;
@@ -397,6 +354,73 @@ export class RouteHandler {
                         }
                         break;
                     }
+                    case "text": {
+                        let text = link.subtitle;
+
+                        let css = link.customCss ?? '';
+
+                        //language=HTML
+                        linkHtml += `
+                            <div style="overflow: hidden; ${css}"
+                                 class="rounded-2xl p-2 w-full font-medium mb-3"
+                            >
+                                <div class="ql-editor">
+                                    ${text}
+                                </div>
+                            </div>
+                        `;
+
+                        break;
+                    }
+                    case "html": {
+                        let text = link.subtitle;
+
+                        let css = link.customCss ?? '';
+
+                        //language=HTML
+                        linkHtml += `
+                            <div style="overflow: hidden; ${css}"
+                                 class="rounded-2xl p-4 w-full mb-3"
+                            >
+                                ${text}
+                            </div>
+                        `;
+
+                        break;
+                    }
+                    case 'youtube': {
+                        let css = link.customCss ?? '';
+
+                        let watchId = link.url.match(/v=([^&]*)/);
+                        if (watchId && watchId.length > 0 && watchId[1]) {
+                            //language=HTML
+                            linkHtml += `
+                                <style>.embed-container {
+                                    border-radius: 4px;
+                                    width: 100%;
+                                    position: relative;
+                                    padding-bottom: 56.25%;
+                                    height: 0;
+                                    overflow: hidden;
+                                    max-width: 100%;
+                                }
+
+                                .embed-container iframe, .embed-container object, .embed-container embed {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                }</style>
+                                <div class="embed-container" style="margin-bottom:.75rem;${css}">
+                                    <iframe src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
+                                            frameborder="0" allowfullscreen
+                                    ></iframe>
+                                </div>
+                            `;
+                        }
+                    }
+                        break;
                 }
             }
 
@@ -546,8 +570,16 @@ export class RouteHandler {
                     <meta name="twitter:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta name="twitter:card" content="summary_large_image">
 
-                    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-                    <link rel="icon" type="image/png" href="favicon.ico"/>
+                    <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+                    <link rel="icon" type="image/png" href="/favicon.png"/>
+
+                    <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.core.css"/>
+
+                    <link rel="stylesheet"
+                          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css"
+                          integrity="sha512-y6ZMKFUQrn+UUEVoqYe8ApScqbjuhjqzTuwUMEGMDuhS2niI8KA3vhH2LenreqJXQS+iIXVTRL2iaNfJbDNA1Q=="
+                          crossorigin="anonymous" referrerpolicy="no-referrer"
+                    />
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <!-- Theme style -->
@@ -557,153 +589,6 @@ export class RouteHandler {
                     <!-- Personal styles -->
                     <style>
                         ${profile.customCss}
-                    </style>
-                    <style>
-                        html {
-                            font-size: 16px;
-                        }
-
-                        .w-full {
-                            width: 100%;
-                        }
-
-                        .w-screen {
-                            width: 100vw;
-                        }
-
-                        .min-h-screen {
-                            min-height: 100vh;
-                        }
-
-                        .bg-gray-100 {
-                            background-color: rgba(243, 244, 246, 1);
-                        }
-
-                        .relative {
-                            position: relative;
-                        }
-
-                        .flex {
-                            display: flex;
-                        }
-
-                        .flex-col {
-                            flex-direction: column;
-                        }
-
-                        .items-center {
-                            align-items: center;
-                        }
-
-                        .justify-center {
-                            justify-content: center;
-                        }
-
-                        .text-center {
-                            text-align: center;
-                        }
-
-                        .mt-1 {
-                            margin-top: .25rem;
-                        }
-
-                        .mb-2 {
-                            margin-bottom: .5rem;
-                        }
-
-                        .mt-4 {
-                            margin-top: 1rem;
-                        }
-
-                        .mb-4 {
-                            margin-bottom: 1rem;
-                        }
-
-                        .p-4 {
-                            padding: 1rem;
-                        }
-
-                        .p-6 {
-                            padding: 1.5rem;
-                        }
-
-                        .pt-8 {
-                            padding-top: 2rem;
-                        }
-
-                        .pb-8 {
-                            padding-bottom: 2rem;
-                        }
-
-                        .max-w-sm {
-                            max-width: 24rem;
-                        }
-
-                        .shadow {
-                            0 1px 2px 0 rgba(0, 0, 0, 0.06);
-                            box-shadow: var(--tw-ring-offset-shadow, (0 0 #0000)), var(--tw-ring-shadow, (0 0 #0000)), 0 1 px 3 px 0 rgba(0, 0, 0, 0.1);
-                        }
-
-                        .text-black {
-                            color: #000;
-                        }
-
-                        .font-medium {
-                            font-weight: 500;
-                        }
-
-                        .font-semibold {
-                            font-weight: 600;
-                        }
-
-                        .text-sm {
-                            font-size: 0.875rem;
-                            line-height: 1.25rem;
-                        }
-
-                        .text-2xl {
-                            font-size: 1.5rem;
-                            line-height: 2rem;
-                        }
-
-                        * {
-                            font-size: 1rem;
-                            line-height: 1.5rem;
-                            font-weight: 400;
-                        }
-
-                        .rounded-2xl {
-                            border-radius: 1rem;
-                        }
-
-                        .text-gray-600 {
-                            color: rgba(75, 85, 99, 1);
-                        }
-
-                        .text-gray-700 {
-                            color: rgba(55, 65, 81, 1);
-                        }
-
-                        .text-indigo-600 {
-                            color: #5850ec;
-                        }
-
-                        .mx-auto {
-                            margin-left: auto;
-                            margin-right: auto;
-                        }
-
-                        .sl-item-parent {
-                            text-decoration: none;
-                        }
-
-                        .hover-underline {
-                            text-decoration: none;
-                        }
-
-                        .hover-underline:hover {
-                            text-decoration: underline;
-                        }
                     </style>
                     <style>
                         .nc-avatar {
@@ -735,7 +620,13 @@ export class RouteHandler {
                         body {
                             overflow-x: hidden;
                         }
+
+                        /*Override ql-editor settings*/
+                        .ql-editor {
+                            white-space: initial;
+                        }
                     </style>
+
                     <style>
                         html, * {
                             font-family: 'Inter',

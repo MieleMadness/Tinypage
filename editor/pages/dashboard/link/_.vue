@@ -382,9 +382,11 @@ export default Vue.extend({
     if (this.pendingLink.type === 'divider') {
       try {
         this.dividerSettings = this.pendingLink.metadata?.dividerSettings ?? {};
+
         if (!this.dividerSettings.color) {
-          this.dividerSettings.color = "#00000000";
+          this.dividerSettings.color = "#000000FF";
         }
+
         if (!this.dividerSettings.fontSize) {
           this.dividerSettings.fontSize = 16;
         }
@@ -515,11 +517,13 @@ export default Vue.extend({
         const response = await this.$axios.post('/link/create', {
           token: this.$store.getters['auth/getToken'],
           link: {
+            id: this.pendingLink.id,
             label: this.pendingLink.label,
-            subtitle: this.pendingLink.subtitle,
             type: this.pendingLink.type,
+            subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
-            customCss: this.pendingLink.customCss || ''
+            customCss: this.customCss || '',
+            metadata: this.pendingLink.metadata
           }
         });
 
@@ -536,22 +540,6 @@ export default Vue.extend({
         console.log(err);
         return true;
       }
-    },
-
-    editLink(link: EditorLink) {
-      //this.clearPending();
-
-      this.pendingLink = {
-        id: link.id,
-        sortOrder: link.sortOrder,
-        label: link.label,
-        type: link.type,
-        subtitle: link.subtitle,
-        customCss: link.customCss,
-        url: link.url
-      };
-
-      //this.openModal('edit');
     },
 
     addSocialIcon() {

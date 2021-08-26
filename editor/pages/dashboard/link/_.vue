@@ -81,7 +81,7 @@
       <div v-show="pendingLink.type === 'divider'">
         <input
             v-model="dividerSettings.color"
-            class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+            class="p-3 mb-5 w-full rounded-lg bg-white text-sm text-gray-700"
             placeholder="e.g. #FFF"
             :data-jscolor="jsColorOptions"
         >
@@ -107,9 +107,23 @@
       </div>
 
       <div v-for="(siSettings, index) of socialIcons" class="p-4 m-2 border-2 rounded-2xl">
-        <div>
-          <label class="font-semibold mb-2">Icon {{ index + 1 }}</label>
+        <div class="flex flex-row justify-start items-center">
+          <label class="font-semibold align-middle mr-5">Icon {{ index + 1 }}</label>
 
+          <button
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-indigo-500 mb-4 lg:mb-0 cursor-pointer"
+              style="align-self: flex-end"
+              @click="moveSocialIcon(index, 'up')"
+          >
+            <img src="/caret-up-outline.svg" style="width: 20px; height: 20px; filter: invert()" alt="move up"/>
+          </button>
+          <button
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-indigo-500 mb-4 lg:mb-0 cursor-pointer"
+              style="align-self: flex-end"
+              @click="moveSocialIcon(index, 'down')"
+          >
+            <img src="/caret-down-outline.svg" style="width: 20px; height: 20px; filter: invert()" alt="move up"/>
+          </button>
           <button
               class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-red-400 hover:bg-red-500 mb-4 lg:mb-0 cursor-pointer"
               style="align-self: flex-end"
@@ -140,6 +154,15 @@
           <option value="pinterest">Pinterest</option>
         </select>
 
+        <div class="mt-2">
+          <label class="font-semibold">URL</label>
+          <input v-model="siSettings.url"
+                 class="p-2 mt-2 w-full text-sm border-solid border-gray-300 rounded-2xl border"
+                 placeholder="e.g. https://exampleurl.com/example"
+                 type="url"
+          />
+        </div>
+
         <label class="font-semibold mb-2 mt-2">Icon Color</label>
         <input
             v-model="siSettings.color"
@@ -149,16 +172,9 @@
         >
 
         <div class="flex flex-row mt-3 mb-3">
-          <label class="font-semibold mt-2 mb-2">Height</label>
+          <label class="font-semibold mt-2 mb-2 mr-2">Scale (px)</label>
           <input
-              v-model="siSettings.height"
-              class="p-3 rounded-lg bg-white text-sm text-gray-700"
-              type="number"
-          >
-
-          <label class="font-semibold mt-2 mb-2 ml-4">Width</label>
-          <input
-              v-model="siSettings.width"
+              v-model="siSettings.scale"
               class="p-3 rounded-lg bg-white text-sm text-gray-700"
               type="number"
           >
@@ -337,7 +353,7 @@ export default Vue.extend({
         fontSize: 16,
       },
 
-      socialIcons: [] as { type: string, color: string, height: number, width: number, url: string }[],
+      socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
 
       sortedLinks: new Array<EditorLink>()
     };
@@ -541,10 +557,9 @@ export default Vue.extend({
     addSocialIcon() {
       this.socialIcons.push({
         color: "#000000FF",
-        height: 40,
+        scale: 40,
         type: "email",
         url: "",
-        width: 40
       });
 
       this.$nextTick(() => {
@@ -554,6 +569,26 @@ export default Vue.extend({
 
     deleteSocialIcon(index: number) {
       this.socialIcons.splice(index, 1);
+    },
+
+    moveSocialIcon(index: number, direction: "up" | "down", shift: number = 1) {
+      if (direction === "up") {
+        for (let i = 0; i < shift; i++) {
+          let item = this.socialIcons.pop();
+          if (!item)
+            continue;
+
+          this.socialIcons.unshift(item);
+        }
+      } else if (direction === "down") {
+        for (let i = 0; i < shift; i++) {
+          let item = this.socialIcons.shift();
+          if (!item)
+            continue;
+
+          this.socialIcons.push(item);
+        }
+      }
     },
 
     showOption(linkType: LinkType, field: LinkField): boolean {
@@ -583,13 +618,6 @@ export default Vue.extend({
         case "image":
           switch (field) {
             case "url":
-              return true;
-          }
-          break;
-
-        case "divider":
-          switch (field) {
-            case "subtitle":
               return true;
           }
           break;

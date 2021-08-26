@@ -155,7 +155,9 @@ export class RouteHandler {
             });
 
             // Add link html to html block link-by-link
-            for await (let link of links) {
+            for (let index = 0; index < links.length; index++) {
+
+                let link = links[index];
                 switch (link.type) {
                     case 'link': {
                         let subtitleHtml = '';
@@ -189,14 +191,13 @@ export class RouteHandler {
                             break;
 
                         try {
-                            let socialIcons: { type: string, color: string, height: number, width: number, url: string }[] = link.metadata?.socialIcons ?? [];
+                            let socialIcons: { type: string, color: string, scale: number, url: string }[] = link.metadata?.socialIcons ?? [];
 
                             if (socialIcons.length > 0) {
                                 let css = link.customCss ?? '';
 
-                                //language=HTML
                                 linkHtml += `
-                                    <div class="social-button-list" style="${css}">`;
+                                        <div class="social-button-list" style="margin-top: -1rem;${css}">`;
                             }
 
                             for (let i = 0; i < socialIcons.length; i++) {
@@ -207,11 +208,8 @@ export class RouteHandler {
                                 if (!siSettings.color)
                                     siSettings.color = "#000000";
 
-                                if (!siSettings.height)
-                                    siSettings.height = 40;
-
-                                if (!siSettings.width)
-                                    siSettings.width = 40;
+                                if (!siSettings.scale)
+                                    siSettings.scale = 40;
 
                                 let svgData = "";
 
@@ -260,6 +258,9 @@ export class RouteHandler {
                                         break;
                                 }
 
+                                let scale = null;
+                                scale = siSettings.scale;
+
                                 //language=HTML
                                 linkHtml += `
                                     <a id="sl-item-a-${link.id}-${i}"
@@ -267,14 +268,20 @@ export class RouteHandler {
                                        class="social-button"
                                        target="_blank"
                                        style="color:${siSettings.color};"
+                                       onclick="{
+                                         let recordUrl = '${config.apiUrl}/analytics/link/record/${link.id}'
+                                         fetch(recordUrl, {method: 'POST'});
+                                       }"
                                     >
                                         ${svgData}
-
                                         <script>
                                             {
                                                 let svgElement = document.querySelector("#sl-item-a-${link.id}-${i} svg");
                                                 svgElement.querySelector("title")?.remove();
-                                                svgElement.setAttribute("style", "height: ${siSettings.height}px;width:${siSettings.width}px;color:${siSettings.color};");
+                                                svgElement.setAttribute("style", "color:${siSettings.color};");
+                                                let scale = ${scale};
+                                                if (scale)
+                                                    svgElement.setAttribute("height", scale);
                                             }
                                         </script>
                                     </a>
@@ -541,11 +548,6 @@ export class RouteHandler {
 
                     <link rel="icon" type="image/x-icon" href="favicon.ico"/>
                     <link rel="icon" type="image/png" href="favicon.ico"/>
-                    <link rel="stylesheet"
-                          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-                          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-                          crossorigin="anonymous" referrerpolicy="no-referrer"
-                    />
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <!-- Theme style -->

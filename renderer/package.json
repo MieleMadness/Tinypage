@@ -6,7 +6,7 @@
   "main": "dist/app.js",
   "type": "commonjs",
   "scripts": {
-    "copy": "(copyfiles -u 1 src/static/** dist/static)",
+    "copy": "(copyfiles -u 1 \"src/static/**/*\" dist)",
     "start": "node dist/app.js",
     "build": "tsc && npm run copy",
     "dev": "ts-node src/app.ts"

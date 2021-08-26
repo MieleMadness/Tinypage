@@ -32,7 +32,7 @@ interface DbServerCustomization {
     metaImageUrl: string,
     customHtml: string,
     customCss: string,
-    metadata: unknown
+    metadata: any
 }
 
 interface DbServerSettings {
@@ -42,5 +42,5 @@ interface DbServerSettings {
         inviteConfirmationEmail: string,
         referralEmail: string
     },
-    metadata: unknown
+    metadata: any
 }

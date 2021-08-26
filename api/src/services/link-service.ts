@@ -49,7 +49,7 @@ export class LinkService extends DatabaseService {
                 link.subtitle,
                 link.style,
                 link.customCss,
-                link.metadata ?? "{}"
+                link.metadata ?? {}
             ]);
 
         if (queryResult.rowCount < 1)
@@ -73,7 +73,7 @@ export class LinkService extends DatabaseService {
                 link.subtitle,
                 link.style,
                 link.customCss,
-                link.metadata ?? "{}",
+                link.metadata ?? {},
                 link.id
             ]);
 

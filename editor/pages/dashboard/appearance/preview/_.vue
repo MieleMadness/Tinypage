@@ -1,9 +1,9 @@
 <template>
   <div class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg">
     <UserProfileView
-      v-if="theme"
-      :preview="true"
-      :profile-data="theme"
+        v-if="theme"
+        :preview="true"
+        :profile-data="theme"
     />
   </div>
 </template>

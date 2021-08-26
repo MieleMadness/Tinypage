@@ -157,13 +157,13 @@ export class RouteHandler {
             // Add link html to html block link-by-link
             for await (let link of links) {
                 switch (link.type) {
-                    case 'link':
+                    case 'link': {
                         let subtitleHtml = '';
                         //language=HTML
                         if (link.subtitle) {
                             subtitleHtml = `<span
-                                class="text-sm text-gray-700 sl-link-subtitle mt-1"
-                        >${link.subtitle}</span>`;
+                                    class="text-sm text-gray-700 sl-link-subtitle mt-1"
+                            >${link.subtitle}</span>`;
                         }
                         let css = link.customCss ?? '';
                         //language=HTML
@@ -183,15 +183,148 @@ export class RouteHandler {
                             </a>
                         `;
                         break;
-                    case 'image':
+                    }
+                    case 'social': {
+                        if (!link.metadata?.socialIcons)
+                            break;
+
+                        try {
+                            let socialIcons: { type: string, color: string, height: number, width: number, url: string }[] = link.metadata?.socialIcons ?? [];
+
+                            if (socialIcons.length > 0) {
+                                let css = link.customCss ?? '';
+
+                                //language=HTML
+                                linkHtml += `
+                                    <div class="social-button-list" style="${css}">`;
+                            }
+
+                            for (let i = 0; i < socialIcons.length; i++) {
+                                let siSettings = socialIcons[i];
+                                if (!siSettings.type)
+                                    siSettings.type = "email";
+
+                                if (!siSettings.color)
+                                    siSettings.color = "#000000";
+
+                                if (!siSettings.height)
+                                    siSettings.height = 40;
+
+                                if (!siSettings.width)
+                                    siSettings.width = 40;
+
+                                let svgData = "";
+
+                                switch (siSettings.type) {
+                                    case "email":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/mail-outline.svg`).toString('utf-8');
+                                        break;
+                                    case "text":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/message.svg`).toString('utf-8');
+                                        break;
+                                    case "phone":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/call-outline.svg`).toString('utf-8');
+                                        break;
+                                    case "facebook":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-facebook.svg`).toString('utf-8');
+                                        break;
+                                    case "twitter":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-twitter.svg`).toString('utf-8');
+                                        break;
+                                    case "instagram":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-instagram.svg`).toString('utf-8');
+                                        break;
+                                    case "tiktok":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-tiktok.svg`).toString('utf-8');
+                                        break;
+                                    case "spotify":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-spotify.svg`).toString('utf-8');
+                                        break;
+                                    case "youtube":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-youtube.svg`).toString('utf-8');
+                                        break;
+                                    case "applemusic":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-apple-music.svg`).toString('utf-8');
+                                        break;
+                                    case "soundcloud":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-soundcloud.svg`).toString('utf-8');
+                                        break;
+                                    case "linkedin":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-linkedin.svg`).toString('utf-8');
+                                        break;
+                                    case "twitch":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-twitch.svg`).toString('utf-8');
+                                        break;
+                                    case "pinterest":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-pinterest.svg`).toString('utf-8');
+                                        break;
+                                }
+
+                                //language=HTML
+                                linkHtml += `
+                                    <a id="sl-item-a-${link.id}-${i}"
+                                       href="${siSettings.url}"
+                                       class="social-button"
+                                       target="_blank"
+                                       style="color:${siSettings.color};"
+                                    >
+                                        ${svgData}
+
+                                        <script>
+                                            {
+                                                let svgElement = document.querySelector("#sl-item-a-${link.id}-${i} svg");
+                                                svgElement.querySelector("title")?.remove();
+                                                svgElement.setAttribute("style", "height: ${siSettings.height}px;width:${siSettings.width}px;color:${siSettings.color};");
+                                            }
+                                        </script>
+                                    </a>
+                                `;
+                            }
+
+                            if (socialIcons.length > 0) {
+                                linkHtml += `</div>`;
+                            }
+                        } catch (e) {
+                            console.warn("Failed to parse social icon: " + link.subtitle);
+                        }
+
+                        break;
+                    }
+                    case 'vcard': {
+                        let css = link.customCss ?? '';
+                        //language=HTML
+                        linkHtml += `
+                            <a
+                                    id="sl-item-${link.id}"
+                                    href="${config.apiUrl}/analytics/link/record/${link.id}"
+                                    class="w-full sl-item-parent"
+                                    target="_blank"
+                            >
+                                <div
+                                        class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
+                                        style="${css}"
+                                >
+                                    <span class="font-medium text-gray-900 sl-label">${link.label}</span>
+                                </div>
+                            </a>
+                        `;
+                        break;
+                    }
+                    case 'image': {
+                        let css = link.customCss ?? '';
+
                         //language=HTML
                         linkHtml += `
                             <img id="sl-item-${link.id}" src="${link.url}" class="w-full h-auto"
-                                 style="margin-bottom:.75rem;border-radius:4px;" alt="link image"
+                                 style="margin-bottom:.75rem;border-radius:4px;${css}" alt="link image"
                             />
                         `;
                         break;
-                    case 'youtube':
+                    }
+
+                    case 'youtube': {
+                        let css = link.customCss ?? '';
+
                         let watchId = link.url.match(/v=([^&]*)/);
                         if (watchId && watchId.length > 0 && watchId[1]) {
                             //language=HTML
@@ -213,26 +346,50 @@ export class RouteHandler {
                                     width: 100%;
                                     height: 100%;
                                 }</style>
-                                <div class="embed-container" style="margin-bottom:.75rem;">
+                                <div class="embed-container" style="margin-bottom:.75rem;${css}">
                                     <iframe src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
                                             frameborder="0" allowfullscreen
                                     ></iframe>
                                 </div>
                             `;
                         }
+                    }
                         break;
-                    case 'divider':
-                        //language=HTML
-                        linkHtml += `
-                            <div class="flex flex-row items-center justify-center w-full" style="margin-bottom:.75rem">
-                                <div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>
-                                <div shouldHideScrollbar="margin:0 8px; text-transform:uppercase;font-weight:600;color:rgba(0,0,0,.5);letter-spacing:1px;font-size:12px;">
-                                    ${link.label}
+
+                    case 'divider': {
+                        if (!link.metadata?.dividerSettings)
+                            break;
+
+                        let css = link.customCss ?? '';
+
+                        try {
+                            let dividerSettings: { color: string, fontSize: number } = link.metadata?.dividerSettings ?? {};
+                            let color = dividerSettings.color.substring(0, 7) || "#000000";
+
+                            while (color.length < 7) {
+                                color += "0";
+                            }
+
+                            if (!dividerSettings.fontSize)
+                                dividerSettings.fontSize = 16;
+
+                            //language=HTML
+                            linkHtml += `
+                                <div class="flex flex-row items-center justify-center w-full"
+                                     style="margin-bottom:.75rem;${css}"
+                                >
+                                    <div style="flex-grow:1;background:${color}26;height:1px;"></div>
+                                    <div style="margin:0 8px; text-transform:uppercase;font-weight:600;color:${color}7F;letter-spacing:1px;font-size:${dividerSettings.fontSize};">
+                                        ${link.label}
+                                    </div>
+                                    <div style="flex-grow:1;background:${color}26;height:1px;"></div>
                                 </div>
-                                <div shouldHideScrollbar="flex-grow:1;background:rgba(0,0,0,.15);height:1px;"></div>
-                            </div>
-                        `;
+                            `;
+                        } catch (e) {
+                            console.warn("Failed to parse divider: " + link.subtitle);
+                        }
                         break;
+                    }
                 }
             }
 
@@ -291,12 +448,12 @@ export class RouteHandler {
                 if (theme && theme.colors) {
                     watermarkHtml += `
         <div style="color: ${theme.colors.text.primary};max-width:230px;" class="mt-4 mb-2 mx-auto text-sm" >
-          Proudly built with ${config.appName}, the open-source micro-site platform
+          Proudly built with ${config.appName}
         </div>`;
                 } else {
                     watermarkHtml += `
         <div v-else style="color:rgba(0,0,0,1);max-width:230px;" class="mt-4 mb-2 mx-auto text-sm">
-          Proudly built with ${config.appName}, the open-source micro-site platform
+          Proudly built with ${config.appName}
         </div>`;
                 }
 
@@ -611,6 +768,26 @@ export class RouteHandler {
                         *::after {
                             box-sizing: border-box;
                             margin: 0;
+                        }
+                    </style>
+
+                    <style>
+                        .social-button-list {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            margin: 0 auto;
+                            width: 300px;
+                            list-style: none;
+                        }
+
+                        .social-button {
+                            display: inline-block;
+                            margin: 15px auto;
+                            padding: 1rem;
+                            cursor: pointer;
+                            transition: all .15s ease-in-out;
                         }
                     </style>
 

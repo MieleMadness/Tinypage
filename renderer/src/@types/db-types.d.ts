@@ -144,7 +144,7 @@ interface DbProfile {
 }
 
 interface DbSensitiveProfile extends DbProfile {
-    private_metadata: unknown
+    private_metadata: any
 }
 
 /**
@@ -185,12 +185,12 @@ interface DbLink {
     subtitle: string | null,
     style: string | null,
     custom_css: string | null,
-    metadata: unknown,
+    metadata: any,
     created_on: string
 }
 
 interface DbSensitiveLink extends DbLink {
-    private_metadata: unknown
+    private_metadata: any
 }
 
 /**
@@ -280,7 +280,7 @@ interface DbAddon {
 }
 
 interface DbSensitiveAddon extends DbAddon {
-    private_metadata: unknown
+    private_metadata: any
 }
 
 

@@ -1694,9 +1694,11 @@ export default Vue.extend({
       // End imported CSS
     }
 
-    this.$nextTick(() => {
-      this.initColorPickers();
-    });
+    if (process.client) {
+      this.$nextTick(() => {
+        this.initColorPickers();
+      });
+    }
   },
 
   methods: {

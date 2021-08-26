@@ -37,7 +37,7 @@
         >
           <img class="sl-editor-link-icon" :src="getLinkTypeIcon(link.type)" alt="link type icon">
           <span class="text-2xl font-bold">
-            {{ link.label.length > 30 ? link.label.substring(0, 30) : link.label }}
+            {{ link.label.length > 30 ? link.label.substring(0, 30) + "..." : link.label }}
           </span>
           <span v-if="link.subtitle && link.type === 'link'" class="text-xl font-bold opacity-70 sl-subtitle mt-1">
             {{ link.subtitle.length > 30 ? link.subtitle.substring(0, 30) : link.subtitle }}

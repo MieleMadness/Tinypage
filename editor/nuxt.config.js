@@ -49,10 +49,7 @@ export default {
         ],
         script: [
             {
-                src: '/js/jscolor.min.js',
-                body: true,
-                async: true,
-                defer: true
+                src: '/js/jscolor.min.js'
             },
         ]
     },

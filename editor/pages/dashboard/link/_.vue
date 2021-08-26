@@ -9,7 +9,7 @@
     </div>
 
     <!-- Type -->
-    <div v-if="intent !=='view'"
+    <div v-show="intent !=='view'"
          class="flex flex-col mb-4 justify-start w-full"
     >
       <label class="font-semibold mb-2">Link type</label>
@@ -28,22 +28,34 @@
     </div>
 
     <!-- Label -->
-    <div v-if="intent !=='view' && showOption(pendingLink.type, 'label')"
+    <div v-show="intent !=='view'"
          class="flex flex-col mb-4 justify-start w-full"
     >
-      <label v-if="pendingLink.type === 'text' || pendingLink.type === 'html'" class="font-semibold mb-2">
-        {{ pendingLink.type === 'text' ? "Text" : pendingLink.type === 'html' ? "HTML" : "Label" }}</label>
-      <label v-else class="font-semibold mb-2">Label</label>
+      <label class="font-semibold mb-2">Label</label>
+
+      <input v-model="pendingLink.label"
+             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+             placeholder="e.g. Some memorable name" type="text"
+      />
+    </div>
+
+    <!-- Subtitle -->
+    <div v-show="intent!=='view' && showOption(pendingLink.type, 'subtitle')"
+         class="flex flex-col mb-4 justify-start w-full"
+    >
+      <label v-if="pendingLink.type === 'text'" class="font-semibold mb-2">Text</label>
+      <label v-else-if="pendingLink.type === 'html'" class="font-semibold mb-2">HTML</label>
+      <label v-else class="font-semibold mb-2">Subtitle (optional)</label>
 
       <client-only>
         <VueEditor v-if="pendingLink.type === 'text'"
-                   v-model="pendingLink.label"
+                   v-model="pendingLink.subtitle"
                    class="mb-20"
         />
 
         <MonacoEditor
             v-else-if="pendingLink.type === 'html'"
-            v-model="pendingLink.label"
+            v-model="pendingLink.subtitle"
             :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
@@ -54,28 +66,112 @@
             theme="vs-dark"
         ></MonacoEditor>
 
-        <input v-else v-model="pendingLink.label"
+        <input v-else
+               v-model="pendingLink.subtitle"
                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-               placeholder="e.g. Anything" type="text"
+               placeholder="e.g. Read more about my adventures in Peru!" type="text"
         />
       </client-only>
     </div>
 
-    <!-- Subtitle -->
-    <div v-if="intent!=='view' && showOption(pendingLink.type, 'subtitle')"
-         class="flex flex-col mb-4 justify-start w-full"
-    >
-      <label class="font-semibold mb-2">Subtitle (optional)</label>
-      <input v-model="pendingLink.subtitle" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. Read more about my adventures in Peru!" type="text"
-      />
+    <!-- Divider Settings -->
+    <div v-show="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
+      <!-- Divider settings-->
+      <label v-if="pendingLink.type === 'divider'" class="font-semibold mb-2">Divider Color</label>
+      <div v-show="pendingLink.type === 'divider'">
+        <input
+            v-model="dividerSettings.color"
+            class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+            placeholder="e.g. #FFF"
+            :data-jscolor="jsColorOptions"
+        >
+
+        <label v-if="pendingLink.type === 'divider'" class="font-semibold mt-2 mb-2">Divider Font Size</label>
+        <input
+            v-model="dividerSettings.fontSize"
+            class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+            type="number"
+        >
+      </div>
+    </div>
+
+    <!-- Social Icon Settings -->
+    <div v-show="intent!=='view' && pendingLink.type === 'social'" class="flex flex-col mb-4 justify-start w-full">
+      <div class="flex flex-col lg:flex-row items-center justify-center items-center w-full mb-4">
+        <div
+            class="flex-grow text-center text-lg px-4 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp mb-4 lg:mb-0 cursor-pointer"
+            @click="addSocialIcon()"
+        >
+          Add Icon
+        </div>
+      </div>
+
+      <div v-for="(siSettings, index) of socialIcons" class="p-4 m-2 border-2 rounded-2xl">
+        <div>
+          <label class="font-semibold mb-2">Icon {{ index + 1 }}</label>
+
+          <button
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-red-400 hover:bg-red-500 mb-4 lg:mb-0 cursor-pointer"
+              style="align-self: flex-end"
+              @click="deleteSocialIcon(index)"
+          >
+            Delete
+          </button>
+        </div>
+
+        <select v-model="siSettings.type"
+                class="p-2 mt-2 w-full text-sm border-solid border-gray-300 rounded-2xl border"
+        >
+          <option disabled selected>Select an icon</option>
+
+          <option value="email">Email</option>
+          <option value="text">Text</option>
+          <option value="phone">Phone</option>
+          <option value="facebook">Facebook</option>
+          <option value="twitter">Twitter</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">Tiktok</option>
+          <option value="spotify">Spotify</option>
+          <option value="youtube">YouTube</option>
+          <option value="applemusic">Apple Music</option>
+          <option value="soundcloud">SoundCloud</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="twitch">Twitch</option>
+          <option value="pinterest">Pinterest</option>
+        </select>
+
+        <label class="font-semibold mb-2 mt-2">Icon Color</label>
+        <input
+            v-model="siSettings.color"
+            class="p-3 mt-4 mb-2 rounded-lg bg-white text-sm text-gray-700"
+            placeholder="e.g. #FFF"
+            :data-jscolor="jsColorOptions"
+        >
+
+        <div class="flex flex-row mt-3 mb-3">
+          <label class="font-semibold mt-2 mb-2">Height</label>
+          <input
+              v-model="siSettings.height"
+              class="p-3 rounded-lg bg-white text-sm text-gray-700"
+              type="number"
+          >
+
+          <label class="font-semibold mt-2 mb-2 ml-4">Width</label>
+          <input
+              v-model="siSettings.width"
+              class="p-3 rounded-lg bg-white text-sm text-gray-700"
+              type="number"
+          >
+        </div>
+      </div>
     </div>
 
     <!-- URL -->
-    <div v-if="intent!=='view' && showOption(pendingLink.type, 'url')" class="flex flex-col mb-8 justify-start w-full">
+    <div v-show="intent!=='view' && showOption(pendingLink.type, 'url')"
+         class="flex flex-col mb-8 justify-start w-full"
+    >
       <label v-if="pendingLink.type === 'link'" class="font-semibold mb-2">Link URL</label>
       <label v-else-if="pendingLink.type === 'image'" class="font-semibold mb-2">Image URL</label>
-      <label v-else-if="pendingLink.type === 'social'" class="font-semibold mb-2">Social Link URL</label>
       <label v-else-if="pendingLink.type === 'youtube'" class="font-semibold mb-2">Video URL</label>
       <label v-else-if="pendingLink.type === 'vcard'" class="font-semibold mb-2">vCard URL</label>
       <label v-else class="font-semibold mb-2">URL</label>
@@ -84,32 +180,6 @@
              :placeholder="pendingLink.type === 'vcard' ? 'e.g. https://mywebsite.com/vcard.vcf' : 'e.g. https://exampleurl.com/example'"
              type="url"
       />
-    </div>
-
-    <!-- Icon -->
-    <div v-if="intent!=='view' && pendingLink.type === 'social'"
-         class="flex flex-col mb-8 justify-start w-full"
-    >
-      <label class="font-semibold mb-2">Social Icon</label>
-      <select v-model="socialIcon" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-      >
-        <option disabled selected>Select an icon</option>
-
-        <option value="email">Email</option>
-        <option value="text">Text</option>
-        <option value="phone">Phone</option>
-        <option value="facebook">Facebook</option>
-        <option value="twitter">Twitter</option>
-        <option value="instagram">Instagram</option>
-        <option value="tiktok">Tiktok</option>
-        <option value="spotify">Spotify</option>
-        <option value="youtube">YouTube</option>
-        <option value="applemusic">Apple Music</option>
-        <option value="soundcloud">SoundCloud</option>
-        <option value="linkedin">LinkedIn</option>
-        <option value="twitch">Twitch</option>
-        <option value="pinterest">Pinterest</option>
-      </select>
     </div>
     <!-- No Code Builder-->
     <!--    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">-->
@@ -162,7 +232,13 @@
            class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
            @click="saveLinkChanges"
       >
-        Save changes
+        Save and Exit
+      </div>
+      <div v-if="intent==='edit'"
+           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+           @click="applyLinkChanges"
+      >
+        Apply
       </div>
       <div v-if="intent==='edit'"
            class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 cursor-pointer"
@@ -190,24 +266,7 @@
 <script lang="ts">
 import Vue from "vue";
 
-type LinkField = "label" | "subtitle" | "url" | "icon";
-
-type SocialIcon =
-    "email"
-    | "text"
-    | "phone"
-    | "facebook"
-    | "twitter"
-    | "instagram"
-    | "tiktok"
-    | "spotify"
-    | "youtube"
-    | "applemusic"
-    | "soundcloud"
-    | "linkedin"
-    | "twitch"
-    | "pinterest"
-    | undefined;
+type LinkField = "subtitle" | "url" | "icon";
 
 export default Vue.extend({
   layout: 'dashboard',
@@ -258,6 +317,8 @@ export default Vue.extend({
     };
 
     return {
+      jsColorOptions: "{alphaChannel: true, format: 'hexa'}",
+
       id: '',
       links: new Array<EditorLink>(),
       modalActive: false,
@@ -271,11 +332,12 @@ export default Vue.extend({
 
       customCss: null as string | null | undefined,
 
-      socialIcon: undefined as SocialIcon,
-
-      noCode: {
-        divBreakColor: ''
+      dividerSettings: {
+        color: '#000000FF',
+        fontSize: 16,
       },
+
+      socialIcons: [] as { type: string, color: string, height: number, width: number, url: string }[],
 
       sortedLinks: new Array<EditorLink>()
     };
@@ -301,23 +363,41 @@ export default Vue.extend({
       }
     }
 
-    try {
-      const css = this.pendingLink.customCss ?? '';
-      let strings = css.split('/* SL-NO-CODE */');
-
-      this.customCss = strings[0];
-
-      if (strings.length > 1) {
-        this.noCode = this.deserializeNodeCode(strings[1]);
+    if (this.pendingLink.type === 'divider') {
+      try {
+        this.dividerSettings = this.pendingLink.metadata?.dividerSettings ?? {};
+        if (!this.dividerSettings.color) {
+          this.dividerSettings.color = "#00000000";
+        }
+        if (!this.dividerSettings.fontSize) {
+          this.dividerSettings.fontSize = 16;
+        }
+      } catch (e) {
+        console.warn("Failed to parse JSON string for divider: " + this.pendingLink.metadata?.dividerSettings);
       }
+    }
 
-    } catch (err) {
-      console.log('Error getting user data');
-      console.log(err);
+    if (this.pendingLink.type === 'social') {
+      try {
+        this.socialIcons = this.pendingLink.metadata?.socialIcons ?? [];
+      } catch (e) {
+        console.warn("Failed to parse JSON string for divider: " + this.pendingLink.metadata?.socialIcons);
+      }
+    }
+
+    if (process.client) {
+      this.$nextTick(() => {
+        this.initColorPickers();
+      });
     }
   },
 
   methods: {
+    initColorPickers() {
+      let jscolor = ((window as any).jscolor) as any;
+      jscolor.install();
+    },
+
     async getUserData() {
       try {
         this.user = await this.$axios.$post('/user', {
@@ -363,8 +443,13 @@ export default Vue.extend({
     },
 
     async saveLinkChanges() {
+      await this.applyLinkChanges();
+      this.$router.push('/dashboard/');
+    },
+
+    async applyLinkChanges() {
       try {
-        const noCodeCss = this.serializeNoCode(this.noCode);
+        this.addMetadata();
 
         await this.$axios.$post('/link/update', {
           token: this.$store.getters['auth/getToken'],
@@ -374,15 +459,14 @@ export default Vue.extend({
             type: this.pendingLink.type,
             subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
-            customCss: this.customCss + '/* SL-NO-CODE */' + noCodeCss,
+            customCss: this.customCss,
+            metadata: this.pendingLink.metadata
           }
         });
 
         const index = this.links.findIndex(x => x.id === this.pendingLink.id);
         this.links[index] = this.pendingLink;
 
-        //this.closeModal();
-        this.$router.push('/dashboard/');
         this.$root.$emit('refreshUserProfileView');
       } catch (err) {
         console.log('Link changes unsuccessful');
@@ -392,6 +476,17 @@ export default Vue.extend({
 
     clearErrors() {
       this.error = '';
+    },
+
+    addMetadata() {
+      if (!this.pendingLink.metadata)
+        this.pendingLink.metadata = {};
+
+      if (this.pendingLink.type === 'divider')
+        this.pendingLink.metadata.dividerSettings = this.dividerSettings;
+
+      if (this.pendingLink.type === 'social')
+        this.pendingLink.metadata.socialIcons = this.socialIcons;
     },
 
     async addNewLink(): Promise<boolean> {
@@ -443,11 +538,28 @@ export default Vue.extend({
       //this.openModal('edit');
     },
 
+    addSocialIcon() {
+      this.socialIcons.push({
+        color: "#000000FF",
+        height: 40,
+        type: "email",
+        url: "",
+        width: 40
+      });
+
+      this.$nextTick(() => {
+        this.initColorPickers();
+      });
+    },
+
+    deleteSocialIcon(index: number) {
+      this.socialIcons.splice(index, 1);
+    },
+
     showOption(linkType: LinkType, field: LinkField): boolean {
       switch (linkType) {
         case "link":
           switch (field) {
-            case "label":
             case "subtitle":
             case "url":
               return true;
@@ -457,14 +569,12 @@ export default Vue.extend({
         case "social":
           switch (field) {
             case "icon":
-            case "url":
               return true;
           }
           break;
 
         case "vcard":
           switch (field) {
-            case "label":
             case "url":
               return true;
           }
@@ -479,21 +589,21 @@ export default Vue.extend({
 
         case "divider":
           switch (field) {
-            case "label":
+            case "subtitle":
               return true;
           }
           break;
 
         case "text":
           switch (field) {
-            case "label":
+            case "subtitle":
               return true;
           }
           break;
 
         case "html":
           switch (field) {
-            case "label":
+            case "subtitle":
               return true;
           }
           break;
@@ -508,22 +618,6 @@ export default Vue.extend({
 
       return false;
     },
-
-    /**
-     * Converts a "no-code" object to CSS.
-     * @param object
-     */
-    serializeNoCode(object: any): string {
-      return '';
-    },
-
-    /**
-     * Converts a "no-code" CSS string to an object.
-     * @param code
-     */
-    deserializeNodeCode(code: string): any | null {
-      return null;
-    }
   }
 });
 </script>

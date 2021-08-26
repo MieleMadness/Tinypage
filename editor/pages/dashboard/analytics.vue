@@ -8,11 +8,11 @@
     </div>
 
     <div
-      v-if="user.activeProfile.metadata.privacyMode"
-      class="flex flex-col items-center justify-center w-full p-6 rounded-2xl shadow bg-white"
+        v-if="user.activeProfile.metadata.privacyMode"
+        class="flex flex-col items-center justify-center w-full p-6 rounded-2xl shadow bg-white"
     >
       <div
-        class="w-full p-6 bg-red-200 border-red-600 border rounded-2xl text-red-500 flex flex-col xl:flex-row xl:items-center justify-start"
+          class="w-full p-6 bg-red-200 border-red-600 border rounded-2xl text-red-500 flex flex-col xl:flex-row xl:items-center justify-start"
       >
         <span class="text-xl xl:text-base font-bold mb-1 xl:mb-0 xl:mr-2">Notice:</span>
         <span class="text-sm">Privacy mode is currently enabled. Disable privacy mode to collect analytics data!</span>
@@ -47,31 +47,33 @@
     </div>
 
     <div
-      v-if="!user.activeProfile.metadata.privacyMode"
-      class="flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-8"
+        v-if="!user.activeProfile.metadata.privacyMode"
+        class="flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-8"
     >
       <h2 class="text-black font-bold opacity-70 text-lg mb-4">
         Link engagement
       </h2>
 
       <div
-        v-for="link in analytics.linkVisits"
-        :key="link.id"
-        class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-4 flex items-center justify-center lg:flex-row flex-col"
+          v-for="link in analytics.linkVisits"
+          :key="link.id"
+          class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-4 flex items-center justify-center lg:flex-row flex-col"
       >
         <div class="text-left mr-4 flex flex-col justify-start w-full lg:w-auto pt-1 px-2 lg:pt-0 lg:px-0">
-          <span class="font-medium text-black font-bold text-lg mb-2">{{ link.link.label }}</span>
+          <span class="font-medium text-black font-bold text-lg mb-2">
+            {{ link.link.label.length > 30 ? link.link.label.substring(0, 30) + "..." : link.link.label }}
+          </span>
           <span
-            v-if="link.link.url && link.link.url.length > 41"
-            class="text-black opacity-70 font-bold overflow-x-hidden max-w-full"
+              v-if="link.link.url && link.link.url.length > 41"
+              class="text-black opacity-70 font-bold overflow-x-hidden max-w-full"
           >{{ link.link.url.substr(0, 42) }}...</span>
           <span
-            v-if="link.link.url && link.link.url.length < 42"
-            class="text-black opacity-70 font-bold overflow-x-hidden max-w-full"
+              v-if="link.link.url && link.link.url.length < 42"
+              class="text-black opacity-70 font-bold overflow-x-hidden max-w-full"
           >{{ link.link.url }}</span>
         </div>
         <div
-          class="lg:ml-auto flex flex-row lg:flex-col justify-start lg:justify-end items-center mt-2 lg:mt-0 w-full lg:w-auto"
+            class="lg:ml-auto flex flex-row lg:flex-col justify-start lg:justify-end items-center mt-2 lg:mt-0 w-full lg:w-auto"
         >
           <span class="uppercase text-gray-800 font-bold mr-1 lg:mr-0 lg:mb-1">Total clicks</span>
           <span class="lg:hidden text-sm uppercase text-gray-700 font-semibold mr-2 lg:mr-0 lg:mb-1">:</span>
@@ -155,10 +157,13 @@ export default Vue.extend({
 
   async mounted() {
     await this.getUserData();
+
     if (this.user.activeProfile.metadata.privacyMode) {
       return;
     }
+
     await this.getProfileAnalytics();
+
     for (let i = 0; i < this.analytics.linkVisits.length; i++) {
       this.visitSum += this.analytics.linkVisits[i].views;
     }
@@ -170,6 +175,18 @@ export default Vue.extend({
         this.analytics = await this.$axios.$post('/analytics/profile', {
           token: this.$store.getters['auth/getToken']
         });
+
+        let linkVisits = this.analytics.linkVisits;
+
+        if (linkVisits.length > 0) {
+          this.analytics.linkVisits = linkVisits.filter(value => {
+            let type = value.link.type;
+            return type !== 'image' &&
+                type !== 'divider' &&
+                type !== 'text' &&
+                type !== 'html';
+          });
+        }
       } catch (err) {
         console.log('Error getting user data');
         console.log(err);

@@ -57,7 +57,8 @@ interface UpdateProfileRequest extends AuthenticatedRequest {
         showWatermark: boolean,
         customCss: string,
         customHtml: string,
-        customDomain: string
+        customDomain: string,
+        metadata: any
     } & AuthenticatedRequest["Body"];
 }
 
@@ -72,18 +73,6 @@ interface ILinktreeLink {
     title: string,
     url: string,
     position: number
-}
-
-interface SetPrivacyModeRequest extends AuthenticatedRequest {
-    Body: {
-        privacyMode: boolean
-    } & AuthenticatedRequest["Body"];
-}
-
-interface SetUnlistedRequest extends AuthenticatedRequest {
-    Body: {
-        unlisted: boolean
-    } & AuthenticatedRequest["Body"];
 }
 
 const getTopProfilesRequestRateLimit = {
@@ -144,9 +133,6 @@ export class ProfileController extends Controller {
 
         this.fastify.post<AuthenticatedRequest>('/profile/active-profile', Auth.ValidateWithData, this.GetActiveProfile.bind(this));
         this.fastify.post<ActivateProfileThemeRequest>('/profile/activate-theme', Auth.ValidateWithData, this.ActivateProfileTheme.bind(this));
-
-        this.fastify.post<SetPrivacyModeRequest>('/profile/set-privacy-mode', Auth.ValidateWithData, this.SetPrivacyMode.bind(this));
-        this.fastify.post<SetUnlistedRequest>('/profile/set-unlisted', Auth.ValidateWithData, this.SetUnlisted.bind(this));
     }
 
     /**
@@ -477,7 +463,6 @@ export class ProfileController extends Controller {
             }
 
             let prevWatermarkStatus = body.authProfile.showWatermark;
-
             let newProfile = await this.profileService.updateProfile(
                 body.authProfile.id,
                 body.imageUrl,
@@ -488,7 +473,8 @@ export class ProfileController extends Controller {
                 body.showWatermark,
                 body.customCss,
                 body.customHtml,
-                hasCustomDomain ? body.customDomain : null
+                hasCustomDomain ? body.customDomain : null,
+                body.metadata
             );
 
             if (this.mixpanel) {
@@ -510,7 +496,6 @@ export class ProfileController extends Controller {
                     });
                 }
             }
-
 
             return newProfile;
         } catch (e) {
@@ -662,91 +647,4 @@ export class ProfileController extends Controller {
             throw e;
         }
     }
-
-    /**
-     * Route for /profile/set-privacy-mode
-     *
-     * @param request
-     * @param reply
-     */
-    async SetPrivacyMode(request: FastifyRequest<SetPrivacyModeRequest>, reply: FastifyReply) {
-        try {
-            if (!request.body.authProfile) {
-                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("This account doesn't have an active profile."));
-                return;
-            }
-
-            let previousPrivacyMode = request.body.authProfile.metadata?.privacyMode;
-
-            if (previousPrivacyMode !== request.body.privacyMode) {
-                let profile = await this.profileService.setPrivacyMode(request.body.authProfile.id, request.body.privacyMode);
-
-                if (this.mixpanel) {
-                    let ip = IpUtils.GetFirstIp(IpUtils.GrabIps(request));
-
-                    this.mixpanel.track('toggle privacy mode', {
-                        distinct_id: profile.userId,
-                        $ip: ip,
-                        profile: profile.id,
-                        privacyMode: request.body.privacyMode
-                    });
-                }
-
-                return profile;
-            }
-
-            reply.status(StatusCodes.ACCEPTED).send();
-        } catch (e) {
-            if (e instanceof HttpError) {
-                reply.code(e.statusCode);
-                return ReplyUtils.error(e.message, e);
-            }
-
-            throw e;
-        }
-    }
-
-    /**
-     * Route for /profile/set-unlisted
-     *
-     * @param request
-     * @param reply
-     */
-    async SetUnlisted(request: FastifyRequest<SetUnlistedRequest>, reply: FastifyReply) {
-        try {
-            if (!request.body.authProfile) {
-                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("This account doesn't have an active profile."));
-                return;
-            }
-
-            let previousUnlisted = request.body.authProfile.metadata?.unlisted;
-
-            if (previousUnlisted !== request.body.unlisted) {
-                let profile = await this.profileService.setUnlisted(request.body.authProfile.id, request.body.unlisted);
-
-                if (this.mixpanel) {
-                    let ip = IpUtils.GetFirstIp(IpUtils.GrabIps(request));
-
-                    this.mixpanel.track('toggle unlisted mode', {
-                        distinct_id: profile.userId,
-                        $ip: ip,
-                        profile: profile.id,
-                        unlisted: request.body.unlisted
-                    });
-                }
-
-                return profile;
-            }
-
-            reply.status(StatusCodes.ACCEPTED).send();
-        } catch (e) {
-            if (e instanceof HttpError) {
-                reply.code(e.statusCode);
-                return ReplyUtils.error(e.message, e);
-            }
-
-            throw e;
-        }
-    }
-
 }

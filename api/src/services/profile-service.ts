@@ -189,6 +189,7 @@ export class ProfileService extends DatabaseService {
      * @param customCss
      * @param customHtml
      * @param customDomain
+     * @param metadata
      */
     async updateProfile(
         profileId: string,
@@ -200,12 +201,13 @@ export class ProfileService extends DatabaseService {
         showWatermark?: boolean,
         customCss?: string,
         customHtml?: string,
-        customDomain: string | null | undefined = null
+        customDomain: string | null | undefined = null,
+        metadata: any = {}
     ): Promise<Profile> {
         let queryResult: QueryResult<DbProfile>;
 
         try {
-            queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9\nwhere id = $10\nreturning *;",
+            queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9,\n    metadata=$10\nwhere id = $11\nreturning *;",
                 [
                     imageUrl,
                     headline,
@@ -216,6 +218,7 @@ export class ProfileService extends DatabaseService {
                     customCss,
                     customHtml,
                     customDomain ?? null,
+                    metadata,
                     profileId
                 ]);
         } catch (err) {
@@ -280,26 +283,6 @@ export class ProfileService extends DatabaseService {
                                                             where id = $2
                                                             returning *;`,
             [JSON.stringify(privacyModeEnabled), profileId]);
-
-        if (queryResult.rowCount < 1) {
-            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");
-        }
-
-        return DbTypeConverter.toProfile(queryResult.rows[0]);
-    }
-
-    /**
-     * Enables/Disables unlisted mode for a profile. (Hide from promotional featuring.)
-     *
-     * @param profileId
-     * @param unlisted
-     */
-    async setUnlisted(profileId: string, unlisted: boolean): Promise<Profile> {
-        let queryResult = await this.pool.query<DbProfile>(`update app.profiles
-                                                            set metadata = jsonb_set(metadata::jsonb, '{unlisted}', $1, true)
-                                                            where id = $2
-                                                            returning *;`,
-            [JSON.stringify(unlisted), profileId]);
 
         if (queryResult.rowCount < 1) {
             throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Unable to update the profile because of an internal error.");

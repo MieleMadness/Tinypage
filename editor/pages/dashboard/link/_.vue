@@ -138,16 +138,20 @@
         >
           <option disabled selected>Select an icon</option>
 
-          <option value="email">Email</option>
-          <option value="text">Text</option>
           <option value="phone">Phone</option>
+          <option value="text">Text</option>
+          <option value="email">Email</option>
+
+          <option value="applemusic">Apple Music</option>
+          <option value="discord">Discord</option>
           <option value="facebook">Facebook</option>
+
           <option value="twitter">Twitter</option>
           <option value="instagram">Instagram</option>
           <option value="tiktok">Tiktok</option>
           <option value="spotify">Spotify</option>
           <option value="youtube">YouTube</option>
-          <option value="applemusic">Apple Music</option>
+
           <option value="soundcloud">SoundCloud</option>
           <option value="linkedin">LinkedIn</option>
           <option value="twitch">Twitch</option>

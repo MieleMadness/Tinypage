@@ -1633,7 +1633,7 @@ export default Vue.extend({
         } else {
           // Is solid color
           this.meta.link_styles.background_type = 'solid';
-          this.meta.link_styles.background_color = this.jsonPackage.children['body'].attributes['background'];
+          this.meta.link_styles.background_color = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'];
         }
       }
 

@@ -217,6 +217,9 @@ export class RouteHandler {
                                     case "facebook":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-facebook.svg`).toString('utf-8');
                                         break;
+                                    case "discord":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-discord.svg`).toString('utf-8');
+                                        break;
                                     case "twitter":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-twitter.svg`).toString('utf-8');
                                         break;
@@ -271,8 +274,11 @@ export class RouteHandler {
                                                 svgElement.querySelector("title")?.remove();
                                                 svgElement.setAttribute("style", "color:${siSettings.color};");
                                                 let scale = ${scale};
-                                                if (scale)
+                                                if (scale) {
                                                     svgElement.setAttribute("height", scale);
+                                                    svgElement.setAttribute("width", scale);
+                                                }
+
                                             }
                                         </script>
                                     </a>
@@ -470,6 +476,71 @@ export class RouteHandler {
                     </style>`;
             }
 
+            if (profile.metadata?.coverImage) {
+                //language=HTML
+                themeColorsHtml += `
+                    <style>
+                        img.nc-avatar {
+                            border: solid 2px #FFF;
+                            /* Your Avatar border width & color */
+                            box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+                            width: 120px !important;
+                            height: 120px !important;
+                            margin-top: min(calc(56.25vw - 65px), 180px);
+                        }
+
+                        body, html {
+                            background-size: cover;
+                            /* Placeholder BG Color if image doesn't load */
+                            background: #000 no-repeat center;
+                            overflow-x: hidden !important;
+                            position: relative;
+                            z-index: -2;
+                        }
+
+                        .sl-banner {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            padding-bottom: min(56.25%, 240px);
+                            width: 100%;
+                            max-width: 416px;
+                            border-radius: 10px 10px 3px 3px;
+                            background: #9D50BB; /* Your cover background color, fallback if image doesn't load/before image loads */
+                            background: url('${profile.metadata?.coverImage}');
+                            background-size: cover;
+                            background-position: center;
+                            margin: 10px auto;
+                            z-index: -1;
+                        }
+
+                        section {
+                            margin-top: 10px;
+                        }
+
+                        .sl-bg {
+                            background: transparent !important; /* DO NOT CHANGE */
+                        }
+
+                        @media (max-width: 400px) {
+                            section {
+                                margin-top: 0;
+                            }
+
+                            .sl-banner {
+                                border-radius: 0 0 3px 3px;
+                                margin: 0 auto;
+                            }
+                        }
+
+                        section {
+                            padding-top: 0 !important;
+                        }
+                    </style>
+                `;
+            }
+
             // Build watermark string
             let watermarkHtml = '';
 
@@ -546,7 +617,7 @@ export class RouteHandler {
                 <head>
                     <title>${profile.headline} - ${config.appName}</title>
                     <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
 
                     <!-- Meta -->
                     <meta name="title" content="${profile.headline} - ${config.appName}">
@@ -695,7 +766,7 @@ export class RouteHandler {
                             class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg"
                     >
                         <section class="flex flex-col p-6 pt-8 pb-8 items-center text-center max-w-sm w-full">
-                            <img class="nc-avatar mb-2" src="${imageUrl}"/>
+                            <img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>
                             ${headlineHtml}
                             ${subtitleHtml}
                             ${linkHtml}
@@ -706,6 +777,7 @@ export class RouteHandler {
                             <!-- Theme html -->
                             <div id="theme-html">
                                 ${theme.customHtml}
+                                <div class="sl-banner"></div>
                             </div>
                             <!-- Watermark -->
                             ${watermarkHtml}

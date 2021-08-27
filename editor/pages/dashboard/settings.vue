@@ -9,8 +9,8 @@
     <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-8">
       <transition name="fade">
         <div
-          v-if="error"
-          class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
+            v-if="error"
+            class="flex flex-row p-2 mb-4 bg-orange-200 text-orange-600 rounded-2xl w-full justify-center items-center text-sm border border-orange-300 shadow-sm"
         >
           <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
           <div class="flex flex-col ml-2">
@@ -27,21 +27,21 @@
           <div class="flex flex-col w-full lg:w-1/2 mr-4 mb-3 lg:mb-0">
             <label class="font-bold opacity-70 text-sm text-black" for="name">Headline</label>
             <input
-              id="name"
-              v-model="user.activeProfile.headline"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              placeholder="e.g. Jane Doe, 21"
-              type="text"
+                id="name"
+                v-model="user.activeProfile.headline"
+                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                placeholder="e.g. Jane Doe, 21"
+                type="text"
             >
           </div>
           <div class="flex flex-col w-full lg:w-1/2">
             <label class="font-bold opacity-70 text-sm text-black" for="subtitle">Subtitle</label>
             <input
-              id="subtitle"
-              v-model="user.activeProfile.subtitle"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              placeholder="e.g. Developer at Neutron from Raleigh NC"
-              type="text"
+                id="subtitle"
+                v-model="user.activeProfile.subtitle"
+                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                placeholder="e.g. Developer at Neutron from Raleigh NC"
+                type="text"
             >
           </div>
         </div>
@@ -50,24 +50,24 @@
             <label class="font-bold opacity-70 text-sm text-black" for="handle">Handle</label>
             <div class="flex flex-row rounded-2xl border border-solid border-gray-300 text-sm mt-2 overflow-hidden">
               <span
-                class="flex p-2 bg-gray-100 border text-gray-900 border-solid border-gray-300 border-t-0 border-l-0 border-b-0"
+                  class="flex p-2 bg-gray-100 border text-gray-900 border-solid border-gray-300 border-t-0 border-l-0 border-b-0"
               >{{ hostname }}/</span>
               <input
-                id="handle"
-                v-model="user.activeProfile.handle"
-                autocomplete="off"
-                class="p-2 flex-grow"
-                placeholder="e.g. janedoe"
-                type="text"
+                  id="handle"
+                  v-model="user.activeProfile.handle"
+                  autocomplete="off"
+                  class="p-2 flex-grow"
+                  placeholder="e.g. janedoe"
+                  type="text"
               >
             </div>
           </div>
           <div class="flex flex-col w-full lg:w-1/2">
-            <label class="font-bold opacity-70 text-sm text-black" for="visibility">Visibility</label>
+            <label class="font-bold opacity-70 text-sm text-black">Visibility</label>
             <select
-              id="visibility"
-              v-model="user.activeProfile.visibility"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                id="visibility"
+                v-model="user.activeProfile.visibility"
+                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
             >
               <option value="unpublished">
                 Unpublished, not viewable
@@ -92,21 +92,31 @@
           <div class="flex flex-col w-auto flex-grow flex-1">
             <label class="font-bold opacity-70 text-sm text-black" for="image_url">Avatar Image URL</label>
             <input
-              id="image_url"
-              v-model="user.activeProfile.imageUrl"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
-              type="text"
+                id="image_url"
+                v-model="user.activeProfile.imageUrl"
+                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
+                type="text"
             >
+
+            <label class="font-bold opacity-70 text-sm text-black mt-2" for="image_url">Cover Image URL</label>
+            <input
+                id="cover_image_url"
+                v-model="user.activeProfile.metadata.coverImage"
+                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                placeholder="e.g. https://i.imgur.com/KM7HbTC.png"
+                type="text"
+            >
+
             <div
-              v-if="!profileValid"
-              class="py-3 px-4 rounded-2xl bg-red-200 border border-red-400 text-red-500 flex flex-col items-start mt-2 text-sm"
+                v-if="!profileValid"
+                class="py-3 px-4 rounded-2xl bg-red-200 border border-red-400 text-red-500 flex flex-col items-start mt-2 text-sm"
             >
               <span class="font-semibold">Warning!</span>
               <span class="text-xs font-semibold">Your site picture may be improperly formatted! Please ensure your image is loaded via an SSL and ends in .gif, .png, .jpg, .jpeg, or another supported file extension.<a
-                class="ml-2 font-semibold underline hover:text-red-700"
-                href="https://www.notion.so/neutroncreative/Troubleshooting-9a162db4a8ce482d89b3d3e1bc9825ba"
-                target="_blank"
+                  class="ml-2 font-semibold underline hover:text-red-700"
+                  href="https://www.notion.so/neutroncreative/Troubleshooting-9a162db4a8ce482d89b3d3e1bc9825ba"
+                  target="_blank"
               >Learn more</a></span>
             </div>
           </div>
@@ -115,25 +125,25 @@
         <div class="flex flex-col w-full mb-6">
           <!-- Custom domain-->
           <div
-            class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full"
+              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full"
           >
             <label class="font-bold text-sm text-black opacity-70" for="custom_domain">Custom domain</label>
             <a
-              class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
-              href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
+                class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
+                href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
             >Need help? Read our documentation</a>
           </div>
 
           <input
-            id="custom_domain"
-            v-model="user.activeProfile.customDomain"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-            placeholder="e.g. neutroncreative.com (no http/https)"
-            type="text"
+              id="custom_domain"
+              v-model="user.activeProfile.customDomain"
+              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+              placeholder="e.g. neutroncreative.com (no http/https)"
+              type="text"
           >
 
           <div
-            class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 p-4 items-start lg:justify-between lg:items-center w-full"
+              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 p-4 items-start lg:justify-between lg:items-center w-full"
           >
             <label class="font-bold text-sm text-black opacity-70" for="custom_domain">
               Make sure you set this TXT Record in your DNS options.<br>
@@ -145,23 +155,23 @@
         <!-- Watermark Toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
           <input
-            id="themeGlobal"
-            v-model="user.activeProfile.showWatermark"
-            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-            style="margin-top:3px;"
-            type="checkbox"
+              id="themeGlobal"
+              v-model="user.activeProfile.showWatermark"
+              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
           >
 
           <label
-            class="ml-4 flex font-bold text-sm leading-5 opacity-70 w-full lg:w-auto flex-col"
-            for="themeGlobal"
-            style="max-width:calc(100% - 32px)"
+              class="ml-4 flex font-bold text-sm leading-5 opacity-70 w-full lg:w-auto flex-col"
+              for="themeGlobal"
+              style="max-width:calc(100% - 32px)"
           >
             Display Watermark ("Proudly built with {{ app_name }}!")
             <br>
             <span
-              v-show="showWatermarkNotice"
-              class="mt-2 flex text-gdp p-1 px-4 rounded-full bg-opaqueIndigo font-bold text-xs lg:text-sm"
+                v-show="showWatermarkNotice"
+                class="mt-2 flex text-gdp p-1 px-4 rounded-full bg-opaqueIndigo font-bold text-xs lg:text-sm"
             >
               This is completely optional, but it really helps us out! Would you help us spread the word about
               {{ app_name }}?
@@ -172,11 +182,11 @@
         <!-- Privacy mode toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
           <input
-            v-model="user.activeProfile.metadata.privacyMode"
-            aria-label="privacy mode"
-            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-            style="margin-top:3px;"
-            type="checkbox"
+              v-model="user.activeProfile.metadata.privacyMode"
+              aria-label="privacy mode"
+              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
           >
 
           <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
@@ -185,9 +195,9 @@
         </div>
 
         <button
-          class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
-          type="button"
-          @click="saveChanges"
+            class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            type="button"
+            @click="saveChanges"
         >
           Save changes
         </button>
@@ -195,16 +205,16 @@
     </div>
 
     <div
-      v-if="alerts.googleLinked !== null && alerts.googleLinked"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
+        v-if="alerts.googleLinked !== null && alerts.googleLinked"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Successfully linked Google!
       </p>
     </div>
     <div
-      v-else-if="alerts.googleLinked !== null && !alerts.googleLinked"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
+        v-else-if="alerts.googleLinked !== null && !alerts.googleLinked"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Failed to link Google!
@@ -223,9 +233,9 @@
       </div>
       <div>
         <a
-          class="flex flex-row items-center font-bold justify-center cursor-pointer rounded-full px-8 py-2 my-2 text-md border-gray-300 hover:border-gray-600"
-          style="border-width:3px;border-style:solid;"
-          @click="assignGoogleAccount()"
+            class="flex flex-row items-center font-bold justify-center cursor-pointer rounded-full px-8 py-2 my-2 text-md border-gray-300 hover:border-gray-600"
+            style="border-width:3px;border-style:solid;"
+            @click="assignGoogleAccount()"
         >
           <img class="w-5 mr-4" src="/icons/google-icon.png">
           Link with Google
@@ -241,6 +251,24 @@
       </div>
     </div>
 
+    <!-- Delete site -->
+    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col mr-auto w-full lg:w-1/2">
+        <h2 class="text-black font-bold text-lg w-full">
+          Delete this site
+        </h2>
+        <p class="text-black opacity-70 font-semibold">Done with this site? Click the button on your right to delete
+          this site and all related content.</p>
+      </div>
+      <button
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
+          type="button"
+          @click="setDeleteProfileModalActive(true)"
+      >
+        Delete this site
+      </button>
+    </div>
+
     <!-- Import from Linktree -->
     <div class="flex flex-col lg:flex-col p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
       <div class="flex flex-col w-full">
@@ -254,51 +282,33 @@
       <div class="flex flex-col w-full">
         <div class="flex flex-row rounded-2xl border border-solid border-gray-300 text-sm mt-2 overflow-hidden">
           <span
-            class="flex p-2 bg-gray-100 border text-gray-900 border-solid border-gray-300 border-t-0 border-l-0 border-b-0"
+              class="flex p-2 bg-gray-100 border text-gray-900 border-solid border-gray-300 border-t-0 border-l-0 border-b-0"
           >https://linktr.ee/</span>
           <input
-            id="linktreeUrl"
-            autocomplete="off"
-            class="p-2 flex-grow"
-            placeholder="e.g. janedoe"
-            type="text"
+              id="linktreeUrl"
+              autocomplete="off"
+              class="p-2 flex-grow"
+              placeholder="e.g. janedoe"
+              type="text"
           >
         </div>
         <button
-          v-if="alerts.linktreeImported === null"
-          class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
-          type="button"
-          @click="importLinktree"
+            v-if="alerts.linktreeImported === null"
+            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            type="button"
+            @click="importLinktree"
         >
           Import
         </button>
         <div
-          v-if="alerts.linktreeImported !== null && alerts.linktreeImported"
-          class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow max-w-xs mt-4"
+            v-if="alerts.linktreeImported !== null && alerts.linktreeImported"
+            class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow max-w-xs mt-4"
         >
           <p class="text-black opacity-70 font-semibold">
             Successfully imported Linktree links
           </p>
         </div>
       </div>
-    </div>
-
-    <!-- Delete site -->
-    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
-      <div class="flex flex-col mr-auto w-full lg:w-1/2">
-        <h2 class="text-black font-bold text-lg w-full">
-          Delete this site
-        </h2>
-        <p class="text-black opacity-70 font-semibold">Done with this site? Click the button on your right to delete
-          this site and all related content.</p>
-      </div>
-      <button
-        class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
-        type="button"
-        @click="setDeleteProfileModalActive(true)"
-      >
-        Delete this site
-      </button>
     </div>
 
     <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
@@ -309,8 +319,8 @@
         <p class="text-black opacity-70 font-semibold">Need to configure the account managing your micro-sites?</p>
       </div>
       <n-link
-        class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-1/3 justify-center align-center"
-        to="/dashboard/account"
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-1/3 justify-center align-center"
+          to="/dashboard/account"
       >
         Go to account settings
       </n-link>
@@ -319,10 +329,10 @@
     <transition name="fade">
       <!-- Confirm site deletion modal -->
       <div
-        v-if="deleteProfileModalActive"
-        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setDeleteProfileModalActive(false)"
+          v-if="deleteProfileModalActive"
+          class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="setDeleteProfileModalActive(false)"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-semibold text-xl">
@@ -332,9 +342,9 @@
             Deleting this site is irreversible, please confirm to continue.
           </p>
           <button
-            class="mt-4 w-full p-4 text-center text-md text-black bg-red-600 hover:bg-red-700 rounded-2xl font-semibold"
-            type="button"
-            @click="deleteProfile"
+              class="mt-4 w-full p-4 text-center text-md text-black bg-red-600 hover:bg-red-700 rounded-2xl font-semibold"
+              type="button"
+              @click="deleteProfile"
           >
             Yes, delete this site
           </button>
@@ -345,10 +355,10 @@
     <transition name="fade">
       <!-- Password reset confirmation modal -->
       <div
-        v-if="resetPasswordModalActive"
-        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setPasswordModalActive(false)"
+          v-if="resetPasswordModalActive"
+          class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="setPasswordModalActive(false)"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-semibold text-xl">
@@ -363,9 +373,9 @@
             {{ passwordError }}
           </p>
           <button
-            class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
-            type="button"
-            @click="setPasswordModalActive(false)"
+              class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
+              type="button"
+              @click="setPasswordModalActive(false)"
           >
             Close
           </button>
@@ -437,7 +447,9 @@ export default Vue.extend({
           visibility: '',
           showWatermark: false,
           metadata: {
-            privacyMode: false
+            privacyMode: false,
+            unlisted: false,
+            coverImage: null
           },
         }
       },
@@ -518,7 +530,11 @@ export default Vue.extend({
         this.user.activeProfile.visibility = profileResponse.visibility;
         this.user.activeProfile.showWatermark = profileResponse.showWatermark;
 
-        this.user.activeProfile.metadata.privacyMode = profileResponse.metadata?.privacyMode ?? false;
+        this.user.activeProfile.metadata = profileResponse.metadata ?? {
+          privacyMode: false,
+          unlisted: false,
+          coverImage: null
+        };
 
         this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);
 
@@ -560,6 +576,7 @@ export default Vue.extend({
           visibility: this.user.activeProfile.visibility ?? null,
           customDomain: this.user.activeProfile.customDomain ?? null,
           showWatermark: this.user.activeProfile.showWatermark ?? true,
+          metadata: this.user.activeProfile.metadata ?? {privacyMode: false}
         });
 
         if (process.client) {
@@ -582,33 +599,6 @@ export default Vue.extend({
 
         throw err;
       }
-
-      // Update privacy mode
-      const privacyMode = this.user.activeProfile.metadata.privacyMode;
-
-      try {
-        const request = await this.$axios.post('/profile/set-privacy-mode', {
-          token: this.$store.getters['auth/getToken'],
-          privacyMode
-        });
-
-        if (request.status && request.status === 200) {
-          this.passwordError = '';
-        }
-      } catch (err) {
-        console.error(err);
-
-        if (err.response) {
-          if (err.response.status === StatusCodes.NOT_FOUND) {
-            // This should be impossible under normal circumstances
-            this.error = "The profile couldn't be found, please make sure it's correct.";
-          }
-
-          return;
-        }
-
-        throw err;
-      }
     },
 
     setDeleteProfileModalActive(active: boolean) {
@@ -624,7 +614,7 @@ export default Vue.extend({
 
       this.$nuxt.$loading.finish();
 
-      window.location.replace("/dashboard")
+      window.location.replace("/dashboard");
     },
 
     async assignGoogleAccount() {

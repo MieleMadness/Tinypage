@@ -112,13 +112,13 @@ interface Profile {
     metadata: {
         privacyMode: boolean,
         unlisted: boolean
-    },
+    } | any,
 
     createdOn: string
 }
 
 interface SensitiveProfile extends Profile {
-    privateMetadata: any
+    privateMetadata: any;
 }
 
 interface Link {
@@ -136,7 +136,7 @@ interface Link {
 }
 
 interface SensitiveLink extends Link {
-    privateMetadata: any
+    privateMetadata: any;
 }
 
 interface PermissionGroup {
@@ -181,7 +181,7 @@ interface Addon {
 }
 
 interface SensitiveAddon extends Addon {
-    privateMetadata: any
+    privateMetadata: any;
 }
 
 interface AddonInstall {

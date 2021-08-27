@@ -61,9 +61,10 @@ export class CustomDomainHandler {
             <meta data-n-head="1" name="og:description" content="${profile.subtitle || ''}">
             <!-- OpenGraph Image -->
             <meta data-n-head="1" name="og:image"
-                  content="https://api.singlelink.co/profile/thumbnail/${profile.handle}">
+                  content="${config.apiUrl}/profile/thumbnail/${profile.handle}"
+            >
             <!-- Set favicon -->
-            <link rel="icon" type="image/png" href="https://singlelink.co/favicon.ico">
+            <link rel="icon" type="image/png" href="${config.rendererUrl}/favicon.png">
             <!-- Set page scale -->
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <!-- Facebook Meta Tags -->
@@ -71,20 +72,20 @@ export class CustomDomainHandler {
             <meta property="og:type" content="website">
             <meta property="og:title" content="${profile.headline || ''}">
             <meta property="og:description" content="${profile.subtitle || ''}">
-            <meta property="og:image" content="https://api.singlelink.co/profile/thumbnail/${profile.handle}">
+            <meta property="og:image" content="${config.apiUrl}/profile/thumbnail/${profile.handle}">
 
             <!-- Twitter Meta Tags -->
             <meta property="twitter:url" content="${profile.custom_domain}">
             <meta name="twitter:card" content="summary_large_image">
             <meta name="twitter:title" content="${profile.headline || ''}">
             <meta name="twitter:description" content="${profile.subtitle || ''}">
-            <meta name="twitter:image" content="https://api.singlelink.co/profile/thumbnail/${profile.handle}">
+            <meta name="twitter:image" content="${config.apiUrl}/profile/thumbnail/${profile.handle}">
         </head>
 
         <body>
         <!-- Profile contents -->
         <iframe
-                src='${url}'
+                src="${url}"
                 style="
     position: fixed;
     top: 0;
@@ -97,7 +98,8 @@ export class CustomDomainHandler {
     overflow: hidden;
     z-index: 999999;
     height: 100%;
-  ">
+  "
+        >
         </iframe>
         </body>
         </html>`;

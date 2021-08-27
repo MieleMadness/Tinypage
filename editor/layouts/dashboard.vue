@@ -81,6 +81,7 @@
                   v-if="selectingProfile"
                   class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
                   style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
+                  @mouseleave="selectingProfile = false"
               >
 
                 <li class="flex flex-row items-center justify-left profile-search text-black">
@@ -92,6 +93,7 @@
                       style="outline:none !important;background:transparent;"
                       type="text"
                       @input="onFilterProfilesInput"
+                      @mouseout.stop
                   >
                   <i class="search-icon fas fa-search text-sm p-2 opacity-50"/>
                 </li>
@@ -102,6 +104,7 @@
                     :style="!profile.handle ? 'max-height: 51px;' : ''"
                     class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
                     @click="selectProfile(profile.id)"
+                    @mouseout.stop
                 >
                   <div
                       v-if="profile.handle"
@@ -140,7 +143,6 @@
                 </li>
 
               </ul>
-
 
               <!-- Zoom Level -->
               <div
@@ -192,8 +194,12 @@
               <!-- </n-link>-->
 
               <a v-if="support" :class="getActiveStyles('dashboard-support')" :href="support" target="_blank">
-                <img src="/icons/Cowboy hat face.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Contact support</span>
+                <img src="/icons/logo-discord.svg" style="width:24px;height:24px;color:#5865F2">
+                <span class="ml-4 font-extrabold">Support (Discord)</span>
+              </a>
+              <a v-if="community" :class="getActiveStyles('dashboard-community')" :href="community" target="_blank">
+                <img src="/icons/logo-facebook.svg" style="width:24px;height:24px;color:#3e39ab">
+                <span class="ml-4 font-extrabold">Join Our Community (Facebook)</span>
               </a>
               <!--              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">-->
               <!--                <img src="/Heart.svg" style="width:24px;height:24px;">-->
@@ -363,6 +369,7 @@ export default Vue.extend({
       isAdmin: false,
       leaderboard: process.env.LEADERBOARD,
       support: process.env.SUPPORT,
+      community: process.env.COMMUNITY_GROUP,
       mobile_menu: false,
       mobile_preview: false,
       previewVisible: true,
@@ -527,6 +534,8 @@ export default Vue.extend({
         token: this.$store.getters['auth/getToken'],
         newProfileId: profile
       });
+
+      this.selectingProfile = false;
 
       window.location.replace('/dashboard');
     },

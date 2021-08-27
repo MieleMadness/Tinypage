@@ -368,7 +368,7 @@ export class RouteHandler {
                         //language=HTML
                         linkHtml += `
                             <div style="overflow: hidden; ${css}"
-                                 class="rounded-2xl p-2 w-full font-medium mb-3"
+                                 class="rounded-2xl w-full font-medium mb-3"
                             >
                                 <div class="ql-editor">
                                     ${text}
@@ -386,7 +386,7 @@ export class RouteHandler {
                         //language=HTML
                         linkHtml += `
                             <div style="overflow: hidden; ${css}"
-                                 class="rounded-2xl p-4 w-full mb-3"
+                                 class="rounded-2xl w-full mb-3"
                             >
                                 ${text}
                             </div>
@@ -492,7 +492,6 @@ export class RouteHandler {
                         body, html {
                             background-size: cover;
                             /* Placeholder BG Color if image doesn't load */
-                            background: #000 no-repeat center;
                             overflow-x: hidden !important;
                             position: relative;
                             z-index: -2;
@@ -505,13 +504,13 @@ export class RouteHandler {
                             right: 0;
                             padding-bottom: min(56.25%, 240px);
                             width: 100%;
-                            max-width: 416px;
+                            max-width: 35rem;
                             border-radius: 10px 10px 3px 3px;
                             background: #9D50BB; /* Your cover background color, fallback if image doesn't load/before image loads */
                             background: url('${profile.metadata?.coverImage}');
                             background-size: cover;
                             background-position: center;
-                            margin: 10px auto;
+                            margin: 0 auto 10px auto;
                             z-index: -1;
                         }
 
@@ -695,6 +694,21 @@ export class RouteHandler {
                         /*Override ql-editor settings*/
                         .ql-editor {
                             white-space: initial;
+                            padding: 12px 0;
+                        }
+
+                        .page-width {
+                            max-width: 24rem;
+                        }
+
+                        .page-padding {
+                            padding: 1.5rem;
+                        }
+
+                        @media (min-width: 540px) {
+                            .page-width {
+                                max-width: 35rem;
+                            }
                         }
                     </style>
 
@@ -765,7 +779,9 @@ export class RouteHandler {
                             id="user-site-view"
                             class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg"
                     >
-                        <section class="flex flex-col p-6 pt-8 pb-8 items-center text-center max-w-sm w-full">
+                        <section
+                                class="flex flex-col p-6 pt-8 pb-8 items-center text-center page-width w-full"
+                        >
                             <img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>
                             ${headlineHtml}
                             ${subtitleHtml}

@@ -152,6 +152,21 @@
           </div>
         </div>
 
+        <!-- Privacy mode toggle -->
+        <div class="flex flex-row w-full mb-6 items-start">
+          <input
+              v-model="user.activeProfile.metadata.fullWidth"
+              aria-label="privacy mode"
+              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
+          >
+
+          <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
+            Full Width (The contents of the page won't be padded if enabled.)
+          </label>
+        </div>
+
         <!-- Watermark Toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
           <input

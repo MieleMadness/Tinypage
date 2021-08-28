@@ -152,7 +152,7 @@
           </div>
         </div>
 
-        <!-- Privacy mode toggle -->
+        <!-- Full Width toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
           <input
               v-model="user.activeProfile.metadata.fullWidth"
@@ -208,6 +208,22 @@
             Privacy mode (Disables site analytics, discovery, and event tracking)
           </label>
         </div>
+
+        <!-- Share button toggle -->
+        <div class="flex flex-row w-full mb-6 items-start">
+          <input
+              v-model="user.activeProfile.metadata.shareMenu"
+              aria-label="privacy mode"
+              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
+          >
+
+          <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
+            Show Share Menu
+          </label>
+        </div>
+
 
         <!-- Page HTML -->
         <div class="flex flex-col mb-4 justify-start w-full">
@@ -514,7 +530,8 @@ export default Vue.extend({
             privacyMode: false,
             unlisted: false,
             coverImage: null,
-            pageHtml: null
+            pageHtml: null,
+            shareMenu: true
           },
         }
       },
@@ -599,7 +616,8 @@ export default Vue.extend({
           privacyMode: false,
           unlisted: false,
           coverImage: null,
-          pageHtml: null
+          pageHtml: null,
+          shareMenu: true
         };
 
         this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);

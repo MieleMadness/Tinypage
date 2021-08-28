@@ -17,14 +17,36 @@
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
       </a>
+
       <div
           v-for="theme in themes"
           v-if="icon && getActiveThemeId === theme.id"
           :key="theme.id"
           class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
-          @click="selectTheme(theme.id)"
+
       >
-        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"/>
+        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"
+               @click.native="selectTheme(theme.id)"
+        />
+
+        <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
+          {{ theme.label }}
+
+          <a
+              v-if="theme && icon"
+              :href="'/dashboard/appearance/theme/' + theme.id"
+          >
+            <div class="bg-gray-700 hover:bg-indigo-300"
+                 style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                      d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
       </div>
       <!-- List active themes -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"  -->
@@ -36,16 +58,38 @@
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
       </a>
+
       <div
           v-for="theme in themes"
           v-if="icon && getActiveThemeId !== theme.id"
           :key="theme.id"
           class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
-          @click="selectTheme(theme.id)"
       >
-        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"/>
+        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"
+               @click.native="selectTheme(theme.id)"
+        />
+
+        <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
+          {{ theme.label }}
+
+          <a
+              v-if="theme && icon"
+              :href="'/dashboard/appearance/theme/' + theme.id"
+          >
+            <div class="bg-gray-700 hover:bg-indigo-300"
+                 style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                      d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
+
     <div v-if="addon" :class="'grid grid-cols-' + cols + ' mb-2 justify-start w-full'">
       <!-- Show active theme first -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
@@ -74,6 +118,25 @@
             :icon="icon"
             :label="theme.displayName"
         />
+
+        <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
+          {{ theme.label }}
+
+          <a
+              v-if="theme && icon"
+              :href="'/dashboard/appearance/theme/' + theme.id"
+          >
+            <div class="bg-gray-700 hover:bg-indigo-300"
+                 style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                      d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
       </div>
       <!-- List active themes -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
@@ -89,6 +152,7 @@
             :label="theme.displayName"
         />
       </a>
+
       <div
           v-for="theme in themes"
           v-if="icon && active !== theme.id"
@@ -102,6 +166,26 @@
             :icon="icon"
             :label="theme.displayName"
         />
+
+        <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
+          {{ theme.label }}
+
+          <a
+              v-if="theme && icon"
+              :href="'/dashboard/appearance/theme/' + theme.id"
+          >
+            <div class="bg-gray-700 hover:bg-indigo-300"
+                 style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                      d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+
       </div>
     </div>
   </div>

@@ -192,14 +192,83 @@
       <label v-if="pendingLink.type === 'link'" class="font-semibold mb-2">Link URL</label>
       <label v-else-if="pendingLink.type === 'image'" class="font-semibold mb-2">Image URL</label>
       <label v-else-if="pendingLink.type === 'youtube'" class="font-semibold mb-2">Video URL</label>
-      <label v-else-if="pendingLink.type === 'vcard'" class="font-semibold mb-2">vCard URL</label>
       <label v-else class="font-semibold mb-2">URL</label>
-
-      <input v-model="pendingLink.url" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             :placeholder="pendingLink.type === 'vcard' ? 'e.g. https://mywebsite.com/vcard.vcf' : 'e.g. https://exampleurl.com/example'"
-             type="url"
-      />
     </div>
+
+    <!-- vCard -->
+    <div v-show="intent!=='view' && pendingLink.type === 'vcard'"
+         class="flex flex-col mb-8 justify-start w-full"
+    >
+      <label class="font-semibold mb-2">vCard Data (will overwrite existing vCard data)</label>
+
+      <div class="flex flex-row space-x-3">
+        <button
+            class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+        >
+        <span class="text-center">
+             <a class="font-semibold mb-2 text-xl" href="https://vcardmaker.com/"
+                target="_blank"
+             >
+            Create a .vcf file
+            </a>
+        </span>
+        </button>
+
+        <div
+            class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+        >
+          <label for="importVCardFileInput" class="cursor-pointer text-center text-xl font-semibold">
+            Import a .vcf file
+          </label>
+          <input
+              id="importVCardFileInput"
+              type="file"
+              hidden
+              @change="importVCard"
+          >
+        </div>
+
+      </div>
+
+      <div>
+
+      </div>
+
+      <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mt-6">
+        <div
+            class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+        >
+          <div class="flex flex-row space-x-2">
+            <h2 class="text-gray-800 font-semibold">
+              vCard Data Editor
+            </h2>
+
+            <div
+                class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+                @click="vCardShowData = !vCardShowData"
+            >
+              <h6 class="text-center">
+                {{ vCardShowData ? 'Close Editor' : 'Open Editor' }}
+              </h6>
+              <img :src="vCardShowData ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                   style="width: 20px; height: 20px;"
+                   alt="show hide CSS editor"
+              />
+            </div>
+          </div>
+        </div>
+
+        <client-only v-if="vCardShowData">
+          <textarea v-model="vCard"
+                    class="mt-4 border-solid border-gray-300 rounded-2xl border p-2"
+                    placeholder="vCard data will show up here... or enter it yourself."
+                    rows="8"
+          >
+          </textarea>
+        </client-only>
+      </div>
+    </div>
+
     <!-- No Code Builder-->
     <!--    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">-->
     <!--      <div-->
@@ -376,6 +445,9 @@ export default Vue.extend({
 
       showCSS: false,
 
+      vCardShowData: false,
+      vCard: '',
+
       socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
 
       sortedLinks: new Array<EditorLink>()
@@ -403,27 +475,23 @@ export default Vue.extend({
     }
 
     if (this.pendingLink.type === 'divider') {
-      try {
-        this.dividerSettings = this.pendingLink.metadata?.dividerSettings ?? {};
+      this.dividerSettings = this.pendingLink.metadata?.dividerSettings ?? {};
 
-        if (!this.dividerSettings.color) {
-          this.dividerSettings.color = "#000000FF";
-        }
+      if (!this.dividerSettings.color) {
+        this.dividerSettings.color = "#000000FF";
+      }
 
-        if (!this.dividerSettings.fontSize) {
-          this.dividerSettings.fontSize = 18;
-        }
-      } catch (e) {
-        console.warn("Failed to parse JSON string for divider: " + this.pendingLink.metadata?.dividerSettings);
+      if (!this.dividerSettings.fontSize) {
+        this.dividerSettings.fontSize = 18;
       }
     }
 
     if (this.pendingLink.type === 'social') {
-      try {
-        this.socialIcons = this.pendingLink.metadata?.socialIcons ?? [];
-      } catch (e) {
-        console.warn("Failed to parse JSON string for divider: " + this.pendingLink.metadata?.socialIcons);
-      }
+      this.socialIcons = this.pendingLink.metadata?.socialIcons ?? [];
+    }
+
+    if (this.pendingLink.type === 'vcard') {
+      this.vCard = this.pendingLink.metadata?.vCard ?? '';
     }
 
     if (process.client) {
@@ -528,6 +596,9 @@ export default Vue.extend({
 
       if (this.pendingLink.type === 'social')
         this.pendingLink.metadata.socialIcons = this.socialIcons;
+
+      if (this.pendingLink.type === 'vcard')
+        this.pendingLink.metadata.vCard = this.vCard;
     },
 
     async addNewLink(): Promise<boolean> {
@@ -609,6 +680,18 @@ export default Vue.extend({
       }
     },
 
+    async importVCard(event: Event) {
+      let htmlInputEvent = event.target as HTMLInputElement;
+      const files = htmlInputEvent.files;
+
+      if (!files || files.length < 1)
+        return;
+
+      let file = files[0];
+
+      this.vCard = await file.text();
+    },
+
     showOption(linkType: LinkType, field: LinkField): boolean {
       switch (linkType) {
         case "link":
@@ -622,13 +705,6 @@ export default Vue.extend({
         case "social":
           switch (field) {
             case "icon":
-              return true;
-          }
-          break;
-
-        case "vcard":
-          switch (field) {
-            case "url":
               return true;
           }
           break;

@@ -341,13 +341,26 @@ export class RouteHandler {
                     }
                     case 'vcard': {
                         let css = link.customCss ?? '';
+                        let vCardData = link.metadata?.vCard ?? null;
+
+                        if (!vCardData)
+                            break;
+
+                        let encodedVCard = encodeURI(vCardData);
+                        let dataUrl = 'data:text/x-vcard;urlencoded,' + encodedVCard;
+
                         //language=HTML
                         linkHtml += `
                             <a
                                     id="sl-item-${link.id}"
-                                    href="${config.apiUrl}/analytics/link/record/${link.id}"
+                                    href="#"
                                     class="w-full sl-item-parent"
-                                    target="_blank"
+                                    onclick="{
+                                           let recordUrl = '${config.apiUrl}/analytics/link/record/${link.id}'
+                                           fetch(recordUrl, {method: 'POST'});
+                                           window.open('${dataUrl}');
+                                           return false;
+                                       }"
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
@@ -359,6 +372,7 @@ export class RouteHandler {
                         `;
                         break;
                     }
+
                     case 'image': {
                         let css = link.customCss ?? '';
 
@@ -658,6 +672,102 @@ export class RouteHandler {
                 pageHtml = profile.metadata.pageHtml;
             }
 
+            let shareMenuHtml = "";
+            if (profile.metadata?.shareMenu) {
+
+                //language=HTML
+                shareMenuHtml += `
+                    <div id="qrcode"></div>
+
+                    <script>
+                        async function onClickCopyLink() {
+                            try {
+                                let text = window.location.href;
+
+                                await window.navigator.clipboard.writeText(text);
+                                alert('Url copied to clipboard!');
+                            } catch (error) {
+                                let text = window.location.href;
+
+                                prompt('Copy this url to the clipboard: Ctrl+C, Enter\\n', text);
+                            }
+                        }
+
+                        async function onClickQRCode() {
+                            let text = window.location.href;
+                            const qr = new QRious({
+                                background: 'white',
+                                backgroundAlpha: 1,
+                                foreground: 'black',
+                                foregroundAlpha: 1,
+                                level: 'H',
+                                padding: 0,
+                                size: 512,
+                                value: text
+                            });
+
+                            let toDataURL = qr.toDataURL();
+
+                            let response = await fetch('/html/qr.html');
+                            let html = await response.text();
+
+                            const w = window.open("");
+                            w.document.write(html);
+                            w.document.title = document.title + " - QR Code"
+
+                            let qrCodeElem = w.document.getElementById("qrcode");
+                            qrCodeElem.src = toDataURL;
+
+                            let profileHandleElem = w.document.getElementById('profileHandle');
+                            profileHandleElem.innerHTML = '${profile.handle}';
+
+                            w.document.close();
+                        }
+                    </script>
+
+                    <div>
+
+                    </div>
+
+                    <div class="share-menu-container">
+                        <div class="sbutton" onclick="onClickCopyLink(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M336 192h40a40 40 0 0140 40v192a40 40 0 01-40 40H136a40 40 0 01-40-40V232a40 40 0 0140-40h40M336 128l-80-80-80 80M256 321V48"
+                                      fill="none" stroke="currentColor" stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="32"
+                                />
+                            </svg>
+                        </div>
+
+                        <div class="sbutton" onclick="onClickQRCode(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <rect x="336" y="336" width="80" height="80" rx="8" ry="8"/>
+                                <rect x="272" y="272" width="64" height="64" rx="8" ry="8"/>
+                                <rect x="416" y="416" width="64" height="64" rx="8" ry="8"/>
+                                <rect x="432" y="272" width="48" height="48" rx="8" ry="8"/>
+                                <rect x="272" y="432" width="48" height="48" rx="8" ry="8"/>
+                                <rect x="336" y="96" width="80" height="80" rx="8" ry="8"/>
+                                <rect x="288" y="48" width="176" height="176" rx="16" ry="16" fill="none"
+                                      stroke="currentColor"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                                />
+                                <rect x="96" y="96" width="80" height="80" rx="8" ry="8"/>
+                                <rect x="48" y="48" width="176" height="176" rx="16" ry="16" fill="none"
+                                      stroke="currentColor"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                                />
+                                <rect x="96" y="336" width="80" height="80" rx="8" ry="8"/>
+                                <rect x="48" y="288" width="176" height="176" rx="16" ry="16" fill="none"
+                                      stroke="currentColor"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                                />
+                            </svg>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Send response content type to text/html
             reply.type('text/html');
 
@@ -697,6 +807,7 @@ export class RouteHandler {
                     <link rel="icon" type="image/png" href="/favicon.png"/>
 
                     <link rel="stylesheet" href="/css/quill.core.min.css"/>
+                    <script src="/js/qrious.min.js" async></script>
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <style>
@@ -891,7 +1002,6 @@ export class RouteHandler {
                         ${profile.customCss}
                     </style>
 
-
                     <style>
                         .nc-avatar {
                             width: 60px;
@@ -1004,6 +1114,52 @@ export class RouteHandler {
                     <style>
                         ${shouldHideScrollbar}
                     </style>
+
+                    <style>
+                        .share-menu-container {
+                            top: 0;
+                            right: 5px;
+                            position: absolute;
+                            margin: 1em;
+                        }
+
+                        @media (min-width: 650px) {
+                            .share-menu-container {
+                                right: unset;
+                                left: calc(50% + 250px);
+                            }
+                        }
+
+                        .sbutton {
+                            display: flex;
+                            align-items: center;
+
+                            width: 45px;
+                            height: 45px;
+                            border-radius: 50%;
+                            text-align: center;
+                            margin: 5px auto 0;
+                            background: rgba(255, 255, 255, 0.15);
+                            box-shadow: 0 5px 11px -2px rgba(0, 0, 0, 0.18), 0 4px 12px -7px rgba(0, 0, 0, 0.15);
+                            cursor: pointer;
+                            -webkit-transition: all .1s ease-out;
+                            transition: all .1s ease-out;
+                            position: relative;
+                        }
+
+                        .sbutton > svg {
+                            display: block;
+                            width: 30px;
+                            margin: 0 auto;
+                        }
+
+                        .sbutton:active,
+                        .sbutton:focus,
+                        .sbutton:hover {
+                            box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+                            cursor: pointer;
+                        }
+                    </style>
                 </head>
                 <body>
                 <div class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg">
@@ -1011,9 +1167,9 @@ export class RouteHandler {
                             id="user-site-view"
                             class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg"
                     >
-                        <section
-                                class="flex flex-col p-6 pt-8 pb-8 items-center text-center page-width w-full"
+                        <section class="flex flex-col p-6 pt-8 pb-8 items-center text-center page-width w-full"
                         >
+                            ${shareMenuHtml}
                             <img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>
                             ${headlineHtml}
                             ${subtitleHtml}

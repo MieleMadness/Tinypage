@@ -171,7 +171,6 @@
       >
         Remove Theme
       </button>
-
     </div>
 
   </section>

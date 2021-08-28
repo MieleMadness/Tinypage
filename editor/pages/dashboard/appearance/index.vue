@@ -22,7 +22,7 @@
       </div>
       <Builder v-if="builderCssLoaded" v-model="builderCss"/>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -84,7 +84,7 @@
         />
       </client-only>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -139,7 +139,7 @@
         />
       </client-only>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -158,7 +158,7 @@
           name="Your themes"
       />
       <a
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           href="/dashboard/appearance/theme/create"
           type="button"
       >
@@ -166,7 +166,7 @@
       </a>
 
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           @click="resetTheme"
       >
         Remove Theme

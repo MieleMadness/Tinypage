@@ -47,7 +47,7 @@
           >
         </div>
         <button
-          class="mt-2 w-full p-3 text-center text-sm text-white bg-blue-600 hover:bg-blue-700 rounded font-semibold"
+          class="mt-2 w-full p-3 text-center text-sm text-white bg-blue-600 hover:bg-blue-400 rounded font-semibold"
           type="button"
           @click="resetPassword"
         >

@@ -21,7 +21,7 @@
         <span class="text-black opacity-80 font-medium mb-4">{{ addons.featured[0].description }}</span>
         <a
           :href="'/dashboard/marketplace/addon/' + addons.featured[0].id"
-          class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+          class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-blue-400"
           style="width:fit-content;"
         >See details</a>
       </div>

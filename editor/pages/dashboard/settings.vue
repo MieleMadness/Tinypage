@@ -466,7 +466,7 @@
             {{ passwordError }}
           </p>
           <button
-              class="mt-4 p-3 text-center text-md text-black bg-blue-600 hover:bg-blue-700 rounded-2xl font-semibold"
+              class="mt-4 p-3 text-center text-md text-black bg-blue-600 hover:bg-blue-400 rounded-2xl font-semibold"
               type="button"
               @click="resetPasswordModalActive = false"
           >

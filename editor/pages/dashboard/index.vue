@@ -136,7 +136,7 @@
           >
             <button
                 id="save-and-add-link-btn"
-                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-400 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
                 type="button"
                 @click="saveAndClose"
             >
@@ -156,7 +156,7 @@
               class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
           >
             <button
-                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-400 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
                 type="button"
                 @click="saveLinkChanges"
             >

@@ -173,6 +173,14 @@ export class RouteHandler {
             // Define Avatar image
             const imageUrl = profile.imageUrl || `https://www.gravatar.com/avatar/${user.emailHash}`;
 
+            if (request.query.token) {
+                // This is a editor session, ignore
+            } else {
+                // Record page view
+                if (!profile.metadata?.privacyMode)
+                    await axios.get(`${config.apiUrl}/analytics/profile/record/${profile.id}`);
+            }
+
             // Define Link HTML Block
             //language=HTML
             let linkHtml = '';

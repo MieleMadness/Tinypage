@@ -211,25 +211,51 @@
 
         <!-- Page HTML -->
         <div class="flex flex-col mb-4 justify-start w-full">
-          <label class="font-semibold mb-2">Page HTML</label>
+
+          <div class="flex flex-row justify-start items-center">
+            <label class="font-semibold mb-2 mr-4">Page HTML</label>
+
+            <div class="flex flex-row space-x-2">
+              <div
+                  class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+                  @click="showHTML = !showHTML"
+              >
+                <h6 class="text-center">
+                  {{ showHTML ? 'Close Editor' : 'Open Editor' }}
+                </h6>
+                <img :src="showHTML ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                     style="width: 20px; height: 20px;"
+                     alt="show hide HTML editor"
+                />
+              </div>
+            </div>
+          </div>
+
           <label class="font-semibold mb-2 text-sm">Use for this HTML snippets like Facebook Pixel.</label>
 
-          <client-only>
+          <a class="text-gray-500 text-xs hover:underline hover:text-gray-600 mb-1"
+             href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+             target="_blank"
+          >Need help? Read our
+            documentation</a>
+
+          <client-only v-if="showHTML">
             <MonacoEditor
                 v-model="user.activeProfile.metadata.pageHtml"
                 :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                }"
+                            extraEditorClassName: 'rounded overflow-hidden mb-2',
+                            autoIndent: 'full',
+                            autoClosingQuotes: true,
+                            readOnly: false,
+                            }"
                 height="350"
                 language="html"
                 theme="vs-dark"
-            ></MonacoEditor>
+            />
           </client-only>
         </div>
 
-
+        <!-- Save Button-->
         <button
             class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
@@ -466,6 +492,8 @@ export default Vue.extend({
 
   data() {
     return {
+      showHTML: false,
+
       loaded: false,
       resetPasswordModalActive: false,
       deleteProfileModalActive: false,

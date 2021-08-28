@@ -51,6 +51,7 @@
                     extraEditorClassName: 'rounded overflow-hidden mb-2',
                     autoIndent: 'full',
                     autoClosingQuotes: true,
+                    readOnly: false
                     }"
             height="350"
             language="html"
@@ -78,6 +79,7 @@
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
+                  readOnly: false
                 }"
             height="350"
             language="css"

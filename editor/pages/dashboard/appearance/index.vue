@@ -7,6 +7,7 @@
       </h1>
     </div>
 
+    <!-- Customization -->
     <div class="flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8 mt-4">
       <div
           class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
@@ -29,18 +30,37 @@
       </button>
     </div>
 
+    <!-- Mobile Warning -->
     <div class="flex lg:hidden flex-col p-4 bg-orange-200 border border-orange-600 rounded-xl w-full mb-8">
               <span class="text-orange-500 text-sm text-center mx-auto w-full">
                 View on desktop to edit custom HTML & CSS
               </span>
     </div>
+
+    <!-- Custom HTML -->
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
       <div
           class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
-        <h2 class="text-gray-800 font-semibold text-lg">
-          Custom HTML
-        </h2>
+        <div class="flex flex-row space-x-2">
+          <h2 class="text-gray-800 font-semibold text-lg">
+            Custom HTML
+          </h2>
+
+          <div
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+              @click="showHTML = !showHTML"
+          >
+            <h6 class="text-center">
+              {{ showHTML ? 'Close Editor' : 'Open Editor' }}
+            </h6>
+            <img :src="showHTML ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                 style="width: 20px; height: 20px;"
+                 alt="show hide HTML editor"
+            />
+          </div>
+        </div>
+
         <a
             class="text-gray-500 text-xs hover:underline hover:text-gray-600"
             href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
@@ -48,14 +68,15 @@
         >Need help? Read our
           documentation</a>
       </div>
-      <client-only>
+
+      <client-only v-if="showHTML">
         <MonacoEditor
             v-model="customHtml"
             :options="{
                   extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
-                  readOnly: (modalIntent === 'view'),
+                  readOnly: false,
                 }"
             height="350"
             language="html"
@@ -71,13 +92,30 @@
       </button>
     </div>
 
-    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full">
+    <!-- Custom CSS -->
+    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
       <div
           class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
       >
-        <h2 class="text-gray-800 font-semibold text-lg">
-          Custom CSS
-        </h2>
+        <div class="flex flex-row space-x-2">
+          <h2 class="text-gray-800 font-semibold text-lg">
+            Custom CSS
+          </h2>
+
+          <div
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+              @click="showCSS = !showCSS"
+          >
+            <h6 class="text-center">
+              {{ showCSS ? 'Close Editor' : 'Open Editor' }}
+            </h6>
+            <img :src="showCSS ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                 style="width: 20px; height: 20px;"
+                 alt="show hide CSS editor"
+            />
+          </div>
+        </div>
+
         <a
             class="text-gray-500 text-xs hover:underline hover:text-gray-600"
             href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
@@ -85,14 +123,15 @@
         >Need help? Read our
           documentation</a>
       </div>
-      <client-only>
+
+      <client-only v-if="showCSS">
         <MonacoEditor
             v-model="editorCss"
             :options="{
-                  extraEditorClassName: 'rounded overflow-hidden',
+                  extraEditorClassName: 'rounded overflow-hidden mb-2',
                   autoIndent: 'full',
                   autoClosingQuotes: true,
-                  readOnly: (modalIntent === 'view'),
+                  readOnly: false,
                 }"
             height="350"
             language="css"
@@ -156,6 +195,9 @@ export default Vue.extend({
 
   data() {
     return {
+      showHTML: false,
+      showCSS: false,
+
       error: '',
       themes: new Array<EditorTheme>(),
       globalThemes: new Array<EditorTheme>(),

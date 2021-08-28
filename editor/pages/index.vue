@@ -64,6 +64,7 @@
           }} {{ $customSettings.company }}, All rights reserved.</span>
       </div>
     </section>
+
     <section
       class="hidden lg:flex order-first lg:order-last right w-full lg:w-1/2 xl:w-7/12 flex-col lg:h-screen text-center items-center justify-center p-12 text-white"
     >

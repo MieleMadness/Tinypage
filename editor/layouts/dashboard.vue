@@ -84,72 +84,77 @@
 
                 </div>
               </div>
-              <ul
-                  v-if="selectingProfile"
-                  class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
-                  style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
-                  @mouseleave="selectingProfile = false"
+
+              <div @focus=""
+                   @focusout="onSelectingProfilesFocusOut"
               >
-
-                <li class="flex flex-row items-center justify-left profile-search text-black">
-                  <!-- Create new profile-->
-                  <input
-                      aria-label="Filter profiles"
-                      class="text-sm p-2 mr-auto font-bold"
-                      placeholder="Filter profiles..."
-                      style="outline:none !important;background:transparent;"
-                      type="text"
-                      @input="onFilterProfilesInput"
-                      @mouseout.stop
-                  >
-                  <i class="search-icon fas fa-search text-sm p-2 opacity-50"/>
-                </li>
-
-                <li
-                    v-for="profile in filteredProfiles"
-                    :key="profile.handle"
-                    :style="!profile.handle ? 'max-height: 51px;' : ''"
-                    class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
-                    @click="selectProfile(profile.id)"
-                    @mouseout.stop
+                <ul
+                    id="profileSelection"
+                    v-if="selectingProfile"
+                    class="absolute bottom-0 rounded-2xl shadow bg-whiteish border border-gray-200 profile-list z-30"
+                    style="left:0;right:0; top: 170px; width:100%;height:fit-content;max-height:450px;"
+                    tabindex="0"
                 >
-                  <div
-                      v-if="profile.handle"
-                      :style="'width: 35px;height:35px;background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);margin-right:.75rem;background-size:cover;background-repeat:no-repeat;background-position:center;background-image:url(' + (profile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');'"
-                      alt="avatar"
-                      class="w-8 h-8 rounded-full"
-                  />
-                  <div
-                      v-if="!profile.handle"
-                      class="mr-2 rounded-full"
-                      style="width: 100%; max-width: 35px; max-height: 58px; margin-right: 10px;"
+
+                  <li class="flex flex-row items-center justify-left profile-search text-black">
+                    <!-- Create new profile-->
+                    <input
+                        aria-label="Filter profiles"
+                        class="text-sm p-2 mr-auto font-bold"
+                        placeholder="Filter profiles..."
+                        style="outline:none !important;background:transparent;"
+                        type="text"
+                        @input="onFilterProfilesInput"
+                    >
+                    <i class="search-icon fas fa-search text-sm p-2 opacity-50"/>
+                  </li>
+
+                  <li
+                      v-for="profile in filteredProfiles"
+                      :key="profile.handle"
+                      :style="!profile.handle ? 'max-height: 51px;' : ''"
+                      class="p-2 pl-4 pr-4 hover:bg-opaqueIndigo cursor-pointer flex flex-row items-center justify-start"
+                      @click="selectProfile(profile.id)"
                   >
-                    &nbsp;
-                    <br>
-                    &nbsp;
-                  </div>
+                    <div
+                        v-if="profile.handle"
+                        :style="'width: 35px;height:35px;background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);margin-right:.75rem;background-size:cover;background-repeat:no-repeat;background-position:center;background-image:url(' + (profile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');'"
+                        alt="avatar"
+                        class="w-8 h-8 rounded-full"
+                    />
+                    <div
+                        v-if="!profile.handle"
+                        class="mr-2 rounded-full"
+                        style="width: 100%; max-width: 35px; max-height: 58px; margin-right: 10px;"
+                    >
+                      &nbsp;
+                      <br>
+                      &nbsp;
+                    </div>
 
-                  <div class="flex flex-col">
-                    <span class="text-base text-black font-bold">{{ profile.handle }}</span>
-                    <span class="text-sm text-black opacity-70 font-bold">{{ profile.headline }}</span>
-                  </div>
-                </li>
+                    <div class="flex flex-col">
+                      <span class="text-base text-black font-bold">{{ profile.handle }}</span>
+                      <span class="text-sm text-black opacity-70 font-bold">{{ profile.headline }}</span>
+                    </div>
+                  </li>
 
-                <li class="flex flex-row items-center justify-center button-controls">
-                  <!-- Create new profile-->
-                  <span
-                      class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pl-4 text-xs font-bold text-gray-700"
-                      @click="createNewProfile"
-                  >Create new</span>
+                  <li class="flex flex-row items-center justify-center button-controls">
+                    <!-- Create new profile-->
+                    <span
+                        class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pl-4 text-xs font-bold text-gray-700"
+                        @click="createNewProfile"
+                    >Create new</span>
 
-                  <!-- Logout-->
-                  <a
-                      class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pr-4 text-xs font-bold text-gray-700"
-                      href="/logout"
-                  >Logout</a>
-                </li>
+                    <!-- Logout-->
+                    <a
+                        class="text-center w-1/2 hover:bg-opaqueIndigo p-2 pr-4 text-xs font-bold text-gray-700"
+                        href="/logout"
+                    >Logout</a>
+                  </li>
 
-              </ul>
+                </ul>
+              </div>
+
 
               <!-- Zoom Level -->
               <div
@@ -359,7 +364,10 @@ export default Vue.extend({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap'
         }
-      ]
+      ],
+      bodyAttrs: {
+        'style': 'overflow: hidden; height: 100vh; max-height: 100vh;'
+      }
     };
   },
 
@@ -563,10 +571,6 @@ export default Vue.extend({
       window.location.replace('/dashboard');
     },
 
-    toggleProfileSelect() {
-      this.selectingProfile = !this.selectingProfile;
-    },
-
     async listProfiles() {
       this.profiles = await this.$axios.$post('/profiles', {
         token: this.$store.getters['auth/getToken']
@@ -587,7 +591,7 @@ export default Vue.extend({
     },
 
     setActive() {
-      if (process.browser) {
+      if (process.client) {
         try {
           switch (this.$route.name) {
             case "dashboard":
@@ -630,7 +634,9 @@ export default Vue.extend({
 
           if (this.$route.path.includes('/dashboard/appearance')) {
             this.active = "dashboard-appearance";
-            this.preview = true;
+
+            if (!this.$route.path.includes('/dashboard/appearance/theme'))
+              this.preview = true;
           } else if (this.$route.path.includes('/dashboard/settings')) {
             this.active = "dashboard-settings";
             this.preview = true;
@@ -745,12 +751,37 @@ export default Vue.extend({
         });
       }
     },
+
+    toggleProfileSelect() {
+      this.selectingProfile = !this.selectingProfile;
+
+      if (this.selectingProfile) {
+        this.onSelectingProfilesOpen();
+
+        if (process.client) {
+          this.$nextTick(() => {
+            let elem = document.getElementById("profileSelection");
+
+            if (elem) {
+              elem.focus({preventScroll: true});
+            }
+          });
+        }
+      }
+    },
+
+    onSelectingProfilesOpen() {
+      this.filteredProfiles = this.profiles;
+    },
+
+    onSelectingProfilesFocusOut() {
+      this.selectingProfile = false;
+    }
   },
 });
 </script>
 
 <style lang="scss" scoped>
-
 @media(min-width: 1024px) {
   .middle {
     width: calc(66.66vw - 70px);
@@ -765,11 +796,6 @@ export default Vue.extend({
 }
 
 @media(max-width: 1024px) {
-  html, body {
-    overflow: hidden !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
   .content-container {
     height: calc(100% - 111px);
     max-height: calc(100% - 111px);

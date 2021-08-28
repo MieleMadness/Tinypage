@@ -11,10 +11,10 @@
           site for free!
         </p>
         <a
-          class="flex flex-row items-center font-bold justify-center rounded-full w-full px-8 py-4 text-lg border-gray-300 hover:border-gray-600"
-          href="#"
-          style="border-width:3px;border-style:solid;"
-          @click="attemptGoogleRegister"
+            class="flex flex-row items-center font-bold justify-center rounded-full w-full px-8 py-4 text-lg border-gray-300 hover:border-gray-600"
+            href="#"
+            style="border-width:3px;border-style:solid;"
+            @click="attemptGoogleRegister"
         >
           <img alt="google-icon" class="w-5 mr-4" src="/google-icon.png">
           Sign up with Google
@@ -41,11 +41,11 @@
         <div class="flex flex-row items-center justify-apart w-full my-4">
           <div class="flex flex-row justify-start items-center" style="width:150px;">
             <input
-              id="remember-me"
-              v-model="rememberMe"
-              name="remember-me"
-              style="border-radius:3px;width:15px;height:15px;"
-              type="checkbox"
+                id="remember-me"
+                v-model="rememberMe"
+                name="remember-me"
+                style="border-radius:3px;width:15px;height:15px;"
+                type="checkbox"
             >
             <label class="opacity-50 ml-3" for="remember-me" style="margin-bottom:0;width:105px;font-size: 14px;">
               <nobr>Remember me?</nobr>
@@ -63,8 +63,9 @@
           }} {{ $customSettings.company }}, All rights reserved.</span>
       </div>
     </section>
+
     <section
-      class="order-first lg:order-last right w-full lg:w-1/2 xl:w-7/12 flex flex-col lg:h-screen text-center items-center justify-center p-12 text-white"
+        class="integration-ad order-first lg:order-last right w-full lg:w-1/2 xl:w-7/12 flex flex-col lg:h-screen text-center items-center justify-center p-12 text-white"
     >
       <img class="w-full max-w-sm" src="/integrations.png">
       <h3 class="text-4xl font-bold max-w-sm mb-4">
@@ -215,6 +216,7 @@ export default Vue.extend({
 <style lang="scss">
 body {
   background: #FEFEFE;
+  height: 100%;
 }
 
 .NeutronLogo {
@@ -282,6 +284,16 @@ label {
   background-color: #ff4a4a;
   padding: 7px;
   z-index: 25;
+}
+
+.integration-ad {
+
+}
+
+@media (max-width: 1024px) {
+  .integration-ad {
+    display: none;
+  }
 }
 
 </style>

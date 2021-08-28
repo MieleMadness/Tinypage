@@ -1,22 +1,24 @@
 <template>
   <div :class="'w-full flex flex-col items-center justify-center ' + activeStyles">
     <div class="relative rounded" style="width: 201px;height:217px;overflow:hidden;">
-      <!--      <iframe-->
-      <!--          v-if="theme"-->
-      <!--          scrolling="no"-->
-      <!--          style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"-->
-      <!--          :src="'/dashboard/appearance/preview/' + id"-->
-      <!--      />-->
+      <iframe
+          v-if="theme"
+          scrolling="no"
+          style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"
+          :src="'/dashboard/appearance/preview/' + id"
+          loading="lazy"
+      />
     </div>
     <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
       {{ label }}
 
       <a
-          v-if="theme"
-          :href="'/dashboard/appearance/theme/' + id"
+          v-if="theme && icon"
+          @click.self="onClick"
       >
         <div class="bg-gray-700 hover:bg-indigo-300"
              style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+             @click.self="onClick"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
@@ -84,6 +86,10 @@ export default Vue.extend({
         }
       };
     },
+
+    onClick() {
+      window.location.replace('/dashboard/appearance/theme/' + this.id);
+    }
   }
 });
 </script>

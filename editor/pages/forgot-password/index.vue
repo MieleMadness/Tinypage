@@ -6,7 +6,7 @@
         Request a password reset
       </h1>
       <p class="text-gray-700 text-sm">Remember your password? <a
-        class="text-indigo-600 hover:text-indigo-700"
+        class="text-blue-600 hover:text-blue-700"
         href="/create-account"
       >Login</a></p>
       <div
@@ -39,7 +39,7 @@
           >
         </div>
         <button
-          class="mt-2 w-full p-3 text-center text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded font-semibold"
+          class="mt-2 w-full p-3 text-center text-sm text-white bg-blue-600 hover:bg-blue-700 rounded font-semibold"
           type="button"
           @click="requestReset"
         >

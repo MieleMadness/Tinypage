@@ -30,7 +30,7 @@
           <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
             Total referrals
           </h2>
-          <h4 class="text-indigo-600 text-4xl leading-tight font-bold">
+          <h4 class="text-blue-600 text-4xl leading-tight font-bold">
             198
           </h4>
         </div>
@@ -40,7 +40,7 @@
           <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
             Total credit earned
           </h2>
-          <h4 class="text-indigo-600 text-4xl leading-tight font-bold">
+          <h4 class="text-blue-600 text-4xl leading-tight font-bold">
             $288
           </h4>
         </div>

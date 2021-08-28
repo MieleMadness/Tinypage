@@ -33,7 +33,7 @@
             :key="link.id"
             :to="'/dashboard/link/' + link.id"
             class="flex flex-col flex-shrink-0 text-sm text-black p-8 bg-white text-center font-medium items-center justify-center rounded-2xl w-full mb-4 opacity-90 hover:opacity-100 cursor-pointer"
-            style="box-shadow: inset 0 0 0 3px rgba(0,0,0,.05), 0 10px 25px rgba(83,83,267,.1);"
+            style="box-shadow: inset 0 0 0 3px rgba(0,0,0,.05), 0 10px 25px rgba(81,173,255,0.1);"
         >
           <img class="sl-editor-link-icon" :src="getLinkTypeIcon(link.type)" alt="link type icon">
           <span class="text-2xl font-bold">
@@ -123,7 +123,7 @@
                   id="custom_css"
                   v-model="pendingLink.customCss"
                   class="p-2 text-sm border-solid border-gray-300 rounded-lg border"
-                  placeholder="e.g. background: #5353EC;"
+                  placeholder="e.g. background: #478ecc;"
                   rows="3"
               />
             </div>
@@ -136,7 +136,7 @@
           >
             <button
                 id="save-and-add-link-btn"
-                class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
                 type="button"
                 @click="saveAndClose"
             >
@@ -156,7 +156,7 @@
               class="flex flex-row p-6 pt-3 pb-3 white border border-gray-200 border-r-0 border-l-0 border-b-0"
           >
             <button
-                class="inline-flex p-3 text-sm text-black text-center bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
+                class="inline-flex p-3 text-sm text-black text-center bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold w-auto max-w-xs justify-center align-center mr-2"
                 type="button"
                 @click="saveLinkChanges"
             >
@@ -493,20 +493,20 @@ export default Vue.extend({
 
 .button {
   @apply mb-8 w-full font-bold rounded-full px-8 py-4 text-lg text-center;
-  background: #5353ec;
-  background: linear-gradient(to bottom, #5353ec, #1717ca);
-  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .2), 0 2px 25px rgba(83, 83, 267, .25);
+  background: #478ecc;
+  background: linear-gradient(to bottom, #478ecc, #1063ab);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .2), 0 2px 25px rgba(71, 142, 204, 0.25);
   transition: .1s ease-in;
 }
 
 .button:hover {
   transform: scale(1.01);
-  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .4), 0 2px 15px rgba(83, 83, 267, .75);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .4), 0 2px 15px rgba(71, 142, 204, 0.75);
 }
 
 .button:focus {
   transform: scale(1);
-  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgba(83, 83, 267, .95);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgba(71, 142, 204, 0.95);
 }
 
 .sl-editor-link-icon {

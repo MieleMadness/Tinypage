@@ -91,7 +91,7 @@
         <a
           v-if="free_signup"
           :href="'https://' + hostname + '/create-account'"
-          class="text-indigo-600 hover:underline text-sm"
+          class="text-blue-600 hover:underline text-sm"
           target="_blank"
         >Create your
           free profile in seconds</a>

@@ -49,7 +49,7 @@ export default Vue.extend({
       if (!this.active) {
         return '';
       }
-      return ' bg-indigo-200 border-indigo-600 border hover:bg-indigo-300';
+      return ' bg-blue-200 border-blue-600 border hover:bg-blue-300';
     }
   },
 

@@ -11,7 +11,7 @@
 
       <n-link to="/dashboard"><img
           :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
-          class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);"
+          class="w-10" style="filter: drop-shadow(0px 10px 25px #478ecc);"
       >
       </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
@@ -452,26 +452,6 @@ export default Vue.extend({
       this.version = "Version v" + response.data.version;
     } catch (err) {
       console.warn("Failed to retrieve version from server.");
-    }
-
-    if (process.env.QR_API) {
-      try {
-        const qrRequest = await this.$axios.post('https://api.qr.io/v1/create', {
-          apikey: process.env.QR_API,
-          data: process.env.RENDERER_URL + this.user.activeProfile.handle,
-          transparent: "on",
-          frontcolor: "#5353EC",
-          marker_out_color: "#09FDFD",
-          marker_in_color: "#1127EF",
-          pattern: "special-circle",
-          marker: "rounded",
-          marker_in: "rounded",
-        });
-        this.qr_src = qrRequest.data.qrid;
-      } catch (err) {
-        console.log('error');
-        console.log(err);
-      }
     }
 
     this.$root.$on('refreshUserProfileView', () => {
@@ -987,7 +967,7 @@ html {
 }
 
 .nav-link.active {
-  background: linear-gradient(90deg, rgba(83, 83, 236, .25) 00%, rgba(83, 83, 236, 0.05) 100%);
+  background: linear-gradient(90deg, rgba(71, 142, 204, 0.25) 00%, rgba(71, 142, 204, 0.05) 100%);
   @apply text-gdp;
 }
 

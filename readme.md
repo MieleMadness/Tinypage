@@ -1,7 +1,7 @@
 <br><h1 align="center"><a target="_blank" href="https://singlelink.co">Singlelink</a>, the open-source micro-site platform</h1>
 <p align="center">
     <a href="https://github.com/Neutron-Creative/Singlelink/projects/1">
-        <img src="https://img.shields.io/badge/Stable-3.0.0-%235353ec" alt="Version">
+        <img src="https://img.shields.io/badge/Stable-3.0.0-%23478ecc" alt="Version">
     </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">
         <img src="https://img.shields.io/badge/License-GPL-%236ab04c" alt="License"/>

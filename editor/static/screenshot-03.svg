@@ -33,7 +33,7 @@
     </filter>
     <linearGradient id="paint0_linear" x1="960" y1="0" x2="960" y2="1080" gradientUnits="userSpaceOnUse">
       <stop stop-color="#9393FF"/>
-      <stop offset="1" stop-color="#5353EC"/>
+      <stop offset="1" stop-color="#478ecc"/>
     </linearGradient>
     <clipPath id="clip0">
       <rect width="1920" height="1080" rx="16" fill="white"/>

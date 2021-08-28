@@ -22,7 +22,7 @@
       </div>
       <Builder v-if="builderCssLoaded" v-model="builderCss"/>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -48,7 +48,7 @@
           </h2>
 
           <div
-              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
               @click="showHTML = !showHTML"
           >
             <h6 class="text-center">
@@ -84,7 +84,7 @@
         />
       </client-only>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -103,7 +103,7 @@
           </h2>
 
           <div
-              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
               @click="showCSS = !showCSS"
           >
             <h6 class="text-center">
@@ -139,7 +139,7 @@
         />
       </client-only>
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="saveChanges"
       >
@@ -158,7 +158,7 @@
           name="Your themes"
       />
       <a
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           href="/dashboard/appearance/theme/create"
           type="button"
       >
@@ -166,7 +166,7 @@
       </a>
 
       <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-indigo-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
+          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-700 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
           @click="resetTheme"
       >
         Remove Theme

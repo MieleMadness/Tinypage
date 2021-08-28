@@ -172,7 +172,7 @@
       </div>
       <div class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8 items-center jusitfy-center">
         <a
-          class="w-full text-center lg:w-auto text-lg bg-indigo-600 hover:bg-indigo-500 py-4 px-8 rounded-lg font-semibold"
+          class="w-full text-center lg:w-auto text-lg bg-blue-600 hover:bg-blue-500 py-4 px-8 rounded-lg font-semibold"
           href="/" style="color:#FFF !important;"
         >Return to {{ app_name }}</a>
         <a class="inline" href="https://neutroncreative.com" target="_blank">Or, learn more about
@@ -272,7 +272,7 @@ p {
 }
 
 a {
-  @apply text-indigo-600;
+  @apply text-blue-600;
 }
 
 a.inline {

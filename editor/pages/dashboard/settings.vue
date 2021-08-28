@@ -157,7 +157,7 @@
           <input
               v-model="user.activeProfile.metadata.fullWidth"
               aria-label="privacy mode"
-              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
               style="margin-top:3px;"
               type="checkbox"
           >
@@ -172,7 +172,7 @@
           <input
               id="themeGlobal"
               v-model="user.activeProfile.showWatermark"
-              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
               style="margin-top:3px;"
               type="checkbox"
           >
@@ -199,7 +199,7 @@
           <input
               v-model="user.activeProfile.metadata.privacyMode"
               aria-label="privacy mode"
-              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
               style="margin-top:3px;"
               type="checkbox"
           >
@@ -214,7 +214,7 @@
           <input
               v-model="user.activeProfile.metadata.shareMenu"
               aria-label="privacy mode"
-              class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
               style="margin-top:3px;"
               type="checkbox"
           >
@@ -233,7 +233,7 @@
 
             <div class="flex flex-row space-x-2">
               <div
-                  class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200"
+                  class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
                   @click="showHTML = !showHTML"
               >
                 <h6 class="text-center">
@@ -273,7 +273,7 @@
 
         <!-- Save Button-->
         <button
-            class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
             @click="saveChanges"
         >
@@ -372,7 +372,7 @@
         </div>
         <button
             v-if="alerts.linktreeImported === null"
-            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
             @click="importLinktree"
         >
@@ -397,7 +397,7 @@
         <p class="text-black opacity-70 font-semibold">Need to configure the account managing your micro-sites?</p>
       </div>
       <n-link
-          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-1/3 justify-center align-center"
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-1/3 justify-center align-center"
           to="/dashboard/account"
       >
         Go to account settings
@@ -451,7 +451,7 @@
             {{ passwordError }}
           </p>
           <button
-              class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
+              class="mt-4 p-3 text-center text-md text-black bg-blue-600 hover:bg-blue-700 rounded-2xl font-semibold"
               type="button"
               @click="resetPasswordModalActive = false"
           >

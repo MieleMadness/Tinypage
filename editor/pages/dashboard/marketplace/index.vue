@@ -12,7 +12,7 @@
           style="pointer-events: none; width: 375px; height: 406px; transform: scale(0.536) translate(-163px, -175px); top: 0px; left: 0px; position: absolute;"
         /> <!----> <!----></div>
       <div class="flex flex-col">
-        <p class="text-indigo-600 uppercase tracking-widest text-sm font-bold">
+        <p class="text-blue-600 uppercase tracking-widest text-sm font-bold">
           Featured addon
         </p>
         <h2 class="text-2xl font-bold my-1">
@@ -21,7 +21,7 @@
         <span class="text-black opacity-80 font-medium mb-4">{{ addons.featured[0].description }}</span>
         <a
           :href="'/dashboard/marketplace/addon/' + addons.featured[0].id"
-          class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
+          class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
           style="width:fit-content;"
         >See details</a>
       </div>

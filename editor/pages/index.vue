@@ -50,13 +50,13 @@
               <nobr>Remember me?</nobr>
             </label>
           </div>
-          <a class="text-indigo-500 hover:underline ml-auto font-bold" href="#">Forgot your password?</a>
+          <a class="text-blue-500 hover:underline ml-auto font-bold" href="#">Forgot your password?</a>
         </div>
         <div class="button cursor-pointer" @click="attemptEmailLogin()">Login to your account</div>
         <div v-if="error" class="error">
           {{ error }}
         </div>
-        <a class="mx-auto text-center font-bold text-indigo-500 mb-4 text-sm hover:underline font-bold"
+        <a class="mx-auto text-center font-bold text-blue-500 mb-4 text-sm hover:underline font-bold"
            href="/create-account">Don't have an
           account? Get started free</a>
         <span class="mx-auto font-bold text-center opacity-50 text-sm">©{{
@@ -245,7 +245,7 @@ body {
 }
 
 .right {
-  background-color: #5353EC;
+  background-color: #478ecc;
   background-image: url('/login-lightning.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -270,7 +270,7 @@ label {
 }
 
 .input-group input:focus {
-  box-shadow: 0 0 0 4.5px rgba(83, 83, 236, .8);
+  box-shadow: 0 0 0 4.5px rgba(71, 142, 204, 0.8);
 }
 
 .button {
@@ -279,20 +279,20 @@ label {
 
 .button {
   @apply mb-8 w-full font-bold rounded-full px-8 py-4 text-lg text-center;
-  background: #5353ec;
-  background: linear-gradient(to bottom, #5353ec, #1717ca);
-  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .2), 0 2px 25px rgba(83, 83, 267, .25);
+  background: #478ecc;
+  background: linear-gradient(to bottom, #478ecc, #1063ab);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .2), 0 2px 25px rgba(71, 142, 204, 0.25);
   transition: .1s ease-in;
 }
 
 .button:hover {
   transform: scale(1.01);
-  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .4), 0 2px 15px rgba(83, 83, 267, .75);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .4), 0 2px 15px rgba(71, 142, 204, 0.75);
 }
 
 .button:focus {
   transform: scale(1);
-  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgba(83, 83, 267, .95);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .5), 0 2px 20px rgb(0, 15, 242);
 }
 
 .error {

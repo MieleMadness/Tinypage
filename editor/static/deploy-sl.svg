@@ -26,7 +26,7 @@
   <defs>
     <linearGradient id="paint0_linear" x1="296" y1="0" x2="296" y2="91" gradientUnits="userSpaceOnUse">
       <stop stop-color="#8686FF"/>
-      <stop offset="1" stop-color="#5353EC"/>
+      <stop offset="1" stop-color="#478ecc"/>
     </linearGradient>
     <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(64.8075 35.9873) rotate(128.654) scale(17.6815 14.6173)">

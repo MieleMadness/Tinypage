@@ -25,7 +25,7 @@
         </mask>
         <path fill-rule="evenodd" clip-rule="evenodd"
               d="M47.763 52.5388C40.9877 55.3724 34.8196 60.3872 31.7015 65.7878C26.1402 75.4203 29.4405 87.7373 39.073 93.2986C48.7055 98.8599 61.0224 95.5595 66.5837 85.9271C69.1703 81.447 70.4775 75.2818 70.3149 69.1519C66.8329 70.1287 63.1455 70.6191 59.3856 70.5073C55.884 70.4033 52.5842 68.6032 50.986 65.4858C49.048 61.7054 48.0075 57.1833 47.763 52.5388Z"
-              fill="#5353EC"/>
+              fill="#478ecc"/>
         <path fill-rule="evenodd" clip-rule="evenodd"
               d="M47.763 52.5388C40.9877 55.3724 34.8196 60.3872 31.7015 65.7878C26.1402 75.4203 29.4405 87.7373 39.073 93.2986C48.7055 98.8599 61.0224 95.5595 66.5837 85.9271C69.1703 81.447 70.4775 75.2818 70.3149 69.1519C66.8329 70.1287 63.1455 70.6191 59.3856 70.5073C55.884 70.4033 52.5842 68.6032 50.986 65.4858C49.048 61.7054 48.0075 57.1833 47.763 52.5388Z"
               fill="url(#paint5_radial)" fill-opacity="0.15"/>
@@ -72,7 +72,7 @@
       <feBlend mode="normal" in2="effect2_innerShadow" result="effect3_innerShadow"/>
     </filter>
     <linearGradient id="paint0_linear" x1="60" y1="0" x2="60" y2="120" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#5353EC"/>
+      <stop stop-color="#478ecc"/>
       <stop offset="1" stop-color="#000088"/>
     </linearGradient>
     <linearGradient id="paint1_linear" x1="60" y1="0" x2="60" y2="120" gradientUnits="userSpaceOnUse">

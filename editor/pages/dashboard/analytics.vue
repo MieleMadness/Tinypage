@@ -24,7 +24,7 @@
         <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
           Total views
         </h2>
-        <h4 class="text-indigo-600 text-4xl leading-tight font-bold">
+        <h4 class="text-blue-600 text-4xl leading-tight font-bold">
           {{ analytics.totalProfileViews.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
         </h4>
       </div>
@@ -32,7 +32,7 @@
         <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
           Total clicks
         </h2>
-        <h4 class="text-indigo-600 text-4xl leading-tight font-bold">
+        <h4 class="text-blue-600 text-4xl leading-tight font-bold">
           {{ visitSum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
         </h4>
       </div>
@@ -40,7 +40,7 @@
         <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
           Click through rate
         </h2>
-        <h4 class="text-indigo-600 text-4xl leading-tight font-bold">
+        <h4 class="text-blue-600 text-4xl leading-tight font-bold">
           {{ ((visitSum / (analytics.totalProfileViews === 0 ? 1 : analytics.totalProfileViews)) * 100).toFixed(2) }}%
         </h4>
       </div>
@@ -77,7 +77,7 @@
         >
           <span class="uppercase text-gray-800 font-bold mr-1 lg:mr-0 lg:mb-1">Total clicks</span>
           <span class="lg:hidden text-sm uppercase text-gray-700 font-semibold mr-2 lg:mr-0 lg:mb-1">:</span>
-          <h4 class="lg:ml-auto text-indigo-600 text-2xl font-bold">
+          <h4 class="lg:ml-auto text-blue-600 text-2xl font-bold">
             {{ link.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
           </h4>
         </div>

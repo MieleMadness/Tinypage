@@ -19,7 +19,7 @@ export default {
     },
 
     loading: {
-        color: '#5353ec',
+        color: '#478ecc',
         height: '3px'
     },
 
@@ -133,7 +133,6 @@ export default {
         LOGO_WIDTH: process.env.LOGO_WIDTH ?? '200px',
         ICON_WIDTH: process.env.ICON_WIDTH ?? '46px',
         FREE_SIGNUP: process.env.FREE_SIGNUP ? (process.env.FREE_SIGNUP === 'true') : true,
-        QR_API: process.env.QR_API || null,
     },
 
     publicRuntimeConfig: {

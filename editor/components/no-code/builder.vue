@@ -10,7 +10,7 @@
             <span class="text-sm text-gray-500 font-medium">Customize your page styles.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200 font-medium text-center hover:bg-indigo-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.page_styles = !drawer.page_styles"
           ><span v-show="!drawer.page_styles">Expand</span><span v-show="drawer.page_styles">Collapse</span></div>
         </div>
@@ -354,7 +354,7 @@
             >Customize your fonts, font size, font weight, and more.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200 font-medium text-center hover:bg-indigo-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.typography = !drawer.typography"
           ><span v-show="!drawer.typography">Expand</span><span v-show="drawer.typography">Collapse</span></div>
         </div>
@@ -622,7 +622,7 @@
             <span class="text-sm text-gray-500 font-medium">Customize your default styles for link items.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200 font-medium text-center hover:bg-indigo-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.link_styles = !drawer.link_styles"
           ><span v-show="!drawer.link_styles">Expand</span><span v-show="drawer.link_styles">Collapse</span></div>
         </div>
@@ -922,7 +922,7 @@
             <span class="text-sm text-gray-500 font-medium">Customize the default typography for link items.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200 font-medium text-center hover:bg-indigo-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.link_typography = !drawer.link_typography"
           ><span v-show="!drawer.link_typography">Expand</span><span v-show="drawer.link_typography">Collapse</span>
           </div>

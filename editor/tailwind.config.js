@@ -25,7 +25,7 @@ module.exports = {
       colors: {
         whiteish: '#FEFEFE',
         blackish: '#222',
-        gdp: '#5353EC',
+        gdp: '#478ecc',
         cyan: '#3AB8C5',
         opaqueWhite: 'rgba(255,255,255,.05)',
         opaqueBlack: 'rgba(0,0,0,.05)',

@@ -37,7 +37,7 @@
               type="text"
           >
           <button
-              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold justify-center align-center"
               type="button"
               @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
           >
@@ -53,7 +53,7 @@
           Banned users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
         </h2>
         <button
-            class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+            class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold"
             type="button"
             @click="showBanned = !showBanned; refreshBannedUsersFirstTime()"
         >
@@ -233,7 +233,7 @@ export default Vue.extend({
   cursor: pointer;
 
   &.active {
-    box-shadow: inset 0 0 2px 2px #5353EC;
+    box-shadow: inset 0 0 2px 2px #478ecc;
   }
 
   .nc-inner {

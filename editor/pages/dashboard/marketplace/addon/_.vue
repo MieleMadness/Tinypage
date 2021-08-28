@@ -15,10 +15,10 @@
         style="border-radius: 50px; overflow:hidden;box-shadow:0 10px 15px -3px rgb(0 0 0), 0 4px 6px -2px rgb(0 0 0), inset 0 0 5px 0 rgba(0,0,0,.1);"
       >
         <div
-          class="relative text-center rounded flex items-center justify-ceneter p-6 bg-indigo-200"
+          class="relative text-center rounded flex items-center justify-ceneter p-6 bg-blue-200"
           style="border-radius: 40px;width: 262px;height:568px;overflow:hidden;"
         >
-          <span class="text-sm text-indigo-500 font-medium mx-auto">Save addon for preview</span>
+          <span class="text-sm text-blue-500 font-medium mx-auto">Save addon for preview</span>
           <iframe
             v-if="addon.id"
             :src="'/dashboard/marketplace/preview/' + addon.id"
@@ -73,7 +73,7 @@
             <li
               v-for="tag in addon.tags"
               :key="tag[0]"
-              class="hover:bg-indigo-300 flex flex-row items-center justify-center p-1 text-sm px-3 text-indigo-500 mr-2 rounded bg-indigo-200 bg-indigo-200 font-medium"
+              class="hover:bg-blue-300 flex flex-row items-center justify-center p-1 text-sm px-3 text-blue-500 mr-2 rounded bg-blue-200 bg-blue-200 font-medium"
             >
               {{ tag }}
               <div class="ml-2 cursor-pointer leading-none" @click="pluck(tag)">
@@ -96,13 +96,13 @@
         <div class="flex flex-col lg:flex-row items-center justify-start mt-4">
           <div
             v-if="intent==='view' && installed.indexOf(Number(addon.id)) < 0"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="installAddon"
           >Install addon
           </div>
           <div
             v-if="intent==='view' && installed.indexOf(Number(addon.id)) >= 0"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="uninstallAddon"
           >Uninstall addon
           </div>
@@ -120,13 +120,13 @@
           </div>
           <div
             v-if="intent==='submit'"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="attemptSubmit"
           >Create addon
           </div>
           <div
             v-if="intent==='edit'"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="updateAddon"
           >Save changes
           </div>
@@ -149,7 +149,7 @@
         <label class="font-semibold mb-2">Theme tags</label>
         <input class="p-3 rounded-xl bg-white text-sm text-gray-700" v-model="pendingTag" placeholder="e.g. colorful" type="text"/>
         <ul v-if="addon.tags.length>=1" class="mt-2 flex flew-rox flex-wrap justify-start items-start">
-            <li class="hover:bg-indigo-300 flex flex-row items-center justify-center p-1 text-sm px-3 text-indigo-500 mr-2 rounded bg-indigo-200 bg-indigo-200 font-medium" v-for="tag in addon.tags">
+            <li class="hover:bg-blue-300 flex flex-row items-center justify-center p-1 text-sm px-3 text-blue-500 mr-2 rounded bg-blue-200 bg-blue-200 font-medium" v-for="tag in addon.tags">
                 {{ tag }}
                 <div class="ml-2 cursor-pointer leading-none" @click="pluck(tag)">x</div>
             </li>
@@ -162,8 +162,8 @@
             <option value="true">Yes, this theme is available for community download.</option>
         </select>
     </div>-->
-    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp mr-auto mt-4 cursor-pointer">Publish addon</div>-->
-    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-indigo-500 bg-gdp mr-auto mt-4 cursor-pointer">Save changes</div>-->
+    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp mr-auto mt-4 cursor-pointer">Publish addon</div>-->
+    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp mr-auto mt-4 cursor-pointer">Save changes</div>-->
 
   </section>
 </template>
@@ -223,7 +223,7 @@ export default Vue.extend({
       themes: [],
       colors: {
         fill: {
-          primary: '#5353EC',
+          primary: '#478ecc',
           secondary: '#FFFFFF'
         },
         text: {

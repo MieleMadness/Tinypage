@@ -14,7 +14,7 @@
         <br>
 
         <button
-          class="flex px-3 py-1 text-sm ml-auto text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+          class="flex px-3 py-1 text-sm ml-auto text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
           type="button"
           @click="consentToPolicy"
         >

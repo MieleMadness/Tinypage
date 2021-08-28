@@ -138,7 +138,7 @@ export class SingleLinkServer {
       </head>
       <body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100">
       <section
-        class="flex flex-col mt-auto bg-white rounded shadow p-6 w-11/12 max-w-lg border-8 border-l-0 border-r-0 border-b-0 border-indigo-600">
+        class="flex flex-col mt-auto bg-white rounded shadow p-6 w-11/12 max-w-lg border-8 border-l-0 border-r-0 border-b-0 border-blue-600">
         <h1 class="text-2xl font-semibold text-gray-800 mb-2">Status Page</h1>
         <p class="text-base text-gray-600 mb-4">Welcome to the Singlelink status page, view the status and downtime of
           various application infrastructure below.</p>

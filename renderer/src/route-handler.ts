@@ -37,7 +37,7 @@ export class RouteHandler {
                         <div class="w-full h-full flex flex-col items-center justify-center">
                             <h1 class="text-4xl text-gray-900 mb-2 font-extrabold">404 - Not Found</h1>
                             <h3 class="text-lg text-gray-600 mb-4">We couldn't find what you were looking for, sorry!</h3>
-                            <a class="bg-indigo-600 hover:bg-indigo-500 rounded-2xl shadow text-white py-3 px-6 text-sm font-medium" href="` + request.url + `">Reload page</a>
+                            <a class="bg-blue-600 hover:bg-blue-500 rounded-2xl shadow text-white py-3 px-6 text-sm font-medium" href="` + request.url + `">Reload page</a>
                         </div>
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.4/tailwind.min.css"/>
                         <style>
@@ -622,7 +622,7 @@ export class RouteHandler {
                 if (config.freeSignup) {
                     //language=HTML
                     watermarkHtml += `
-                        <a class="text-indigo-600 hover-underline text-sm" href="${config.editorUrl}/create-account"
+                        <a class="text-blue-600 hover-underline text-sm" href="${config.editorUrl}/create-account"
                            target="_blank"
                         >
                             Create your free micro-site in minutes!

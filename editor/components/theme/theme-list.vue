@@ -13,7 +13,7 @@
           v-for="theme in themes"
           v-if="!icon && getActiveThemeId === theme.id"
           :key="theme.id"
-          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
       </a>
@@ -22,7 +22,7 @@
           v-for="theme in themes"
           v-if="icon && getActiveThemeId === theme.id"
           :key="theme.id"
-          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
 
       >
         <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"
@@ -36,7 +36,7 @@
               v-if="theme && icon"
               :href="'/dashboard/appearance/theme/' + theme.id"
           >
-            <div class="bg-gray-700 hover:bg-indigo-300"
+            <div class="bg-gray-700 hover:bg-blue-300"
                  style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -76,7 +76,7 @@
               v-if="theme && icon"
               :href="'/dashboard/appearance/theme/' + theme.id"
           >
-            <div class="bg-gray-700 hover:bg-indigo-300"
+            <div class="bg-gray-700 hover:bg-blue-300"
                  style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -97,7 +97,7 @@
           v-for="theme in themes"
           v-if="!icon && getActiveThemeId === theme.id"
           :key="theme.id"
-          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
       >
         <theme
             :id="theme.id"
@@ -109,7 +109,7 @@
           v-for="theme in themes"
           v-if="icon && active === theme.id"
           :key="theme.id"
-          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
           @click="selectTheme(theme.id)"
       >
         <theme
@@ -126,7 +126,7 @@
               v-if="theme && icon"
               :href="'/dashboard/appearance/theme/' + theme.id"
           >
-            <div class="bg-gray-700 hover:bg-indigo-300"
+            <div class="bg-gray-700 hover:bg-blue-300"
                  style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -174,7 +174,7 @@
               v-if="theme && icon"
               :href="'/dashboard/appearance/theme/' + theme.id"
           >
-            <div class="bg-gray-700 hover:bg-indigo-300"
+            <div class="bg-gray-700 hover:bg-blue-300"
                  style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

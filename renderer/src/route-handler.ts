@@ -37,7 +37,7 @@ export class RouteHandler {
                         <div class="w-full h-full flex flex-col items-center justify-center">
                             <h1 class="text-4xl text-gray-900 mb-2 font-extrabold">404 - Not Found</h1>
                             <h3 class="text-lg text-gray-600 mb-4">We couldn't find what you were looking for, sorry!</h3>
-                            <a class="bg-blue-600 hover:bg-blue-500 rounded-2xl shadow text-white py-3 px-6 text-sm font-medium" href="` + request.url + `">Reload page</a>
+                            <a class="bg-blue-600 hover:bg-blue-400 rounded-2xl shadow text-white py-3 px-6 text-sm font-medium" href="` + request.url + `">Reload page</a>
                         </div>
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.4/tailwind.min.css"/>
                         <style>
@@ -170,8 +170,16 @@ export class RouteHandler {
                 customHtml: '',
             };
 
+            let gravatarEnabled = profile.metadata?.useGravatar;
+
             // Define Avatar image
-            const imageUrl = profile.imageUrl || `https://www.gravatar.com/avatar/${user.emailHash}`;
+            const imageUrl = profile.imageUrl || gravatarEnabled ? `https://www.gravatar.com/avatar/${user.emailHash}` : null;
+
+            let avatarHtml = '';
+
+            if (imageUrl) {
+                avatarHtml = `<img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>`;
+            }
 
             if (request.query.token) {
                 // This is a editor session, ignore
@@ -461,23 +469,24 @@ export class RouteHandler {
                         if (watchId && watchId.length > 0 && watchId[1]) {
                             //language=HTML
                             linkHtml += `
-                                <style>.embed-container {
-                                    border-radius: 4px;
-                                    width: 100%;
-                                    position: relative;
-                                    padding-bottom: 56.25%;
-                                    height: 0;
-                                    overflow: hidden;
-                                    max-width: 100%;
-                                }
+                                <style>
+                                    .embed-container {
+                                        border-radius: 4px;
+                                        width: 100%;
+                                        position: relative;
+                                        padding-bottom: 56.25%;
+                                        height: 0;
+                                        overflow: hidden;
+                                        max-width: 100%;
+                                    }
 
-                                .embed-container iframe, .embed-container object, .embed-container embed {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                }</style>
+                                    .embed-container iframe, .embed-container object, .embed-container embed {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                    }</style>
                                 <div class="embed-container" style="margin-bottom:.75rem;${css}">
                                     <iframe title="youtube"
                                             src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
@@ -1139,8 +1148,8 @@ export class RouteHandler {
                             border-radius: 50%;
                             text-align: center;
                             margin: 5px auto 0;
-                            background: rgba(255, 255, 255, 0.15);
-                            box-shadow: 0 5px 11px -2px rgba(0, 0, 0, 0.18), 0 4px 12px -7px rgba(0, 0, 0, 0.15);
+                            background: rgba(255, 255, 255, 0.5);
+                            box-shadow: 0 5px 11px -2px rgba(0, 0, 0, .5), 0 4px 12px -7px rgba(0, 0, 0, 0.15);
                             cursor: pointer;
                             -webkit-transition: all .1s ease-out;
                             transition: all .1s ease-out;
@@ -1170,7 +1179,7 @@ export class RouteHandler {
                         <section class="flex flex-col p-6 pt-8 pb-8 items-center text-center page-width w-full"
                         >
                             ${shareMenuHtml}
-                            <img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>
+                            ${avatarHtml}
                             ${headlineHtml}
                             ${subtitleHtml}
                             ${linkHtml}

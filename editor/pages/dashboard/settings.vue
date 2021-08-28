@@ -152,6 +152,21 @@
           </div>
         </div>
 
+        <!-- Use Gravatar toggle -->
+        <div class="flex flex-row w-full mb-6 items-start">
+          <input
+              v-model="user.activeProfile.metadata.useGravatar"
+              aria-label="privacy mode"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
+          >
+
+          <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
+            Use Gravatar (Hides default avatar if disabled.)
+          </label>
+        </div>
+
         <!-- Full Width toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
           <input
@@ -233,7 +248,7 @@
 
             <div class="flex flex-row space-x-2">
               <div
-                  class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+                  class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
                   @click="showHTML = !showHTML"
               >
                 <h6 class="text-center">
@@ -273,7 +288,7 @@
 
         <!-- Save Button-->
         <button
-            class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
             @click="saveChanges"
         >
@@ -372,7 +387,7 @@
         </div>
         <button
             v-if="alerts.linktreeImported === null"
-            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
             @click="importLinktree"
         >
@@ -397,7 +412,7 @@
         <p class="text-black opacity-70 font-semibold">Need to configure the account managing your micro-sites?</p>
       </div>
       <n-link
-          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold w-1/3 justify-center align-center"
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-1/3 justify-center align-center"
           to="/dashboard/account"
       >
         Go to account settings
@@ -531,7 +546,8 @@ export default Vue.extend({
             unlisted: false,
             coverImage: null,
             pageHtml: null,
-            shareMenu: true
+            shareMenu: true,
+            useGravatar: true
           },
         }
       },
@@ -617,7 +633,8 @@ export default Vue.extend({
           unlisted: false,
           coverImage: null,
           pageHtml: null,
-          shareMenu: true
+          shareMenu: true,
+          useGravatar: true
         };
 
         this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);

@@ -10,9 +10,10 @@
             <span class="text-sm text-gray-500 font-medium">Customize your page styles.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border bg-gdp text-white font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.page_styles = !drawer.page_styles"
-          ><span v-show="!drawer.page_styles">Expand</span><span v-show="drawer.page_styles">Collapse</span></div>
+          ><span v-show="!drawer.page_styles">Expand</span><span v-show="drawer.page_styles">Collapse</span>
+          </div>
         </div>
         <!-- Drawer -->
         <div
@@ -20,7 +21,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Page</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -57,7 +58,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Avatar</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full mb-2">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -161,7 +162,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-bold text-xl mt-2 py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Background</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -354,7 +355,7 @@
             >Customize your fonts, font size, font weight, and more.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border bg-gdp text-white bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.typography = !drawer.typography"
           ><span v-show="!drawer.typography">Expand</span><span v-show="drawer.typography">Collapse</span></div>
         </div>
@@ -364,7 +365,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Headline</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -488,7 +489,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Subtitle</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -622,7 +623,7 @@
             <span class="text-sm text-gray-500 font-medium">Customize your default styles for link items.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border bg-gdp text-white bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.link_styles = !drawer.link_styles"
           ><span v-show="!drawer.link_styles">Expand</span><span v-show="drawer.link_styles">Collapse</span></div>
         </div>
@@ -632,7 +633,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Link block styles</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -922,7 +923,7 @@
             <span class="text-sm text-gray-500 font-medium">Customize the default typography for link items.</span>
           </div>
           <div
-              class="py-2 px-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
+              class="py-2 px-4 text-sm rounded-lg border bg-gdp text-white bg-blue-200 font-medium text-center hover:bg-blue-300 cursor-pointer"
               @click="drawer.link_typography = !drawer.link_typography"
           ><span v-show="!drawer.link_typography">Expand</span><span v-show="drawer.link_typography">Collapse</span>
           </div>
@@ -933,7 +934,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Link headline</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -1057,7 +1058,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Link subtitle</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">

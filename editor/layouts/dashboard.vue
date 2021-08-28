@@ -39,12 +39,12 @@
                   v-if="user.activeProfile.imageUrl || user.emailHash"
                   :style="'background-image:url(' + (user.activeProfile.imageUrl || 'https://www.gravatar.com/avatar/' + user.emailHash) + ');background-size:cover;background-position:center;'"
                   class="rounded-full"
-                  style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
+                  style="width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(81,173,255,.25);"
               />
               <div
                   v-if="!user.activeProfile.imageUrl && !user.emailHash"
                   class="rounded-full"
-                  style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(83,83,267,.25);"
+                  style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);width:70px;height:70px;box-shadow:inset 0 0 0 4px rgba(0,0,0,.25),0 5px 25px rgba(81,173,255,.25);"
               />
 
               <div class="flex flex-col justify-start">
@@ -963,7 +963,8 @@ html {
 }
 
 .nav-link:hover {
-  @apply bg-opaqueIndigo text-gdp;
+  @apply text-gdp;
+  background-color: rgba(71, 142, 204, 0.25);
 }
 
 .nav-link.active {

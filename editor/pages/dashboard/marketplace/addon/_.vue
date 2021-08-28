@@ -96,13 +96,13 @@
         <div class="flex flex-col lg:flex-row items-center justify-start mt-4">
           <div
             v-if="intent==='view' && installed.indexOf(Number(addon.id)) < 0"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="installAddon"
           >Install addon
           </div>
           <div
             v-if="intent==='view' && installed.indexOf(Number(addon.id)) >= 0"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="uninstallAddon"
           >Uninstall addon
           </div>
@@ -120,13 +120,13 @@
           </div>
           <div
             v-if="intent==='submit'"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="attemptSubmit"
           >Create addon
           </div>
           <div
             v-if="intent==='edit'"
-            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+            class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
             @click="updateAddon"
           >Save changes
           </div>
@@ -162,8 +162,8 @@
             <option value="true">Yes, this theme is available for community download.</option>
         </select>
     </div>-->
-    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp mr-auto mt-4 cursor-pointer">Publish addon</div>-->
-    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-500 bg-gdp mr-auto mt-4 cursor-pointer">Save changes</div>-->
+    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp mr-auto mt-4 cursor-pointer">Publish addon</div>-->
+    <!--<div class="px-6 py-3 font-semibold text-white rounded-xl hover:bg-blue-400 bg-gdp mr-auto mt-4 cursor-pointer">Save changes</div>-->
 
   </section>
 </template>

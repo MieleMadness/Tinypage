@@ -48,7 +48,7 @@
           </h2>
 
           <div
-              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
               @click="showHTML = !showHTML"
           >
             <h6 class="text-center">
@@ -103,7 +103,7 @@
           </h2>
 
           <div
-              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
               @click="showCSS = !showCSS"
           >
             <h6 class="text-center">

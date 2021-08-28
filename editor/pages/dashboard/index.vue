@@ -492,9 +492,8 @@ export default Vue.extend({
 }
 
 .button {
-  @apply mb-8 w-full font-bold rounded-full px-8 py-4 text-lg text-center;
+  @apply mb-8 w-full font-bold rounded-2xl px-8 py-4 text-lg text-center;
   background: #478ecc;
-  background: linear-gradient(to bottom, #478ecc, #1063ab);
   box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .2), 0 2px 25px rgba(71, 142, 204, 0.25);
   transition: .1s ease-in;
 }

@@ -91,14 +91,14 @@
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
       <div
           v-if="intent==='create'"
-          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-blue-500 bg-blue-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-blue-400 bg-blue-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
           @click="saveCreateTheme"
       >
         Create theme
       </div>
       <div
           v-if="intent==='edit'"
-          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-blue-500 bg-blue-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+          class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-blue-400 bg-blue-600 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
           @click="saveEditTheme"
       >
         Save changes

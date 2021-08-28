@@ -109,7 +109,7 @@
             </option>
           </select>
           <button
-            class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold justify-center align-center"
+            class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
             type="button"
             @click="setBillingModalActive(true)"
           >
@@ -933,7 +933,7 @@
         </div>
       </div>
       <button
-        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-500 rounded-2xl font-bold"
+        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
         type="button"
         @click="saveBillingInfo()"
       >
@@ -979,7 +979,7 @@
         </div>
       </div>
       <button
-        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-500 rounded-2xl font-bold"
+        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
         type="button"
         @click="saveCardInfo()"
       >
@@ -1037,7 +1037,7 @@
             type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold justify-center align-center"
+            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
             type="button"
             @click="setPasswordModalActive(true)"
           >
@@ -1067,7 +1067,7 @@
             type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold justify-center align-center"
+            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
             type="button"
             @click="setPasswordModalActive(true)"
           >
@@ -1115,7 +1115,7 @@
             type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-500 rounded-2xl font-bold justify-center align-center"
+            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
             type="button"
             @click="setPasswordModalActive(true)">
             Request password reset link

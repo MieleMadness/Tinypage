@@ -100,7 +100,7 @@
     <div v-show="intent!=='view' && pendingLink.type === 'social'" class="flex flex-col mb-4 justify-start w-full">
       <div class="flex flex-col lg:flex-row items-center justify-center items-center w-full mb-4">
         <div
-            class="flex-grow text-center text-lg px-4 py-4 font-bold text-white rounded-2xl hover:bg-blue-500 bg-gdp mb-4 lg:mb-0 cursor-pointer"
+            class="flex-grow text-center text-lg px-4 py-4 font-bold text-white rounded-2xl hover:bg-blue-400 bg-gdp mb-4 lg:mb-0 cursor-pointer"
             @click="addSocialIcon()"
         >
           Add Icon
@@ -112,14 +112,14 @@
           <label class="font-semibold align-middle mr-5">Icon {{ index + 1 }}</label>
 
           <button
-              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-blue-500 mb-4 lg:mb-0 cursor-pointer"
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-blue-400 mb-4 lg:mb-0 cursor-pointer"
               style="align-self: flex-end"
               @click="moveSocialIcon(index, 'up')"
           >
             <img src="/caret-up-outline.svg" style="width: 20px; height: 20px; filter: invert()" alt="move up"/>
           </button>
           <button
-              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-blue-500 mb-4 lg:mb-0 cursor-pointer"
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-gdp hover:bg-blue-400 mb-4 lg:mb-0 cursor-pointer"
               style="align-self: flex-end"
               @click="moveSocialIcon(index, 'down')"
           >
@@ -193,6 +193,11 @@
       <label v-else-if="pendingLink.type === 'image'" class="font-semibold mb-2">Image URL</label>
       <label v-else-if="pendingLink.type === 'youtube'" class="font-semibold mb-2">Video URL</label>
       <label v-else class="font-semibold mb-2">URL</label>
+
+      <input v-model="pendingLink.url" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+             placeholder="'e.g. https://exampleurl.com/example'"
+             type="url"
+      />
     </div>
 
     <!-- vCard -->
@@ -244,7 +249,7 @@
             </h2>
 
             <div
-                class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+                class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
                 @click="vCardShowData = !vCardShowData"
             >
               <h6 class="text-center">
@@ -294,7 +299,7 @@
           </h2>
 
           <div
-              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
               @click="showCSS = !showCSS"
           >
             <h6 class="text-center">
@@ -335,13 +340,13 @@
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
       <div v-if="intent==='create'" class="button cursor-pointer" @click="addNewLink">Create link</div>
       <div v-if="intent==='edit'"
-           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
            @click="saveLinkChanges"
       >
         Save and Exit
       </div>
       <div v-if="intent==='edit'"
-           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-blue-500 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+           class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-blue-400 bg-gdp lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
            @click="applyLinkChanges"
       >
         Apply

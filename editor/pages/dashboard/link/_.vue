@@ -571,7 +571,8 @@ export default Vue.extend({
         }
 
         const temp = this.socialIcons[y];
-        this.socialIcons[y] = this.socialIcons[x];
+        this.$set(this.socialIcons, y, this.socialIcons[x]);
+        this.$set(this.socialIcons, x, temp);
         this.socialIcons[x] = temp;
       } else if (direction === "down") {
         let x = index;
@@ -582,8 +583,8 @@ export default Vue.extend({
         }
 
         const temp = this.socialIcons[y];
-        this.socialIcons[y] = this.socialIcons[x];
-        this.socialIcons[x] = temp;
+        this.$set(this.socialIcons, y, this.socialIcons[x]);
+        this.$set(this.socialIcons, x, temp);
       }
     },
 

@@ -1,7 +1,7 @@
 <template>
   <div
-    :id="name.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '').split(' ').join('-').toLowerCase()"
-    class="flex flex-col w-full justify-center"
+      :id="name.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '').split(' ').join('-').toLowerCase()"
+      class="flex flex-col w-full justify-center"
   >
     <h2 class="font-bold text-xl py-2 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full mb-2">{{
         name
@@ -10,38 +10,38 @@
       <!-- Show active theme first -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string" -->
       <a
-        v-for="theme in themes"
-        v-if="!icon && getActiveThemeId === theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          v-for="theme in themes"
+          v-if="!icon && getActiveThemeId === theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
       </a>
       <div
-        v-for="theme in themes"
-        v-if="icon && getActiveThemeId === theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
-        @click="selectTheme(theme.id)"
+          v-for="theme in themes"
+          v-if="icon && getActiveThemeId === theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          @click="selectTheme(theme.id)"
       >
         <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"/>
       </div>
       <!-- List active themes -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"  -->
       <a
-        v-for="theme in themes"
-        v-if="!icon && getActiveThemeId !== theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
+          v-for="theme in themes"
+          v-if="!icon && getActiveThemeId !== theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
         <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
       </a>
       <div
-        v-for="theme in themes"
-        v-if="icon && getActiveThemeId !== theme.id"
-        :key="theme.id"
-        class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
-        @click="selectTheme(theme.id)"
+          v-for="theme in themes"
+          v-if="icon && getActiveThemeId !== theme.id"
+          :key="theme.id"
+          class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
+          @click="selectTheme(theme.id)"
       >
         <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"/>
       </div>
@@ -50,57 +50,57 @@
       <!-- Show active theme first -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
       <a
-        v-for="theme in themes"
-        v-if="!icon && getActiveThemeId === theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          v-for="theme in themes"
+          v-if="!icon && getActiveThemeId === theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
       >
         <theme
-          :id="theme.id"
-          :colors="theme.resource.colors"
-          :label="theme.displayName"
+            :id="theme.id"
+            :colors="theme.resource.colors"
+            :label="theme.displayName"
         />
       </a>
       <div
-        v-for="theme in themes"
-        v-if="icon && active === theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
-        @click="selectTheme(theme.id)"
+          v-for="theme in themes"
+          v-if="icon && active === theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-indigo-200 bg-indigo-200 border border-indigo-600 rounded-xl"
+          @click="selectTheme(theme.id)"
       >
         <theme
-          :id="theme.id"
-          :colors="theme.resource.colors"
-          :icon="icon"
-          :label="theme.displayName"
+            :id="theme.id"
+            :colors="theme.resource.colors"
+            :icon="icon"
+            :label="theme.displayName"
         />
       </div>
       <!-- List active themes -->
       <!-- :href="'/dashboard/marketplace/addon/'+theme.id+query_string"-->
       <a
-        v-for="theme in themes"
-        v-if="!icon && active !== theme.id"
-        :key="theme.id"
-        class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
+          v-for="theme in themes"
+          v-if="!icon && active !== theme.id"
+          :key="theme.id"
+          class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
         <theme
-          :id="theme.id"
-          :colors="theme.resource.colors"
-          :label="theme.displayName"
+            :id="theme.id"
+            :colors="theme.resource.colors"
+            :label="theme.displayName"
         />
       </a>
       <div
-        v-for="theme in themes"
-        v-if="icon && active !== theme.id"
-        :key="theme.id"
-        class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
-        @click="selectTheme(theme.id)"
+          v-for="theme in themes"
+          v-if="icon && active !== theme.id"
+          :key="theme.id"
+          class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
+          @click="selectTheme(theme.id)"
       >
         <theme
-          :id="theme.id"
-          :colors="theme.resource.colors"
-          :icon="icon"
-          :label="theme.displayName"
+            :id="theme.id"
+            :colors="theme.resource.colors"
+            :icon="icon"
+            :label="theme.displayName"
         />
       </div>
     </div>

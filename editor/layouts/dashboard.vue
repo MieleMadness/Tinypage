@@ -8,6 +8,7 @@
         class="flex flex-row w-full py-6 justify-between relative"
         style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
+
       <n-link to="/dashboard"><img
           :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
           class="w-10" style="filter: drop-shadow(0px 10px 25px #5353EC);"
@@ -20,6 +21,12 @@
       <!--               placeholder="Search pages, guides, and documentation..."/>-->
       <!--      </div>-->
       <!--<n-link to="/dashboard/referrals" class="py-1 px-4 rounded-full text-gdp bg-opaqueIndigo text-sm font-bold leading-tight mx-8 cursor-pointer flex items-center justify-center hover:border-gdp border-2 border-opaqueIndigo">Refer a friend and get $10!</n-link>-->
+    </div>
+
+    <div class="usability-warning p-2 m-3 bg-red-300 rounded-xl" style="width: 80%">
+      <img class="inline float-left ml-3 mr-3" src="/icons/caution.svg" alt="caution"/>
+      <strong>WARNING:</strong>
+      The editor is meant to be used on Desktop resolutions. Mobile is not guaranteed to work correctly.
     </div>
 
     <div class="flex flex-row items-center justify-center w-full" style="max-width:1440px;">
@@ -751,6 +758,10 @@ export default Vue.extend({
   .content-nuxt {
     height: calc(100vh - 122px);
   }
+
+  .usability-warning {
+    display: none;
+  }
 }
 
 @media(max-width: 1024px) {
@@ -769,6 +780,10 @@ export default Vue.extend({
     right: 0;
     z-index: 0;
     overflow-y: scroll;
+  }
+
+  .usability-warning {
+    display: inline;
   }
 }
 

@@ -1,26 +1,30 @@
 <template>
   <div :class="'w-full flex flex-col items-center justify-center ' + activeStyles">
     <div class="relative rounded" style="width: 201px;height:217px;overflow:hidden;">
-      <iframe
-        v-if="theme"
-        scrolling="no"
-        style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"
-        :src="'/dashboard/appearance/preview/' + id"
-      />
-      <a
-        v-if="theme"
-        :href="'/dashboard/appearance/theme/' + id"
-        style="position:absolute;top:10px;right:10px;z-index:5;width:10px;height:10px;"
-        @click.stop
-      >
-        <i
-          class="fas fa-pencil-alt absolute"
-          style="color: #FFF;font-size:10px;text-shadow: 0 1px 2px #000;"
-        />
-      </a>
+      <!--      <iframe-->
+      <!--          v-if="theme"-->
+      <!--          scrolling="no"-->
+      <!--          style="pointer-events: none;width: 375px;height: 406px;transform: scale(.536) translate(-163px, -175px);top:0;left:0;position:absolute;"-->
+      <!--          :src="'/dashboard/appearance/preview/' + id"-->
+      <!--      />-->
     </div>
-    <div class="font-bold text-black mb-1 mt-2">
+    <div class="font-bold text-black mb-1 mt-2 flex flex-col items-center justify-center">
       {{ label }}
+
+      <a
+          v-if="theme"
+          :href="'/dashboard/appearance/theme/' + id"
+      >
+        <div class="bg-gray-700 hover:bg-indigo-300"
+             style="color: #FFF; text-shadow: 0 1px 2px #000; border-radius: 5px; height: 30px; width: 30px;"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                  d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
+            />
+          </svg>
+        </div>
+      </a>
     </div>
     <!--<span class="text-sm text-gray-500">Author: {{ userId }}</span>-->
   </div>
@@ -48,7 +52,7 @@ export default Vue.extend({
   data() {
     return {
       theme: null as EditorTheme | null
-    }
+    };
   },
 
   async mounted() {

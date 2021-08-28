@@ -371,25 +371,26 @@ export class RouteHandler {
 
                         try {
                             let dividerSettings: { color: string, fontSize: number } = link.metadata?.dividerSettings ?? {};
-                            let color = dividerSettings.color.substring(0, 7) || "#000000";
 
-                            while (color.length < 7) {
-                                color += "0";
+                            if (!dividerSettings.color) {
+                                dividerSettings.color = "#FFFFFFFF";
                             }
 
                             if (!dividerSettings.fontSize)
-                                dividerSettings.fontSize = 16;
+                                dividerSettings.fontSize = 18;
+
+                            let color = dividerSettings.color;
 
                             //language=HTML
                             linkHtml += `
                                 <div class="flex flex-row items-center justify-center w-full"
                                      style="margin-bottom:.75rem;${css}"
                                 >
-                                    <div style="flex-grow:1;background:${color}26;height:1px;"></div>
-                                    <div style="margin:0 8px; text-transform:uppercase;font-weight:600;color:${color}7F;letter-spacing:1px;font-size:${dividerSettings.fontSize};">
+                                    <div style="flex-grow:1;background:${color};height:1px;"></div>
+                                    <div style="margin:0 8px; text-transform:uppercase;font-weight:600;color:${color};letter-spacing:1px;font-size:${dividerSettings.fontSize};">
                                         ${link.label}
                                     </div>
-                                    <div style="flex-grow:1;background:${color}26;height:1px;"></div>
+                                    <div style="flex-grow:1;background:${color};height:1px;"></div>
                                 </div>
                             `;
                         } catch (e) {

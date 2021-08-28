@@ -352,7 +352,7 @@ export default Vue.extend({
 
       dividerSettings: {
         color: '#000000FF',
-        fontSize: 16,
+        fontSize: 18,
       },
 
       socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
@@ -390,7 +390,7 @@ export default Vue.extend({
         }
 
         if (!this.dividerSettings.fontSize) {
-          this.dividerSettings.fontSize = 16;
+          this.dividerSettings.fontSize = 18;
         }
       } catch (e) {
         console.warn("Failed to parse JSON string for divider: " + this.pendingLink.metadata?.dividerSettings);

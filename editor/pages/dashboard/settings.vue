@@ -209,6 +209,27 @@
           </label>
         </div>
 
+        <!-- Page HTML -->
+        <div class="flex flex-col mb-4 justify-start w-full">
+          <label class="font-semibold mb-2">Page HTML</label>
+          <label class="font-semibold mb-2 text-sm">Use for this HTML snippets like Facebook Pixel.</label>
+
+          <client-only>
+            <MonacoEditor
+                v-model="user.activeProfile.metadata.pageHtml"
+                :options="{
+                  extraEditorClassName: 'rounded overflow-hidden mb-2',
+                  autoIndent: 'full',
+                  autoClosingQuotes: true,
+                }"
+                height="350"
+                language="html"
+                theme="vs-dark"
+            ></MonacoEditor>
+          </client-only>
+        </div>
+
+
         <button
             class="mt-2 inline-flex p-3 text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
             type="button"
@@ -373,7 +394,7 @@
           v-if="resetPasswordModalActive"
           class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
           style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-          @click="setPasswordModalActive(false)"
+          @click="resetPasswordModalActive = false"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-semibold text-xl">
@@ -390,7 +411,7 @@
           <button
               class="mt-4 p-3 text-center text-md text-black bg-indigo-600 hover:bg-indigo-700 rounded-2xl font-semibold"
               type="button"
-              @click="setPasswordModalActive(false)"
+              @click="resetPasswordModalActive = false"
           >
             Close
           </button>
@@ -464,7 +485,8 @@ export default Vue.extend({
           metadata: {
             privacyMode: false,
             unlisted: false,
-            coverImage: null
+            coverImage: null,
+            pageHtml: null
           },
         }
       },
@@ -548,7 +570,8 @@ export default Vue.extend({
         this.user.activeProfile.metadata = profileResponse.metadata ?? {
           privacyMode: false,
           unlisted: false,
-          coverImage: null
+          coverImage: null,
+          pageHtml: null
         };
 
         this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);

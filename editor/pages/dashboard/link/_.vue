@@ -561,23 +561,29 @@ export default Vue.extend({
       this.socialIcons.splice(index, 1);
     },
 
-    moveSocialIcon(index: number, direction: "up" | "down", shift: number = 1) {
+    moveSocialIcon(index: number, direction: "up" | "down") {
       if (direction === "up") {
-        for (let i = 0; i < shift; i++) {
-          let item = this.socialIcons.shift();
-          if (!item)
-            continue;
+        let x = index;
+        let y = index - 1;
 
-          this.socialIcons.push(item);
+        if (y < 0) {
+          y = this.socialIcons.length - 1;
         }
+
+        const temp = this.socialIcons[y];
+        this.socialIcons[y] = this.socialIcons[x];
+        this.socialIcons[x] = temp;
       } else if (direction === "down") {
-        for (let i = 0; i < shift; i++) {
-          let item = this.socialIcons.pop();
-          if (!item)
-            continue;
+        let x = index;
+        let y = index + 1;
 
-          this.socialIcons.unshift(item);
+        if (y >= this.socialIcons.length) {
+          y = 0;
         }
+
+        const temp = this.socialIcons[y];
+        this.socialIcons[y] = this.socialIcons[x];
+        this.socialIcons[x] = temp;
       }
     },
 

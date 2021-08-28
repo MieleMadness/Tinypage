@@ -6,7 +6,7 @@
       >
         <div class="w-full flex flex-row justify-between items-start space-y-2 3xl:space-y-0 3xl:items-center">
           <div class="flex flex-col">
-            <span class="text-gray-800 font-semibold">Page styles</span>
+            <span class="text-gray-800 font-bold text-2xl">Page styles</span>
             <span class="text-sm text-gray-500 font-medium">Customize your page styles.</span>
           </div>
           <div
@@ -20,7 +20,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Page</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -57,7 +57,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Avatar</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full mb-2">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -161,7 +161,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-semibold py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Background</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -348,7 +348,7 @@
       >
         <div class="w-full flex flex-row justify-between items-start space-y-2 3xl:space-y-0 3xl:items-center">
           <div class="flex flex-col">
-            <span class="text-gray-800 font-semibold">Typography</span>
+            <span class="text-gray-800 font-bold text-2xl mt-2">Typography</span>
             <span
                 class="text-sm text-gray-500 font-medium"
             >Customize your fonts, font size, font weight, and more.</span>
@@ -364,7 +364,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Headline</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -488,7 +488,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Subtitle</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -618,7 +618,7 @@
       >
         <div class="w-full flex flex-row justify-between items-start space-y-2 3xl:space-y-0 3xl:items-center">
           <div class="flex flex-col">
-            <span class="text-gray-800 font-semibold">Link styles</span>
+            <span class="text-gray-800 font-bold text-2xl mt-2">Link styles</span>
             <span class="text-sm text-gray-500 font-medium">Customize your default styles for link items.</span>
           </div>
           <div
@@ -632,7 +632,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Link block styles</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -918,7 +918,7 @@
       >
         <div class="w-full flex flex-row justify-between items-start space-y-2 3xl:space-y-0 3xl:items-center">
           <div class="flex flex-col">
-            <span class="text-gray-800 font-semibold">Link typography</span>
+            <span class="text-gray-800 font-bold text-2xl mt-2">Link typography</span>
             <span class="text-sm text-gray-500 font-medium">Customize the default typography for link items.</span>
           </div>
           <div
@@ -933,7 +933,7 @@
             class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
         >
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Link headline</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">
@@ -1057,7 +1057,7 @@
             </div>
           </div>
           <span
-              class="text-gray-800 font-semibold pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
+              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-start flex flex-row"
           >Link subtitle</span>
           <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
             <div class="flex flex-col mb-4 justify-start w-full">

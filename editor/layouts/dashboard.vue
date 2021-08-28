@@ -580,47 +580,60 @@ export default Vue.extend({
     },
 
     setActive() {
-      try {
-        switch (this.$route.name) {
-          case "dashboard":
-            this.active = "dashboard";
-            this.preview = true;
-            break;
-          case "dashboard-upgrade":
-            this.active = "dashboard-upgrade";
-            this.preview = false;
-            break;
-          case "dashboard-appearance":
+      if (process.browser) {
+        try {
+          switch (this.$route.name) {
+            case "dashboard":
+              this.active = "dashboard";
+              this.preview = true;
+              break;
+            case "dashboard-upgrade":
+              this.active = "dashboard-upgrade";
+              this.preview = false;
+              break;
+            case "dashboard-appearance":
+              this.active = "dashboard-appearance";
+              this.preview = true;
+              break;
+            case "dashboard-marketplace":
+              this.active = "dashboard-marketplace";
+              this.preview = false;
+              break;
+            case "dashboard-analytics":
+              this.active = "dashboard-analytics";
+              this.preview = false;
+              break;
+            case "dashboard-referrals":
+              this.active = "dashboard-referrals";
+              this.preview = false;
+              break;
+            case "dashboard-discover":
+              this.active = "dashboard-discover";
+              this.preview = false;
+              break;
+            case "dashboard-settings":
+              this.active = "dashboard-settings";
+              this.preview = true;
+              break;
+            case "dashboard-admin":
+              this.active = "dashboard-admin";
+              this.preview = false;
+              break;
+          }
+
+          if (this.$route.path.includes('/dashboard/appearance')) {
             this.active = "dashboard-appearance";
             this.preview = true;
-            break;
-          case "dashboard-marketplace":
-            this.active = "dashboard-marketplace";
-            this.preview = false;
-            break;
-          case "dashboard-analytics":
-            this.active = "dashboard-analytics";
-            this.preview = false;
-            break;
-          case "dashboard-referrals":
-            this.active = "dashboard-referrals";
-            this.preview = false;
-            break;
-          case "dashboard-discover":
-            this.active = "dashboard-discover";
-            this.preview = false;
-            break;
-          case "dashboard-settings":
+          } else if (this.$route.path.includes('/dashboard/settings')) {
             this.active = "dashboard-settings";
             this.preview = true;
-            break;
-          case "dashboard-admin":
-            this.active = "dashboard-admin";
-            this.preview = false;
-            break;
+          } else if (this.$route.path.includes('/dashboard/link')) {
+            this.active = "dashboard";
+            this.preview = true;
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
     },
 

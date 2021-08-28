@@ -14,7 +14,7 @@ let config = {
     appName: process.env.APP_NAME ?? 'Singlelink',
 
     // Define free signup
-    freeSignup: process.env.FREE_SIGNUP ?? false,
+    freeSignup: process.env.FREE_SIGNUP === "true",
 
     // Define hostname
     hostname: process.env.HOSTNAME ?? 'singlel.ink',

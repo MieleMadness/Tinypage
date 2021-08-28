@@ -51,7 +51,9 @@ export class ScreenshotUtils {
      * @param options The screenshot options
      */
     static async getOrCreateScreenshot(url: string, sizes: string[], ttl: number = ScreenshotUtils.DEFAULT_TTL, noCache: boolean = false, options: ScreenshotOptions): Promise<Buffer> {
-        let hash = ObjectHash.sha1(options);
+        let hash1 = ObjectHash.sha1(url);
+        let hash2 = ObjectHash.sha1(options);
+        let hash = ObjectHash.sha1(hash1 + hash2);
 
         if (!url.startsWith("http")) {
             throw new HttpError(StatusCodes.BAD_REQUEST, `Only http protocol is supported when creating screenshots. URL received: ${url}`);

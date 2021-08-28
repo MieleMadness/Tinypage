@@ -81,9 +81,12 @@ export class ProfileService extends DatabaseService {
             let screenshotOptions = new ScreenshotOptions();
             screenshotOptions.scale = scale;
             screenshotOptions.crop = true;
+            let url = `${config.rendererUrl}/${handle}`;
+
+            console.log("Renderer URL: " + url);
 
             return await ScreenshotUtils.getOrCreateScreenshot(
-                `${config.rendererUrl}/${handle}`,
+                url,
                 [`${resolution.x}x${resolution.y}`],
                 ScreenshotUtils.DEFAULT_TTL,
                 false,

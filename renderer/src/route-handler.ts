@@ -93,6 +93,7 @@ export class RouteHandler {
 
                 //language=HTML
                 return reply.send(`
+                <!DOCTYPE html>
                 <html lang="">
                     <head>
                         <title>${config.appName} Web Client</title>
@@ -419,8 +420,9 @@ export class RouteHandler {
                                     height: 100%;
                                 }</style>
                                 <div class="embed-container" style="margin-bottom:.75rem;${css}">
-                                    <iframe src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
-                                            frameborder="0" allowfullscreen
+                                    <iframe title="youtube"
+                                            src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
+                                            frameborder="0" allowfullscreen loading="lazy"
                                     ></iframe>
                                 </div>
                             `;
@@ -612,6 +614,7 @@ export class RouteHandler {
             // Send response to client
             // language=HTML
             return reply.send(`
+                <!DOCTYPE html>
                 <html lang="">
                 <head>
                     <title>${profile.headline} - ${config.appName}</title>
@@ -643,23 +646,202 @@ export class RouteHandler {
                     <link rel="icon" type="image/x-icon" href="/favicon.png"/>
                     <link rel="icon" type="image/png" href="/favicon.png"/>
 
-                    <link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.core.css"/>
-
-                    <link rel="stylesheet"
-                          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css"
-                          integrity="sha512-y6ZMKFUQrn+UUEVoqYe8ApScqbjuhjqzTuwUMEGMDuhS2niI8KA3vhH2LenreqJXQS+iIXVTRL2iaNfJbDNA1Q=="
-                          crossorigin="anonymous" referrerpolicy="no-referrer"
-                    />
+                    <link rel="stylesheet" href="/css/quill.core.min.css"/>
 
                     <!-- Tailwind CSS Embedded Styles -->
-                    <!-- Theme style -->
                     <style>
+                        *, ::after, ::before {
+                            box-sizing: border-box;
+                            border-width: 0;
+                            border-style: solid;
+                            border-color: rgba(229, 231, 235, 1)
+                        }
+
+                        html {
+                            -moz-tab-size: 4;
+                            tab-size: 4
+                            line-height: 1.15;
+                            -webkit-text-size-adjust: 100%
+                        }
+
+                        body {
+                            margin: 0
+                            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                            line-height: 1.5
+                        }
+
+                        b, strong {
+                            font-weight: bolder
+                        }
+
+                        blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre {
+                            margin: 0
+                        }
+
+                        img {
+                            border-style: solid
+                        }
+
+                        h1, h2, h3, h4, h5, h6 {
+                            font-size: inherit;
+                            font-weight: inherit
+                        }
+
+                        a {
+                            color: inherit;
+                            text-decoration: inherit
+                        }
+
+                        audio, canvas, embed, iframe, img, object, svg, video {
+                            display: block;
+                            vertical-align: middle
+                        }
+
+                        img, video {
+                            max-width: 100%;
+                            height: auto
+                        }
+
+                        .relative {
+                            position: relative
+                        }
+
+                        .mx-auto {
+                            margin-left: auto;
+                            margin-right: auto
+                        }
+
+                        .mt-1 {
+                            margin-top: .25rem
+                        }
+
+                        .mt-4 {
+                            margin-top: 1rem
+                        }
+
+                        .mb-2 {
+                            margin-bottom: .5rem
+                        }
+
+                        .mb-3 {
+                            margin-bottom: .75rem
+                        }
+
+                        .mb-4 {
+                            margin-bottom: 1rem
+                        }
+
+                        .flex {
+                            display: flex
+                        }
+
+                        .h-auto {
+                            height: auto
+                        }
+
+                        .min-h-screen {
+                            min-height: 100vh
+                        }
+
+                        .w-full {
+                            width: 100%
+                        }
+
+                        .w-screen {
+                            width: 100vw
+                        }
+
+                        .flex-row {
+                            flex-direction: row
+                        }
+
+                        .flex-col {
+                            flex-direction: column
+                        }
+
+                        .items-center {
+                            align-items: center
+                        }
+
+                        .justify-center {
+                            justify-content: center
+                        }
+
+                        .rounded-2xl {
+                            border-radius: 1rem
+                        }
+
+                        .bg-white {
+                            background-color: rgba(255, 255, 255, 1)
+                        }
+
+                        .bg-gray-100 {
+                            background-color: rgba(243, 244, 246, 1)
+                        }
+
+                        .p-4 {
+                            padding: 1rem
+                        }
+
+                        .p-6 {
+                            padding: 1.5rem
+                        }
+
+                        .pt-8 {
+                            padding-top: 2rem
+                        }
+
+                        .pb-8 {
+                            padding-bottom: 2rem
+                        }
+
+                        .text-center {
+                            text-align: center
+                        }
+
+                        .text-sm {
+                            font-size: .875rem;
+                            line-height: 1.25rem
+                        }
+
+                        .text-2xl {
+                            font-size: 1.5rem;
+                            line-height: 2rem
+                        }
+
+                        .font-medium {
+                            font-weight: 500
+                        }
+
+                        .font-semibold {
+                            font-weight: 600
+                        }
+
+                        .text-black {
+                            color: rgba(0, 0, 0, 1)
+                        }
+
+                        .text-gray-600 {
+                            color: rgba(75, 85, 99, 1)
+                        }
+
+                        .text-gray-700 {
+                            color: rgba(55, 65, 81, 1)
+                        }
+
+                        .text-gray-900 {
+                            color: rgba(17, 24, 39, 1)
+                        }
+
+                        .shadow {
+                            box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
+                        }
+
                         ${theme.customCss}
-                    </style>
-                    <!-- Personal styles -->
-                    <style>
                         ${profile.customCss}
                     </style>
+
+
                     <style>
                         .nc-avatar {
                             width: 60px;

@@ -7,7 +7,7 @@
         <div class="w-full flex flex-row justify-between items-start space-y-2 3xl:space-y-0 3xl:items-center">
           <div class="flex flex-col">
             <span class="text-gray-800 font-semibold">Page styles</span>
-            <span class="text-sm text-gray-500 font-medium">Customize your page styles such as avatar size and page background.</span>
+            <span class="text-sm text-gray-500 font-medium">Customize your page styles.</span>
           </div>
           <div
               class="py-2 px-4 text-sm rounded-lg border border-indigo-600 text-indigo-500 bg-indigo-200 font-medium text-center hover:bg-indigo-300 cursor-pointer"

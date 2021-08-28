@@ -21,25 +21,25 @@
       <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
         <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-            id="banUserId"
-            v-model="banUserId"
-            aria-label="ban user id"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            placeholder="e.g. 1273"
-            type="text"
+              id="banUserId"
+              v-model="banUserId"
+              aria-label="ban user id"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="e.g. 1273"
+              type="text"
           >
           <input
-            id="banUseReason"
-            v-model="banUserReason"
-            aria-label="ban user reason"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            placeholder="e.g. Phishing"
-            type="text"
+              id="banUseReason"
+              v-model="banUserReason"
+              aria-label="ban user reason"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="e.g. Phishing"
+              type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
-            type="button"
-            @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
           >
             Ban User
           </button>
@@ -53,9 +53,9 @@
           Banned users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
         </h2>
         <button
-          class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
-          type="button"
-          @click="showBanned = !showBanned; refreshBannedUsersFirstTime()"
+            class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-indigo-500 rounded-2xl font-bold"
+            type="button"
+            @click="showBanned = !showBanned; refreshBannedUsersFirstTime()"
         >
           {{ showBanned ? 'Hide' : 'Show' }}
         </button>
@@ -63,10 +63,10 @@
 
       <div class="w-full bg-gray-200" style="height:1px;"/>
       <div
-        v-for="banned in bannedUsers"
-        v-if="showBanned"
-        :key="banned.ban.user_id"
-        class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
+          v-for="banned in bannedUsers"
+          v-if="showBanned"
+          :key="banned.ban.user_id"
+          class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
       >
         <p class="font-bold text-black text-lg mr-auto">
           Id: {{ banned.ban.user_id }}
@@ -75,37 +75,37 @@
         <div class="flex flex-row items-center justify-start w-full">
           <div>
             <div
-              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
             >
               Email: {{ banned.userData.email }}
             </div>
             <div
-              v-if="banned.ban.reason"
-              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+                v-if="banned.ban.reason"
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
             >
               Reason: {{ banned.ban.reason }}
             </div>
             <div
-              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
             >
               Active Profile Id: {{ banned.userData.activeProfileId }}
             </div>
             <div
-              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
             >
               Created On: {{ new Date(banned.userData.createdOn).toUTCString() }}
             </div>
             <div
-              class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
             >
               Banned on: {{ new Date(banned.ban.created_on).toUTCString() }}
             </div>
           </div>
 
           <button
-            class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
-            type="button"
-            @click="unbanUser(banned.ban.user_id)"
+              class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
+              type="button"
+              @click="unbanUser(banned.ban.user_id)"
           >
             Unban User
           </button>
@@ -131,7 +131,11 @@ export default Vue.extend({
     return {
       title: 'Admin - ' + process.env.APP_NAME,
       meta: [
-        {hid: 'robots', name: 'robots', content: 'noindex'}
+        {
+          hid: 'robots',
+          name: 'robots',
+          content: 'noindex'
+        }
       ]
     };
   },

@@ -145,17 +145,15 @@
           <option value="applemusic">Apple Music</option>
           <option value="discord">Discord</option>
           <option value="facebook">Facebook</option>
-
-          <option value="twitter">Twitter</option>
           <option value="instagram">Instagram</option>
-          <option value="tiktok">Tiktok</option>
-          <option value="spotify">Spotify</option>
-          <option value="youtube">YouTube</option>
-
-          <option value="soundcloud">SoundCloud</option>
           <option value="linkedin">LinkedIn</option>
-          <option value="twitch">Twitch</option>
           <option value="pinterest">Pinterest</option>
+          <option value="soundcloud">SoundCloud</option>
+          <option value="spotify">Spotify</option>
+          <option value="tiktok">Tiktok</option>
+          <option value="twitch">Twitch</option>
+          <option value="twitter">Twitter</option>
+          <option value="youtube">YouTube</option>
         </select>
 
         <div class="mt-2">

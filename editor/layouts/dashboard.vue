@@ -968,7 +968,7 @@ html {
 }
 
 .nav-link.active {
-  background: linear-gradient(90deg, rgba(71, 142, 204, 0.25) 00%, rgba(71, 142, 204, 0.05) 100%);
+  background: rgba(71, 142, 204, 0.25);
   @apply text-gdp;
 }
 

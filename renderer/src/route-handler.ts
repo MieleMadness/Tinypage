@@ -173,7 +173,7 @@ export class RouteHandler {
             let gravatarEnabled = profile.metadata?.useGravatar;
 
             // Define Avatar image
-            const imageUrl = profile.imageUrl || gravatarEnabled ? `https://www.gravatar.com/avatar/${user.emailHash}` : null;
+            const imageUrl = profile.imageUrl || (gravatarEnabled ? `https://www.gravatar.com/avatar/${user.emailHash}` : null);
 
             let avatarHtml = '';
 

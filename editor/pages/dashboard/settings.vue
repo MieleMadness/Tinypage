@@ -107,18 +107,6 @@
                 placeholder="e.g. https://i.imgur.com/KM7HbTC.png"
                 type="text"
             >
-
-            <div
-                v-if="!profileValid"
-                class="py-3 px-4 rounded-2xl bg-red-200 border border-red-400 text-red-500 flex flex-col items-start mt-2 text-sm"
-            >
-              <span class="font-semibold">Warning!</span>
-              <span class="text-xs font-semibold">Your site picture may be improperly formatted! Please ensure your image is loaded via an SSL and ends in .gif, .png, .jpg, .jpeg, or another supported file extension.<a
-                  class="ml-2 font-semibold underline hover:text-red-700"
-                  href="https://www.notion.so/neutroncreative/Troubleshooting-9a162db4a8ce482d89b3d3e1bc9825ba"
-                  target="_blank"
-              >Learn more</a></span>
-            </div>
           </div>
         </div>
 
@@ -163,7 +151,7 @@
           >
 
           <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
-            Use Gravatar (Hides default avatar if disabled.)
+            Show Avatar (Hides avatar if disabled.)
           </label>
         </div>
 
@@ -564,20 +552,6 @@ export default Vue.extend({
   },
 
   computed: {
-    profileValid() {
-      const imageUrl = this.$data.user.activeProfile.imageUrl;
-
-      if (!imageUrl) {
-        return true;
-      }
-
-      if (!imageUrl.includes('.jpg') && !imageUrl.includes('.jpeg') && !imageUrl.includes('.png') && !imageUrl.includes('gif')) {
-        return false;
-      }
-
-      return imageUrl.includes('https://');
-    },
-
     getTXTRecord() {
       const profileId = this.$data.user.activeProfile.id;
 

@@ -450,7 +450,7 @@ export default Vue.extend({
 
       showCSS: false,
 
-      vCardShowData: false,
+      vCardShowData: true,
       vCard: '',
 
       socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
@@ -613,6 +613,8 @@ export default Vue.extend({
       }
 
       try {
+        this.addMetadata();
+
         const response = await this.$axios.post('/link/create', {
           token: this.$store.getters['auth/getToken'],
           link: {

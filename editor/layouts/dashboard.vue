@@ -11,7 +11,7 @@
 
       <n-link to="/dashboard"><img
           :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
-          class="w-10" style="filter: drop-shadow(0px 10px 25px #478ecc);"
+          class="w-20" style="filter: drop-shadow(0px 10px 25px #478ecc);"
       >
       </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->

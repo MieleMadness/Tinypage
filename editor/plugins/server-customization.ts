@@ -8,8 +8,8 @@ const defaultSettings: Partial<DbServerCustomization> = {
     company: "Neutron Creative Inc.",
     contactEmail: "contact@neutroncreative.com",
     icons: {
-        mainIcon: "/sl-icon.svg",
-        favicon: "/sl-icon.svg"
+        mainIcon: "/tinypage-logo.svg",
+        favicon: "/tinypage-logo.svg"
     },
     metaTitle: "Singlelink - The open-source Linktree alternative & micro-site platform",
     metaDescription: "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!",
@@ -96,6 +96,10 @@ const exportPlugin: Plugin = async (context: Context, inject) => {
 
         if (process.env.CUSTOM_META_DESCRIPTION) {
             settings.metaDescription = process.env.CUSTOM_META_DESCRIPTION;
+        }
+
+        if (process.env.CUSTOM_META_IMAGE_URL) {
+            settings.metaImageUrl = process.env.CUSTOM_META_IMAGE_URL;
         }
 
         if (process.env.CUSTOM_HTML) {

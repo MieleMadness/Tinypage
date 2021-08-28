@@ -73,12 +73,6 @@
       </h3>
       <p class="text-2xl opacity-80 max-w-md">Connect your micro-site with your content from all your favorite
         platforms</p>
-      <div class="flex flex-row items-center justify-center mt-8 space-x-3">
-        <div class="w-3 h-3 rounded-full shadow bg-white"/>
-        <div class="w-3 h-3 rounded-full shadow bg-white opacity-40"/>
-        <div class="w-3 h-3 rounded-full shadow bg-white opacity-40"/>
-        <div class="w-3 h-3 rounded-full shadow bg-white opacity-40"/>
-      </div>
     </section>
   </div>
 </template>

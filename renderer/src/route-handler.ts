@@ -556,38 +556,6 @@ export class RouteHandler {
             // Define theme colors html
             let themeColorsHtml = ``;
 
-            //language=HTML
-            if (theme) {
-                themeColorsHtml = `
-                    <style>
-                        .sl-headline {
-                            color: inherit;
-                        }
-
-                        .sl-subtitle {
-                            opacity: .85;
-                            color: inherit;
-                        }
-
-                        .sl-bg {
-                            background: inherit;
-                        }
-
-                        .sl-item {
-                            background: inherit;
-                        }
-
-                        .sl-label {
-                            color: inherit;
-                        }
-
-                        .sl-link-subtitle {
-                            opacity: .85;
-                            color: inherit;
-                        }
-                    </style>`;
-            }
-
             if (profile.metadata?.coverImage) {
                 //language=HTML
                 themeColorsHtml += `

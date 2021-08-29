@@ -85,8 +85,7 @@
                 </div>
               </div>
 
-              <div @focus=""
-                   @focusout="onSelectingProfilesFocusOut"
+              <div @focusout="onSelectingProfilesFocusOut($event)"
               >
                 <ul
                     id="profileSelection"
@@ -99,6 +98,7 @@
                   <li class="flex flex-row items-center justify-left profile-search text-black">
                     <!-- Create new profile-->
                     <input
+                        id="filterProfilesInput"
                         aria-label="Filter profiles"
                         class="text-sm p-2 mr-auto font-bold"
                         placeholder="Filter profiles..."
@@ -475,6 +475,11 @@ export default Vue.extend({
         this.filteredProfiles.sort(function (a, b) {
           return a.handle.localeCompare(b.handle);
         });
+
+        this.selectingProfile = false;
+
+        if (profile?.id)
+          await this.selectProfile(profile.id);
       } catch (err) {
         if (err.response) {
           if (err.response.status === StatusCodes.TOO_MANY_REQUESTS) {
@@ -508,15 +513,17 @@ export default Vue.extend({
       return `${this.rendererUrl}/${this.user.activeProfile.handle}?${queryParams}`;
     },
 
-    async selectProfile(profile: any) {
+    async selectProfile(profileId: string) {
       this.user.activeProfile = await this.$axios.$post('/user/set-active-profile', {
         token: this.$store.getters['auth/getToken'],
-        newProfileId: profile
+        newProfileId: profileId
       });
 
       this.selectingProfile = false;
 
-      window.location.replace('/dashboard');
+      this.$nextTick(() => {
+        window.location.replace('/dashboard');
+      });
     },
 
     async listProfiles() {
@@ -722,7 +729,13 @@ export default Vue.extend({
       this.filteredProfiles = this.profiles;
     },
 
-    onSelectingProfilesFocusOut() {
+    onSelectingProfilesFocusOut(event: FocusEvent) {
+      if (event.relatedTarget instanceof Element && event.target instanceof Element) {
+        if (event.target.contains(event.relatedTarget)) {
+          return;
+        }
+      }
+
       this.selectingProfile = false;
     }
   },

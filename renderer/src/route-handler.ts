@@ -1157,6 +1157,7 @@ export class RouteHandler {
                             -webkit-transition: all .1s ease-out;
                             transition: all .1s ease-out;
                             position: relative;
+                            z-index: 3;
                         }
 
                         .sbutton > svg {

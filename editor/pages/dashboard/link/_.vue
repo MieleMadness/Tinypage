@@ -53,19 +53,13 @@
                    class="mb-20"
         />
 
-        <MonacoEditor
+        <textarea
             v-else-if="pendingLink.type === 'html'"
             v-model="pendingLink.subtitle"
-            :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                  readOnly: false
-                }"
-            height="350"
-            language="html"
-            theme="vs-dark"
-        ></MonacoEditor>
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
+        />
 
         <input v-else
                v-model="pendingLink.subtitle"
@@ -288,6 +282,48 @@
     <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
     <!--    </div>-->
 
+    <!-- Inline Style CSS -->
+    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
+      <div
+          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2"
+      >
+        <div class="flex flex-row space-x-2">
+          <h2 class="text-gray-800 font-semibold text-lg">
+            Inline Style CSS
+          </h2>
+
+          <div
+              class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg bg-gdp text-white"
+              @click="showStyle = !showStyle"
+          >
+            <h6 class="text-center">
+              {{ showStyle ? 'Close Editor' : 'Open Editor' }}
+            </h6>
+            <img :src="showStyle ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                 style="width: 20px; height: 20px;"
+                 alt="show hide CSS editor"
+            />
+          </div>
+        </div>
+
+        <a
+            class="text-gray-500 text-xs hover:underline hover:text-gray-600"
+            href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
+            target="_blank"
+        >Need help? Read our
+          documentation</a>
+      </div>
+
+      <client-only v-if="showStyle">
+        <textarea
+            v-model="style"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
+        />
+      </client-only>
+    </div>
+
     <!-- Custom CSS-->
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
       <div
@@ -321,17 +357,11 @@
       </div>
 
       <client-only v-if="showCSS">
-        <MonacoEditor
+        <textarea
             v-model="customCss"
-            :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                  readOnly: false,
-                }"
-            height="350"
-            language="css"
-            theme="vs-dark"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
         />
       </client-only>
     </div>
@@ -441,6 +471,7 @@ export default Vue.extend({
 
       isLoaded: false,
 
+      style: null as string | null | undefined,
       customCss: null as string | null | undefined,
 
       dividerSettings: {
@@ -448,6 +479,7 @@ export default Vue.extend({
         fontSize: 18,
       },
 
+      showStyle: false,
       showCSS: false,
 
       vCardShowData: true,
@@ -474,6 +506,7 @@ export default Vue.extend({
     for (let i = 0; i < this.links.length; i++) {
       if (this.links[i].id == this.id) {
         this.pendingLink = this.links[i];
+        this.style = this.pendingLink.style;
         this.customCss = this.pendingLink.customCss;
         break;
       }
@@ -573,6 +606,7 @@ export default Vue.extend({
             type: this.pendingLink.type,
             subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
+            style: this.style,
             customCss: this.customCss,
             metadata: this.pendingLink.metadata
           }
@@ -623,6 +657,7 @@ export default Vue.extend({
             type: this.pendingLink.type,
             subtitle: this.pendingLink.subtitle,
             url: this.pendingLink.url,
+            style: this.style || '',
             customCss: this.customCss || '',
             metadata: this.pendingLink.metadata
           }

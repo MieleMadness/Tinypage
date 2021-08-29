@@ -16,6 +16,8 @@ import Scraper from 'linktree-scraper';
 import dns from "dns";
 import {IpUtils} from "../utils/ip-utils";
 import jwt from "jsonwebtoken";
+import {ProfileSerializer} from "../utils/profile-serializer";
+import {Readable} from "stream";
 
 interface ProfileHandleRequest extends RequestGenericInterface {
     Params: {
@@ -75,6 +77,19 @@ interface ILinktreeLink {
     position: number
 }
 
+interface ImportProfileRequest extends AuthenticatedRequest {
+    Body: {
+        token?: string,
+        profileData: string
+    } & AuthenticatedRequest["Body"];
+}
+
+interface ExportProfileRequest extends AuthenticatedRequest {
+    Body: {
+        token?: string
+    } & AuthenticatedRequest["Body"];
+}
+
 const getTopProfilesRequestRateLimit = {
     config: {
         rateLimit: {
@@ -129,6 +144,9 @@ export class ProfileController extends Controller {
         this.fastify.post<CreateProfileRequest>('/profile/create', createProfileRequestOpts, this.CreateProfile.bind(this));
         this.fastify.post<UpdateProfileRequest>('/profile/update', Auth.ValidateWithData, this.UpdateProfile.bind(this));
         this.fastify.post<AuthenticatedRequest>('/profile/delete', Auth.ValidateWithData, this.DeleteProfile.bind(this));
+
+        this.fastify.post<ImportProfileRequest>('/profile/import', Auth.ValidateWithData, this.ImportProfile.bind(this));
+        this.fastify.post<ExportProfileRequest>('/profile/export', Auth.ValidateWithData, this.ExportProfile.bind(this));
         this.fastify.post<LinktreeRequest>('/profile/linktree_import', Auth.ValidateWithData, this.LinktreeImport.bind(this));
 
         this.fastify.post<AuthenticatedRequest>('/profile/active-profile', Auth.ValidateWithData, this.GetActiveProfile.bind(this));
@@ -568,6 +586,68 @@ export class ProfileController extends Controller {
             }
 
             return deletedProfile;
+        } catch (e) {
+            if (e instanceof HttpError) {
+                reply.code(e.statusCode);
+                return ReplyUtils.error(e.message, e);
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Route for /profile/import
+     *
+     * @param request
+     * @param reply
+     */
+    async ImportProfile(request: FastifyRequest<ImportProfileRequest>, reply: FastifyReply) {
+        try {
+            if (!request.body.authProfile) {
+                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("This account doesn't have an active profile."));
+                return;
+            }
+
+            let parse = JSON.parse(request.body.profileData);
+            await ProfileSerializer.importProfile(request.body.authUser.id, request.body.authProfile.id, parse);
+
+            reply.status(StatusCodes.OK);
+            return;
+        } catch (e) {
+            if (e instanceof HttpError) {
+                reply.code(e.statusCode);
+                return ReplyUtils.error(e.message, e);
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Route for /profile/export
+     *
+     * @param request
+     * @param reply
+     */
+    async ExportProfile(request: FastifyRequest<ExportProfileRequest>, reply: FastifyReply) {
+        try {
+            if (!request.body.authProfile) {
+                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("This account doesn't have an active profile."));
+                return;
+            }
+
+            let serializedProfile = await ProfileSerializer.exportProfile(request.body.authProfile.id);
+
+            let filename = request.body.authProfile.id + '-profile-export.json';
+
+            reply.type('application/octet-stream').status(StatusCodes.OK);
+            reply.header('Content-Disposition', `inline; filename=${filename}`);
+
+            const stream = Readable.from(JSON.stringify(serializedProfile));
+            reply.send(stream);
+
+            return;
         } catch (e) {
             if (e instanceof HttpError) {
                 reply.code(e.statusCode);

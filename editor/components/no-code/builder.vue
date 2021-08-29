@@ -1297,20 +1297,16 @@ export default Vue.extend({
           avatar_radius: null as string | null | undefined,
           avatar_shadow: null as string | null | undefined,
           avatar_border_type: null as string | null | undefined,
-          avatar_border_color: null as string | null | undefined,
-          avatar_border_opacity: null as number | null | undefined,
+          avatar_border_color: '#ffffff' as string | null | undefined,
           avatar_border_width: null as string | null | undefined,
           background_type: null as string | null | undefined,
           background_image: null as string | null | undefined,
           background_size: null as string | null | undefined,
           background_repeat: null as string | null | undefined,
           background_position: null as string | null | undefined,
-          background_color: null as string | null | undefined,
-          background_opacity: null as number | null | undefined,
+          background_color: '#ffffff' as string | null | undefined,
           background_gradient_start: null as string | null | undefined,
-          background_gradient_start_opacity: null as string | null | undefined,
           background_gradient_end: null as string | null | undefined,
-          background_gradient_end_opacity: null as number | null | undefined,
           background_gradient_direction: null as string | null | undefined
         },
         typography: {
@@ -1318,21 +1314,18 @@ export default Vue.extend({
           headline_weight: null as string | null | undefined,
           headline_height: null as string | null | undefined,
           headline_spacing: null as string | null | undefined,
-          headline_color: null as string | null | undefined,
-          headline_opacity: null as number | null | undefined,
+          headline_color: 'rgba(0,0,0,1)' as string | null | undefined,
           headline_family: null as string | null | undefined,
           subtitle_size: null as string | null | undefined,
           subtitle_weight: null as string | null | undefined,
           subtitle_height: null as string | null | undefined,
           subtitle_spacing: null as string | null | undefined,
-          subtitle_color: null as string | null | undefined,
-          subtitle_opacity: null as number | null | undefined,
+          subtitle_color: 'rgba(0,0,0,.85)' as string | null | undefined,
           subtitle_family: null as string | null | undefined,
         },
         link_styles: {
           border_type: null as string | null | undefined,
           border_color: null as string | null | undefined,
-          border_opacity: null as number | null | undefined,
           border_width: null as string | null | undefined,
           box_shadow: null as string | null | undefined,
           border_radius: null as string | null | undefined,
@@ -1341,7 +1334,7 @@ export default Vue.extend({
           background_size: null as string | null | undefined,
           background_repeat: null as string | null | undefined,
           background_position: null as string | null | undefined,
-          background_color: null as string | null | undefined,
+          background_color: 'rgba(255,255,255,1)' as string | null | undefined,
           background_gradient_start: null as string | null | undefined,
           background_gradient_end: null as string | null | undefined,
           background_gradient_direction: null as string | null | undefined,
@@ -1349,13 +1342,13 @@ export default Vue.extend({
           headline_weight: null as string | null | undefined,
           headline_height: null as string | null | undefined,
           headline_spacing: null as string | null | undefined,
-          headline_color: null as string | null | undefined,
+          headline_color: 'rgba(0,0,0,1)' as string | null | undefined,
           headline_family: null as string | null | undefined,
           subtitle_size: null as string | null | undefined,
           subtitle_weight: null as string | null | undefined,
           subtitle_height: null as string | null | undefined,
           subtitle_spacing: null as string | null | undefined,
-          subtitle_color: null as string | null | undefined,
+          subtitle_color: 'rgba(0,0,0,0.85)' as string | null | undefined,
           subtitle_family: null as string | null | undefined,
           padding: null as string | null | undefined
         }
@@ -1854,10 +1847,8 @@ export default Vue.extend({
         }
         if (this.meta.typography.subtitle_color) {
           this.jsonPackage.children['h3.sl-subtitle'].attributes['color'] = this.meta.typography.subtitle_color;
-          this.jsonPackage.children['h3.sl-subtitle'].attributes['opacity'] = 1;
         } else {
           delete this.jsonPackage.children['h3.sl-subtitle'].attributes['color'];
-          delete this.jsonPackage.children['h3.sl-subtitle'].attributes['opacity'];
         }
 
         // Link styles
@@ -1989,10 +1980,8 @@ export default Vue.extend({
         }
         if (this.meta.link_styles.subtitle_color) {
           this.jsonPackage.children['span.sl-link-subtitle'].attributes['color'] = this.meta.link_styles.subtitle_color;
-          this.jsonPackage.children['span.sl-link-subtitle'].attributes['opacity'] = 1;
         } else {
           delete this.jsonPackage.children['span.sl-link-subtitle'].attributes['color'];
-          delete this.jsonPackage.children['span.sl-link-subtitle'].attributes['opacity'];
         }
 
         this.$emit('input', this.$transform.toCSS(this.jsonPackage));

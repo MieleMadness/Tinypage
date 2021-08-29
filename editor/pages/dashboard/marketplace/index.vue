@@ -2,14 +2,14 @@
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <!-- Start featured section -->
     <div
-      v-if="addons.featured.length>0"
-      class="mb-8 flex flex-row items-center space-x-8 w-full p-8 rounded-xl bg-opaqueIndigo"
+        v-if="addons.featured.length>0"
+        class="mb-8 flex flex-row items-center space-x-8 w-full p-8 rounded-xl bg-opaqueIndigo"
     >
       <div class="relative rounded-xl" style="width: 201px; height: 217px; overflow: hidden;">
         <iframe
-          :src="'/dashboard/marketplace/preview/' + addons.featured[0].id"
-          scrolling="no"
-          style="pointer-events: none; width: 375px; height: 406px; transform: scale(0.536) translate(-163px, -175px); top: 0px; left: 0px; position: absolute;"
+            :src="'/dashboard/marketplace/preview/' + addons.featured[0].id"
+            scrolling="no"
+            style="pointer-events: none; width: 375px; height: 406px; transform: scale(0.536) translate(-163px, -175px); top: 0px; left: 0px; position: absolute;"
         /> <!----> <!----></div>
       <div class="flex flex-col">
         <p class="text-blue-600 uppercase tracking-widest text-sm font-bold">
@@ -20,39 +20,39 @@
         </h2>
         <span class="text-black opacity-80 font-medium mb-4">{{ addons.featured[0].description }}</span>
         <a
-          :href="'/dashboard/marketplace/addon/' + addons.featured[0].id"
-          class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-blue-400"
-          style="width:fit-content;"
+            :href="'/dashboard/marketplace/addon/' + addons.featured[0].id"
+            class="bg-gdp rounded-xl px-6 py-3 text-sm font-semibold text-white hover:bg-blue-400"
+            style="width:fit-content;"
         >See details</a>
       </div>
     </div>
     <!-- End featured section -->
     <theme-list
-      v-if="addons.hot.length>0"
-      :addon="true"
-      :extended="false"
-      :preview="false"
-      :themes="addons.hot"
-      class="mb-8"
-      name="Trending themes"
+        v-if="addons.hot.length>0"
+        :addon="true"
+        :extended="false"
+        :preview="false"
+        :themes="addons.hot"
+        class="mb-8"
+        name="Trending themes"
     />
     <theme-list
-      v-if="addons.new.length>0"
-      :addon="true"
-      :extended="false"
-      :preview="false"
-      :themes="addons.new"
-      class="mb-8"
-      name="Newest themes"
+        v-if="addons.new.length>0"
+        :addon="true"
+        :extended="false"
+        :preview="false"
+        :themes="addons.new"
+        class="mb-8"
+        name="Newest themes"
     />
     <theme-list
-      v-if="addons.submissions.length>0"
-      :addon="true"
-      :extended="false"
-      :preview="false"
-      :themes="addons.submissions"
-      class="mb-8"
-      name="Your submissions"
+        v-if="addons.submissions.length>0"
+        :addon="true"
+        :extended="false"
+        :preview="false"
+        :themes="addons.submissions"
+        class="mb-8"
+        name="Your submissions"
     />
   </section>
 </template>
@@ -122,28 +122,11 @@ export default Vue.extend({
       try {
         const token = this.$store.getters['auth/getToken'];
 
-        const userResponse = await this.$axios.$post('/user', {
-          token
-        });
-
         const siteResponse = await this.$axios.$post('/profile/active-profile', {
           token
         });
 
-        this.user.fullName = userResponse.fullName;
-        this.user.emailHash = userResponse.emailHash;
-
-        this.user.activeProfile.imageUrl = siteResponse.imageUrl;
-        this.user.activeProfile.headline = siteResponse.headline;
-        this.user.activeProfile.subtitle = siteResponse.subtitle;
-        this.user.activeProfile.handle = siteResponse.handle;
-        this.user.activeProfile.customDomain = siteResponse.customDomain;
-        this.user.activeProfile.visibility = siteResponse.visibility;
-        this.user.activeProfile.showWatermark = siteResponse.showWatermark;
-
-        this.user.activeProfile.metadata = siteResponse.metadata;
-
-        this.$set(this.user.activeProfile, 'user.activeProfile', siteResponse);
+        this.user.activeProfile = siteResponse;
 
         this.originalHandle = this.user.activeProfile.handle;
       } catch (err) {

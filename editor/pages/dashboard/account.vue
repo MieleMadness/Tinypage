@@ -9,8 +9,8 @@
 
     <!-- Alerts-->
     <div
-      v-show="alerts.successUpdateSub"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
+        v-show="alerts.successUpdateSub"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Successfully {{ billing.cardNumber ? "saved" : "cleared" }} updated subscription!
@@ -18,8 +18,8 @@
     </div>
 
     <div
-      v-show="alerts.failedUpdateSub"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
+        v-show="alerts.failedUpdateSub"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Failed to change subscription. Please contact support if this keeps happening.
@@ -27,8 +27,8 @@
     </div>
 
     <div
-      v-show="alerts.successSaveInfo"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
+        v-show="alerts.successSaveInfo"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Successfully saved billing information!
@@ -36,8 +36,8 @@
     </div>
 
     <div
-      v-show="alerts.failedSaveInfo"
-      class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
+        v-show="alerts.failedSaveInfo"
+        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
     >
       <p class="text-black opacity-70 font-semibold">
         Failed to save billing information. Make sure all the required fields are filled out!
@@ -91,9 +91,9 @@
         <label class="font-bold opacity-70 text-black mb-3" for="tierSelect">Account tier</label>
         <div class="flex flex-col lg:flex-row items-center justify-start space-y-4 lg:space-y-0 lg:space-x-4 w-full">
           <select
-            id="tierSelect"
-            v-model="selectedBillingTier"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl font-bold border w-full lg:w-auto flex-grow lg:max-w-md"
+              id="tierSelect"
+              v-model="selectedBillingTier"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl font-bold border w-full lg:w-auto flex-grow lg:max-w-md"
           >
             <option value="free">
               Forever free - $0/Month
@@ -109,9 +109,9 @@
             </option>
           </select>
           <button
-            class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-            type="button"
-            @click="setBillingModalActive(true)"
+              class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="setBillingModalActive(true)"
           >
             Save changes
           </button>
@@ -131,28 +131,28 @@
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Full name*</label>
           <input
-            v-model="billing.fullName"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: Jane Doe"
-            type="text"
+              v-model="billing.fullName"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: Jane Doe"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Company name</label>
           <input
-            v-model="billing.companyName"
-            :placeholder="`ex: ${$customSettings.company}`"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            type="text"
+              v-model="billing.companyName"
+              :placeholder="`ex: ${$customSettings.company}`"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Phone number</label>
           <input
-            v-model="billing.phone"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: (919) 653-0790"
-            type="text"
+              v-model="billing.phone"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: (919) 653-0790"
+              type="text"
           >
         </div>
       </div>
@@ -160,35 +160,35 @@
         <div class="flex flex-col mt-4 mb-2 w-full col-span-2">
           <label class="font-bold text-black opacity-70 mb-3">Address*</label>
           <input
-            v-model="billing.address"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: 120 Preston Executive Dr."
-            type="text"
+              v-model="billing.address"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: 120 Preston Executive Dr."
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">City*</label>
           <input
-            v-model="billing.city"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: Cary"
-            type="text"
+              v-model="billing.city"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: Cary"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Zip code*</label>
           <input
-            v-model="billing.zipCode"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: 27519"
-            type="text"
+              v-model="billing.zipCode"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: 27519"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Country*</label>
           <select
-            v-model="billing.country"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              v-model="billing.country"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
           >
             <option>Select one...</option>
             <option value="Afganistan">
@@ -933,9 +933,9 @@
         </div>
       </div>
       <button
-        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
-        type="button"
-        @click="saveBillingInfo()"
+          class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+          type="button"
+          @click="saveBillingInfo()"
       >
         Save changes
       </button>
@@ -953,35 +953,35 @@
         <div class="flex flex-col mt-4 mb-2 w-full col-span-2">
           <label class="font-bold text-black opacity-70 mb-3">Card number*</label>
           <input
-            v-model="card.number"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: 4242 4242 4242"
-            type="text"
+              v-model="card.number"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: 4242 4242 4242"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Expiration date*</label>
           <input
-            v-model="card.expDate"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: 10/25"
-            type="text"
+              v-model="card.expDate"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: 10/25"
+              type="text"
           >
         </div>
         <div class="flex flex-col mt-4 mb-2 w-full">
           <label class="font-bold text-black opacity-70 mb-3">Security code*</label>
           <input
-            v-model="card.securityCode"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-            placeholder="ex: 320"
-            type="text"
+              v-model="card.securityCode"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
+              placeholder="ex: 320"
+              type="text"
           >
         </div>
       </div>
       <button
-        class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
-        type="button"
-        @click="saveCardInfo()"
+          class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+          type="button"
+          @click="saveCardInfo()"
       >
         Save changes
       </button>
@@ -994,33 +994,40 @@
       </h2>
       <div class="w-full bg-gray-200" style="height:1px;"/>
       <div
-        v-for="member in teamMembers"
-        :key="member.email"
-        class="flex flex-row py-2 px-8 cursor-pointer w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-t-0 border-l-0 border-r-0"
+          v-for="member in teamMembers"
+          :key="member.id"
+          class="flex flex-row py-2 px-8 w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-t-0 border-l-0 border-r-0"
       >
         <div
-          class="w-12 h-12 rounded-full mr-6"
-          style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
+            class="w-12 h-12 rounded-full mr-6"
+            style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
         />
         <p class="font-bold text-black text-lg mr-auto">
           {{ member.email }}
         </p>
+        <button
+            class="py-1 px-2 mb-1 mr-2 rounded-full text-white bg-red-400 text-sm font-extrabold leading-tight grow"
+            @click="removeTeamMember(member.email)"
+        >
+          Remove
+        </button>
         <div
-          v-if="member.status === 'pending'"
-          class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight cursor-pointer grow"
+            v-if="member.status === 'pending'"
+            class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight grow"
         >pending
         </div>
         <div
-          v-if="member.status === 'accepted'"
-          class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight cursor-pointer grow"
+            v-if="member.status === 'accepted'"
+            class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight grow"
         >member
         </div>
         <div
-          v-if="member.status === 'upgraded'"
-          class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
+            v-if="member.status === 'upgraded'"
+            class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight grow"
         >admin
         </div>
       </div>
+
       <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
         <label v-if="!teamMembers || teamMembers.length <=1" class="font-bold text-black opacity-70 mb-3">Ready to add
           your first team
@@ -1029,19 +1036,19 @@
           the invite!</label>
         <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-            id="sendInvite"
-            v-model="teamMemberEmail"
-            aria-label="password reset email"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            placeholder="e.g. jane@gmail.com"
-            type="text"
+              id="sendInvite"
+              v-model="teamMemberEmail"
+              aria-label="password reset email"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="e.g. jane@gmail.com"
+              type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-            type="button"
-            @click="setPasswordModalActive(true)"
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="addTeamMember(teamMemberEmail)"
           >
-            Send invitation email and add seat (+$8/mo)
+            Add team member
           </button>
         </div>
       </div>
@@ -1059,17 +1066,17 @@
         <label class="font-bold text-black opacity-70 mb-3">New email address</label>
         <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-            id="resetEmail"
-            v-model="resetNewEmail"
-            aria-label="password reset email"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            placeholder="e.g. jane@gmail.com"
-            type="text"
+              id="resetEmail"
+              v-model="resetNewEmail"
+              aria-label="password reset email"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="e.g. jane@gmail.com"
+              type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-            type="button"
-            @click="setPasswordModalActive(true)"
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="setPasswordModalActive(true)"
           >
             Send email change confirmation email
           </button>
@@ -1086,9 +1093,9 @@
         <p class="text-black font-bold opacity-70">Download a data package containing all of your recorded data.</p>
       </div>
       <button
-        class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-green-600 hover:bg-green-400 rounded-2xl font-bold w-1/3 justify-center align-center"
-        type="button"
-        @click="downloadGDPRPackage"
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-green-600 hover:bg-green-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+          type="button"
+          @click="downloadGDPRPackage"
       >
         Download
       </button>
@@ -1107,17 +1114,18 @@
         <label class="font-bold text-black opacity-70 mb-3">Confirm your email address</label>
         <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-            id="passwordResetEmail"
-            v-model="passwordEmail"
-            aria-label="password reset email"
-            class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-            placeholder="e.g. jane@gmail.com"
-            type="text"
+              id="passwordResetEmail"
+              v-model="passwordEmail"
+              aria-label="password reset email"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="e.g. jane@gmail.com"
+              type="text"
           >
           <button
-            class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-            type="button"
-            @click="setPasswordModalActive(true)">
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="setPasswordModalActive(true)"
+          >
             Request password reset link
           </button>
         </div>
@@ -1135,9 +1143,9 @@
           profile and all related content.</p>
       </div>
       <button
-        class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-red-600 hover:bg-red-400 rounded-2xl font-bold w-1/3 justify-center align-center"
-        type="button"
-        @click="setDeleteUserModalActive(true)"
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex px-6 py-3 text-sm text-white text-center bg-red-600 hover:bg-red-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+          type="button"
+          @click="setDeleteUserModalActive(true)"
       >
         Delete this account
       </button>
@@ -1146,10 +1154,10 @@
     <transition name="fade">
       <!-- Billing confirmation modal -->
       <div
-        v-if="billingModalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setPasswordModalActive(false)"
+          v-if="billingModalActive"
+          class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="setPasswordModalActive(false)"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-bold text-xl">
@@ -1164,9 +1172,9 @@
             {{ passwordError }}
           </p>
           <button
-            class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
-            type="button"
-            @click="setPasswordModalActive(false)"
+              class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
+              type="button"
+              @click="setBillingModalActive(false)"
           >
             Close
           </button>
@@ -1177,10 +1185,10 @@
     <transition name="fade">
       <!-- Password reset confirmation modal -->
       <div
-        v-if="resetPasswordModalActive"
-        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setPasswordModalActive(false)"
+          v-if="resetPasswordModalActive"
+          class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="setPasswordModalActive(false)"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-bold text-xl">
@@ -1195,9 +1203,9 @@
             {{ passwordError }}
           </p>
           <button
-            class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
-            type="button"
-            @click="setPasswordModalActive(false)"
+              class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
+              type="button"
+              @click="setPasswordModalActive(false)"
           >
             Close
           </button>
@@ -1208,10 +1216,10 @@
     <transition name="fade">
       <!-- user deletion reset modal -->
       <div
-        v-if="deleteUserModalActive"
-        class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setDeleteUserModalActive(false)"
+          v-if="deleteUserModalActive"
+          class="h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
+          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
+          @click="setDeleteUserModalActive(false)"
       >
         <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
           <h2 class="text-black font-bold text-xl">
@@ -1221,50 +1229,19 @@
           <p class="text-gray-600 text-sm">There is NO UNDO for this operation! All your profiles will be deleted!</p>
 
           <button
-            class="mt-4 p-3 text-center text-md text-white bg-red-700 hover:bg-red-400 rounded-2xl font-bold"
-            type="button"
-            @click="deleteUser"
+              class="mt-4 p-3 text-center text-md text-white bg-red-700 hover:bg-red-400 rounded-2xl font-bold"
+              type="button"
+              @click="deleteUser"
           >
             Delete User
           </button>
 
           <button
-            class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
-            type="button"
-            @click="setDeleteUserModalActive(false)"
+              class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
+              type="button"
+              @click="setDeleteUserModalActive(false)"
           >
             Cancel
-          </button>
-        </div>
-      </div>
-    </transition>
-
-    <transition name="fade">
-      <!-- Delete account confirmation modal -->
-      <div
-        v-if="deleteAccountModalActive"
-        class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-        style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-        @click="setPasswordModalActive(false)"
-      >
-        <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
-          <h2 class="text-black font-bold text-xl">
-            {{ passwordError ? "Error on password request!" : "Password reset requested" }}
-          </h2>
-          <p v-if="!passwordError" class="text-gray-600 text-sm">A password reset link has been sent to your account
-            email inbox successfully.
-            Make sure to check your spam folder.</p>
-
-          <p v-if="passwordError" class="text-gray-600 text-sm">
-            <i class="fas fa-exclamation-triangle"/>
-            {{ passwordError }}
-          </p>
-          <button
-            class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
-            type="button"
-            @click="setPasswordModalActive(false)"
-          >
-            Close
           </button>
         </div>
       </div>
@@ -1331,34 +1308,6 @@ export default Vue.extend({
 
   data() {
     return {
-      team: [
-        {
-          email: 'jane@gmail.com',
-          sent: '4 days',
-          status: 'pending'
-        },
-        {
-          email: 'joe@gmail.com',
-          sent: '6 days',
-          status: 'accepted'
-        },
-        {
-          email: 'greg@gmail.com',
-          sent: '7 days',
-          status: 'accepted'
-        },
-        {
-          email: 'phil@gmail.com',
-          sent: '9 days',
-          status: 'pending'
-        },
-        {
-          email: 'drew@gmail.com',
-          sent: '11 days',
-          status: 'upgraded'
-        },
-      ],
-
       loaded: false,
       billingModalActive: false,
       resetPasswordModalActive: false,
@@ -1379,7 +1328,39 @@ export default Vue.extend({
           showWatermark: false,
         }
       },
-      teamMembers: [],
+
+      teamMembers: [
+        {
+          id: '1',
+          email: '---',
+          sent: '4 days',
+          status: 'accepted'
+        },
+        {
+          id: '2',
+          email: '---',
+          sent: '6 days',
+          status: 'accepted'
+        },
+        {
+          id: '3',
+          email: '---',
+          sent: '7 days',
+          status: 'accepted'
+        },
+        {
+          id: '4',
+          email: '---',
+          sent: '9 days',
+          status: 'accepted'
+        },
+        {
+          id: '5',
+          email: '---',
+          sent: '11 days',
+          status: 'accepted'
+        },
+      ],
 
       error: '',
       passwordError: '',
@@ -1451,15 +1432,8 @@ export default Vue.extend({
 
         this.user.name = userResponse.name;
         this.user.emailHash = userResponse.emailHash;
-        this.user.activeProfile.imageUrl = profileResponse.imageUrl;
-        this.user.activeProfile.headline = profileResponse.headline;
-        this.user.activeProfile.subtitle = profileResponse.subtitle;
-        this.user.activeProfile.handle = profileResponse.handle;
-        this.user.activeProfile.customDomain = profileResponse.customDomain;
-        this.user.activeProfile.visibility = profileResponse.visibility;
-        this.user.activeProfile.showWatermark = profileResponse.showWatermark;
 
-        this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);
+        this.user.activeProfile = profileResponse;
 
         this.originalHandle = this.user.activeProfile.handle;
 
@@ -1595,7 +1569,7 @@ export default Vue.extend({
           }
         }
 
-        const blob = new Blob([response.data], {type: 'application/pdf'});
+        const blob = new Blob([JSON.stringify(response.data)], {type: 'application/pdf'});
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = filename;

@@ -27,7 +27,6 @@ interface GetThemeRequest extends AuthenticatedRequest {
 interface CreateThemeRequest extends AuthenticatedRequest {
     Body: {
         label: string,
-        colors: Theme["colors"],
         customCss: string,
         customHtml: string
     } & AuthenticatedRequest["Body"]
@@ -37,7 +36,6 @@ interface UpdateThemeRequest extends AuthenticatedRequest {
     Body: {
         id: string,
         label: string,
-        colors: Theme["colors"],
         customCss: string,
         customHtml: string
     } & AuthenticatedRequest["Body"]
@@ -162,7 +160,7 @@ export class ThemeController extends Controller {
                 return;
             }
 
-            let theme = await this.themeService.createTheme(body.authUser.id, body.label, body.colors, body.customCss, body.customHtml);
+            let theme = await this.themeService.createTheme(body.authUser.id, body.label, body.customCss, body.customHtml);
 
             if (this.mixpanel) {
                 let ip = IpUtils.GetFirstIp(IpUtils.GrabIps(request));
@@ -200,7 +198,7 @@ export class ThemeController extends Controller {
                 return;
             }
 
-            let theme = await this.themeService.updateUserTheme(body.id, body.authUser.id, body.label, body.colors, body.customCss, body.customHtml);
+            let theme = await this.themeService.updateUserTheme(body.id, body.authUser.id, body.label, body.customCss, body.customHtml);
 
             if (this.mixpanel) {
                 let ip = IpUtils.GetFirstIp(IpUtils.GrabIps(request));
@@ -324,7 +322,7 @@ export class ThemeController extends Controller {
                 return;
             }
 
-            return this.themeService.updateTheme(body.id, body.label, body.colors, body.customCss, body.customHtml);
+            return this.themeService.updateTheme(body.id, body.label, body.customCss, body.customHtml);
         } catch (e) {
             if (e instanceof HttpError) {
                 reply.code(e.statusCode);

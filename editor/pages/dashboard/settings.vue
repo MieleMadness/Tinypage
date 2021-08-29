@@ -51,7 +51,7 @@
             <div class="flex flex-row rounded-2xl border border-solid border-gray-300 text-sm mt-2 overflow-hidden">
               <span
                   class="flex p-2 bg-gray-100 border text-gray-900 border-solid border-gray-300 border-t-0 border-l-0 border-b-0"
-              >{{ hostname }}/</span>
+              >{{ rendererUrl }}/</span>
               <input
                   id="handle"
                   v-model="user.activeProfile.handle"
@@ -259,17 +259,11 @@
             documentation</a>
 
           <client-only v-if="showHTML">
-            <MonacoEditor
+            <textarea
                 v-model="user.activeProfile.metadata.pageHtml"
-                :options="{
-                            extraEditorClassName: 'rounded overflow-hidden mb-2',
-                            autoIndent: 'full',
-                            autoClosingQuotes: true,
-                            readOnly: false,
-                            }"
-                height="350"
-                language="html"
-                theme="vs-dark"
+                class="border border-2 text-white p-2"
+                style="font-family: monospace; background-color: #1E1E1E"
+                rows="12"
             />
           </client-only>
         </div>
@@ -329,6 +323,36 @@
         <!--          <img src="/icons/google-icon.png" class="w-5 mr-4">-->
         <!--          Link with GitHub-->
         <!--        </a>-->
+      </div>
+    </div>
+
+    <!-- Import / Export Profile -->
+    <div class="flex flex-col lg:flex-col p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col w-full">
+        <h2 class="text-black font-bold text-lg w-full">
+          Import/Export profile data
+        </h2>
+        <p class="text-black opacity-70 font-semibold">
+          Importing profile data will completely replace this profile with the data you import.
+        </p>
+      </div>
+      <div class="flex flex-row justify-center items-center space-x-4 w-full">
+        <label for="importProfileButton"
+               class="mt-4 p-3 flex-grow text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+        >Import</label>
+        <input
+            id="importProfileButton"
+            type="file"
+            hidden
+            @change="importProfile"
+        >
+        <button
+            class="mt-4 p-3 flex-grow text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+            type="button"
+            @click="exportProfile"
+        >
+          Export
+        </button>
       </div>
     </div>
 
@@ -517,6 +541,7 @@ export default Vue.extend({
       resetPasswordModalActive: false,
       deleteProfileModalActive: false,
       originalHandle: '',
+
       user: {
         name: '',
         emailHash: '',
@@ -539,11 +564,13 @@ export default Vue.extend({
           },
         }
       },
+
       error: '',
       passwordError: '',
       showWatermarkNotice: false,
-      hostname: process.env.HOSTNAME,
       app_name: this.$customSettings.productName,
+      rendererUrl: process.env.RENDERER_URL,
+
       alerts: {
         googleLinked: null as boolean | null,
         linktreeImported: null as boolean | null,
@@ -593,30 +620,68 @@ export default Vue.extend({
         this.user.name = userResponse.name;
         this.user.emailHash = userResponse.emailHash;
 
-        this.user.activeProfile.id = profileResponse.id;
-        this.user.activeProfile.imageUrl = profileResponse.imageUrl;
-        this.user.activeProfile.headline = profileResponse.headline;
-        this.user.activeProfile.subtitle = profileResponse.subtitle;
-        this.user.activeProfile.handle = profileResponse.handle;
-        this.user.activeProfile.customDomain = profileResponse.customDomain;
-        this.user.activeProfile.visibility = profileResponse.visibility;
-        this.user.activeProfile.showWatermark = profileResponse.showWatermark;
-
-        this.user.activeProfile.metadata = profileResponse.metadata ?? {
-          privacyMode: false,
-          unlisted: false,
-          coverImage: null,
-          pageHtml: null,
-          shareMenu: true,
-          useGravatar: true
-        };
-
-        this.$set(this.user.activeProfile, 'user.activeProfile', profileResponse);
+        this.user.activeProfile = profileResponse;
 
         this.originalHandle = this.user.activeProfile.handle;
       } catch (err) {
         console.log('Error getting user data');
         console.log(err);
+      }
+    },
+
+    async importProfile(event: Event) {
+      if (process.client) {
+        let htmlInputEvent = event.target as HTMLInputElement;
+        const files = htmlInputEvent.files;
+
+        if (!files || files.length < 1)
+          return;
+
+        let file = files[0];
+
+        let data = await file.text();
+
+        let token = this.$store.getters['auth/getToken'];
+
+        await this.$axios.post('/profile/import', {
+          token,
+          profileData: data
+        });
+
+        // Success, reload
+        this.$nextTick(() => {
+          window.location.replace('/dashboard');
+        });
+      }
+    }
+    ,
+
+    async exportProfile() {
+      if (process.client) {
+        let token = this.$store.getters['auth/getToken'];
+
+        const response = await this.$axios.post('/profile/export', {
+          token
+        });
+
+        let filename = "data.json";
+        const disposition = response.headers['content-disposition'];
+        if (disposition && disposition.indexOf('filename') !== -1) {
+          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          const matches = filenameRegex.exec(disposition);
+          if (matches != null && matches[1]) {
+            filename = matches[1].replace(/['"]/g, '');
+          }
+        }
+
+        const blob = new Blob([JSON.stringify(response.data)], {type: 'application/pdf'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
     },
 

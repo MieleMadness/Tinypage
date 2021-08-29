@@ -80,16 +80,6 @@ interface Theme {
     id: string,
     label: string,
     global: boolean,
-    colors: {
-        fill: {
-            primary: string,
-            secondary: string
-        },
-        text: {
-            primary: string,
-            secondary: string
-        }
-    } | null,
     customCss: string | null,
     customHtml: string | null,
     userId: string,
@@ -202,4 +192,10 @@ interface HydratedAddon extends Addon {
     // Hydrated fields to be returned in a request
     resource: unknown,
     stats: unknown
+}
+
+interface SerializedProfile {
+    profile: Profile,
+    themes: Theme[],
+    links: Link[]
 }

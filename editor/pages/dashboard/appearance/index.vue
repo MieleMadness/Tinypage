@@ -70,17 +70,11 @@
       </div>
 
       <client-only v-if="showHTML">
-        <MonacoEditor
+        <textarea
             v-model="customHtml"
-            :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                  readOnly: false,
-                }"
-            height="350"
-            language="html"
-            theme="vs-dark"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
         />
       </client-only>
       <button
@@ -125,17 +119,11 @@
       </div>
 
       <client-only v-if="showCSS">
-        <MonacoEditor
+        <textarea
             v-model="editorCss"
-            :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                  readOnly: false,
-                }"
-            height="350"
-            language="css"
-            theme="vs-dark"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
         />
       </client-only>
       <button
@@ -211,16 +199,6 @@ export default Vue.extend({
         id: '',
         label: '',
         global: false,
-        colors: {
-          fill: {
-            primary: '',
-            secondary: ''
-          },
-          text: {
-            primary: '',
-            secondary: ''
-          }
-        },
         customCss: undefined,
         customHtml: undefined,
       } as EditorTheme,
@@ -336,16 +314,6 @@ export default Vue.extend({
         id: '',
         label: '',
         global: false,
-        colors: {
-          fill: {
-            primary: '',
-            secondary: ''
-          },
-          text: {
-            primary: '',
-            secondary: ''
-          }
-        },
         customCss: undefined,
         customHtml: undefined,
       };

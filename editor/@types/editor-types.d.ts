@@ -21,16 +21,6 @@ type EditorTheme = Partial<Theme> & {
   id: string,
   label: string,
   global: boolean,
-  colors: {
-    fill: {
-      primary: string,
-      secondary: string
-    },
-    text: {
-      primary: string,
-      secondary: string
-    }
-  },
   customHtml: string | undefined,
   customCss: string | undefined
 };

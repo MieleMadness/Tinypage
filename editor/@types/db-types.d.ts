@@ -77,16 +77,6 @@ interface DbTheme {
   id: string,
   label: string,
   global: boolean,
-  colors: {
-    fill: {
-      primary: string,
-      secondary: string
-    },
-    text: {
-      primary: string,
-      secondary: string
-    }
-  } | null,
   custom_css: string | null | undefined,
   custom_html: string | null | undefined,
   user_id: string,

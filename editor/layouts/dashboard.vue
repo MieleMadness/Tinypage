@@ -162,31 +162,41 @@
                 <img src="/icons/House.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Links</span>
               </n-link>
+
               <n-link :class="getActiveStyles('dashboard-appearance')" to="/dashboard/appearance">
                 <img src="/icons/Rainbow.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Appearance</span>
               </n-link>
+
               <n-link :class="getActiveStyles('dashboard-analytics')" to="/dashboard/analytics">
                 <img src="/icons/Rocket.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Analytics</span>
               </n-link>
+
+              <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
+                <img src="/icons/Settings.svg" style="width:24px;height:24px;">
+                <span class="ml-4 font-extrabold">Settings</span>
+              </n-link>
+
+              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
+                <img src="/icons/Person.svg" style="width:24px;height:24px;"/>
+                <span class="ml-4 font-extrabold">Admin Settings</span>
+              </n-link>
+
               <!--              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">-->
-              <!--                <img src="/High voltage.svg" style="width:24px;height:24px;">-->
+              <!--                <img src="/icons/High voltage.svg" style="width:24px;height:24px;">-->
               <!--                <span class="ml-4 font-extrabold">Marketplace</span>-->
               <!--              </n-link>-->
-              <a
-                  v-if="leaderboard"
-                  :class="getActiveStyles('dashboard-leaderboard')"
-                  :href="leaderboard"
-                  target="_blank"
-              >
-                <img src="/icons/Fire.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Leaderboard</span>
-              </a>
-              <!-- <n-link to="/dashboard/discover" :class="getActiveStyles('dashboard-discover')">-->
-              <!--   <img src="/Compass.svg" style="width:24px;height:24px;"/>-->
-              <!--   <span class="ml-4 font-extrabold">Search & discover</span>-->
-              <!-- </n-link>-->
+
+              <!--              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">-->
+              <!--                <img src="/Heart.svg" style="width:24px;height:24px;">-->
+              <!--                <span class="ml-4 font-extrabold">Referrals</span>-->
+              <!--              </n-link>-->
+
+              <!--              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">-->
+              <!--                <img src="/Person.svg" style="width:24px;height:24px;"/>-->
+              <!--                <span class="ml-4 font-extrabold">Enterprise Settings</span>-->
+              <!--              </n-link>-->
 
               <a v-if="support" :class="getActiveStyles('dashboard-support')" :href="support" target="_blank">
                 <div style="color:#5865F2">
@@ -196,7 +206,7 @@
                     />
                   </svg>
                 </div>
-                <span class="ml-4 font-extrabold">Support (Discord)</span>
+                <span class="ml-4 font-extrabold">Support</span>
               </a>
 
               <a v-if="community" :class="getActiveStyles('dashboard-community')" :href="community" target="_blank">
@@ -209,25 +219,9 @@
                   </svg>
 
                 </div>
-                <span class="ml-4 font-extrabold">Join Our Community (Facebook)</span>
+                <span class="ml-4 font-extrabold">Community</span>
               </a>
 
-              <!--              <n-link :class="getActiveStyles('dashboard-referrals')" to="/dashboard/referrals">-->
-              <!--                <img src="/Heart.svg" style="width:24px;height:24px;">-->
-              <!--                <span class="ml-4 font-extrabold">Referrals</span>-->
-              <!--              </n-link>-->
-              <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
-                <img src="/icons/Settings.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Settings</span>
-              </n-link>
-              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
-                <img src="/icons/Person.svg" style="width:24px;height:24px;"/>
-                <span class="ml-4 font-extrabold">Admin Settings</span>
-              </n-link>
-              <!--              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-enterprise')" to="/dashboard/enterprise">-->
-              <!--                <img src="/Person.svg" style="width:24px;height:24px;"/>-->
-              <!--                <span class="ml-4 font-extrabold">Enterprise Settings</span>-->
-              <!--              </n-link>-->
               <n-link :class="getActiveStyles('logout')" to="/logout">
                 <img src="/icons/Waving hand.svg" style="width:24px;height:24px;">
                 <span class="ml-4 font-extrabold">Logout</span>

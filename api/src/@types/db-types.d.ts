@@ -64,7 +64,6 @@ interface DbSensitiveUserWithPassword extends DbSensitiveUser {
  id          bigserial primary key,
  label       text      not null,
  global      bool               default false not null,
- colors      jsonb              default '{}',
  custom_css  text,
  custom_html text,
  user_id     bigint references app.users (id) on update cascade on delete cascade,
@@ -77,16 +76,6 @@ interface DbTheme {
     id: string,
     label: string,
     global: boolean,
-    colors: {
-        fill: {
-            primary: string,
-            secondary: string
-        },
-        text: {
-            primary: string,
-            secondary: string
-        }
-    } | null,
     custom_css: string | null,
     custom_html: string | null,
     user_id: string,

@@ -21,6 +21,7 @@ import {ScreenshotUtils} from "./utils/screenshot-utils";
 import {LogUtils} from "./utils/log-utils";
 import {MarketplaceController} from "./controllers/marketplace-controller";
 import {config} from "./config/config";
+import {ProfileSerializer} from "./utils/profile-serializer";
 
 console.log("Initializing Singlelink Enterprise");
 
@@ -43,6 +44,7 @@ async function start() {
     SecurityUtils.initialize(database.pool);
     CustomDomainHandler.initialize(database.pool);
     LogUtils.initialize(database.pool);
+    ProfileSerializer.initialize(database.pool);
 
     // Initialize screenshot API
     await ScreenshotUtils.initialize();

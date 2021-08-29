@@ -15,7 +15,7 @@
           :key="theme.id"
           class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
       >
-        <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
+        <theme :id="theme.id" :label="theme.label" :theme="true"/>
       </a>
 
       <div
@@ -25,7 +25,7 @@
           class="flex flex-col p-3 flex-1 hover:bg-blue-200 bg-blue-200 border border-blue-600 rounded-xl"
 
       >
-        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"
+        <theme :id="theme.id" icon="icon" :label="theme.label" :theme="true"
                @click.native="selectTheme(theme.id)"
         />
 
@@ -56,7 +56,7 @@
           :key="theme.id"
           class="flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
-        <theme :id="theme.id" :colors="theme.colors" :label="theme.label" :theme="true"/>
+        <theme :id="theme.id" :label="theme.label" :theme="true"/>
       </a>
 
       <div
@@ -65,7 +65,7 @@
           :key="theme.id"
           class="cursor-pointer flex flex-col p-3 flex-1 hover:bg-opaqueIndigo rounded-xl"
       >
-        <theme :id="theme.id" :colors="theme.colors" :icon="icon" :label="theme.label" :theme="true"
+        <theme :id="theme.id" :icon="icon" :label="theme.label" :theme="true"
                @click.native="selectTheme(theme.id)"
         />
 

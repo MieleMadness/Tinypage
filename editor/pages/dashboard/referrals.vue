@@ -11,10 +11,10 @@
       </div>
       <div class="flex flex-col jutify-center items-center text-center rounded-2xl ml-8" style="min-width:350px;">
         <div
-          class="flex cursor-pointer flex-row items-center justify-center bg-opaqueIndigo font-bold px-4 py-2 text-center rounded-full w-full mt-2 text-gdp max-w-md border-2 border-gdp"
-          title="Click to copy!"
-          type="text"
-          @click="copyUrl"
+            class="flex cursor-pointer flex-row items-center justify-center bg-opaqueIndigo font-bold px-4 py-2 text-center rounded-full w-full mt-2 text-gdp max-w-md border-2 border-gdp"
+            title="Click to copy!"
+            type="text"
+            @click="copyUrl"
         >https://singlel.ink/s/{{ user.activeProfile.handle }}
         </div>
         <p class="uppercase text-sm font-extrabold leading-relaxed text-black mt-2 opacity-70">Click the url above to
@@ -35,7 +35,7 @@
           </h4>
         </div>
         <div
-          class="flex flex-col items-center justify-center p-6 border border-gray-200 border-r-0 border-t-0 border-b-0"
+            class="flex flex-col items-center justify-center p-6 border border-gray-200 border-r-0 border-t-0 border-b-0"
         >
           <h2 class="font-bold text-black opacity-70 text-lg w-full mb-1">
             Total credit earned
@@ -47,13 +47,13 @@
       </div>
       <div class="flex flex-col w-full">
         <div
-          v-for="referral in referrals"
-          :key="referral.email"
-          class="flex flex-row py-2 px-8 cursor-pointer w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-b-0 border-l-0 border-r-0"
+            v-for="referral in referrals"
+            :key="referral.email"
+            class="flex flex-row py-2 px-8 cursor-pointer w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-b-0 border-l-0 border-r-0"
         >
           <div
-            class="w-12 h-12 rounded-full mr-6"
-            style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
+              class="w-12 h-12 rounded-full mr-6"
+              style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
           />
           <p class="font-bold text-black text-lg">
             {{ referral.email }}
@@ -62,18 +62,18 @@
             Sent {{ referral.sent }} ago
           </p>
           <div
-            v-if="referral.status === 'pending'"
-            class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight cursor-pointer grow"
+              v-if="referral.status === 'pending'"
+              class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight cursor-pointer grow"
           >pending
           </div>
           <div
-            v-if="referral.status === 'accepted'"
-            class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight cursor-pointer grow"
+              v-if="referral.status === 'accepted'"
+              class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight cursor-pointer grow"
           >accepted!
           </div>
           <div
-            v-if="referral.status === 'upgraded'"
-            class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
+              v-if="referral.status === 'upgraded'"
+              class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
           ><img class="w-4 mr-1" src="/icons/Star.svg">upgraded!
           </div>
         </div>
@@ -159,17 +159,7 @@ export default Vue.extend({
         this.user.name = userResponse.name;
         this.user.emailHash = userResponse.emailHash;
 
-        this.user.activeProfile.imageUrl = siteResponse.imageUrl;
-        this.user.activeProfile.headline = siteResponse.headline;
-        this.user.activeProfile.subtitle = siteResponse.subtitle;
-        this.user.activeProfile.handle = siteResponse.handle;
-        this.user.activeProfile.customDomain = siteResponse.customDomain;
-        this.user.activeProfile.visibility = siteResponse.visibility;
-        this.user.activeProfile.showWatermark = siteResponse.showWatermark;
-
-        this.user.activeProfile.metadata.privacyMode = siteResponse.metadata.privacyMode;
-
-        this.$set(this.user.activeProfile, 'user.activeProfile', siteResponse);
+        this.user.activeProfile = siteResponse;
 
         this.originalHandle = this.user.activeProfile.handle;
       } catch (err) {

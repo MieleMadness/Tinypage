@@ -178,7 +178,14 @@ export class RouteHandler {
             let avatarHtml = '';
 
             if (imageUrl) {
+                //language=HTML
                 avatarHtml = `<img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>`;
+            } else if (profile.metadata?.coverImage) {
+                //language=HTML
+                avatarHtml = `<img class="nc-avatar mb-2" src="https://www.gravatar.com/avatar/${user.emailHash}"
+                                   alt="avatar"
+                                   style="visibility: hidden; margin-top: min(calc(56.25vw - 65px), 130px);"
+                />`;
             }
 
             if (request.query.token) {
@@ -211,9 +218,15 @@ export class RouteHandler {
                                     class="text-sm text-gray-700 sl-link-subtitle mt-1"
                             >${link.subtitle}</span>`;
                         }
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
+
                         //language=HTML
                         linkHtml += `
+                            <style>
+                                ${customCss}
+                            </style>
+
                             <a
                                     id="sl-item-${link.id}"
                                     href="${config.apiUrl}/analytics/link/record/${link.id}"
@@ -222,7 +235,7 @@ export class RouteHandler {
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="${css}"
+                                        style="${style}"
                                 >
                                     <span class="font-medium text-gray-900 sl-label">${link.label}</span>${subtitleHtml}
                                 </div>
@@ -238,10 +251,14 @@ export class RouteHandler {
                             let socialIcons: { type: string, color: string, scale: number, url: string }[] = link.metadata?.socialIcons ?? [];
 
                             if (socialIcons.length > 0) {
-                                let css = link.customCss ?? '';
+                                let style = link.style ?? '';
+                                let customCss = link.customCss ?? '';
 
                                 linkHtml += `
-                                        <div class="social-button-list" style="margin-top: -1rem;${css}">`;
+                                <style>
+                                    ${customCss}
+                                </style>
+                                 <div class="social-button-list" style="margin-top: -1rem;${style}">`;
                             }
 
                             for (let i = 0; i < socialIcons.length; i++) {
@@ -348,7 +365,8 @@ export class RouteHandler {
                         break;
                     }
                     case 'vcard': {
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
                         let vCardData = link.metadata?.vCard ?? null;
 
                         if (!vCardData)
@@ -359,6 +377,10 @@ export class RouteHandler {
 
                         //language=HTML
                         linkHtml += `
+                            <style>
+                                ${customCss}
+                            </style>
+
                             <a
                                     id="sl-item-${link.id}"
                                     href="#"
@@ -372,7 +394,7 @@ export class RouteHandler {
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="${css}"
+                                        style="${style}"
                                 >
                                     <span class="font-medium text-gray-900 sl-label">${link.label}</span>
                                 </div>
@@ -382,12 +404,16 @@ export class RouteHandler {
                     }
 
                     case 'image': {
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
 
                         //language=HTML
                         linkHtml += `
+                            <style>
+                                ${customCss}
+                            </style>
                             <img id="sl-item-${link.id}" src="${link.url}" class="w-full h-auto"
-                                 style="margin-bottom:.75rem;border-radius:4px;${css}" alt="link image"
+                                 style="margin-bottom:.75rem;border-radius:4px;${style}" alt="link image"
                             />
                         `;
                         break;
@@ -397,7 +423,8 @@ export class RouteHandler {
                         if (!link.metadata?.dividerSettings)
                             break;
 
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
 
                         try {
                             let dividerSettings: { color: string, fontSize: number } = link.metadata?.dividerSettings ?? {};
@@ -413,8 +440,12 @@ export class RouteHandler {
 
                             //language=HTML
                             linkHtml += `
+                                <style>
+                                    ${customCss}
+                                </style>
+
                                 <div class="flex flex-row items-center justify-center w-full"
-                                     style="margin-bottom:.75rem;${css}"
+                                     style="margin-bottom:.75rem;${style}"
                                 >
                                     <div style="flex-grow:1;background:${color};height:1px;"></div>
                                     <div style="margin:0 8px; text-transform:uppercase;font-weight:600;color:${color};letter-spacing:1px;font-size:${dividerSettings.fontSize};">
@@ -430,12 +461,15 @@ export class RouteHandler {
                     }
                     case "text": {
                         let text = link.subtitle;
-
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
 
                         //language=HTML
                         linkHtml += `
-                            <div style="overflow: hidden; ${css}"
+                            <style>
+                                ${customCss}
+                            </style>
+                            <div style="overflow: hidden; ${style}"
                                  class="rounded-2xl w-full font-medium mb-3"
                             >
                                 <div class="ql-editor">
@@ -449,11 +483,15 @@ export class RouteHandler {
                     case "html": {
                         let text = link.subtitle;
 
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
 
                         //language=HTML
                         linkHtml += `
-                            <div style="overflow: hidden; ${css}"
+                            <style>
+                                ${customCss}
+                            </style>
+                            <div style="overflow: hidden; ${style}"
                                  class="rounded-2xl w-full mb-3"
                             >
                                 ${text}
@@ -463,12 +501,16 @@ export class RouteHandler {
                         break;
                     }
                     case 'youtube': {
-                        let css = link.customCss ?? '';
+                        let style = link.style ?? '';
+                        let customCss = link.customCss ?? '';
 
                         let watchId = link.url.match(/v=([^&]*)/);
                         if (watchId && watchId.length > 0 && watchId[1]) {
                             //language=HTML
                             linkHtml += `
+                                <style>
+                                    ${customCss}
+                                </style>
                                 <style>
                                     .embed-container {
                                         border-radius: 4px;
@@ -487,7 +529,7 @@ export class RouteHandler {
                                         width: 100%;
                                         height: 100%;
                                     }</style>
-                                <div class="embed-container" style="margin-bottom:.75rem;${css}">
+                                <div class="embed-container" style="margin-bottom:.75rem;${style}">
                                     <iframe title="youtube"
                                             src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
                                             frameborder="0" allowfullscreen loading="lazy"
@@ -515,33 +557,33 @@ export class RouteHandler {
             let themeColorsHtml = ``;
 
             //language=HTML
-            if (theme && theme.colors) {
+            if (theme) {
                 themeColorsHtml = `
                     <style>
                         .sl-headline {
-                            color: ${theme.colors?.text.primary ?? 'inherit'};
+                            color: inherit;
                         }
 
                         .sl-subtitle {
                             opacity: .85;
-                            color: ${theme.colors?.text.primary ?? 'inherit'};
+                            color: inherit;
                         }
 
                         .sl-bg {
-                            background: ${theme.colors?.fill.primary ?? 'inherit'};
+                            background: inherit;
                         }
 
                         .sl-item {
-                            background: ${theme.colors?.fill.secondary ?? 'inherit'};
+                            background: inherit;
                         }
 
                         .sl-label {
-                            color: ${theme.colors?.text.secondary ?? 'inherit'};
+                            color: inherit;
                         }
 
                         .sl-link-subtitle {
                             opacity: .85;
-                            color: ${theme.colors?.text.secondary ?? 'inherit'};
+                            color: inherit;
                         }
                     </style>`;
             }
@@ -616,17 +658,10 @@ export class RouteHandler {
             if (profile.showWatermark) {
                 watermarkHtml += `<div id="sl-watermark" class="flex flex-col items-center justify-center">`;
 
-                if (theme && theme.colors) {
-                    watermarkHtml += `
-        <div style="color: ${theme.colors.text.primary};max-width:230px;" class="mt-4 mb-2 mx-auto text-sm" >
-          Proudly built with ${config.appName}
-        </div>`;
-                } else {
-                    watermarkHtml += `
+                watermarkHtml += `
         <div v-else style="color:rgba(0,0,0,1);max-width:230px;" class="mt-4 mb-2 mx-auto text-sm">
           Proudly built with ${config.appName}
         </div>`;
-                }
 
                 if (config.freeSignup) {
                     //language=HTML

@@ -50,7 +50,6 @@ export class DbTypeConverter {
             id: theme.id,
             label: theme.label,
             global: theme.global,
-            colors: theme.colors,
             customCss: theme.custom_css,
             customHtml: theme.custom_html,
             userId: theme.user_id,

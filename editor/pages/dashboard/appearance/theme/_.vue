@@ -45,17 +45,11 @@
         >Need help? Read our documentation</a>
       </div>
       <client-only>
-        <MonacoEditor
+        <textarea
             v-model="theme.customHtml"
-            :options="{
-                    extraEditorClassName: 'rounded overflow-hidden mb-2',
-                    autoIndent: 'full',
-                    autoClosingQuotes: true,
-                    readOnly: false
-                    }"
-            height="350"
-            language="html"
-            theme="vs-dark"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
         />
       </client-only>
     </div>
@@ -73,17 +67,11 @@
         >Need help? Read our documentation</a>
       </div>
       <client-only>
-        <MonacoEditor
+        <textarea
             v-model="editorCss"
-            :options="{
-                  extraEditorClassName: 'rounded overflow-hidden mb-2',
-                  autoIndent: 'full',
-                  autoClosingQuotes: true,
-                  readOnly: false
-                }"
-            height="350"
-            language="css"
-            theme="vs-dark"
+            class="border border-2 text-white p-2"
+            style="font-family: monospace; background-color: #1E1E1E"
+            rows="12"
         />
       </client-only>
     </div>
@@ -147,16 +135,6 @@ export default Vue.extend({
       editorCss: '',
       theme: {
         label: null,
-        colors: {
-          fill: {
-            primary: 'rgba(255,255,255,1)',
-            secondary: 'rgba(255,255,255,.85)'
-          },
-          text: {
-            primary: 'rgba(0,0,0,1)',
-            secondary: 'rgba(0,0,0,.85)'
-          }
-        },
         customHtml: null,
         customCss: null
       } as unknown as EditorTheme,
@@ -191,19 +169,6 @@ export default Vue.extend({
               continue;
             }
 
-            if (!this.theme.colors) {
-              this.theme.colors = {
-                fill: {
-                  primary: 'rgba(255,255,255,1)',
-                  secondary: 'rgba(255,255,255,.85)'
-                },
-                text: {
-                  primary: 'rgba(0,0,0,1)',
-                  secondary: 'rgba(0,0,0,.85)'
-                }
-              };
-            }
-
             if (this.theme.customCss) {
               const strings = this.theme.customCss.split('/* SL-NO-CODE */');
 
@@ -230,16 +195,6 @@ export default Vue.extend({
         const response = await this.$axios.$post('/theme/create', {
           token: this.$store.getters['auth/getToken'],
           label: this.theme.label,
-          colors: {
-            fill: {
-              primary: this.theme.colors.fill.primary ?? 'rgba(255,255,255,1)',
-              secondary: this.theme.colors.fill.secondary ?? 'rgba(255,255,255,.85)'
-            },
-            text: {
-              primary: this.theme.colors.text.primary ?? 'rgba(0,0,0,1)',
-              secondary: this.theme.colors.text.secondary ?? 'rgba(0,0,0,.85)'
-            }
-          },
           customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
           customHtml: this.theme.customHtml,
         });
@@ -261,16 +216,6 @@ export default Vue.extend({
           token: this.$store.getters['auth/getToken'],
           id: this.theme.id,
           label: this.theme.label,
-          colors: {
-            fill: {
-              primary: this.theme.colors.fill.primary ?? 'rgba(255,255,255,1)',
-              secondary: this.theme.colors.fill.secondary ?? 'rgba(255,255,255,.85)'
-            },
-            text: {
-              primary: this.theme.colors.text.primary ?? 'rgba(0,0,0,1)',
-              secondary: this.theme.colors.text.secondary ?? 'rgba(0,0,0,.85)'
-            }
-          },
           customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
           customHtml: this.theme.customHtml,
         });

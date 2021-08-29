@@ -205,12 +205,12 @@ export class ProfileService extends DatabaseService {
         customCss?: string,
         customHtml?: string,
         customDomain: string | null | undefined = null,
-        metadata: any = {}
+        metadata: any = null
     ): Promise<Profile> {
         let queryResult: QueryResult<DbProfile>;
 
         try {
-            queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9,\n    metadata=$10\nwhere id = $11\nreturning *;",
+            queryResult = await this.pool.query<DbProfile>("update app.profiles\nset image_url=coalesce($1, image_url),\n    headline=coalesce($2, headline),\n    subtitle=coalesce($3, subtitle),\n    handle=coalesce($4, handle),\n    visibility=coalesce($5, visibility),\n    show_watermark=coalesce($6, show_watermark),\n    custom_css=coalesce($7, custom_css),\n    custom_html=coalesce($8, custom_html),\n    custom_domain=$9,\n    metadata=coalesce($10, metadata)\nwhere id = $11\nreturning *;",
                 [
                     imageUrl,
                     headline,

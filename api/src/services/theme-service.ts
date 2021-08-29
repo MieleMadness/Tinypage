@@ -60,21 +60,18 @@ export class ThemeService extends DatabaseService {
      *
      * @param userId
      * @param label
-     * @param colors
      * @param customCss
      * @param customHtml
      */
     async createTheme(
         userId: string,
         label: string,
-        colors?: Theme["colors"],
         customCss?: string,
         customHtml?: string
     ): Promise<Theme> {
-        let queryResult = await this.pool.query<DbTheme>("insert into app.themes(label, colors, custom_css, custom_html, user_id) values ($1, $2, $3, $4, $5) returning *",
+        let queryResult = await this.pool.query<DbTheme>("insert into app.themes(label, custom_css, custom_html, user_id) values ($1, $2, $3, $4) returning *",
             [
                 label,
-                colors,
                 customCss,
                 customHtml,
                 userId
@@ -92,7 +89,6 @@ export class ThemeService extends DatabaseService {
      * @param themeId
      * @param userId
      * @param label
-     * @param colors
      * @param customCss
      * @param customHtml
      */
@@ -100,14 +96,12 @@ export class ThemeService extends DatabaseService {
         themeId: string,
         userId: string,
         label: string,
-        colors?: Theme["colors"],
         customCss?: string,
         customHtml?: string
     ): Promise<Theme> {
-        let queryResult = await this.pool.query<DbTheme>("update app.themes set label=$1, colors=$2, custom_css=$3, custom_html=$4 where id=$5 and user_id=$6 returning *",
+        let queryResult = await this.pool.query<DbTheme>("update app.themes set label=$1, custom_css=$2, custom_html=$3 where id=$4 and user_id=$5 returning *",
             [
                 label,
-                colors,
                 customCss,
                 customHtml,
                 themeId,
@@ -181,21 +175,18 @@ export class ThemeService extends DatabaseService {
      *
      * @param themeId
      * @param label
-     * @param colors
      * @param customCss
      * @param customHtml
      */
     async updateTheme(
         themeId: string,
         label: string,
-        colors?: Theme["colors"],
         customCss?: string,
         customHtml?: string
     ): Promise<Theme> {
-        let queryResult = await this.pool.query<DbTheme>("update app.themes set label=$1, colors=$2, custom_css=$3, custom_html=$4 where id=$5 returning *",
+        let queryResult = await this.pool.query<DbTheme>("update app.themes set label=$1, custom_css=$2, custom_html=$3 where id=$4 returning *",
             [
                 label,
-                colors,
                 customCss,
                 customHtml,
                 themeId

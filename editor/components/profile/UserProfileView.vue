@@ -1,37 +1,9 @@
 <template>
   <div
-    id="user-profile-view"
-    class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg"
+      id="user-profile-view"
+      class="relative flex min-h-screen w-screen bg-gray-100 justify-center w-full sl-bg"
   >
     <section class="flex flex-col p-6 pt-8 pb-8 items-center text-center max-w-sm w-full">
-      <component :is="'style'" v-if="theme">
-        .sl-headline {
-        color: {{ theme.colors.text.primary }};
-        }
-
-        .sl-subtitle {
-        opacity: .85;
-        color: {{ theme.colors.text.primary }};
-        }
-
-        .sl-bg {
-        background: {{ theme.colors.fill.primary }};
-        }
-
-        .sl-item {
-        background: {{ theme.colors.fill.secondary }};
-        }
-
-        .sl-label {
-        color: {{ theme.colors.text.secondary }};
-        }
-
-        .sl-link-subtitle {
-        opacity: .85;
-        color: {{ theme.colors.text.secondary }};
-        }
-      </component>
-
       <component :is="'style'" v-if="(theme ? theme.customCss : false)">
         {{ theme.customCss || null }}
       </component>
@@ -41,11 +13,11 @@
       </component>
 
       <img
-        v-if="profile.imageUrl || user.avatarUrl || user.emailHash"
-        :src="profile.imageUrl || user.avatarUrl || 'https://www.gravatar.com/avatar/' + user.emailHash"
-        alt="profile image"
-        class="nc-avatar mb-2"
-        onerror="this.src='https://www.gravatar.com/avatar'"
+          v-if="profile.imageUrl || user.avatarUrl || user.emailHash"
+          :src="profile.imageUrl || user.avatarUrl || 'https://www.gravatar.com/avatar/' + user.emailHash"
+          alt="profile image"
+          class="nc-avatar mb-2"
+          onerror="this.src='https://www.gravatar.com/avatar'"
       >
       <h1 class="text-black font-semibold text-2xl sl-headline">
         {{ profile.headline || user.name }}
@@ -55,16 +27,16 @@
       </h3>
 
       <a
-        v-for="link in links"
-        :id="'sl-item-'+link.id"
-        :key="link.id"
-        :href="createLink(link)"
-        class="w-full"
-        target="_blank"
+          v-for="link in links"
+          :id="'sl-item-'+link.id"
+          :key="link.id"
+          :href="createLink(link)"
+          class="w-full"
+          target="_blank"
       >
         <div
-          :style="link.customCss"
-          class="rounded shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
+            :style="link.customCss"
+            class="rounded shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
         >
           <span class="font-medium text-gray-900 sl-label">{{ link.label }}</span>
           <span v-if="link.subtitle" class="text-sm text-gray-700 sl-link-subtitle mt-1">{{ link.subtitle }}</span>
@@ -82,17 +54,14 @@
       </div>
 
       <div v-if="loaded && profile.showWatermark" id="sl-watermark">
-        <p v-if="theme" :style="`color:${theme.colors.text.primary}`" class="mt-4 text-sm">
-          Proudly built with {{ app_name }} 🔗
-        </p>
-        <p v-else class="mt-4 text-sm" style="color:rgba(0,0,0,1);">
+        <p class="mt-4 text-sm" style="color:rgba(0,0,0,1);">
           Proudly built with {{ app_name }} 🔗
         </p>
         <a
-          v-if="free_signup"
-          :href="'https://' + hostname + '/create-account'"
-          class="text-blue-600 hover:underline text-sm"
-          target="_blank"
+            v-if="free_signup"
+            :href="'https://' + hostname + '/create-account'"
+            class="text-blue-600 hover:underline text-sm"
+            target="_blank"
         >Create your
           free profile in seconds</a>
         <base target="_blank">

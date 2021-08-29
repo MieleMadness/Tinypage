@@ -221,16 +221,6 @@ export default Vue.extend({
       },
       pendingTag: '',
       themes: [],
-      colors: {
-        fill: {
-          primary: '#478ecc',
-          secondary: '#FFFFFF'
-        },
-        text: {
-          primary: '#FFFFFF',
-          secondary: '#000000'
-        }
-      },
       installed: [] as number[],
       favorites: [] as number[],
     };

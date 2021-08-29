@@ -207,17 +207,7 @@ export default Vue.extend({
         this.user.name = userResponse.name;
         this.user.emailHash = userResponse.emailHash;
 
-        this.user.activeProfile.imageUrl = siteResponse.imageUrl;
-        this.user.activeProfile.headline = siteResponse.headline;
-        this.user.activeProfile.subtitle = siteResponse.subtitle;
-        this.user.activeProfile.handle = siteResponse.handle;
-        this.user.activeProfile.customDomain = siteResponse.customDomain;
-        this.user.activeProfile.visibility = siteResponse.visibility;
-        this.user.activeProfile.showWatermark = siteResponse.showWatermark;
-
-        this.user.activeProfile.metadata.privacyMode = siteResponse.metadata.privacyMode;
-
-        this.$set(this.user.activeProfile, 'user.activeProfile', siteResponse);
+        this.user.activeProfile = siteResponse;
 
         this.originalHandle = this.user.activeProfile.handle;
       } catch (err) {

@@ -66,15 +66,21 @@
                   <div class="flex flex-row items-center justify-start flex-wrap">
                     <div
                         v-if="user.activeProfile.handle"
-                        class="py-1 px-2 mb-1 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
+                        class="py-1 px-2 mb-1 mr-2 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
                         @click="copyUrl"
                     >copy
+                    </div>
+                    <div
+                        v-if="user.activeProfile.handle"
+                        class="py-1 px-2 mb-1 mr-2 rounded-full text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight cursor-pointer grow"
+                        @click="openUrl"
+                    >open in new tab
                     </div>
                     <div
                         class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
                         style="color:#6c6c6c;background:rgba(108,108,108,.1);"
                         @click="toggleProfileSelect"
-                    >switch profiles
+                    >manage pages
                     </div>
                   </div>
 
@@ -122,19 +128,22 @@
                         alt="avatar"
                         class="w-8 h-8 rounded-full"
                     />
-                    <div
-                        v-if="!profile.handle"
-                        class="mr-2 rounded-full"
-                        style="width: 100%; max-width: 35px; max-height: 58px; margin-right: 10px;"
-                    >
-                      &nbsp;
-                      <br>
-                      &nbsp;
-                    </div>
-
                     <div class="flex flex-col">
                       <span class="text-base text-black font-bold">{{ profile.handle }}</span>
                       <span class="text-sm text-black opacity-70 font-bold">{{ profile.headline }}</span>
+
+                      <div
+                          v-if="profile.visibility !== 'unpublished'"
+                          class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight"
+                      >{{ profile.visibility }}
+                      </div>
+
+                      <div
+                          v-if="profile.userId !== user.id"
+                          class="py-1 px-2 mb-1 rounded-full text-gray-700 bg-gray-200 text-sm font-extrabold leading-tight"
+                      >shared with you
+                      </div>
+
                     </div>
                   </li>
 
@@ -173,16 +182,6 @@
                 <span class="ml-4 font-extrabold">Analytics</span>
               </n-link>
 
-              <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
-                <img src="/icons/Settings.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Settings</span>
-              </n-link>
-
-              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
-                <img src="/icons/Person.svg" style="width:24px;height:24px;"/>
-                <span class="ml-4 font-extrabold">Admin Settings</span>
-              </n-link>
-
               <!--              <n-link :class="getActiveStyles('dashboard-marketplace')" to="/dashboard/marketplace">-->
               <!--                <img src="/icons/High voltage.svg" style="width:24px;height:24px;">-->
               <!--                <span class="ml-4 font-extrabold">Marketplace</span>-->
@@ -210,17 +209,31 @@
               </a>
 
               <a v-if="community" :class="getActiveStyles('dashboard-community')" :href="community" target="_blank">
-                <div style="color:#3a3c9b">
+                <div style="color:#0000ff">
                   <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path fill="currentColor"
                           d="M480 257.35c0-123.7-100.3-224-224-224s-224 100.3-224 224c0 111.8 81.9 204.47 189 221.29V322.12h-56.89v-64.77H221V208c0-56.13 33.45-87.16 84.61-87.16 24.51 0 50.15 4.38 50.15 4.38v55.13H327.5c-27.81 0-36.51 17.26-36.51 35v42h62.12l-9.92 64.77H291v156.54c107.1-16.81 189-109.48 189-221.31z"
                           fill-rule="evenodd"
                     />
                   </svg>
-
                 </div>
                 <span class="ml-4 font-extrabold">Community</span>
               </a>
+
+              <n-link :class="getActiveStyles('dashboard-settings')" to="/dashboard/settings">
+                <img src="/icons/Settings.svg" style="width:24px;height:24px;">
+                <span class="ml-4 font-extrabold">Page Settings</span>
+              </n-link>
+
+              <n-link :class="getActiveStyles('dashboard-account')" to="/dashboard/account">
+                <img src="/icons/Person.svg" style="width:24px;height:24px;"/>
+                <span class="ml-4 font-extrabold">Account Settings</span>
+              </n-link>
+
+              <n-link v-if="isAdmin" :class="getActiveStyles('dashboard-admin')" to="/dashboard/admin">
+                <img src="/icons/High%20voltage.svg" style="width:24px;height:24px;">
+                <span class="ml-4 font-extrabold">Admin Settings</span>
+              </n-link>
 
               <n-link :class="getActiveStyles('logout')" to="/logout">
                 <img src="/icons/Waving hand.svg" style="width:24px;height:24px;">
@@ -319,7 +332,7 @@ export default Vue.extend({
         {
           hid: 'twitter:url',
           name: 'twitter:url',
-          content: ('https://' + process.env.HOSTNAME) ?? 'https://app.singlelink.co'
+          content: ('https://' + process.env.HOSTNAME) ?? 'https://tinypage.app'
         },
         {
           hid: 'twitter:card',
@@ -354,6 +367,7 @@ export default Vue.extend({
       originalHandle: '',
 
       user: {
+        id: '',
         emailHash: '',
         activeProfile: {
           handle: '',
@@ -409,8 +423,7 @@ export default Vue.extend({
       this.setActive();
     }
   },
-
-  async beforeMount() {
+  async mounted() {
     const permGroup = await this.$axios.$post("/admin/perm-group", {
       token: this.$store.getters['auth/getToken']
     });
@@ -426,9 +439,7 @@ export default Vue.extend({
     } else {
       this.rendererDomain = "singlel.ink";
     }
-  },
 
-  async mounted() {
     this.setActive();
     await this.getUserData();
     await this.listProfiles();
@@ -438,7 +449,7 @@ export default Vue.extend({
       this.profile_visibility = this.user.activeProfile.visibility;
     } catch (err) {
       console.log(err);
-      this.profileUrl = 'https://singlelink.co/';
+      this.profileUrl = 'https://tinypage.app/';
     }
 
     try {
@@ -581,6 +592,10 @@ export default Vue.extend({
               this.active = "dashboard-settings";
               this.preview = true;
               break;
+            case "dashboard-account":
+              this.active = "dashboard-account";
+              this.preview = true;
+              break;
             case "dashboard-admin":
               this.active = "dashboard-admin";
               this.preview = false;
@@ -658,6 +673,34 @@ export default Vue.extend({
         }
 
         prompt('Copy this url to the clipboard: Ctrl+C, Enter\n', text);
+      }
+    },
+
+    async openUrl() {
+      try {
+        let text = '';
+        if (this.user.activeProfile.customDomain) {
+          text = this.user.activeProfile.customDomain;
+        }
+
+        if (!text || text === 'https://null') {
+          text = `${this.rendererUrl}/${this.user.activeProfile.handle}`;
+        }
+
+        await window.navigator.clipboard.writeText(text);
+        alert(`Url copied to clipboard!\n${text}`);
+      } catch (error) {
+        let text = '';
+
+        if (this.user.activeProfile.customDomain) {
+          text = this.user.activeProfile.customDomain;
+        }
+
+        if (!text || text === 'https://null') {
+          text = `${this.rendererUrl}/${this.user.activeProfile.handle}`;
+        }
+
+        window.open(text, '_blank');
       }
     },
 
@@ -994,10 +1037,6 @@ html {
 
 .profile-bay:hover {
   background: rgba(255, 255, 255, .02);
-}
-
-a.nav-link svg {
-  margin-right: .65rem !important;
 }
 
 .grow:hover {

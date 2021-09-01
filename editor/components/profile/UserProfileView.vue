@@ -154,7 +154,7 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
+  beforeMount() {
     this.$root.$on('refreshUserProfileView', () => {
       this.$fetch();
     });

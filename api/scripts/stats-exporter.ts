@@ -1,5 +1,5 @@
 /*
-  This is a script that exports some statistics for Singlelink.
+  This is a script that exports some statistics for Tinypage.
   Environment vars:
   POSTGRESQL - Postgresql Connection String
 

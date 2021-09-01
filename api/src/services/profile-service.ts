@@ -42,7 +42,7 @@ export class ProfileService extends DatabaseService {
      * @param checkVisibility Throw an HttpError if the profile is unpublished.
      */
     async getProfileByHandle(handle: string, checkVisibility: boolean): Promise<Profile> {
-        let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where handle=$1", [handle]);
+        let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where handle ILIKE $1", [handle]);
 
         if (profileResult.rowCount < 1) {
             throw new HttpError(StatusCodes.NOT_FOUND, "The profile couldn't be found.");
@@ -112,6 +112,12 @@ export class ProfileService extends DatabaseService {
             handle = StringUtils.generateRandomSlug();
         }
 
+        let profileResult = await this.pool.query<DbProfile>("select 1 from app.profiles where handle ILIKE $1 limit 1", [handle]);
+
+        if (profileResult.rowCount > 0) {
+            throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because the handle is already being used.");
+        }
+
         let queryResult = await this.pool.query<DbProfile>("insert into app.profiles (handle, user_id, image_url, headline, subtitle) values ($1, $2, $3, $4, $5) on conflict do nothing returning *",
             [
                 handle,
@@ -122,7 +128,7 @@ export class ProfileService extends DatabaseService {
             ]);
 
         if (queryResult.rowCount < 1)
-            throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because it is already being used.");
+            throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because the handle is already being used.");
 
         return DbTypeConverter.toProfile(queryResult.rows[0]);
     }
@@ -144,7 +150,7 @@ export class ProfileService extends DatabaseService {
                 return DbTypeConverter.toProfile(x);
             });
         } else {
-            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1)", [userId]);
+            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.profile_members where user_id=$1)", [userId]);
 
             if (queryResult.rowCount < 1)
                 throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");
@@ -179,6 +185,12 @@ export class ProfileService extends DatabaseService {
         return (await this.pool.query<{ count: number }>("select count(*) from app.profiles where user_id=$1", [userId])).rows[0].count;
     }
 
+    async countPublishedProfiles(userId: string): Promise<number> {
+        let queryResult = await this.pool.query<{ count: number }>("select count(*) from app.profiles where user_id=$1 and visibility != 'unpublished'", [userId]);
+
+        return queryResult.rows[0].count;
+    }
+
     /**
      * Updates a profile.
      *
@@ -207,6 +219,16 @@ export class ProfileService extends DatabaseService {
         customDomain: string | null | undefined = null,
         metadata: any = null
     ): Promise<Profile> {
+
+        if (handle) {
+            let profileResult = await this.pool.query<DbProfile>("select 1 from app.profiles where handle ILIKE $1 and id != $2 limit 1",
+                [handle, profileId]);
+
+            if (profileResult.rowCount > 0) {
+                throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because the handle is already being used.");
+            }
+        }
+
         let queryResult: QueryResult<DbProfile>;
 
         try {

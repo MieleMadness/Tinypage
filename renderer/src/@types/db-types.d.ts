@@ -89,7 +89,7 @@ interface DbTheme {
  headline       text,                                                                        -- The name that shows up on the page
  subtitle       text,                                                                        -- The name underneath a profile's avatar
  social         jsonb                default '{}',
- show_watermark bool                 default true,                                           -- The "Proudly built with Singlelink" underneath people's profiles
+ show_watermark bool                 default true,                                           -- The "Proudly built with Tinypage" underneath people's profiles
  custom_css     text,
  custom_html    text,
  custom_domain  text unique,

@@ -270,7 +270,7 @@ export class AuthController extends Controller {
             <head>
               <meta http-equiv="refresh" content="0;url=${url}"/>
               <meta charset="UTF-8">
-              <title>Singlelink - Redirecting</title>
+              <title>Tinypage - Redirecting</title>
             </head>
             <body>
             <p>
@@ -293,7 +293,7 @@ export class AuthController extends Controller {
               <head>
                 <meta charset="UTF-8">
                 <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Singlelink - Error!</title>
+                <title>Tinypage - Error!</title>
               </head>
               <body>
               <p>
@@ -355,7 +355,7 @@ export class AuthController extends Controller {
             <head>
               <meta charset="UTF-8">
               <meta http-equiv="refresh" content="0;url=${url}"/>
-              <title>Singlelink - Redirecting</title>
+              <title>Tinypage - Redirecting</title>
             </head>
             <body>
             <p>
@@ -378,7 +378,7 @@ export class AuthController extends Controller {
               <head>
                 <meta charset="UTF-8">
                 <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Singlelink - Error!</title>
+                <title>Tinypage - Error!</title>
               </head>
               <body>
               <p>
@@ -428,7 +428,7 @@ export class AuthController extends Controller {
               <meta charset="UTF-8">
               <meta http-equiv="refresh"
                     content="0;url=${config.editorUrl}/dashboard/settings/?googleLinked=${result}"/>
-              <title>Singlelink - Redirecting...</title>
+              <title>Tinypage - Redirecting...</title>
             </head>
             <body>
             <p>
@@ -450,7 +450,7 @@ export class AuthController extends Controller {
               <head>
                 <meta charset="UTF-8">
                 <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Singlelink - Error!</title>
+                <title>Tinypage - Error!</title>
               </head>
               <body>
               <p>

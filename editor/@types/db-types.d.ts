@@ -4,7 +4,6 @@
  * It is a direct 1:1 of the tables and types within the database.
  */
 
-type subscription_t = 'free' | 'pro' | 'team' | 'enterprise' | string;
 type visibility_t = 'unpublished' | 'published' | 'published-18+';
 type visit_t = 'link' | 'page';
 type addon_t = 'theme' | 'preset' | 'plugin';
@@ -27,37 +26,37 @@ type addon_t = 'theme' | 'preset' | 'plugin';
  create index if not exists accounts_email_index on app.users (email);
  */
 interface DbUser {
-  id: string,
-  email_hash: string, // Used for gravatar, it could be better but this is how the service works
-  full_name: string | null | undefined,
-  active_profile_id: string | null | undefined,
-  inventory: unknown | null,
+    id: string,
+    email_hash: string, // Used for gravatar, it could be better but this is how the service works
+    full_name: string | null | undefined,
+    active_profile_id: string | null | undefined,
+    inventory: unknown | null,
 
-  // The metadata tag will grow over time as functionality is added.
-  metadata: {},
+    // The metadata tag will grow over time as functionality is added.
+    metadata: {},
 
-  created_on: string
+    created_on: string
 }
 
 interface DbSensitiveUser extends DbUser {
-  email: string,
+    email: string,
 
-  private_metadata: {
-    favorites: string[],
-    googleId: string | null | undefined,
-    githubId: string | null | undefined,
-    stripeId: string | null | undefined,
-    emailNotifications: {
-      major: boolean,
-      minor: boolean,
-      marketing: boolean,
-      leaderboard: boolean
-    },
-  }
+    private_metadata: {
+        favorites: string[],
+        googleId: string | null | undefined,
+        githubId: string | null | undefined,
+        stripeId: string | null | undefined,
+        emailNotifications: {
+            major: boolean,
+            minor: boolean,
+            marketing: boolean,
+            leaderboard: boolean
+        },
+    }
 }
 
 interface DbSensitiveUserWithPassword extends DbSensitiveUser {
-  pass_hash: string,
+    pass_hash: string,
 }
 
 /**
@@ -74,13 +73,13 @@ interface DbSensitiveUserWithPassword extends DbSensitiveUser {
  create index if not exists themes_user_id_index on app.themes (user_id);
  */
 interface DbTheme {
-  id: string,
-  label: string,
-  global: boolean,
-  custom_css: string | null | undefined,
-  custom_html: string | null | undefined,
-  user_id: string,
-  created_on: string
+    id: string,
+    label: string,
+    global: boolean,
+    custom_css: string | null | undefined,
+    custom_html: string | null | undefined,
+    user_id: string,
+    created_on: string
 }
 
 /**
@@ -91,7 +90,7 @@ interface DbTheme {
  headline       text,                                                                        -- The name that shows up on the page
  subtitle       text,                                                                        -- The name underneath a profile's avatar
  social         jsonb                default '{}',
- show_watermark bool                 default true,                                           -- The "Proudly built with Singlelink" underneath people's profiles
+ show_watermark bool                 default true,                                           -- The "Proudly built with Tinypage" underneath people's profiles
  custom_css     text,
  custom_html    text,
  custom_domain  text unique,
@@ -108,35 +107,35 @@ interface DbTheme {
  add constraint fk_profiles_user_id foreign key (user_id) references app.users (id) on update cascade on delete cascade deferrable initially deferred;
  */
 interface DbProfile {
-  id: string,
-  handle: string,
-  user_id: string,
-  image_url: string | null | undefined,
-  headline: string | null | undefined,
-  subtitle: string | null | undefined,
-  social: {
-    icon: string,
-    link: string,
-    alt: string
-  },
-  show_watermark: boolean,
-  custom_css: string,
-  custom_html: string,
-  custom_domain: string,
-  theme_id: string,
-  visibility: visibility_t,
+    id: string,
+    handle: string,
+    user_id: string,
+    image_url: string | null | undefined,
+    headline: string | null | undefined,
+    subtitle: string | null | undefined,
+    social: {
+        icon: string,
+        link: string,
+        alt: string
+    },
+    show_watermark: boolean,
+    custom_css: string,
+    custom_html: string,
+    custom_domain: string,
+    theme_id: string,
+    visibility: visibility_t,
 
-  // The metadata tag will grow over time as functionality is added.
-  metadata: {
-    privacyMode: boolean,
-    unlisted: boolean
-  },
+    // The metadata tag will grow over time as functionality is added.
+    metadata: {
+        privacyMode: boolean,
+        unlisted: boolean
+    },
 
-  created_on: string
+    created_on: string
 }
 
 interface DbSensitiveProfile extends DbProfile {
-  private_metadata: any;
+    private_metadata: any;
 }
 
 /**
@@ -148,8 +147,8 @@ interface DbSensitiveProfile extends DbProfile {
  create index if not exists profile_members_member_index on app.profile_members (member);
  */
 interface DbProfileMember {
-  handle: string,
-  member: string
+    handle: string,
+    member: string
 }
 
 /**
@@ -168,21 +167,21 @@ interface DbProfileMember {
  create index if not exists links_url_index on app.links (url);
  */
 interface DbLink {
-  id: string,
-  profile_id: string,
-  type: string,
-  url: string,
-  sort_order: number,
-  label: string,
-  subtitle: string | null,
-  style: string | null,
-  custom_css: string | null,
-  metadata: any,
-  created_on: string
+    id: string,
+    profile_id: string,
+    type: string,
+    url: string,
+    sort_order: number,
+    label: string,
+    subtitle: string | null,
+    style: string | null,
+    custom_css: string | null,
+    metadata: any,
+    created_on: string
 }
 
 interface DbSensitiveLink extends DbLink {
-  private_metadata: any;
+    private_metadata: any;
 }
 
 /**
@@ -194,9 +193,9 @@ interface DbSensitiveLink extends DbLink {
  create index if not exists perm_groups_group_name on app.perm_groups (group_name);
  */
 interface DbPermissionGroup {
-  id: string,
-  user_id: string,
-  group_name: string
+    id: string,
+    user_id: string,
+    group_name: string
 }
 
 /**
@@ -212,9 +211,9 @@ interface DbPermissionGroup {
  created_on timestamp not null default current_timestamp
  */
 interface DbAnalyticsVisit {
-  type: visit_t,
-  referral_id: string,
-  created_on: string
+    type: visit_t,
+    referral_id: string,
+    created_on: string
 }
 
 /**
@@ -228,11 +227,11 @@ interface DbAnalyticsVisit {
  from app.users;
  */
 interface DbAnalyticsGlobalStats {
-  total_users: number;
-  total_profiles: number;
-  profiles_published: number;
-  total_links: number;
-  total_themes: number;
+    total_users: number;
+    total_profiles: number;
+    profiles_published: number;
+    total_links: number;
+    total_themes: number;
 }
 
 /**
@@ -251,48 +250,48 @@ interface DbAnalyticsGlobalStats {
  created_on        timestamp not null default current_timestamp
  */
 interface DbAddon {
-  id: string,
-  user_id: string,
-  resource_id: string,
-  type: addon_t,
-  display_name: string,
-  description: string,
-  author: string,
-  tags: string[],
-  featured_sorting: number,
-  price: number,
-  payment_frequency: string,
-  global: boolean,
-  version: string,
-  metadata: {
-    deprecated?: boolean
-  },
-  created_on: string
-  last_updated: string,
+    id: string,
+    user_id: string,
+    resource_id: string,
+    type: addon_t,
+    display_name: string,
+    description: string,
+    author: string,
+    tags: string[],
+    featured_sorting: number,
+    price: number,
+    payment_frequency: string,
+    global: boolean,
+    version: string,
+    metadata: {
+        deprecated?: boolean
+    },
+    created_on: string
+    last_updated: string,
 }
 
 interface DbSensitiveAddon extends DbAddon {
-  private_metadata: any;
+    private_metadata: any;
 }
 
 interface DbAddonInstall {
-  id: string,
-  profile_id: string,
-  addon_id: string,
-  created_on: string
+    id: string,
+    profile_id: string,
+    addon_id: string,
+    created_on: string
 }
 
 interface DbBanned {
-  id: string,
-  user_id: string,
-  reason: string
-  created_on: string
+    id: string,
+    user_id: string,
+    reason: string
+    created_on: string
 }
 
 interface DbIpLog {
-  id: string,
-  user_id: string,
-  ip: string,
-  created_on: string
+    id: string,
+    user_id: string,
+    ip: string,
+    created_on: string
 }
 

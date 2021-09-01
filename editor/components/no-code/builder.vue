@@ -203,7 +203,7 @@
               <input
                   v-model="meta.page_styles.background_image"
                   class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="e.g. https://singlelink.co/og-image.png"
+                  placeholder="e.g. https://tinypage.app/og-image.png"
                   type="text"
               >
             </div>
@@ -774,7 +774,7 @@
               <input
                   v-model="meta.link_styles.background_image"
                   class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="e.g. https://singlelink.co/og-image.png"
+                  placeholder="e.g. https://tinypage.app/og-image.png"
                   type="text"
               >
             </div>
@@ -1356,7 +1356,7 @@ export default Vue.extend({
     };
   },
 
-  mounted(): void {
+  beforeMount(): void {
     if (this.importedCSS) {
       this.jsonPackage = this.$transform.toJSON(this.importedCSS);
 
@@ -1687,7 +1687,9 @@ export default Vue.extend({
 
       // End imported CSS
     }
+  },
 
+  mounted() {
     if (process.client) {
       this.$nextTick(() => {
         this.initColorPickers();

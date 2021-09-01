@@ -7,984 +7,59 @@
       </h1>
     </div>
 
-    <!-- Alerts-->
-    <div
-        v-show="alerts.successUpdateSub"
-        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
-    >
-      <p class="text-black opacity-70 font-semibold">
-        Successfully {{ billing.cardNumber ? "saved" : "cleared" }} updated subscription!
-      </p>
-    </div>
-
-    <div
-        v-show="alerts.failedUpdateSub"
-        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
-    >
-      <p class="text-black opacity-70 font-semibold">
-        Failed to change subscription. Please contact support if this keeps happening.
-      </p>
-    </div>
-
-    <div
-        v-show="alerts.successSaveInfo"
-        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-green-300 shadow w-full mb-8"
-    >
-      <p class="text-black opacity-70 font-semibold">
-        Successfully saved billing information!
-      </p>
-    </div>
-
-    <div
-        v-show="alerts.failedSaveInfo"
-        class="flex flex-col lg:flex-row justify-center items-center p-3 rounded-2xl bg-red-300 shadow w-full mb-8"
-    >
-      <p class="text-black opacity-70 font-semibold">
-        Failed to save billing information. Make sure all the required fields are filled out!
-      </p>
-    </div>
-
-    <!--    <div-->
-    <!--      v-if="subInfo || (savedCard && savedCard.last4)"-->
-    <!--      class="p-3 rounded-2xl bg-white shadow w-full mb-8"-->
-    <!--    >-->
-    <!--      <h2 v-show="subInfo" class="text-black font-bold text-lg w-full">-->
-    <!--        Subscription Info-->
-    <!--      </h2>-->
-    <!--      &lt;!&ndash; Subscription Info &ndash;&gt;-->
-    <!--      <div-->
-    <!--        v-if="subInfo"-->
-    <!--        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"-->
-    <!--      >-->
-    <!--        {{ subInfo }}-->
-    <!--      </div>-->
-
-    <!--      <h2 v-show="(savedCard && savedCard.last4)" class="text-black font-bold text-lg w-full">-->
-    <!--        Card Info-->
-    <!--      </h2>-->
-    <!--      &lt;!&ndash; Card Info &ndash;&gt;-->
-    <!--      <div-->
-    <!--        v-if="savedCard && savedCard.last4"-->
-    <!--        class="justify-center items-center p-3 rounded-2xl shadow w-full mb-8"-->
-    <!--      >-->
-    <!--        <p class="text-black opacity-70 font-semibold">-->
-    <!--          Card Info <br>-->
-    <!--          Name: {{ savedCard.name }}<br>-->
-    <!--          Exp: {{ savedCard.expDate }}<br>-->
-    <!--          Last4: *{{ savedCard.last4 }}<br>-->
-    <!--        </p>-->
-    <!--      </div>-->
-    <!--      <div v-else>-->
-    <!--        No card saved-->
-    <!--      </div>-->
-    <!--    </div>-->
-
     <!-- Select billing tier -->
     <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
       <h2 class="text-black font-bold text-lg w-full">
-        Select billing tier
+        Manage Subscription
       </h2>
       <p class="text-black font-bold opacity-70 max-w-xl">
-        Want to change your billing tier? Use the dropdown below.
+        Want to upgrade or manage your subscription? Use the dropdown below.
+        (You will be navigated to our checkout page.)
       </p>
       <div class="flex flex-col mt-4 mb-2 w-full">
         <label class="font-bold opacity-70 text-black mb-3" for="tierSelect">Account tier</label>
         <div class="flex flex-col lg:flex-row items-center justify-start space-y-4 lg:space-y-0 lg:space-x-4 w-full">
           <select
               id="tierSelect"
-              v-model="selectedBillingTier"
+              v-model="selectedProductId"
               class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl font-bold border w-full lg:w-auto flex-grow lg:max-w-md"
+              :disabled="godmode"
           >
-            <option value="free">
-              Forever free - $0/Month
+            <option v-if="subInfo.purchase_type === 'free'" :value="null">None</option>
+            <option v-if="availableSubscriptions" :key="subInfo.id" v-for="subInfo of availableSubscriptions"
+                    :value="subInfo.id"
+            >
+              {{ subInfo.name }}
             </option>
-            <option value="pro">
-              Pro - $8/Month
-            </option>
-            <option value="team">
-              Team - $8/Seat - minimum 3 seats @ $25/mo
-            </option>
-            <option value="enterprise">
-              Enterprise - Contact sales
-            </option>
+            <option v-if="godmode" value="godmode">God Mode</option>
           </select>
+
           <button
+              v-if="loaded"
+              v-show="(subInfo.purchase_type === 'free' || selectedPurchaseType === 'one_time') && selectedProductId && selectedProductId !== subInfo.product_id"
               class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
               type="button"
-              @click="setBillingModalActive(true)"
+              @click="initCheckout"
+              :disabled="godmode"
           >
-            Save changes
+            Checkout
+          </button>
+
+          <button
+              v-if="loaded || godmode"
+              v-show="subInfo.purchase_type === 'recurring' || godmode"
+              class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="manageSubscription"
+          >
+            Manage Subscription
           </button>
         </div>
+        <br>
+        <p v-if="loaded && godmode">
+          Your account has god mode enabled.
+        </p>
       </div>
-    </div>
-
-    <!-- Billing information -->
-    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start mb-8">
-      <h2 class="text-black font-bold text-lg w-full">
-        Billing information
-      </h2>
-      <p class="text-black font-bold opacity-70 max-w-xl">
-        Entering your billing information is required to upgrade your account to a paid tier.
-      </p>
-      <div class="w-full flex flex-col lg:flex-row grid grid-cols-3 gap-4">
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Full name*</label>
-          <input
-              v-model="billing.fullName"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: Jane Doe"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Company name</label>
-          <input
-              v-model="billing.companyName"
-              :placeholder="`ex: ${$customSettings.company}`"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Phone number</label>
-          <input
-              v-model="billing.phone"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: (919) 653-0790"
-              type="text"
-          >
-        </div>
-      </div>
-      <div class="w-full flex flex-col lg:flex-row grid grid-cols-5 gap-4">
-        <div class="flex flex-col mt-4 mb-2 w-full col-span-2">
-          <label class="font-bold text-black opacity-70 mb-3">Address*</label>
-          <input
-              v-model="billing.address"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: 120 Preston Executive Dr."
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">City*</label>
-          <input
-              v-model="billing.city"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: Cary"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Zip code*</label>
-          <input
-              v-model="billing.zipCode"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: 27519"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Country*</label>
-          <select
-              v-model="billing.country"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-          >
-            <option>Select one...</option>
-            <option value="Afganistan">
-              Afghanistan
-            </option>
-            <option value="Albania">
-              Albania
-            </option>
-            <option value="Algeria">
-              Algeria
-            </option>
-            <option value="American Samoa">
-              American Samoa
-            </option>
-            <option value="Andorra">
-              Andorra
-            </option>
-            <option value="Angola">
-              Angola
-            </option>
-            <option value="Anguilla">
-              Anguilla
-            </option>
-            <option value="Antigua & Barbuda">
-              Antigua & Barbuda
-            </option>
-            <option value="Argentina">
-              Argentina
-            </option>
-            <option value="Armenia">
-              Armenia
-            </option>
-            <option value="Aruba">
-              Aruba
-            </option>
-            <option value="Australia">
-              Australia
-            </option>
-            <option value="Austria">
-              Austria
-            </option>
-            <option value="Azerbaijan">
-              Azerbaijan
-            </option>
-            <option value="Bahamas">
-              Bahamas
-            </option>
-            <option value="Bahrain">
-              Bahrain
-            </option>
-            <option value="Bangladesh">
-              Bangladesh
-            </option>
-            <option value="Barbados">
-              Barbados
-            </option>
-            <option value="Belarus">
-              Belarus
-            </option>
-            <option value="Belgium">
-              Belgium
-            </option>
-            <option value="Belize">
-              Belize
-            </option>
-            <option value="Benin">
-              Benin
-            </option>
-            <option value="Bermuda">
-              Bermuda
-            </option>
-            <option value="Bhutan">
-              Bhutan
-            </option>
-            <option value="Bolivia">
-              Bolivia
-            </option>
-            <option value="Bonaire">
-              Bonaire
-            </option>
-            <option value="Bosnia & Herzegovina">
-              Bosnia & Herzegovina
-            </option>
-            <option value="Botswana">
-              Botswana
-            </option>
-            <option value="Brazil">
-              Brazil
-            </option>
-            <option value="British Indian Ocean Ter">
-              British Indian Ocean Ter
-            </option>
-            <option value="Brunei">
-              Brunei
-            </option>
-            <option value="Bulgaria">
-              Bulgaria
-            </option>
-            <option value="Burkina Faso">
-              Burkina Faso
-            </option>
-            <option value="Burundi">
-              Burundi
-            </option>
-            <option value="Cambodia">
-              Cambodia
-            </option>
-            <option value="Cameroon">
-              Cameroon
-            </option>
-            <option value="Canada">
-              Canada
-            </option>
-            <option value="Canary Islands">
-              Canary Islands
-            </option>
-            <option value="Cape Verde">
-              Cape Verde
-            </option>
-            <option value="Cayman Islands">
-              Cayman Islands
-            </option>
-            <option value="Central African Republic">
-              Central African Republic
-            </option>
-            <option value="Chad">
-              Chad
-            </option>
-            <option value="Channel Islands">
-              Channel Islands
-            </option>
-            <option value="Chile">
-              Chile
-            </option>
-            <option value="China">
-              China
-            </option>
-            <option value="Christmas Island">
-              Christmas Island
-            </option>
-            <option value="Cocos Island">
-              Cocos Island
-            </option>
-            <option value="Colombia">
-              Colombia
-            </option>
-            <option value="Comoros">
-              Comoros
-            </option>
-            <option value="Congo">
-              Congo
-            </option>
-            <option value="Cook Islands">
-              Cook Islands
-            </option>
-            <option value="Costa Rica">
-              Costa Rica
-            </option>
-            <option value="Cote DIvoire">
-              Cote DIvoire
-            </option>
-            <option value="Croatia">
-              Croatia
-            </option>
-            <option value="Cuba">
-              Cuba
-            </option>
-            <option value="Curaco">
-              Curacao
-            </option>
-            <option value="Cyprus">
-              Cyprus
-            </option>
-            <option value="Czech Republic">
-              Czech Republic
-            </option>
-            <option value="Denmark">
-              Denmark
-            </option>
-            <option value="Djibouti">
-              Djibouti
-            </option>
-            <option value="Dominica">
-              Dominica
-            </option>
-            <option value="Dominican Republic">
-              Dominican Republic
-            </option>
-            <option value="East Timor">
-              East Timor
-            </option>
-            <option value="Ecuador">
-              Ecuador
-            </option>
-            <option value="Egypt">
-              Egypt
-            </option>
-            <option value="El Salvador">
-              El Salvador
-            </option>
-            <option value="Equatorial Guinea">
-              Equatorial Guinea
-            </option>
-            <option value="Eritrea">
-              Eritrea
-            </option>
-            <option value="Estonia">
-              Estonia
-            </option>
-            <option value="Ethiopia">
-              Ethiopia
-            </option>
-            <option value="Falkland Islands">
-              Falkland Islands
-            </option>
-            <option value="Faroe Islands">
-              Faroe Islands
-            </option>
-            <option value="Fiji">
-              Fiji
-            </option>
-            <option value="Finland">
-              Finland
-            </option>
-            <option value="France">
-              France
-            </option>
-            <option value="French Guiana">
-              French Guiana
-            </option>
-            <option value="French Polynesia">
-              French Polynesia
-            </option>
-            <option value="French Southern Ter">
-              French Southern Ter
-            </option>
-            <option value="Gabon">
-              Gabon
-            </option>
-            <option value="Gambia">
-              Gambia
-            </option>
-            <option value="Georgia">
-              Georgia
-            </option>
-            <option value="Germany">
-              Germany
-            </option>
-            <option value="Ghana">
-              Ghana
-            </option>
-            <option value="Gibraltar">
-              Gibraltar
-            </option>
-            <option value="Great Britain">
-              Great Britain
-            </option>
-            <option value="Greece">
-              Greece
-            </option>
-            <option value="Greenland">
-              Greenland
-            </option>
-            <option value="Grenada">
-              Grenada
-            </option>
-            <option value="Guadeloupe">
-              Guadeloupe
-            </option>
-            <option value="Guam">
-              Guam
-            </option>
-            <option value="Guatemala">
-              Guatemala
-            </option>
-            <option value="Guinea">
-              Guinea
-            </option>
-            <option value="Guyana">
-              Guyana
-            </option>
-            <option value="Haiti">
-              Haiti
-            </option>
-            <option value="Hawaii">
-              Hawaii
-            </option>
-            <option value="Honduras">
-              Honduras
-            </option>
-            <option value="Hong Kong">
-              Hong Kong
-            </option>
-            <option value="Hungary">
-              Hungary
-            </option>
-            <option value="Iceland">
-              Iceland
-            </option>
-            <option value="Indonesia">
-              Indonesia
-            </option>
-            <option value="India">
-              India
-            </option>
-            <option value="Iran">
-              Iran
-            </option>
-            <option value="Iraq">
-              Iraq
-            </option>
-            <option value="Ireland">
-              Ireland
-            </option>
-            <option value="Isle of Man">
-              Isle of Man
-            </option>
-            <option value="Israel">
-              Israel
-            </option>
-            <option value="Italy">
-              Italy
-            </option>
-            <option value="Jamaica">
-              Jamaica
-            </option>
-            <option value="Japan">
-              Japan
-            </option>
-            <option value="Jordan">
-              Jordan
-            </option>
-            <option value="Kazakhstan">
-              Kazakhstan
-            </option>
-            <option value="Kenya">
-              Kenya
-            </option>
-            <option value="Kiribati">
-              Kiribati
-            </option>
-            <option value="Korea North">
-              Korea North
-            </option>
-            <option value="Korea Sout">
-              Korea South
-            </option>
-            <option value="Kuwait">
-              Kuwait
-            </option>
-            <option value="Kyrgyzstan">
-              Kyrgyzstan
-            </option>
-            <option value="Laos">
-              Laos
-            </option>
-            <option value="Latvia">
-              Latvia
-            </option>
-            <option value="Lebanon">
-              Lebanon
-            </option>
-            <option value="Lesotho">
-              Lesotho
-            </option>
-            <option value="Liberia">
-              Liberia
-            </option>
-            <option value="Libya">
-              Libya
-            </option>
-            <option value="Liechtenstein">
-              Liechtenstein
-            </option>
-            <option value="Lithuania">
-              Lithuania
-            </option>
-            <option value="Luxembourg">
-              Luxembourg
-            </option>
-            <option value="Macau">
-              Macau
-            </option>
-            <option value="Macedonia">
-              Macedonia
-            </option>
-            <option value="Madagascar">
-              Madagascar
-            </option>
-            <option value="Malaysia">
-              Malaysia
-            </option>
-            <option value="Malawi">
-              Malawi
-            </option>
-            <option value="Maldives">
-              Maldives
-            </option>
-            <option value="Mali">
-              Mali
-            </option>
-            <option value="Malta">
-              Malta
-            </option>
-            <option value="Marshall Islands">
-              Marshall Islands
-            </option>
-            <option value="Martinique">
-              Martinique
-            </option>
-            <option value="Mauritania">
-              Mauritania
-            </option>
-            <option value="Mauritius">
-              Mauritius
-            </option>
-            <option value="Mayotte">
-              Mayotte
-            </option>
-            <option value="Mexico">
-              Mexico
-            </option>
-            <option value="Midway Islands">
-              Midway Islands
-            </option>
-            <option value="Moldova">
-              Moldova
-            </option>
-            <option value="Monaco">
-              Monaco
-            </option>
-            <option value="Mongolia">
-              Mongolia
-            </option>
-            <option value="Montserrat">
-              Montserrat
-            </option>
-            <option value="Morocco">
-              Morocco
-            </option>
-            <option value="Mozambique">
-              Mozambique
-            </option>
-            <option value="Myanmar">
-              Myanmar
-            </option>
-            <option value="Nambia">
-              Nambia
-            </option>
-            <option value="Nauru">
-              Nauru
-            </option>
-            <option value="Nepal">
-              Nepal
-            </option>
-            <option value="Netherland Antilles">
-              Netherland Antilles
-            </option>
-            <option value="Netherlands">
-              Netherlands (Holland, Europe)
-            </option>
-            <option value="Nevis">
-              Nevis
-            </option>
-            <option value="New Caledonia">
-              New Caledonia
-            </option>
-            <option value="New Zealand">
-              New Zealand
-            </option>
-            <option value="Nicaragua">
-              Nicaragua
-            </option>
-            <option value="Niger">
-              Niger
-            </option>
-            <option value="Nigeria">
-              Nigeria
-            </option>
-            <option value="Niue">
-              Niue
-            </option>
-            <option value="Norfolk Island">
-              Norfolk Island
-            </option>
-            <option value="Norway">
-              Norway
-            </option>
-            <option value="Oman">
-              Oman
-            </option>
-            <option value="Pakistan">
-              Pakistan
-            </option>
-            <option value="Palau Island">
-              Palau Island
-            </option>
-            <option value="Palestine">
-              Palestine
-            </option>
-            <option value="Panama">
-              Panama
-            </option>
-            <option value="Papua New Guinea">
-              Papua New Guinea
-            </option>
-            <option value="Paraguay">
-              Paraguay
-            </option>
-            <option value="Peru">
-              Peru
-            </option>
-            <option value="Phillipines">
-              Philippines
-            </option>
-            <option value="Pitcairn Island">
-              Pitcairn Island
-            </option>
-            <option value="Poland">
-              Poland
-            </option>
-            <option value="Portugal">
-              Portugal
-            </option>
-            <option value="Puerto Rico">
-              Puerto Rico
-            </option>
-            <option value="Qatar">
-              Qatar
-            </option>
-            <option value="Republic of Montenegro">
-              Republic of Montenegro
-            </option>
-            <option value="Republic of Serbia">
-              Republic of Serbia
-            </option>
-            <option value="Reunion">
-              Reunion
-            </option>
-            <option value="Romania">
-              Romania
-            </option>
-            <option value="Russia">
-              Russia
-            </option>
-            <option value="Rwanda">
-              Rwanda
-            </option>
-            <option value="St Barthelemy">
-              St Barthelemy
-            </option>
-            <option value="St Eustatius">
-              St Eustatius
-            </option>
-            <option value="St Helena">
-              St Helena
-            </option>
-            <option value="St Kitts-Nevis">
-              St Kitts-Nevis
-            </option>
-            <option value="St Lucia">
-              St Lucia
-            </option>
-            <option value="St Maarten">
-              St Maarten
-            </option>
-            <option value="St Pierre & Miquelon">
-              St Pierre & Miquelon
-            </option>
-            <option value="St Vincent & Grenadines">
-              St Vincent & Grenadines
-            </option>
-            <option value="Saipan">
-              Saipan
-            </option>
-            <option value="Samoa">
-              Samoa
-            </option>
-            <option value="Samoa American">
-              Samoa American
-            </option>
-            <option value="San Marino">
-              San Marino
-            </option>
-            <option value="Sao Tome & Principe">
-              Sao Tome & Principe
-            </option>
-            <option value="Saudi Arabia">
-              Saudi Arabia
-            </option>
-            <option value="Senegal">
-              Senegal
-            </option>
-            <option value="Seychelles">
-              Seychelles
-            </option>
-            <option value="Sierra Leone">
-              Sierra Leone
-            </option>
-            <option value="Singapore">
-              Singapore
-            </option>
-            <option value="Slovakia">
-              Slovakia
-            </option>
-            <option value="Slovenia">
-              Slovenia
-            </option>
-            <option value="Solomon Islands">
-              Solomon Islands
-            </option>
-            <option value="Somalia">
-              Somalia
-            </option>
-            <option value="South Africa">
-              South Africa
-            </option>
-            <option value="Spain">
-              Spain
-            </option>
-            <option value="Sri Lanka">
-              Sri Lanka
-            </option>
-            <option value="Sudan">
-              Sudan
-            </option>
-            <option value="Suriname">
-              Suriname
-            </option>
-            <option value="Swaziland">
-              Swaziland
-            </option>
-            <option value="Sweden">
-              Sweden
-            </option>
-            <option value="Switzerland">
-              Switzerland
-            </option>
-            <option value="Syria">
-              Syria
-            </option>
-            <option value="Tahiti">
-              Tahiti
-            </option>
-            <option value="Taiwan">
-              Taiwan
-            </option>
-            <option value="Tajikistan">
-              Tajikistan
-            </option>
-            <option value="Tanzania">
-              Tanzania
-            </option>
-            <option value="Thailand">
-              Thailand
-            </option>
-            <option value="Togo">
-              Togo
-            </option>
-            <option value="Tokelau">
-              Tokelau
-            </option>
-            <option value="Tonga">
-              Tonga
-            </option>
-            <option value="Trinidad & Tobago">
-              Trinidad & Tobago
-            </option>
-            <option value="Tunisia">
-              Tunisia
-            </option>
-            <option value="Turkey">
-              Turkey
-            </option>
-            <option value="Turkmenistan">
-              Turkmenistan
-            </option>
-            <option value="Turks & Caicos Is">
-              Turks & Caicos Is
-            </option>
-            <option value="Tuvalu">
-              Tuvalu
-            </option>
-            <option value="Uganda">
-              Uganda
-            </option>
-            <option value="United Kingdom">
-              United Kingdom
-            </option>
-            <option value="Ukraine">
-              Ukraine
-            </option>
-            <option value="United Arab Erimates">
-              United Arab Emirates
-            </option>
-            <option value="United States of America">
-              United States of America
-            </option>
-            <option value="Uraguay">
-              Uruguay
-            </option>
-            <option value="Uzbekistan">
-              Uzbekistan
-            </option>
-            <option value="Vanuatu">
-              Vanuatu
-            </option>
-            <option value="Vatican City State">
-              Vatican City State
-            </option>
-            <option value="Venezuela">
-              Venezuela
-            </option>
-            <option value="Vietnam">
-              Vietnam
-            </option>
-            <option value="Virgin Islands (Brit)">
-              Virgin Islands (Brit)
-            </option>
-            <option value="Virgin Islands (USA)">
-              Virgin Islands (USA)
-            </option>
-            <option value="Wake Island">
-              Wake Island
-            </option>
-            <option value="Wallis & Futana Is">
-              Wallis & Futana Is
-            </option>
-            <option value="Yemen">
-              Yemen
-            </option>
-            <option value="Zaire">
-              Zaire
-            </option>
-            <option value="Zambia">
-              Zambia
-            </option>
-            <option value="Zimbabwe">
-              Zimbabwe
-            </option>
-          </select>
-        </div>
-      </div>
-      <button
-          class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
-          type="button"
-          @click="saveBillingInfo()"
-      >
-        Save changes
-      </button>
-    </div>
-
-    <!-- Card information -->
-    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
-      <h2 class="text-black font-bold text-lg w-full">
-        Card information
-      </h2>
-      <p class="text-black font-bold opacity-70 max-w-xl">
-        Update your card information below. Leave blank to remove a saved card.
-      </p>
-      <div class="w-full flex flex-col lg:flex-row grid grid-cols-3 gap-4">
-        <div class="flex flex-col mt-4 mb-2 w-full col-span-2">
-          <label class="font-bold text-black opacity-70 mb-3">Card number*</label>
-          <input
-              v-model="card.number"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: 4242 4242 4242"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Expiration date*</label>
-          <input
-              v-model="card.expDate"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: 10/25"
-              type="text"
-          >
-        </div>
-        <div class="flex flex-col mt-4 mb-2 w-full">
-          <label class="font-bold text-black opacity-70 mb-3">Security code*</label>
-          <input
-              v-model="card.securityCode"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full lg:w-auto flex-grow"
-              placeholder="ex: 320"
-              type="text"
-          >
-        </div>
-      </div>
-      <button
-          class="mt-4 py-3 px-6 text-center text-base text-white bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
-          type="button"
-          @click="saveCardInfo()"
-      >
-        Save changes
-      </button>
     </div>
 
     <!-- Team/seats controls -->
@@ -1055,34 +130,34 @@
     </div>
 
     <!-- Reset Email Address -->
-    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
-      <h2 class="text-black font-bold text-lg w-full">
-        Update your email address
-      </h2>
-      <p class="text-black font-bold opacity-70">
-        An email will be sent to you with a confirmation link. Please type your new email in the form below to coninue.
-      </p>
-      <div class="flex flex-col mt-4 mb-2 w-full">
-        <label class="font-bold text-black opacity-70 mb-3">New email address</label>
-        <div class="flex flex-col items-center justify-start space-y-4 w-full">
-          <input
-              id="resetEmail"
-              v-model="resetNewEmail"
-              aria-label="password reset email"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-              placeholder="e.g. jane@gmail.com"
-              type="text"
-          >
-          <button
-              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-              type="button"
-              @click="setPasswordModalActive(true)"
-          >
-            Send email change confirmation email
-          </button>
-        </div>
-      </div>
-    </div>
+    <!--    <div class="flex flex-col p-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">-->
+    <!--      <h2 class="text-black font-bold text-lg w-full">-->
+    <!--        Update your email address-->
+    <!--      </h2>-->
+    <!--      <p class="text-black font-bold opacity-70">-->
+    <!--        An email will be sent to you with a confirmation link. Please type your new email in the form below to coninue.-->
+    <!--      </p>-->
+    <!--      <div class="flex flex-col mt-4 mb-2 w-full">-->
+    <!--        <label class="font-bold text-black opacity-70 mb-3">New email address</label>-->
+    <!--        <div class="flex flex-col items-center justify-start space-y-4 w-full">-->
+    <!--          <input-->
+    <!--              id="resetEmail"-->
+    <!--              v-model="resetNewEmail"-->
+    <!--              aria-label="password reset email"-->
+    <!--              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"-->
+    <!--              placeholder="e.g. jane@gmail.com"-->
+    <!--              type="text"-->
+    <!--          >-->
+    <!--          <button-->
+    <!--              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"-->
+    <!--              type="button"-->
+    <!--              @click="setPasswordModalActive(true)"-->
+    <!--          >-->
+    <!--            Send email change confirmation email-->
+    <!--          </button>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <!-- Request GDPR package-->
     <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
@@ -1150,37 +225,6 @@
         Delete this account
       </button>
     </div>
-
-    <transition name="fade">
-      <!-- Billing confirmation modal -->
-      <div
-          v-if="billingModalActive"
-          class="w-screen h-screen absolute top-0 left-0 right-0 bottom-0 z-50 flex items-center justify-center"
-          style="background: rgba(0,0,0,.5); backdrop-filter: saturate(180%) blur(5px);"
-          @click="setPasswordModalActive(false)"
-      >
-        <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full max-w-lg" @click.stop>
-          <h2 class="text-black font-bold text-xl">
-            {{ passwordError ? "Error on password request!" : "Password reset requested" }}
-          </h2>
-          <p v-if="!passwordError" class="text-gray-600 text-sm">A password reset link has been sent to your account
-            email inbox successfully.
-            Make sure to check your spam folder.</p>
-
-          <p v-if="passwordError" class="text-gray-600 text-sm">
-            <i class="fas fa-exclamation-triangle"/>
-            {{ passwordError }}
-          </p>
-          <button
-              class="mt-4 p-3 text-center text-md text-white bg-blue-600 hover:bg-blue-400 rounded-2xl font-bold"
-              type="button"
-              @click="setBillingModalActive(false)"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </transition>
 
     <transition name="fade">
       <!-- Password reset confirmation modal -->
@@ -1252,24 +296,10 @@
 <script lang="ts">
 import Vue from "vue";
 import {StatusCodes} from "http-status-codes";
-
-type SubInfo = {
-  type: string | null | undefined,
-  status: string,
-  billingDisplay: string,
-  amountDue: number,
-  amountPaid: number,
-  amountRemaining: number,
-  periodEndDate: string | undefined,
-  dueDate: string | undefined,
-  cancelAtPeriodEnd: boolean | undefined,
-  downgrading: boolean,
-  downgradeDate: string | undefined,
-  downgradingTier: string | undefined,
-};
+import {Permission} from "~/plugins/permission-utils";
 
 export default Vue.extend({
-  name: 'DashboardSettings',
+  name: 'DashboardAccount',
   layout: 'dashboard',
   middleware: 'authenticated',
 
@@ -1308,8 +338,22 @@ export default Vue.extend({
 
   data() {
     return {
+      selectedProductId: null as string | null,
+      selectedPurchaseType: undefined as DbProduct["purchase_type"],
+      currentPermission: Permission.FREE,
+      availableSubscriptions: [] as {
+        id?: string,
+        name: string,
+        metadata: any,
+        order: number,
+        price: any
+      }[],
+
+      godmode: false,
+
+      subInfo: {} as (DbSubscription | DbProduct) & { product: unknown | null, price: unknown | null },
+
       loaded: false,
-      billingModalActive: false,
       resetPasswordModalActive: false,
       deleteUserModalActive: false,
       originalHandle: '',
@@ -1369,33 +413,8 @@ export default Vue.extend({
       teamMemberEmail: '',
       showWatermarkNotice: false,
       app_name: process.env.APP_NAME,
-      selectedBillingTier: "free" as SubscriptionTier,
-      billing: {
-        fullName: '',
-        companyName: '',
-        phone: '',
-        address: '',
-        city: '',
-        zipCode: '',
-        country: '',
-      },
-      card: {
-        number: '',
-        expDate: '',
-        securityCode: ''
-      },
-      subInfo: undefined as SubInfo | undefined,
-      savedCard: {
-        name: '',
-        last4: '',
-        expDate: '',
-      },
-      alerts: {
-        successUpdateSub: false,
-        failedUpdateSub: false,
-        successSaveInfo: false,
-        failedSaveInfo: false
-      },
+
+      alerts: {},
     };
   },
 
@@ -1404,20 +423,87 @@ export default Vue.extend({
       handler(val) {
         this.showWatermarkNotice = (!val && this.loaded);
       }
+    },
+    selectedProductId: {
+      handler(val) {
+        this.selectedPurchaseType = this.availableSubscriptions.find(x => x.id == val)?.price?.type;
+      }
     }
   },
 
-  async mounted() {
+  async beforeMount() {
     await this.getUserData();
 
-    this.loaded = true;
+    this.availableSubscriptions = (await this.$axios.post('/products', {})).data;
 
-    await this.populateSubscriptionInfo();
-    await this.populateBillingInfo();
-    await this.populateCardInfo();
+    await this.checkSubscription();
+    this.loaded = true;
   },
 
   methods: {
+    async initCheckout() {
+      try {
+        const token = this.$store.getters['auth/getToken'];
+
+        let response = await this.$axios.post('/stripe/create-checkout-session', {
+          token,
+          productId: this.selectedProductId
+        });
+
+        window.location.replace(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async manageSubscription() {
+      try {
+        const token = this.$store.getters['auth/getToken'];
+
+        let response = await this.$axios.post('/stripe/create-portal-session', {
+          token
+        });
+
+        window.location.replace(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async checkSubscription() {
+      const token = this.$store.getters['auth/getToken'];
+
+      this.subInfo = await this.$axios.$post('/payments/sub-info', {
+        token
+      });
+
+      this.currentPermission = Permission.parse(this.subInfo.tier);
+
+      if (this.subInfo.product_id) {
+        this.selectedProductId = this.subInfo.product_id;
+
+        let product = <any>this.subInfo.product;
+
+        if (!product.active) {
+          let find = this.availableSubscriptions.find(x => x.id === this.selectedProductId);
+
+          if (find) {
+            find.name += " (Legacy)";
+          }
+        }
+      }
+
+      this.availableSubscriptions = this.availableSubscriptions.filter(sub => {
+        let permission = Permission.parse(sub.metadata.permission);
+        return this.currentPermission.permLevel <= permission.permLevel;
+      });
+
+      if (this.currentPermission.permLevel >= Permission.GODMODE.permLevel) {
+        this.godmode = true;
+        this.selectedProductId = "godmode";
+      }
+    },
+
     async getUserData() {
       try {
         const token = this.$store.getters['auth/getToken'];
@@ -1476,16 +562,6 @@ export default Vue.extend({
         }
 
         throw err;
-      }
-    },
-
-    setBillingModalActive(active: boolean) {
-      this.billingModalActive = active;
-
-      if (active) {
-        setTimeout(() => {
-          this.billingModalActive = false;
-        }, 2000);
       }
     },
 
@@ -1581,132 +657,6 @@ export default Vue.extend({
         document.body.removeChild(link);
       }
     },
-
-    async populateSubscriptionInfo() {
-      const token = this.$store.getters['auth/getToken'];
-
-      try {
-        this.subInfo = await this.$axios.$post('/payments/sub-info', {
-          token
-        }) as SubInfo;
-      } catch (e) {
-        if (e.response?.status === StatusCodes.NOT_FOUND) {
-          console.log("No billing info set.");
-          return;
-        }
-
-        throw e;
-      }
-    },
-
-    async populateBillingInfo() {
-      const token = this.$store.getters['auth/getToken'];
-
-      try {
-        const response = await this.$axios.$post('/payments/get-billing-info', {
-          token
-        });
-
-        this.billing.fullName = response.fullName;
-        this.billing.companyName = response.companyName;
-        this.billing.phone = response.phone;
-        this.billing.address = response.address;
-        this.billing.city = response.city;
-        this.billing.zipCode = response.zipCode;
-        this.billing.country = response.country;
-
-      } catch (e) {
-        if (e.response?.status === StatusCodes.NOT_FOUND) {
-          console.log("No billing info set.");
-          return;
-        }
-
-        throw e;
-      }
-    },
-
-    async populateCardInfo() {
-      const token = this.$store.getters['auth/getToken'];
-
-      try {
-        const response = await this.$axios.$post('/payments/get-card-info', {
-          token
-        });
-
-        const ccName = response.name;
-        const ccLast4 = response.last4;
-        const ccExpDate = response.expDate;
-
-        this.savedCard.name = ccName;
-        this.savedCard.last4 = ccLast4;
-        this.savedCard.expDate = ccExpDate;
-
-      } catch (e) {
-        if (e.response?.status === StatusCodes.NOT_FOUND) {
-          console.log("No card info set.");
-          return;
-        }
-
-        throw e;
-      }
-    },
-
-    async saveCardInfo() {
-      const token = this.$store.getters['auth/getToken'];
-
-      try {
-        await this.$axios.$post('/payments/set-card-info', {
-          token,
-          card: {
-            number: this.card.number,
-            expDate: this.card.expDate,
-            cvc: this.card.securityCode
-          }
-        });
-
-        this.alerts.successSaveInfo = true;
-        this.alerts.failedSaveInfo = false;
-      } catch (e) {
-        if (e.response?.status === StatusCodes.BAD_REQUEST) {
-          this.alerts.successSaveInfo = false;
-          this.alerts.failedSaveInfo = true;
-          return;
-        }
-
-        throw e;
-      }
-    },
-
-    async saveBillingInfo() {
-      const token = this.$store.getters['auth/getToken'];
-
-      try {
-        await this.$axios.$post('/payments/set-billing-info', {
-          token,
-          billing: {
-            fullName: this.billing.fullName,
-            companyName: this.billing.companyName ?? undefined,
-            phone: this.billing.companyName ?? undefined,
-            address: this.billing.address,
-            city: this.billing.city,
-            zipCode: this.billing.zipCode,
-            country: this.billing.country
-          }
-        });
-
-        this.alerts.successSaveInfo = true;
-        this.alerts.failedSaveInfo = false;
-      } catch (e) {
-        if (e.response?.status === StatusCodes.BAD_REQUEST) {
-          this.alerts.successSaveInfo = false;
-          this.alerts.failedSaveInfo = true;
-          return;
-        }
-
-        throw e;
-      }
-    }
-
   }
 });
 </script>

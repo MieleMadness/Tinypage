@@ -66,7 +66,7 @@ export default Vue.extend({
         {
           hid: 'twitter:url',
           name: 'twitter:url',
-          content: ('https://' + process.env.HOSTNAME) ?? 'https://app.singlelink.co'
+          content: ('https://' + process.env.HOSTNAME) ?? 'https://tinypage.app'
         },
         {
           hid: 'twitter:card',

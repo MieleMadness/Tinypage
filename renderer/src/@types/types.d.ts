@@ -3,6 +3,8 @@
  * db-types.d.ts types are converted to these types using the DbTypeConverter.
  */
 
+type SubscriptionTier = 'free' | 'basic' | 'pro' | 'business' | string;
+
 /**
  * Profile visibility type
  *

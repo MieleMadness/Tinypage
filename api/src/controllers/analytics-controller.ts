@@ -12,24 +12,25 @@ import Mixpanel from "mixpanel";
 import {config} from "../config/config";
 import {Constants} from "../config/constants";
 import {IpUtils} from "../utils/ip-utils";
+import {Permission, PermissionUtils} from "../utils/permission-utils";
 
 interface LinkAnalyticsRequest extends RequestGenericInterface {
     Params: {
         id?: string
-    }
+    };
 }
 
 interface ProfileAnalyticsRequest extends RequestGenericInterface {
     Params: {
         id?: string
-    }
+    };
 }
 
 interface GetProfileAnalyticsRequest extends AuthenticatedRequest {
     Body: {
         dayRange: number,
         dateRange: string
-    } & AuthenticatedRequest["Body"]
+    } & AuthenticatedRequest["Body"];
 }
 
 const rateLimitAnalytics = {
@@ -72,7 +73,7 @@ export class AnalyticsController extends Controller {
     /**
      * Route for /analytics
      *
-     * Used to get general SingleLink analytics.
+     * Used to get general Tinypage analytics.
      *
      * @param request
      * @param reply
@@ -231,9 +232,13 @@ export class AnalyticsController extends Controller {
                 return;
             }
 
-            // TODO Grab dateRange/dayRange and pass it in for time specific analytics
+            let dayRange = request.body.dayRange || 30;
 
-            return this.analyticsService.getProfileAnalyticsData(request.body.authProfile.id);
+            if (!await PermissionUtils.hasPermission(request.body.authUser.id, Permission.PRO)) {
+                dayRange = 30;
+            }
+
+            return this.analyticsService.getProfileAnalyticsData(request.body.authProfile.id, dayRange);
         } catch (e) {
             if (e instanceof HttpError) {
                 reply.code(e.statusCode);

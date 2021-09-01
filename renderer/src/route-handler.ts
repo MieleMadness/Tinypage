@@ -24,7 +24,7 @@ export class RouteHandler {
         fastify.setNotFoundHandler((request, reply) => {
             reply.type('text/html').status(404);
 
-            //language=HTML
+            // language=HTML
             reply.send(`
                 <html lang="">
                     <head>
@@ -72,6 +72,11 @@ export class RouteHandler {
             // Get requested profile handle from URL
             const handle = request.url.replace('/', '');
 
+            if (!handle) {
+                reply.redirect(StatusCodes.PERMANENT_REDIRECT, config.editorUrl);
+                return;
+            }
+
             // Log MicrositeRequest
             console.log(`${chalk.cyan.bold(config.appName)}: Request received at /${handle} from ${request.ip}`);
 
@@ -92,14 +97,13 @@ export class RouteHandler {
 
             } catch (err) {
                 // Log error
-                console.log(`${chalk.cyan.bold(config.appName)}: Error when processing request`);
-                console.log(`${chalk.cyan.bold(config.appName)}: ${err}`);
+                console.log(`${chalk.cyan.bold(config.appName)}: Error when processing request: ${err}`);
             }
 
             if (!response) {
                 reply.type('text/html').status(404);
 
-                //language=HTML
+                // language=HTML
                 return reply.send(`
                     <!DOCTYPE html>
                     <html lang="">
@@ -178,10 +182,10 @@ export class RouteHandler {
             let avatarHtml = '';
 
             if (imageUrl) {
-                //language=HTML
+                // language=HTML
                 avatarHtml = `<img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>`;
             } else if (profile.metadata?.coverImage) {
-                //language=HTML
+                // language=HTML
                 avatarHtml = `<img class="nc-avatar mb-2" src="https://www.gravatar.com/avatar/${user.emailHash}"
                                    alt="avatar"
                                    style="visibility: hidden; margin-top: min(calc(56.25vw - 65px), 130px);"
@@ -197,7 +201,7 @@ export class RouteHandler {
             }
 
             // Define Link HTML Block
-            //language=HTML
+            // language=HTML
             let linkHtml = '';
 
             // Define links & sort by order
@@ -212,7 +216,7 @@ export class RouteHandler {
                 switch (link.type) {
                     case 'link': {
                         let subtitleHtml = '';
-                        //language=HTML
+                        // language=HTML
                         if (link.subtitle) {
                             subtitleHtml = `<span
                                     class="text-sm text-gray-700 sl-link-subtitle mt-1"
@@ -220,8 +224,16 @@ export class RouteHandler {
                         }
                         let style = link.style ?? '';
                         let customCss = link.customCss ?? '';
+                        let buttonImage = link.metadata?.buttonImageUrl;
 
-                        //language=HTML
+                        let buttonImageHtml = '';
+
+                        if (buttonImage) {
+                            // language=HTML
+                            buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                        }
+
+                        // language=HTML
                         linkHtml += `
                             <style>
                                 ${customCss}
@@ -235,9 +247,11 @@ export class RouteHandler {
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="${style}"
+                                        style="position: relative; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
-                                    <span class="font-medium text-gray-900 sl-label">${link.label}</span>${subtitleHtml}
+                                    ${buttonImageHtml}
+                                    <span class="font-medium text-gray-900 sl-label"
+                                    >${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span>
                                 </div>
                             </a>
                         `;
@@ -320,12 +334,15 @@ export class RouteHandler {
                                     case "pinterest":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-pinterest.svg`).toString('utf-8');
                                         break;
+                                    case "zoom":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-zoom.svg`).toString('utf-8');
+                                        break;
                                 }
 
                                 let scale = null;
                                 scale = siSettings.scale;
 
-                                //language=HTML
+                                // language=HTML
                                 linkHtml += `
                                     <a id="sl-item-a-${link.id}-${i}"
                                        href="${siSettings.url}"
@@ -375,7 +392,24 @@ export class RouteHandler {
                         let encodedVCard = encodeURI(vCardData);
                         let dataUrl = 'data:text/x-vcard;urlencoded,' + encodedVCard;
 
-                        //language=HTML
+                        let buttonImage = link.metadata?.buttonImageUrl;
+
+                        let buttonImageHtml = '';
+
+                        if (buttonImage) {
+                            // language=HTML
+                            buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                        }
+
+                        let subtitleHtml = '';
+                        // language=HTML
+                        if (link.subtitle) {
+                            subtitleHtml = `<span
+                                    class="text-sm text-gray-700 sl-link-subtitle mt-1"
+                            >${link.subtitle}</span>`;
+                        }
+
+                        // language=HTML
                         linkHtml += `
                             <style>
                                 ${customCss}
@@ -383,20 +417,23 @@ export class RouteHandler {
 
                             <a
                                     id="sl-item-${link.id}"
-                                    href="#"
+                                    href="${config.apiUrl}/analytics/link/record/${link.id}"
                                     class="w-full sl-item-parent"
                                     onclick="{
                                            let recordUrl = '${config.apiUrl}/analytics/link/record/${link.id}'
                                            fetch(recordUrl, {method: 'POST'});
+                                           
                                            window.open('${dataUrl}');
                                            return false;
                                        }"
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="${style}"
+                                        style="position: relative; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
-                                    <span class="font-medium text-gray-900 sl-label">${link.label}</span>
+                                    ${buttonImageHtml}
+                                    <span class="font-medium text-gray-900 sl-label"
+                                    >${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span>
                                 </div>
                             </a>
                         `;
@@ -407,7 +444,7 @@ export class RouteHandler {
                         let style = link.style ?? '';
                         let customCss = link.customCss ?? '';
 
-                        //language=HTML
+                        // language=HTML
                         linkHtml += `
                             <style>
                                 ${customCss}
@@ -438,7 +475,7 @@ export class RouteHandler {
 
                             let color = dividerSettings.color;
 
-                            //language=HTML
+                            // language=HTML
                             linkHtml += `
                                 <style>
                                     ${customCss}
@@ -464,7 +501,7 @@ export class RouteHandler {
                         let style = link.style ?? '';
                         let customCss = link.customCss ?? '';
 
-                        //language=HTML
+                        // language=HTML
                         linkHtml += `
                             <style>
                                 ${customCss}
@@ -486,7 +523,7 @@ export class RouteHandler {
                         let style = link.style ?? '';
                         let customCss = link.customCss ?? '';
 
-                        //language=HTML
+                        // language=HTML
                         linkHtml += `
                             <style>
                                 ${customCss}
@@ -506,7 +543,7 @@ export class RouteHandler {
 
                         let watchId = link.url.match(/v=([^&]*)/);
                         if (watchId && watchId.length > 0 && watchId[1]) {
-                            //language=HTML
+                            // language=HTML
                             linkHtml += `
                                 <style>
                                     ${customCss}
@@ -532,7 +569,7 @@ export class RouteHandler {
                                 <div class="embed-container" style="margin-bottom:.75rem;${style}">
                                     <iframe title="youtube"
                                             src="https://www.youtube.com/embed/${watchId[1]}?playsinline=0&controls=2"
-                                            frameborder="0" allowfullscreen loading="lazy"
+                                            frameborder="0" allowfullscreen
                                     ></iframe>
                                 </div>
                             `;
@@ -543,29 +580,29 @@ export class RouteHandler {
             }
 
             // Define headline HTML
-            //language=HTML
+            // language=HTML
             const headlineHtml = `<h1 class="text-black font-semibold text-2xl sl-headline">${profile.headline}</h1>`;
 
             // Define subtitle HTML
             let subtitleHtml = ``;
-            //language=HTML
+            // language=HTML
             if (profile.subtitle) {
                 subtitleHtml = `<h3 class="text-gray-600 mb-4 sl-subtitle">${profile.subtitle}</h3>`;
             }
 
             // Define theme colors html
-            let themeColorsHtml = ``;
+            let coverImageHtml = ``;
 
             if (profile.metadata?.coverImage) {
-                //language=HTML
-                themeColorsHtml += `
+                // language=HTML
+                coverImageHtml += `
                     <style>
                         img.nc-avatar {
                             border: solid 2px #FFF;
                             /* Your Avatar border width & color */
                             box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
-                            width: 120px !important;
-                            height: 120px !important;
+                            width: 120px;
+                            height: 120px;
                             margin-top: min(calc(56.25vw - 65px), 180px);
                         }
 
@@ -632,7 +669,7 @@ export class RouteHandler {
         </div>`;
 
                 if (config.freeSignup) {
-                    //language=HTML
+                    // language=HTML
                     watermarkHtml += `
                         <a class="text-blue-600 hover-underline text-sm" href="${config.editorUrl}/create-account"
                            target="_blank"
@@ -687,7 +724,7 @@ export class RouteHandler {
             let shareMenuHtml = "";
             if (profile.metadata?.shareMenu) {
 
-                //language=HTML
+                // language=HTML
                 shareMenuHtml += `
                     <div id="qrcode"></div>
 
@@ -1022,13 +1059,7 @@ export class RouteHandler {
                         }
 
                         .nc-link {
-                            background-color: #FFF;
                             padding: 1rem;
-                            margin-bottom: .75rem;
-                            width: 100%;
-                            border-radius: .25rem;
-                            box-shadow: 0 1px 3px 0 rgb(0 0 (0 / 10%)), 0 1 px 2 px 0 rgb(0 0 (0 / 6 %));
-                            font-weight: 500;
                             cursor: pointer;
                             transition: transform .15s ease-in-out;
                         }
@@ -1063,6 +1094,14 @@ export class RouteHandler {
                             .page-width {
                                 max-width: 35rem;
                             }
+                        }
+
+                        .button-image {
+                            position: absolute;
+                            width: 84px;
+                            top: 0;
+                            left: 0;
+                            border-radius: 1rem;
                         }
                     </style>
 
@@ -1120,6 +1159,13 @@ export class RouteHandler {
                             padding: 1rem;
                             cursor: pointer;
                             transition: all .15s ease-in-out;
+                        }
+
+                        .social-button :active,
+                        .social-button :focus,
+                        .social-button :hover {
+                            filter: brightness(1.05);
+                            cursor: pointer;
                         }
                     </style>
 
@@ -1187,18 +1233,13 @@ export class RouteHandler {
                             ${headlineHtml}
                             ${subtitleHtml}
                             ${linkHtml}
-                            <!-- Site html -->
-                            <div id="custom-html">
-                                ${profile.customHtml}
-                            </div>
                             <!-- Theme html -->
                             <div id="theme-html">
-                                ${theme.customHtml}
                                 <div class="sl-banner"></div>
                             </div>
                             <!-- Watermark -->
                             ${watermarkHtml}
-                            ${themeColorsHtml}
+                            ${coverImageHtml}
                             ${pageHtml}
                         </section>
                     </div>

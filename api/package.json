@@ -64,7 +64,7 @@
     "object-hash": "^2.2.0",
     "pageres": "github:neutron-creative/pageres#master",
     "pg": "^8.6.0",
-    "stripe": "^8.152.0"
+    "stripe": "^8.171.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

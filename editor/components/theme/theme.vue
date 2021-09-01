@@ -38,7 +38,7 @@ export default Vue.extend({
     };
   },
 
-  async mounted() {
+  async beforeMount() {
     this.theme = await this.$axios.$post('/theme/' + this.id, {
       token: this.$store.getters['auth/getToken']
     }) as EditorTheme;

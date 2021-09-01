@@ -3,7 +3,7 @@
     <div class="flex flex-row items-center justify-start mb-4 space-x-4">
       <img class="w-10" src="/icons/Rocket.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        Site analytics <span class="hidden lg:flex ml-2">(30 days)</span>
+        Site analytics
       </h1>
     </div>
 
@@ -17,6 +17,19 @@
         <span class="text-xl xl:text-base font-bold mb-1 xl:mb-0 xl:mr-2">Notice:</span>
         <span class="text-sm">Privacy mode is currently enabled. Disable privacy mode to collect analytics data!</span>
       </div>
+    </div>
+
+    <div class="flex flex-col justify-center items-center mb-2">
+      <div>
+        <label class="font-semibold mb-2">Days Range</label>
+        <input v-model="dayRange"
+               type="number"
+               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+               @blur="onDayRangeChange"
+               :disabled="!hasPerms"
+        >
+      </div>
+      <div v-if="!hasPerms">Pro tier or higher is required to view analytics beyond 30 days.</div>
     </div>
 
     <div v-if="!user.activeProfile.metadata.privacyMode" class="grid lg:grid-cols-3 gap-x-4 w-full">
@@ -89,38 +102,12 @@
 
 <script lang="ts">
 import Vue from "vue";
+import {Permission} from "~/plugins/permission-utils";
 
 export default Vue.extend({
   name: 'DashboardAnalytics',
   layout: 'dashboard',
   middleware: 'authenticated',
-  data() {
-    return {
-      analytics: {
-        totalProfileViews: 0,
-        linkVisits: new Array<LinkVisit>(),
-        clickThroughRate: 0,
-      },
-      visitSum: 0,
-      originalHandle: '',
-      user: {
-        name: '',
-        emailHash: '',
-        activeProfile: {
-          imageUrl: '',
-          headline: '',
-          subtitle: '',
-          handle: '',
-          customDomain: '',
-          visibility: '',
-          showWatermark: false,
-          metadata: {
-            privacyMode: false
-          },
-        }
-      },
-    };
-  },
 
   head() {
     return {
@@ -155,6 +142,41 @@ export default Vue.extend({
     };
   },
 
+  data() {
+    return {
+      dayRange: 30,
+
+      analytics: {
+        totalProfileViews: 0,
+        linkVisits: new Array<LinkVisit>(),
+        clickThroughRate: 0,
+      },
+
+      visitSum: 0,
+      originalHandle: '',
+
+      user: {
+        name: '',
+        emailHash: '',
+        activeProfile: {
+          imageUrl: '',
+          headline: '',
+          subtitle: '',
+          handle: '',
+          customDomain: '',
+          visibility: '',
+          showWatermark: false,
+          metadata: {
+            privacyMode: false
+          },
+        }
+      },
+
+      hasPerms: true,
+      subInfo: {} as (DbSubscription | DbProduct) & { product: unknown | null, price: unknown | null },
+    };
+  },
+
   async mounted() {
     await this.getUserData();
 
@@ -167,13 +189,34 @@ export default Vue.extend({
     for (let i = 0; i < this.analytics.linkVisits.length; i++) {
       this.visitSum += this.analytics.linkVisits[i].views;
     }
+
+    const token = this.$store.getters['auth/getToken'];
+
+    this.subInfo = await this.$axios.$post('/payments/sub-info', {
+      token
+    });
+
+    let permLevel = Permission.PRO.permLevel;
+
+    this.hasPerms = permLevel <= Permission.parse(this.subInfo.tier).permLevel;
   },
 
   methods: {
+    onDayRangeChange(evt: Event) {
+      let target = evt.target as HTMLInputElement;
+      let value = target.value;
+
+      this.dayRange = Number.parseInt(value);
+
+      this.getProfileAnalytics().catch(() => {
+      });
+    },
+
     async getProfileAnalytics() {
       try {
         this.analytics = await this.$axios.$post('/analytics/profile', {
-          token: this.$store.getters['auth/getToken']
+          token: this.$store.getters['auth/getToken'],
+          dayRange: this.dayRange
         });
 
         let linkVisits = this.analytics.linkVisits;
@@ -192,6 +235,7 @@ export default Vue.extend({
         console.log(err);
       }
     },
+
     async getUserData() {
       try {
         const token = this.$store.getters['auth/getToken'];

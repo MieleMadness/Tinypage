@@ -45,6 +45,7 @@
             >
           </div>
         </div>
+
         <div class="flex flex-col lg:flex-row mb-4">
           <div class="flex flex-col w-full lg:w-1/2 mr-3 mb-3 lg:mb-0">
             <label class="font-bold opacity-70 text-sm text-black" for="handle">Handle</label>
@@ -63,7 +64,7 @@
             </div>
           </div>
           <div class="flex flex-col w-full lg:w-1/2">
-            <label class="font-bold opacity-70 text-sm text-black">Visibility</label>
+            <label class="font-bold opacity-70 text-sm text-black">Visibility {{ getFormattedProfileUsage() }}</label>
             <select
                 id="visibility"
                 v-model="user.activeProfile.visibility"
@@ -81,6 +82,7 @@
             </select>
           </div>
         </div>
+
         <div class="flex flex-row items-center justify-center space-x-4 mb-4">
           <!--          <input-->
           <!--            id="avatar_url"-->
@@ -89,24 +91,27 @@
           <!--            name="avatar_url"-->
           <!--            type="hidden"-->
           <!--          >-->
-          <div class="flex flex-col w-auto flex-grow flex-1">
-            <label class="font-bold opacity-70 text-sm text-black" for="image_url">Avatar Image URL</label>
-            <input
-                id="image_url"
-                v-model="user.activeProfile.imageUrl"
-                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-                placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
-                type="text"
-            >
-
-            <label class="font-bold opacity-70 text-sm text-black mt-2" for="image_url">Cover Image URL</label>
-            <input
-                id="cover_image_url"
-                v-model="user.activeProfile.metadata.coverImage"
-                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-                placeholder="e.g. https://i.imgur.com/KM7HbTC.png"
-                type="text"
-            >
+          <div class="flex flex-col lg:flex-row w-auto flex-grow flex-1">
+            <div class="flex flex-col w-full lg:w-1/2 mr-3 mb-3 lg:mb-0">
+              <label class="font-bold opacity-70 text-sm text-black" for="image_url">Avatar Image URL</label>
+              <input
+                  id="image_url"
+                  v-model="user.activeProfile.imageUrl"
+                  class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                  placeholder="e.g. https://uifaces.co/our-content/donated/rSuiu_Hr.jpg"
+                  type="text"
+              >
+            </div>
+            <div class="flex flex-col w-full lg:w-1/2">
+              <label class="font-bold opacity-70 text-sm text-black" for="image_url">Cover Image URL</label>
+              <input
+                  id="cover_image_url"
+                  v-model="user.activeProfile.metadata.coverImage"
+                  class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+                  placeholder="e.g. https://i.imgur.com/KM7HbTC.png"
+                  type="text"
+              >
+            </div>
           </div>
         </div>
 
@@ -571,6 +576,11 @@ export default Vue.extend({
       app_name: this.$customSettings.productName,
       rendererUrl: process.env.RENDERER_URL,
 
+      profileUsage: {
+        published: 0,
+        allowed: 0
+      },
+
       alerts: {
         googleLinked: null as boolean | null,
         linktreeImported: null as boolean | null,
@@ -602,9 +612,23 @@ export default Vue.extend({
     }
 
     this.loaded = true;
+
+    await this.updateProfileUsage();
   },
 
   methods: {
+    async updateProfileUsage() {
+      const token = this.$store.getters['auth/getToken'];
+
+      this.profileUsage = await this.$axios.$post('/profile/allowed-pages', {
+        token
+      }) as { published: number, allowed: number };
+    },
+
+    getFormattedProfileUsage(): string {
+      return `(${this.profileUsage.published}/${this.profileUsage.allowed} pages public)`;
+    },
+
     async getUserData() {
       try {
         const token = this.$store.getters['auth/getToken'];
@@ -649,12 +673,9 @@ export default Vue.extend({
         });
 
         // Success, reload
-        this.$nextTick(() => {
-          window.location.replace('/dashboard');
-        });
+        window.location.replace('/dashboard');
       }
-    }
-    ,
+    },
 
     async exportProfile() {
       if (process.client) {

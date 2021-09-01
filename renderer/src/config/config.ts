@@ -11,19 +11,19 @@ let config = {
     port: process.env.PORT ?? 80,
 
     // Define app name
-    appName: process.env.APP_NAME ?? 'Singlelink',
+    appName: process.env.APP_NAME ?? 'Tinypage',
 
     // Define free signup
     freeSignup: process.env.FREE_SIGNUP === "true",
 
     // Define hostname
-    hostname: process.env.HOSTNAME ?? 'singlel.ink',
+    hostname: process.env.HOSTNAME ?? 'tinypage.app',
 
     // Define API URL
-    apiUrl: process.env.API_URL ?? 'https://api.singlelink.co',
+    apiUrl: process.env.API_URL ?? 'https://api.tinypage.app',
 
     // Define API URL
-    editorUrl: process.env.EDITOR_URL ?? 'https://app.singlelink.co'
+    editorUrl: process.env.EDITOR_URL ?? 'https://tinypage.app'
 };
 
 export default config;

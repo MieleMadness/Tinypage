@@ -9,7 +9,6 @@ import {InfoController} from "./controllers/info-controller";
 import {Auth} from "./utils/auth";
 import {CustomDomainHandler} from "./utils/custom-domain-handler";
 import {AdminController} from "./controllers/admin-controller";
-import {PermissionController} from "./controllers/permission-controller";
 import {AuthController} from "./controllers/auth-controller";
 import {SecurityUtils} from "./utils/security-utils";
 import {JobSystem} from "./jobs/job-system";
@@ -22,8 +21,9 @@ import {LogUtils} from "./utils/log-utils";
 import {MarketplaceController} from "./controllers/marketplace-controller";
 import {config} from "./config/config";
 import {ProfileSerializer} from "./utils/profile-serializer";
+import {PermissionUtils} from "./utils/permission-utils";
 
-console.log("Initializing Singlelink Enterprise");
+console.log("Initializing Tinypage Enterprise");
 
 let server: SingleLinkServer = new SingleLinkServer();
 let database = new DatabaseManager();
@@ -35,7 +35,7 @@ start().then(() => {
 async function start() {
     await database.initialize();
 
-    // Singlelink Utils
+    // Tinypage Utils
     // Initialize Lock System
     await DbLocks.initialize(database.pool);
 
@@ -45,6 +45,7 @@ async function start() {
     CustomDomainHandler.initialize(database.pool);
     LogUtils.initialize(database.pool);
     ProfileSerializer.initialize(database.pool);
+    PermissionUtils.initialize(database.pool);
 
     // Initialize screenshot API
     await ScreenshotUtils.initialize();
@@ -52,7 +53,7 @@ async function start() {
     // Initialize Job System
     await JobSystem.initialize(database.pool);
 
-    // Singlelink main controllers
+    // Tinypage main controllers
     server.addController(new AnalyticsController(server.fastify, database));
     server.addController(new AuthController(server.fastify, database));
     server.addController(new LinkController(server.fastify, database));
@@ -61,7 +62,6 @@ async function start() {
     server.addController(new UserController(server.fastify, database));
 
     // Management controllers
-    server.addController(new PermissionController(server.fastify, database));
     server.addController(new MarketplaceController(server.fastify, database));
 
     // Admin controllers

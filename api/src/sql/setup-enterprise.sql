@@ -12,35 +12,39 @@ create table if not exists enterprise.stripe_history_events
 
 create table if not exists enterprise.subscriptions
 (
-    user_id       bigint unique references app.users (id),
-    tier          subscription_t,
-    stripe_sub_id text unique
+    user_id      bigint unique references app.users (id),
+    tier         text,
+    product_id   text unique,
+    created_on   timestamp not null default current_timestamp,
+    last_updated timestamp not null default current_timestamp
 );
 
-create index if not exists enterprise_subscriptions_index on enterprise.subscriptions (stripe_sub_id);
+create index if not exists enterprise_subscriptions_user_id on enterprise.subscriptions (user_id);
+create index if not exists enterprise_subscriptions_index on enterprise.subscriptions (product_id);
 
-create table if not exists enterprise.seat_members
+create table if not exists enterprise.products
 (
-    owner_user_id       bigint references app.users (id),
-    seat_member_user_id bigint references app.users (id),
-    role                text not null default 'member',
-    expired             bool not null default false,
-    unique (owner_user_id, seat_member_user_id),
-
-    check (owner_user_id != seat_member_user_id)
+    user_id    bigint references app.users (id),
+    tier       text,
+    product_id text unique,
+    created_on timestamp not null default current_timestamp
 );
+
+create index if not exists enterprise_products_user_id on enterprise.products (user_id);
+create index if not exists enterprise_products_index on enterprise.products (product_id);
 
 create table if not exists enterprise.profile_members
 (
-    owner_user_id bigint references app.users (id),
-    profile_id    bigint references app.profiles,
-    role          text not null default 'member',
-    unique (owner_user_id, profile_id)
+    user_id    bigint references app.users (id),
+    profile_id bigint references app.profiles (id),
+    role       text not null default 'member',
+    unique (user_id, profile_id)
 );
 
-create index if not exists enterprise_seats_owner_user_id on enterprise.seat_members (owner_user_id);
-create index if not exists enterprise_seats_seat_user_id on enterprise.seat_members (seat_member_user_id);
-create index if not exists enterprise_seats_expired on enterprise.seat_members (expired);
+create table if not exists enterprise.god_mode
+(
+    user_id bigint references app.users (id) primary key
+);
 
 create table if not exists enterprise.customization
 (

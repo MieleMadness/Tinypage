@@ -1,5 +1,5 @@
 /*
-  This is a script that manages admins in Singlelink.
+  This is a script that manages admins in Tinypage.
   Environment vars:
   POSTGRESQL - Postgresql Connection String
 

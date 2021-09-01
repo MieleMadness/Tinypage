@@ -44,6 +44,10 @@ export default Vue.extend({
       return;
     }
 
+    if (this.$route.fullPath.includes("/appearance/preview")) {
+      return;
+    }
+
     const gdprConsent = localStorage.getItem("gdpr_consent");
 
     if (!gdprConsent) {

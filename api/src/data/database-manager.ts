@@ -14,7 +14,7 @@ export class DatabaseManager {
     });
 
     /**
-     * Sets up the database that will be used by SingleLink.
+     * Sets up the database that will be used by Tinypage.
      *
      * By default, this will be a PostgreSQL database.
      */

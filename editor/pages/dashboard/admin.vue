@@ -11,35 +11,126 @@
       {{ error }}
     </div>
 
-    <!-- Banned User Controls -->
+
+    <!-- Global Stats -->
     <div class="flex flex-col py-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
       <h2 class="text-black font-bold text-lg w-full px-6 mb-6">
-        Manage Banned Users
+        Global Statistics
+      </h2>
+
+      <div v-for="(value, name) in globalStats"
+           class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
+      >
+        {{ name }}: {{ value }}
+      </div>
+    </div>
+
+    <!--  God Mode Controls -->
+    <div class="flex flex-col py-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
+      <h2 class="text-black font-bold text-lg w-full px-6 mb-6">
+        God Mode Users
       </h2>
       <div class="w-full bg-gray-200" style="height:1px;"/>
 
       <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
         <div class="flex flex-col items-center justify-start space-y-4 w-full">
           <input
-              id="banUserId"
-              v-model="banUserId"
-              aria-label="ban user id"
+              v-model="godModeEmail"
+              aria-label="user email"
               class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-              placeholder="e.g. 1273"
-              type="text"
-          >
-          <input
-              id="banUseReason"
-              v-model="banUserReason"
-              aria-label="ban user reason"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
-              placeholder="e.g. Phishing"
+              placeholder="User Email: e.g. user@example.com"
               type="text"
           >
           <button
               class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
               type="button"
-              @click="banUser(banUserId, banUserReason || undefined); banUserReason = null; banUserId = null"
+              @click="addGodModeUser(godModeEmail); godModeEmail = null;"
+          >
+            Add User
+          </button>
+        </div>
+      </div>
+
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+
+      <div class="flex flex-row items-center justify-start">
+        <h2 class="text-black font-bold text-lg px-6 mb-6 mt-6">
+          Users {{ `(${godModeUsers.length})` }}
+        </h2>
+        <button
+            class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+            type="button"
+            @click="showGodModeUsers = !showGodModeUsers;"
+        >
+          {{ showGodModeUsers ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+      <div
+          v-for="user in godModeUsers"
+          v-if="showGodModeUsers"
+          :key="user.id"
+          class="flex flex-col py-2 px-8 cursor-pointer w-full items-start justify-start border border-gray-200 border-t-0 border-l-0 border-r-0"
+      >
+        <p class="font-bold text-black text-lg mr-auto">
+          Id: {{ user.id }}
+        </p>
+
+        <div class="flex flex-row items-center justify-start w-full">
+          <div>
+            <div
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Email: {{ user.email }}
+            </div>
+            <div
+                class="py-1 px-2 mb-1 text-gray-600 text-sm font-extrabold leading-tight"
+            >
+              Created On: {{ new Date(user.createdOn).toUTCString() }}
+            </div>
+          </div>
+
+          <button
+              class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
+              type="button"
+              @click="removeGodModeUser(user.email)"
+          >
+            Remove User
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Banned User Controls -->
+    <div class="flex flex-col py-6 bg-white shadow rounded-2xl justify-center items-start w-full mb-8">
+      <h2 class="text-black font-bold text-lg w-full px-6 mb-6">
+        Banned Users
+      </h2>
+      <div class="w-full bg-gray-200" style="height:1px;"/>
+
+      <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
+        <div class="flex flex-col items-center justify-start space-y-4 w-full">
+          <input
+              v-model="banUserEmail"
+              aria-label="ban user id"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="User Email: e.g. user@example.com"
+              type="text"
+          >
+          <input
+              v-model="banUserReason"
+              aria-label="ban user reason"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              placeholder="Reason e.g. Phishing"
+              type="text"
+          >
+          <button
+              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+              type="button"
+              @click="banUser(banUserEmail, banUserReason || undefined); banUserReason = null; banUserEmail = null"
           >
             Ban User
           </button>
@@ -50,7 +141,7 @@
 
       <div class="flex flex-row items-center justify-start">
         <h2 class="text-black font-bold text-lg px-6 mb-6 mt-6">
-          Banned users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
+          Users {{ loadedBanned ? `(${bannedUsers.length} banned)` : '' }}
         </h2>
         <button
             class="py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
@@ -105,7 +196,7 @@
           <button
               class="ml-auto py-3 px-6 text-sm text-white text-center bg-red-500 hover:bg-red-700 rounded-2xl font-bold"
               type="button"
-              @click="unbanUser(banned.ban.user_id)"
+              @click="unbanUser(banned.userData.email)"
           >
             Unban User
           </button>
@@ -127,9 +218,10 @@ export default Vue.extend({
   name: 'DashboardAdmin',
   layout: 'dashboard',
   middleware: 'authenticated',
+
   head() {
     return {
-      title: 'Admin - ' + process.env.APP_NAME,
+      title: 'Admin - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',
@@ -139,33 +231,73 @@ export default Vue.extend({
       ]
     };
   },
+
   data() {
     return {
+      godModeEmail: '',
+      godModeUsers: [],
+      showGodModeUsers: false,
+
       loadedBanned: false,
       showBanned: false,
       bannedUsers: [] as { ban: DbBanned, userData: SensitiveUser | undefined }[],
-      banUserId: null as null | string,
+      banUserEmail: null as null | string,
       banUserReason: null as null | string,
 
       error: null as null | string,
       errorIntervalHandler: undefined as any,
 
-      isAdmin: false
+      isAdmin: false,
+
+      globalStats: {}
     };
   },
 
-  async beforeMount() {
+  async mounted() {
     const permGroup = await this.$axios.$post("/admin/perm-group", {
       token: this.$store.getters['auth/getToken']
     });
 
     this.isAdmin = permGroup["groupName"] === 'admin';
-  },
 
-  async mounted() {
+    this.globalStats = await this.$axios.$get("/analytics") as {
+      users: number,
+      profiles: number,
+      profilesPublished: number,
+      links: number,
+      themes: number
+    };
+
+    this.getGodModeUsers().catch();
   },
 
   methods: {
+    async addGodModeUser(email: string) {
+      await this.$axios.$post("/admin/set-godmode-user", {
+        token: this.$store.getters['auth/getToken'],
+        email,
+        set: true
+      });
+
+      await this.getGodModeUsers();
+    },
+
+    async removeGodModeUser(email: string) {
+      await this.$axios.$post("/admin/set-godmode-user", {
+        token: this.$store.getters['auth/getToken'],
+        email,
+        set: false
+      });
+
+      await this.getGodModeUsers();
+    },
+
+    async getGodModeUsers() {
+      this.godModeUsers = await this.$axios.$post("/admin/godmode-users", {
+        token: this.$store.getters['auth/getToken']
+      });
+    },
+
     async refreshBannedUsersFirstTime() {
       if (!this.loadedBanned) {
         await this.refreshBannedUsers();
@@ -181,20 +313,20 @@ export default Vue.extend({
       })).data as { ban: DbBanned, userData: SensitiveUser | undefined }[];
     },
 
-    async banUser(id: string, reason?: string) {
+    async banUser(email: string, reason?: string) {
       let token = this.$store.getters['auth/getToken'];
 
       try {
         await this.$axios.post('/admin/set-banned', {
           token,
-          userId: id,
+          email: email,
           reason: reason,
           banned: true
         });
 
         await this.refreshBannedUsers();
 
-        console.log(`Banned user: ${id}${reason ? " for reason: " + reason : ""}`);
+        console.log(`Banned user: ${email}${reason ? " for reason: " + reason : ""}`);
       } catch (err) {
         this.error = err.response.data.error;
 
@@ -205,18 +337,18 @@ export default Vue.extend({
       }
     },
 
-    async unbanUser(id: string) {
+    async unbanUser(email: string) {
       let token = this.$store.getters['auth/getToken'];
 
       await this.$axios.post('/admin/set-banned', {
         token,
-        userId: id,
+        email: email,
         banned: false
       });
 
       await this.refreshBannedUsers();
 
-      console.log(`Unbanned user: ${id}`);
+      console.log(`Unbanned user: ${email}`);
     }
   }
 });

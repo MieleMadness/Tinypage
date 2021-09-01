@@ -37,7 +37,7 @@ export default Vue.extend({
     };
   },
 
-  mounted() {
+  beforeMount() {
     this.id = this.$route.path.replace('/dashboard/appearance/preview/', '');
     this.loadThemes();
   },

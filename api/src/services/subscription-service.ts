@@ -6,7 +6,7 @@ import {DatabaseManager} from "../data/database-manager";
 import Stripe from "stripe";
 import {HttpError} from "../utils/http-error";
 import {StatusCodes} from "http-status-codes";
-import {QueryResult} from "pg";
+import {Permission, PermissionUtils} from "../utils/permission-utils";
 
 /**
  * Handles payment stuff.
@@ -57,6 +57,41 @@ export class SubscriptionService extends DatabaseService {
         };
     }
 
+    async getProducts() {
+        let products: Stripe.Product[] = (await this.stripe.products.list({active: true})).data;
+
+        let data = [];
+
+        for (let product of products) {
+            if (product.metadata?.tinypage.toLowerCase() !== "true")
+                continue;
+
+            let prices = (await this.stripe.prices.list({
+                product: product.id,
+                limit: 1
+            })).data;
+            let price = prices[0];
+
+            data.push({
+                id: product.id,
+                name: product.name,
+                metadata: product.metadata,
+                order: product.metadata?.order ?? -1,
+                price: price
+            });
+        }
+
+        data.sort((a, b) => {
+            if (a.order === b.order) return 0;
+            if (a.order < b.order) return -1;
+            if (a.order > b.order) return 1;
+
+            return 0;
+        });
+
+        return data;
+    }
+
     async getCardInfo(user: SensitiveUser) {
         let customer = await this.getOrCreateStripeCustomer(user);
 
@@ -69,7 +104,11 @@ export class SubscriptionService extends DatabaseService {
             };
         }
 
-        let payments = (await this.stripe.paymentMethods.list({type: "card", customer: customer.id, limit: 1})).data;
+        let payments = (await this.stripe.paymentMethods.list({
+            type: "card",
+            customer: customer.id,
+            limit: 1
+        })).data;
 
         let paymentInfo;
 
@@ -132,7 +171,7 @@ export class SubscriptionService extends DatabaseService {
                 } : undefined,
                 phone: billing.phone,
                 metadata: {
-                    product: "Singlelink Enterprise",
+                    product: "Tinypage Enterprise",
                     company: billing.companyName ?? null
                 }
             });
@@ -150,7 +189,11 @@ export class SubscriptionService extends DatabaseService {
 
         await this.setStripeId(user.id, customer.id);
 
-        let payments = (await this.stripe.paymentMethods.list({type: "card", customer: customer.id, limit: 1})).data;
+        let payments = (await this.stripe.paymentMethods.list({
+            type: "card",
+            customer: customer.id,
+            limit: 1
+        })).data;
 
         if (!card || !card.number || !card.expDate || !card.cvc) {
             let promises = [];
@@ -200,581 +243,122 @@ export class SubscriptionService extends DatabaseService {
         console.log("Payment method attached to customer: " + customer.id);
     }
 
-    async setStripeSubscription(user: SensitiveUser, tier: SubscriptionTier) {
-        let customer = await this.getOrCreateStripeCustomer(user);
-
-        if (!customer)
-            throw new HttpError(StatusCodes.NOT_FOUND, `The customer couldn't be found or created for user: ${user.id}`);
-
-        if (customer.deleted)
-            throw new HttpError(StatusCodes.GONE, `The customer is a DeletedCustomer and no longer exists.`);
-
-        let product: Stripe.Product | undefined = (await this.stripe.products.list({active: true})).data.find(x => x.metadata.product === "Singlelink Enterprise");
-
-        if (!product)
-            throw new HttpError(StatusCodes.NOT_FOUND, "The product metadata 'Singlelink Enterprise' couldn't be found in Stripe. Please ensure Stripe is setup.");
-
-        let priceApiList = await this.stripe.prices.list({product: product.id, active: true});
-        let selectedPriceId: string | undefined;
-
-        for (let price of priceApiList.data) {
-            const priceName = price.nickname?.toLowerCase();
-
-            if (priceName === tier) {
-                selectedPriceId = price.id;
-            }
-        }
-
-        let defaultPaymentMethod = customer.invoice_settings.default_payment_method;
-
-        if (!defaultPaymentMethod) {
-            throw new HttpError(StatusCodes.NOT_FOUND, "This user has no default payment method!");
-        }
-
-        let customerSub = (await this.stripe.subscriptions.list({customer: customer.id})).data;
-
-        // Upgrade/downgrade/cancel current subscription
-        if (customerSub.length > 0) {
-            let currentSubId: string | undefined;
-
-            findSub:
-                for (const sub of customerSub) {
-                    for (let item of sub.items.data) {
-                        let productId = <string>item.price.product;
-                        let product = await this.stripe.products.retrieve(productId);
-
-                        if (!product.deleted && product.metadata.product) {
-                            currentSubId = sub.id;
-                            break findSub;
-                        }
-                    }
-                }
-
-            if (!currentSubId) {
-                await this.setSubscriptionTier(user, "free");
-                throw new HttpError(StatusCodes.NOT_FOUND, "Could not find the related subscription id in Stripe, even though the customer is apparently subscribed to a plan!");
-            }
-
-            if (selectedPriceId) {
-                let sub = await this.stripe.subscriptions.retrieve(currentSubId);
-                let subItem = sub.items.data[0];
-                let currentPriceId = subItem.price.id;
-                let currentPrice = subItem.price;
-                let selectedPrice = await this.stripe.prices.retrieve(selectedPriceId);
-
-                // Check for schedules
-                await this.stripe.subscriptionSchedules.list({customer: customer.id,});
-
-                if (currentPriceId === selectedPriceId) {
-
-                    // No change, but make sure we update metadata
-                    await this.stripe.subscriptions.update(
-                        currentSubId,
-                        {
-                            items: [
-                                {
-                                    id: subItem.id,
-                                    price: currentPriceId
-                                }
-                            ],
-                            cancel_at_period_end: false,
-                            metadata: {
-                                downgrade: null,
-                                downgradeTier: null
-                            }
-                        },
-                    );
-
-                    console.log(`Activated/didn't change subscription for user ${user.id}`);
-
-                    return {
-                        action: 'activated/no change',
-                        details: await this.createSubscriptionDetails(sub.id)
-                    };
-                } else if (currentPrice.metadata.index > selectedPrice.metadata.index) {
-
-                    let quantity = subItem.quantity;
-
-                    if (subItem.price.billing_scheme !== "tiered") {
-                        quantity = 1;
-                    }
-
-                    // Downgrade
-                    await this.stripe.subscriptions.update(
-                        currentSubId,
-                        {
-                            items: [
-                                {
-                                    id: subItem.id,
-                                    price: currentPriceId,
-                                    quantity: quantity
-                                }
-                            ],
-                            proration_behavior: 'none',
-                            cancel_at_period_end: true,
-                            metadata: {
-                                downgrade: selectedPriceId,
-                                downgradeTier: selectedPrice.nickname,
-                            }
-                        },
-                    );
-
-                    console.log(`User ${user.id} is downgrading to a lower subscription at the end of their billing period`);
-
-                    return {
-                        action: 'downgrade',
-                        details: await this.createSubscriptionDetails(sub.id)
-                    };
-                } else {
-
-                    let quantity = subItem.quantity;
-
-                    if (subItem.price.billing_scheme !== "tiered") {
-                        quantity = 1;
-                    }
-
-                    // Upgrade
-                    let sub = await this.stripe.subscriptions.update(
-                        currentSubId,
-                        {
-                            items: [
-                                {
-                                    id: subItem.id,
-                                    price: selectedPriceId,
-                                    quantity: quantity
-                                }
-                            ],
-                            proration_behavior: 'always_invoice',
-                            cancel_at_period_end: false,
-                            metadata: {
-                                downgrade: null,
-                                downgradeTier: null
-                            }
-                        }
-                    );
-
-                    console.log(`Modified subscription for user ${user.id}`);
-
-                    return {
-                        action: 'upgrade',
-                        details: await this.createSubscriptionDetails(sub.id)
-                    };
-                }
-            } else {
-
-                // Cancel
-                let sub = await this.stripe.subscriptions.update(
-                    currentSubId,
-                    {
-                        cancel_at_period_end: true,
-                        metadata: {
-                            downgrade: null,
-                            downgradeTier: null
-                        }
-                    }
-                );
-
-                console.log(`Subscription for user ${user.id} is canceled and will end.`);
-
-                return {
-                    action: 'canceled',
-                    details: await this.createSubscriptionDetails(sub.id)
-                };
-            }
-        }
-
-        // Create new sub if it doesn't exist
-        if (tier !== "free" && selectedPriceId) {
-            let selectedPrice = await this.stripe.prices.retrieve(selectedPriceId);
-            let quantity = Number.parseInt(selectedPrice.metadata.startQuantity) ?? 1;
-
-            let sub = await this.stripe.subscriptions.create({
-                customer: customer.id,
-                items: [
-                    {
-                        price: selectedPriceId,
-                        quantity: quantity
-                    }
-                ],
-            });
-
-            await this.setSubscriptionTier(user, tier);
-            console.log(`Set new subscription ${sub.id} for user ${user.id} with payment method: ${defaultPaymentMethod}`);
-
+    async getSubscription(user: User): Promise<DbSubscription | DbProduct> {
+        let currentPermission = await PermissionUtils.getCurrentPermission(user.id);
+        if (currentPermission.permLevel >= Permission.GODMODE.permLevel) {
             return {
-                action: 'created',
-                details: await this.createSubscriptionDetails(sub.id)
+                user_id: user.id,
+                tier: currentPermission.name,
+                product_id: null,
+                created_on: null,
+                purchase_type: 'one_time'
             };
+        }
 
+        let sub = await PermissionUtils.getSubscription(user.id);
+        let purchase = await PermissionUtils.getGreatestProductPurchase(user.id);
+
+        let subPerm = Permission.parse(sub.tier);
+        let purchasePerm = Permission.parse(purchase.tier);
+
+        if (subPerm.permLevel > purchasePerm.permLevel) {
+            return {
+                user_id: user.id,
+                tier: sub.tier,
+                product_id: sub.product_id,
+                created_on: sub.created_on,
+                purchase_type: sub.purchase_type
+            };
         } else {
             return {
-                action: 'none'
+                user_id: user.id,
+                tier: purchase.tier,
+                product_id: purchase.product_id,
+                created_on: purchase.created_on,
+                purchase_type: purchase.purchase_type
             };
         }
-    }
-
-    async buyAdditionalSeats(user: SensitiveUser, amount: number) {
-        if (!user.privateMetadata?.stripeId) {
-            throw new HttpError(StatusCodes.PAYMENT_REQUIRED, `User isn't subscribed!`);
-        }
-
-        if (amount < 0) {
-            throw new HttpError(StatusCodes.UNAUTHORIZED, `Amount be a positive integer!`);
-        }
-
-        amount = Math.floor(amount);
-
-        return await this.appendSeatCount(user, amount);
-    }
-
-    async cancelAdditionalSeats(user: SensitiveUser, amount: number) {
-        if (!user.privateMetadata?.stripeId) {
-            throw new HttpError(StatusCodes.PAYMENT_REQUIRED, `User isn't subscribed!`);
-        }
-
-        if (amount < 0) {
-            throw new HttpError(StatusCodes.BAD_REQUEST, `Amount be a positive integer!`);
-        }
-
-        amount = Math.floor(amount);
-
-        return await this.appendSeatCount(user, -amount);
     }
 
     /**
-     * Check for seat status and expire/unexpire seats based on remaining seat count.
+     * Records the subscription tier into the database.
+     *
+     * @param user
+     * @param tier
+     * @param allowDowngrade
+     * @param productId
      */
-    async checkSeatsExpiryStatuses(user: SensitiveUser) {
-        let total = await this.getTotalSeats(user);
-        let dbSeats = await this.listSeats(user.id);
+    async setDbSubscriptionTier(user: User, tier: SubscriptionTier, allowDowngrade: boolean, productId?: string) {
+        if (!allowDowngrade) {
+            let oldPerm = await PermissionUtils.getCurrentPermission(user.id);
+            let newPerm = Permission.parse(tier);
 
-        // expire seats if they are overstaying their welcome
-        if (dbSeats.length > total) {
-            let expireCount = dbSeats.length - total;
-
-            for (let i = 0; i < dbSeats.length && i < expireCount; i++) {
-                let dbSeat = dbSeats[i];
-
-                if (!dbSeat.expired)
-                    await this.setSeatExpired(dbSeat.owner_user_id, dbSeat.seat_member_user_id, true);
+            if (oldPerm.permLevel > newPerm.permLevel) {
+                console.log(`Tried to downgrade subscription tier when it wasn't allowed. User: ${user.id} oldTier: ${oldPerm.name} newTier: ${newPerm.name}`);
+                return;
             }
         }
-    }
 
-    async setSeatExpired(userId: string, seatMemberId: string, expired: boolean) {
-        let result = await this.pool.query<DbSeat>("update enterprise.seat_members set expired=$1 where owner_user_id=$2 and seat_member_user_id=$3 returning *",
-            [
-                expired,
-                userId,
-                seatMemberId
-            ]);
-
-        if (result.rowCount < 1)
-            throw new HttpError(StatusCodes.NOT_FOUND, `The seat couldn't be found.`);
-
-        return result.rows[0];
-    }
-
-    async addSeatMember(user: SensitiveUser, toAddUserId: string, role?: string) {
-        const remainingSeats = await this.getRemainingSeats(user);
-
-        if (remainingSeats <= 0) {
-            throw new HttpError(StatusCodes.UNAUTHORIZED, `This user has no more remaining seats!`);
-        }
-
-        let queryResult = await this.pool.query<DbSeat>("insert into enterprise.seat_members(owner_user_id, seat_member_user_id, role) values ($1, $2, coalesce($3, 'member')) returning *",
+        let queryResult = await this.pool.query<DbUser>("insert into enterprise.subscriptions(user_id, tier, product_id, last_updated) values ($1, $2, $3, $4) on conflict(user_id) do update set user_id=$1, tier=$2, product_id=$3, last_updated=$4",
             [
                 user.id,
-                toAddUserId,
-                role
+                tier,
+                productId,
+                new Date()
             ]);
-
-        if (queryResult.rowCount < 1)
-            throw new HttpError(StatusCodes.NOT_FOUND, `The seat couldn't be added for the user requested.`);
-
-        return {
-            remaining: remainingSeats - 1,
-            seat: queryResult.rows[0]
-        };
-    }
-
-    async removeSeatMember(user: SensitiveUser, toRemoveUserId: string) {
-        const remainingSeats = await this.getRemainingSeats(user);
-
-        let queryResult = await this.pool.query<DbSeat>("delete from enterprise.seat_members where owner_user_id=$1 and seat_member_user_id=$2 returning *",
-            [
-                user.id,
-                toRemoveUserId
-            ]);
-
-        if (queryResult.rowCount < 1)
-            return [];
-
-        return {
-            remaining: remainingSeats + 1,
-            seat: queryResult.rows[0]
-        };
-    }
-
-    async setRole(userId: string, seatUserId: string, role: "member" | "admin" | "owner" | string = "member") {
-        role = role.toLowerCase();
-
-        switch (role) {
-            case "member":
-            case "admin":
-            case "owner":
-                break;
-            default:
-                role = "member";
-        }
-
-        let queryResult = await this.pool.query<DbSeat>("update enterprise.seat_members set role=coalesce($3, 'member') where owner_user_id=$1 and seat_member_user_id=$2 returning *",
-            [
-                userId,
-                seatUserId,
-                role
-            ]);
-
-        if (queryResult.rowCount < 1)
-            throw new HttpError(StatusCodes.NOT_FOUND, `The seat role couldn't be set for the user requested.`);
-
-        return queryResult.rows[0];
-    }
-
-    async listSeats(userId: string, includeExpired: boolean | null = false) {
-        let queryResult: QueryResult<DbSeat>;
-
-        if (includeExpired === null) {
-            queryResult = await this.pool.query<DbSeat>("select * from enterprise.seat_members where owner_user_id=$1",
-                [
-                    userId
-                ]);
-        } else {
-            queryResult = await this.pool.query<DbSeat>("select * from enterprise.seat_members where owner_user_id=$1 and expired=$2",
-                [
-                    userId,
-                    includeExpired
-                ]);
-        }
-
-        return queryResult.rows;
-    }
-
-    async getTotalSeats(user: SensitiveUser) {
-        if (!user.privateMetadata?.stripeId) {
-            return 0;
-        }
-
-        let subscriptions = (await this.stripe.subscriptions.list({
-            customer: user.privateMetadata.stripeId,
-            expand: ["data.items.data"]
-        })).data;
-
-        if (subscriptions.length < 1) {
-            return 0;
-        }
-
-        let quantity = subscriptions[0].items.data[0].quantity ?? 1;
-
-        return Math.max(quantity, 0);
-    }
-
-    async getRemainingSeats(user: SensitiveUser) {
-        if (!user.privateMetadata?.stripeId) {
-            return 0;
-        }
-
-        let subscriptions = (await this.stripe.subscriptions.list({
-            customer: user.privateMetadata.stripeId,
-            expand: ["data.items.data"]
-        })).data;
-
-        if (subscriptions.length < 1) {
-            return 0;
-        }
-
-        let queryResult = await this.pool.query<{ count: number }>("select count(*) from enterprise.seat_members where owner_user_id=$1 and expired=false",
-            [
-                user.id
-            ]);
-
-        let seatsUsed = queryResult.rows[0].count;
-        let quantity = subscriptions[0].items.data[0].quantity ?? 1;
-
-        return quantity - seatsUsed;
-    }
-
-    async getSubscription(user: User): Promise<DbSubscription> {
-        let queryResult = await this.pool.query<DbSubscription>("select * from enterprise.subscriptions where user_id=$1", [user.id]);
-
-        if (queryResult.rowCount <= 0) {
-            return {
-                user_id: user.id,
-                tier: "free",
-                stripe_sub_id: null
-            };
-        }
-
-        return queryResult.rows[0];
-    }
-
-    async setSubscriptionTier(user: User, tier: SubscriptionTier, stripeSubId?: string) {
-        let queryResult = await this.pool.query<DbUser>("insert into enterprise.subscriptions(user_id, tier, stripe_sub_id) values ($1, $2, $3) on conflict(user_id) do update set user_id=$1, tier=$2, stripe_sub_id=$3", [user.id, tier, stripeSubId]);
 
         if (queryResult.rowCount <= 0) {
             throw new HttpError(StatusCodes.NOT_FOUND, "The user couldn't be found.");
         }
     }
 
-    async getDetailedSubscriptionInfo(user: User) {
+    async getDetailedPurchaseInfo(user: User) {
         let sub = await this.getSubscription(user);
 
-        return this.createSubscriptionDetails(sub.tier !== "free" && sub.stripe_sub_id ? sub.stripe_sub_id : undefined);
+        return this.createPurchaseDetails(sub);
     }
 
-    async createSubscriptionDetails(subId?: string) {
-        let subInfo = {
-            type: <string | null>'',
-            status: '',
-            billingDisplay: '',
-            amountDue: <number>0,
-            amountPaid: <number>0,
-            amountRemaining: <number>0,
-            periodEndDate: <string | undefined>'',
-            dueDate: <string | undefined>'',
-            cancelAtPeriodEnd: <boolean | undefined>false,
-            downgrading: false,
-            downgradeDate: <string | undefined>undefined,
-            downgradingTier: <string | undefined>undefined,
-        };
+    async createPurchaseDetails(subDesc: DbSubscription | DbProduct): Promise<(DbSubscription | DbProduct) & { product: Stripe.Product | null, price: Stripe.Price | null }> {
+        (<any>subDesc).product = null;
+        (<any>subDesc).price = null;
+        let subInfo: DbSubscription & { product: Stripe.Product | null, price: Stripe.Price | null } = <any>subDesc;
 
-        if (!subId) {
-            subInfo.type = "Free";
-            subInfo.billingDisplay = "$0/month";
-            subInfo.status = "active";
-            subInfo.dueDate = '';
-            subInfo.cancelAtPeriodEnd = false;
-
-            return subInfo;
+        if (subInfo.product_id) {
+            subInfo.product = await this.stripe.products.retrieve(subInfo.product_id);
         }
 
-        let stripeSub = await this.stripe.subscriptions.retrieve(subId, {expand: ["latest_invoice.charge", "items.data.price.tiers"]});
-
-        let subItem = stripeSub.items.data[0];
-        let price = subItem.price;
-        subInfo.type = price.nickname;
-        let interval = price.recurring?.interval;
-
-        const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-
-        let invoice: Stripe.Invoice | undefined = undefined;
-
-        try {
-            invoice = await this.stripe.invoices.retrieveUpcoming({
-                customer: <string>stripeSub.customer,
-            });
-        } catch (e) {
-            if (e.type === "StripeInvalidRequestError") {
-                // no invoice was found, ignore
-                // this can happen when the user downgrades their subscription to free tier
-            }
-        }
-
-        subInfo.status = stripeSub.status;
-
-        if (invoice) {
-            subInfo.billingDisplay = `${formatter.format(invoice.amount_due / 100)}/${interval}`;
-
-            subInfo.amountDue = invoice.amount_due;
-            subInfo.amountPaid = invoice.amount_paid;
-            subInfo.amountRemaining = invoice.amount_remaining;
-
-            subInfo.periodEndDate = new Date(stripeSub.current_period_end * 1000).toISOString();
-            subInfo.dueDate = new Date(stripeSub.current_period_end * 1000).toISOString();
-            subInfo.cancelAtPeriodEnd = stripeSub.cancel_at_period_end;
-        }
-
-        if (stripeSub.metadata.downgrade) {
-            subInfo.cancelAtPeriodEnd = undefined;
-            subInfo.downgrading = true;
-
-            let downgradeTier = stripeSub.metadata.downgradeTier;
-            subInfo.periodEndDate = new Date(stripeSub.current_period_end * 1000).toISOString();
-            subInfo.downgradeDate = new Date(stripeSub.current_period_end * 1000).toISOString();
-            subInfo.downgradingTier = downgradeTier;
-        }
-
-        if (subInfo.cancelAtPeriodEnd) {
-            subInfo.periodEndDate = new Date(stripeSub.current_period_end * 1000).toISOString();
-            subInfo.dueDate = undefined;
+        if (subInfo.product_id) {
+            let prices = (await this.stripe.prices.list({
+                product: subInfo.product_id,
+                limit: 1
+            })).data;
+            (<any>subDesc).price = prices[0];
         }
 
         return subInfo;
     }
 
-    private async appendSeatCount(user: SensitiveUser, amount: number) {
-        if (amount === 0) {
-            throw new HttpError(StatusCodes.BAD_REQUEST, `Amount cannot be zero.`);
-        }
-
-        if (!user.privateMetadata?.stripeId) {
-            throw new HttpError(StatusCodes.PAYMENT_REQUIRED, `User isn't subscribed!`);
-        }
-
-        let subscriptions = (await this.stripe.subscriptions.list({customer: user.privateMetadata.stripeId})).data;
-
-        if (subscriptions.length < 1) {
-            throw new HttpError(StatusCodes.PAYMENT_REQUIRED, `User isn't subscribed!`);
-        }
-
-        let sub = subscriptions[0];
-        let subItem = sub.items.data[0];
-        const currentQuantity = subItem.quantity ?? 0;
-        const startQuantity = Number.parseInt(subItem.price.metadata.startQuantity) ?? 0;
-
-        let newQuantity = Math.max(currentQuantity + amount, startQuantity);
-
-        let newSub = await this.stripe.subscriptions.update(sub.id, {
-            items: [
-                {
-                    id: subItem.id,
-                    price: subItem.price.id,
-                    quantity: newQuantity
-                }
-            ],
-            proration_behavior: "always_invoice"
-        });
-
-        let remaining = await this.getRemainingSeats(user);
-
-        return {
-            action: 'updated',
-            totalSeatCount: newSub.items.data[0].quantity,
-            seatsRemaining: remaining,
-            details: await this.createSubscriptionDetails(sub.id)
-        };
-    }
-
-    private async getOrCreateStripeCustomer(user: SensitiveUser): Promise<Stripe.Customer | Stripe.DeletedCustomer | undefined> {
+    async getOrCreateStripeCustomer(user: SensitiveUser): Promise<Stripe.Customer | Stripe.DeletedCustomer | undefined> {
         let id = user.privateMetadata.stripeId ?? null;
 
         if (id) {
-            let cus = await this.stripe.customers.retrieve(id);
+            try {
+                let cus = await this.stripe.customers.retrieve(id);
 
-            if (!cus.deleted) {
-                return cus;
+                if (!cus.deleted) {
+                    return cus;
+                }
+            } catch (e) {
+                // ignore
             }
         }
 
         try {
             let newCustomer = await this.stripe.customers.create({
                 email: user.email,
-                description: 'Singlelink Enterprise Customer',
+                description: 'Tinypage Customer',
                 metadata: {
-                    product: "Singlelink Enterprise"
+                    product: "Tinypage"
                 }
             }, undefined);
 
@@ -784,5 +368,55 @@ export class SubscriptionService extends DatabaseService {
         } catch (e) {
             await this.setStripeId(user.id);
         }
+    }
+
+    async deleteStripeCustomer(user: SensitiveUser) {
+        let id = user.privateMetadata.stripeId ?? null;
+
+        if (id) {
+            try {
+                let cus = await this.stripe.customers.retrieve(id);
+
+                this.stripe.customers.del(cus.id);
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        try {
+            let customers = (await this.stripe.customers.list({email: user.email})).data;
+
+            for (let customer of customers) {
+                if (!customer.deleted) {
+                    this.stripe.customers.del(customer.id);
+                }
+            }
+        } catch (e) {
+
+        }
+    }
+
+    /**
+     * Checks profiles to make sure that the user doesn't have more profiles than permitted published.
+     */
+    async checkProfilesForOverLimit(userId: string) {
+        let perm = await PermissionUtils.getCurrentPermission(userId);
+
+        if (perm.name === Permission.FREE.name) {
+            await this.pool.query("update app.profiles set visibility='unpublished' where profiles.user_id=$1", [userId]);
+        } else {
+            let number = await this.countPublishedProfiles(userId);
+
+            if (number > perm.pageCount) {
+                let queryResult = await this.pool.query<{ id: string }>("select id from app.profiles where profiles.user_id=$1 limit $2", [userId, perm.pageCount]);
+                await this.pool.query("update app.profiles set visibility='unpublished' where profiles.id != all($1) and user_id=$2", [queryResult.rows, userId]);
+            }
+        }
+    }
+
+    private async countPublishedProfiles(userId: string): Promise<number> {
+        let queryResult = await this.pool.query<{ count: number }>("select count(*) from app.profiles where user_id=$1 and visibility != 'unpublished'", [userId]);
+
+        return queryResult.rows[0].count;
     }
 }

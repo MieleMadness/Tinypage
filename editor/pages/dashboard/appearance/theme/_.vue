@@ -144,7 +144,7 @@ export default Vue.extend({
     };
   },
 
-  mounted() {
+  beforeMount() {
     this.id = this.$route.path.replace('/dashboard/appearance/theme/', '');
     if (this.id !== 'create') {
       this.loadThemes();

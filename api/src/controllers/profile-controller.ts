@@ -18,6 +18,7 @@ import {IpUtils} from "../utils/ip-utils";
 import jwt from "jsonwebtoken";
 import {ProfileSerializer} from "../utils/profile-serializer";
 import {Readable} from "stream";
+import {PermissionUtils} from "../utils/permission-utils";
 
 interface ProfileHandleRequest extends RequestGenericInterface {
     Params: {
@@ -447,6 +448,18 @@ export class ProfileController extends Controller {
                 return;
             }
 
+            // Check for sub tier and limit published profile count
+            let visibility = body.visibility as Visibility;
+            if (body.authProfile.visibility === "unpublished") {
+                let ownerId = body.authProfile.userId;
+                let permission = await PermissionUtils.getCurrentPermission(ownerId);
+                let published = await this.profileService.countPublishedProfiles(ownerId);
+
+                if (published > permission.pageCount) {
+                    visibility = "unpublished";
+                }
+            }
+
             // Check custom domain and see if the profile owns it
             let hasCustomDomain = !!body.customDomain;
 
@@ -487,7 +500,7 @@ export class ProfileController extends Controller {
                 body.headline,
                 body.subtitle,
                 body.handle,
-                body.visibility,
+                visibility,
                 body.showWatermark,
                 body.customCss,
                 body.customHtml,
@@ -536,7 +549,9 @@ export class ProfileController extends Controller {
                 }
                 return this.linkService.deleteLink(link.id);
             };
+
             await Promise.all(links.map(deleteLink));
+
             const createLink = (link: ILinktreeLink) => {
                 return this.linkService.createLink({
                     id: link.id,
@@ -613,7 +628,7 @@ export class ProfileController extends Controller {
             await ProfileSerializer.importProfile(request.body.authUser.id, request.body.authProfile.id, parse);
 
             reply.status(StatusCodes.OK);
-            return;
+            return ReplyUtils.success("Imported.");
         } catch (e) {
             if (e instanceof HttpError) {
                 reply.code(e.statusCode);

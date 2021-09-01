@@ -1,7 +1,18 @@
 interface DbSubscription {
     user_id: string,
     tier: SubscriptionTier,
-    stripe_sub_id: string | null
+    product_id: string | null,
+    created_on?: string | null,
+    last_updated?: string | null
+    purchase_type: 'recurring'
+}
+
+interface DbProduct {
+    user_id: string,
+    tier: SubscriptionTier,
+    product_id: string | null,
+    created_on?: string | null,
+    purchase_type?: 'one_time' | 'recurring' | 'free'
 }
 
 interface DbSeat {

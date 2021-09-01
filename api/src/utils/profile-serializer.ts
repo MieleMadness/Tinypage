@@ -98,13 +98,15 @@ export class ProfileSerializer {
 
     static async importProfile(userId: string, profileId: string, data: SerializedProfile) {
         for (let theme of data.themes) {
-            if (theme.userId === userId) {
-                // user already owns theme, ignore
+            let exists = await this.pool.query("select 1 from app.themes where label=$1 and user_id=$2", [theme.label, theme.userId]);
+
+            if (exists.rowCount > 1) {
+                // theme is already in database, ignore
                 continue;
             }
 
             try {
-                await this.pool.query("insert into app.themes(label, custom_css, custom_html, user_id) values ($1, $2, $3, $4)",
+                await this.pool.query("insert into app.themes(label, custom_css, custom_html, user_id) values ($1, $2, $3, $4) on conflict do nothing",
                     [
                         theme.label,
                         theme.customCss,
@@ -125,9 +127,12 @@ export class ProfileSerializer {
                 data.profile.customCss,
                 data.profile.customHtml,
                 data.profile.metadata,
-                data.profile.themeId,
+                data.profile.themeId || null,
                 profileId
             ]);
+
+        // Wipe links
+        await this.pool.query("delete from app.links where profile_id=$1", [profileId]);
 
         for (let link of data.links) {
             try {

@@ -149,6 +149,7 @@
           <option value="twitch">Twitch</option>
           <option value="twitter">Twitter</option>
           <option value="youtube">YouTube</option>
+          <option value="zoom">Zoom</option>
         </select>
 
         <div class="mt-2">
@@ -189,7 +190,20 @@
       <label v-else class="font-semibold mb-2">URL</label>
 
       <input v-model="pendingLink.url" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="'e.g. https://exampleurl.com/example'"
+             placeholder="e.g. https://exampleurl.com/example"
+             type="url"
+      />
+    </div>
+
+    <!-- Button Image URL -->
+    <div v-if="intent!=='view' && (pendingLink.type === 'link' || pendingLink.type === 'vcard')"
+         class="flex flex-col mb-8 justify-start w-full"
+    >
+      <label class="font-semibold mb-2">Button Image URL</label>
+
+      <input v-model="buttonImageUrl"
+             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+             placeholder="e.g. https://exampleurl.com/example"
              type="url"
       />
     </div>
@@ -310,8 +324,7 @@
             class="text-gray-500 text-xs hover:underline hover:text-gray-600"
             href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
             target="_blank"
-        >Need help? Read our
-          documentation</a>
+        >Need help? Read our documentation</a>
       </div>
 
       <client-only v-if="showStyle">
@@ -454,7 +467,8 @@ export default Vue.extend({
       type: "link",
       subtitle: "",
       customCss: "",
-      url: ""
+      url: "",
+      metadata: {}
     };
 
     return {
@@ -485,13 +499,15 @@ export default Vue.extend({
       vCardShowData: true,
       vCard: '',
 
+      buttonImageUrl: '',
+
       socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
 
       sortedLinks: new Array<EditorLink>()
     };
   },
 
-  async mounted() {
+  async beforeMount() {
     await this.getUserData();
     await this.getLinks();
     // Fetch selected link from links
@@ -512,8 +528,11 @@ export default Vue.extend({
       }
     }
 
+    if (!this.pendingLink.metadata)
+      this.pendingLink.metadata = {};
+
     if (this.pendingLink.type === 'divider') {
-      this.dividerSettings = this.pendingLink.metadata?.dividerSettings ?? {};
+      this.dividerSettings = this.pendingLink.metadata.dividerSettings ?? {};
 
       if (!this.dividerSettings.color) {
         this.dividerSettings.color = "#000000FF";
@@ -525,13 +544,19 @@ export default Vue.extend({
     }
 
     if (this.pendingLink.type === 'social') {
-      this.socialIcons = this.pendingLink.metadata?.socialIcons ?? [];
+      this.socialIcons = this.pendingLink.metadata.socialIcons ?? [];
     }
 
     if (this.pendingLink.type === 'vcard') {
-      this.vCard = this.pendingLink.metadata?.vCard ?? '';
+      this.vCard = this.pendingLink.metadata.vCard ?? '';
     }
 
+    if (this.pendingLink.type === 'link' || this.pendingLink.type === 'vcard') {
+      this.buttonImageUrl = this.pendingLink.metadata.buttonImageUrl ?? '';
+    }
+  },
+
+  mounted() {
     if (process.client) {
       this.$nextTick(() => {
         this.initColorPickers();
@@ -638,6 +663,9 @@ export default Vue.extend({
 
       if (this.pendingLink.type === 'vcard')
         this.pendingLink.metadata.vCard = this.vCard;
+
+      if (this.pendingLink.type === 'link' || this.pendingLink.type === 'vcard')
+        this.pendingLink.metadata.buttonImageUrl = this.buttonImageUrl;
     },
 
     async addNewLink(): Promise<boolean> {
@@ -747,6 +775,13 @@ export default Vue.extend({
         case "social":
           switch (field) {
             case "icon":
+              return true;
+          }
+          break;
+
+        case "vcard":
+          switch (field) {
+            case "subtitle":
               return true;
           }
           break;

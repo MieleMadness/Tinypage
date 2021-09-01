@@ -240,7 +240,7 @@ export default Vue.extend({
     };
   },
 
-  async mounted() {
+  async beforeMount() {
     await this.getUserData();
     await this.getLinks();
 

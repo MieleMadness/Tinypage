@@ -2,7 +2,7 @@
   "name": "singlelink-renderer",
   "version": "0.1.0",
   "private": true,
-  "description": "The light-weight site view for the Singlelink web client.",
+  "description": "The light-weight site view for the Tinypage web client.",
   "main": "dist/app.js",
   "type": "commonjs",
   "scripts": {

@@ -51,7 +51,7 @@ export class SingleLinkServer {
             controller.registerRoutes();
         }
 
-        console.log("SingleLink Enterprise is listening for requests!");
+        console.log("Tinypage is listening for requests!");
     }
 
     registerDefaultRoutes() {
@@ -127,35 +127,35 @@ export class SingleLinkServer {
     async Index(request: FastifyRequest, reply: FastifyReply) {
         reply.type('text/html').code(200);
 
-        //language=HTML
+        // language=HTML
         return `
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="https://app.singlelink.co/favicon.ico">
-        <title>Status Page | Singlelink Enterprise</title>
+        <link rel="icon" type="image/png" href="https://tinypage.app/favicon.ico">
+        <title>Status Page | Tinypage</title>
       </head>
       <body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100">
       <section
         class="flex flex-col mt-auto bg-white rounded shadow p-6 w-11/12 max-w-lg border-8 border-l-0 border-r-0 border-b-0 border-blue-600">
         <h1 class="text-2xl font-semibold text-gray-800 mb-2">Status Page</h1>
-        <p class="text-base text-gray-600 mb-4">Welcome to the Singlelink status page, view the status and downtime of
+        <p class="text-base text-gray-600 mb-4">Welcome to the Tinypage status page, view the status and downtime of
           various application infrastructure below.</p>
         <div class="flex flex-row justify-apart items-center p-3 cursor-pointer hover:bg-gray-100 rounded">
           <div style="width:8px;height:8px;box-shadow: 0 0 0 3px rgba(104,211,145,.4);"
                class="mr-4 bg-green-400 rounded-full"></div>
-          <p class="mr-2 text-gray-600 font-medium text-sm">Singlelink API</p>
+          <p class="mr-2 text-gray-600 font-medium text-sm">Tinypage API</p>
           <p class="ml-auto text-gray-500 text-sm">99.9% Uptime</p></div>
         <div class="flex flex-row justify-apart items-center p-3 cursor-pointer hover:bg-gray-100 rounded">
           <div style="width:8px;height:8px;box-shadow: 0 0 0 3px rgba(104,211,145,.4);"
                class="mr-4 bg-green-400 rounded-full"></div>
-          <p class="mr-2 text-gray-600 font-medium text-sm">Singlelink Client</p>
+          <p class="mr-2 text-gray-600 font-medium text-sm">Tinypage Client</p>
           <p class="ml-auto text-gray-500 text-sm">99.9% Uptime</p></div>
         <div class="flex flex-row justify-apart items-center p-3 cursor-pointer hover:bg-gray-100 rounded">
           <div style="width:8px;height:8px;box-shadow: 0 0 0 3px rgba(104,211,145,.4);"
                class="mr-4 bg-green-400 rounded-full"></div>
-          <p class="mr-2 text-gray-600 font-medium text-sm">Singlelink Database</p>
+          <p class="mr-2 text-gray-600 font-medium text-sm">Tinypage Database</p>
           <p class="ml-auto text-gray-500 text-sm">99.9% Uptime</p></div>
         <div class="flex flex-row justify-apart items-center p-3 cursor-pointer hover:bg-gray-100 rounded">
           <div style="width:8px;height:8px;box-shadow: 0 0 0 3px rgba(104,211,145,.4);"

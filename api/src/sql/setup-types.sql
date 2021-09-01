@@ -8,31 +8,6 @@ do
 $$
     begin
         /*
-         The subscription type of this user.
-         */
-        create type subscription_t as enum ('free', 'pro', 'team', 'enterprise');
-    exception
-        when duplicate_object then raise notice 'subscription_t already added.';
-    end;
-$$ language plpgsql;
-
-do
-$$
-    begin
-        alter type subscription_t rename value 'whale' to 'pro';
-    exception
-        /* do nothing */
-        when others then null;
-    end;
-$$ language plpgsql;
-
-
-alter type subscription_t add value if not exists 'team' before 'enterprise';
-
-do
-$$
-    begin
-        /*
          Visibility_t specifies the visibility level of a profile.
 
          unpublished: The profile is not visible to anyone.

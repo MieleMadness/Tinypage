@@ -7,10 +7,12 @@ import {StatusCodes} from "http-status-codes";
 import {HttpError} from "../utils/http-error";
 import {ProfileService} from "../services/profile-service";
 import {config} from "../config/config";
-import {Auth, AuthenticatedRequest} from "../utils/auth";
+import {Auth, AuthenticatedRequest, SensitiveAuthenticatedRequest} from "../utils/auth";
 import Mixpanel from "mixpanel";
 import {Readable} from "stream";
 import {IpUtils} from "../utils/ip-utils";
+import {SubscriptionService} from "../services/subscription-service";
+import {Stripe} from "stripe";
 
 interface UserRequestResetPasswordRequest extends RequestGenericInterface {
     Body: {
@@ -33,8 +35,8 @@ interface UpdateUserRequest extends AuthenticatedRequest {
     } & AuthenticatedRequest["Body"];
 }
 
-interface DeleteUserRequest extends AuthenticatedRequest {
-    Body: {} & AuthenticatedRequest["Body"];
+interface DeleteUserRequest extends SensitiveAuthenticatedRequest {
+    Body: {} & SensitiveAuthenticatedRequest["Body"];
 }
 
 interface SetActiveProfileRequest extends AuthenticatedRequest {
@@ -83,13 +85,20 @@ const userDataPackageRateLimit = {
 export class UserController extends Controller {
     private readonly userService: UserService;
     private readonly profileService: ProfileService;
+    private readonly subService: SubscriptionService;
+    private readonly stripe: Stripe;
     private readonly mixpanel = config.analytics.mixpanelToken ? Mixpanel.init(config.analytics.mixpanelToken) : null;
 
     constructor(fastify: FastifyInstance, databaseManager: DatabaseManager) {
         super(fastify, databaseManager);
 
+        this.stripe = new Stripe(config.payments.stripeSecret, {
+            apiVersion: '2020-08-27',
+        });
+
         this.userService = new UserService(databaseManager);
         this.profileService = new ProfileService(databaseManager);
+        this.subService = new SubscriptionService(databaseManager, this.stripe);
     }
 
     registerRoutes(): void {
@@ -102,7 +111,7 @@ export class UserController extends Controller {
         this.fastify.post<AuthenticatedRequest>('/user/private-metadata', Auth.ValidateWithData, this.GetPrivateMetadata.bind(this));
 
         this.fastify.post<UpdateUserRequest>('/user/update', Auth.ValidateWithData, this.UpdateUser.bind(this));
-        this.fastify.post<DeleteUserRequest>('/user/delete', Auth.ValidateWithData, this.DeleteUser.bind(this));
+        this.fastify.post<DeleteUserRequest>('/user/delete', Auth.ValidateSensitiveWithData, this.DeleteUser.bind(this));
         this.fastify.post<SetActiveProfileRequest>('/user/set-active-profile', Auth.ValidateWithData, this.SetActiveProfile.bind(this));
 
         this.fastify.post<GetUserDataPackageRequest>('/user/data-package', userDataPackageRateLimit, this.GetUserDataPackage.bind(this));
@@ -255,6 +264,8 @@ export class UserController extends Controller {
                     $ip: ip,
                 });
             }
+
+            await this.subService.deleteStripeCustomer(user);
 
             return deletedUser;
         } catch (e) {

@@ -56,7 +56,21 @@ export class AdminService extends DatabaseService {
         } else {
             await this.pool.query("delete from security.banned where user_id=$1", [userId]);
 
-            return {user_id: userId, banned: false, message: "User unbanned."};
+            return {
+                user_id: userId,
+                banned: false,
+                message: "User unbanned."
+            };
+        }
+    }
+
+    async setGodMode(userId: string, set: boolean): Promise<{ user_id: string } | null> {
+        if (set) {
+            let queryResult = await this.pool.query<{ user_id: string }>("insert into enterprise.god_mode values ($1) on conflict do nothing returning *", [userId]);
+            return queryResult.rows[0];
+        } else {
+            await this.pool.query("delete from enterprise.god_mode where user_id=$1", [userId]);
+            return null;
         }
     }
 
@@ -90,5 +104,22 @@ export class AdminService extends DatabaseService {
         }
 
         return final;
+    }
+
+    async listGodModeUsers(): Promise<SensitiveUser[]> {
+        let queryResult = await this.pool.query<{ user_id: string }>("select * from enterprise.god_mode");
+
+        let userRows: DbSensitiveUser[] = [];
+
+        if (queryResult.rowCount > 0) {
+            let userData = await this.pool.query<DbSensitiveUser>("select * from app.users where id = any($1)",
+                [
+                    queryResult.rows.map(x => x.user_id)
+                ]);
+
+            userRows = userData.rows;
+        }
+
+        return userRows.map(x => DbTypeConverter.toSensitiveUser(x));
     }
 }

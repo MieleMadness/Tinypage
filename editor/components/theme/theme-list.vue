@@ -227,7 +227,7 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
+  beforeMount() {
     if (window.location.href.split('?').length > 1) {
       this.query_string = '?' + window.location.href.split('?')[1];
     }

@@ -79,7 +79,6 @@ export class Auth {
         preHandler: <preHandlerHookHandler>Auth.validateSensitiveAuthWithData,
     };
 
-
     /**
      * Authenticate Admin privileges and pass in an Admin request.
      */
@@ -558,7 +557,7 @@ export class Auth {
         let queryResult;
 
         if (includeMemberOf) {
-            queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2 or exists(select 1 from enterprise.seat_members where user_id=$1 and seat_member_user_id=$1))", [profileId, userId]);
+            queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2 or exists(select 1 from enterprise.profile_members where user_id=$2 and profile_id=$1))", [profileId, userId]);
         } else {
             queryResult = await pool.query("select 1 from app.profiles where id=$1 and (user_id=$2)", [profileId, userId]);
         }

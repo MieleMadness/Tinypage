@@ -2,17 +2,17 @@ import {Context, Plugin} from '@nuxt/types';
 import * as process from "process";
 
 const defaultSettings: Partial<DbServerCustomization> = {
-    title: "Singlelink",
-    brandName: "Singlelink",
-    productName: "Singlelink",
-    company: "Neutron Creative Inc.",
+    title: "Tinypage",
+    brandName: "Tinypage",
+    productName: "Tinypage",
+    company: "Tinypage.app",
     contactEmail: "contact@neutroncreative.com",
     icons: {
         mainIcon: "/tinypage-logo.svg",
         favicon: "/tinypage-logo.svg"
     },
-    metaTitle: "Singlelink - The open-source Linktree alternative & micro-site platform",
-    metaDescription: "Singlelink is the open-source Linktree alternative without limits. Supercharge your micro-site in sixty seconds today!",
+    metaTitle: "Tinypage- Tiny, but mighty",
+    metaDescription: "Tinypage allows personal brands and influencers to reach more people and gain followers. No fancy apps or code customization. But if you do code, you can go wild.",
     metaImageUrl: "https://singlelink-22fp7.ondigitalocean.app/open-graph-image-v2.png",
     colors: undefined,
     customHtml: undefined,

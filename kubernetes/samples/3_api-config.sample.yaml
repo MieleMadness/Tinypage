@@ -5,8 +5,8 @@
 #apiVersion: v1
 #kind: Secret
 #metadata:
-#  name: singlelink-api-secrets
-#  namespace: singlelink
+#  name: tinypage-api-secrets
+#  namespace: tinypage
 #type: Opaque
 #stringData:
 #  DATABASE: ""
@@ -20,8 +20,8 @@
 #apiVersion: v1
 #kind: ConfigMap
 #metadata:
-#  name: singlelink-api-config
-#  namespace: singlelink
+#  name: tinypage-api-config
+#  namespace: tinypage
 #data:
 #  HOST: "0.0.0.0"
 #  PORT: "5566"

@@ -7,13 +7,14 @@ import {Stripe} from "stripe";
 import {SubscriptionService} from "../services/subscription-service";
 import {StatusCodes} from "http-status-codes";
 import {UserService} from "../services/user-service";
+import {PermissionUtils} from "../utils/permission-utils";
 
 /**
  * Contains routes for stripe webhook callbacks.
  */
 export class StripeCallbacksController extends Controller {
     private readonly userService: UserService;
-    private readonly paymentsService: SubscriptionService;
+    private readonly subService: SubscriptionService;
 
     private readonly stripe: Stripe;
     private readonly mixpanel = config.analytics.mixpanelToken ? Mixpanel.init(config.analytics.mixpanelToken) : null;
@@ -26,14 +27,14 @@ export class StripeCallbacksController extends Controller {
         });
 
         this.userService = new UserService(databaseManager);
-        this.paymentsService = new SubscriptionService(databaseManager, this.stripe);
+        this.subService = new SubscriptionService(databaseManager, this.stripe);
 
         console.log("Stripe callbacks controller enabled");
     }
 
     registerRoutes(): void {
         // Unauthenticated
-        this.fastify.post(
+        this.fastify.all(
             '/stripe/webhooks',
             {
                 config: {
@@ -73,18 +74,9 @@ export class StripeCallbacksController extends Controller {
 
         const eventObject: any = event.data.object;
 
-        // Event type check
-        switch (event.type) {
-            case 'customer.subscription.created':
-            case 'customer.subscription.updated':
-            case 'customer.subscription.deleted':
-            case 'invoice.payment_succeeded':
-            case 'invoice.payment_failed':
-            case 'invoice.payment_action_required':
-                break;
-            default:
-                reply.status(StatusCodes.OK);
-                return {message: "Webhook is not for Singlelink."};
+        if (!eventObject.customer) {
+            reply.status(StatusCodes.OK);
+            return reply.send({received: true});
         }
 
         let customerId = eventObject.customer;
@@ -92,8 +84,7 @@ export class StripeCallbacksController extends Controller {
 
         if (customer.deleted) {
             reply.status(StatusCodes.OK);
-            console.log(`User not found: Deleted: ${customer.deleted} Email: ${(<any>customer).id}`);
-            return {error: "User not found."};
+            return {error: "User deleted."};
         }
 
         let user = await this.userService.getSensitiveUserByStripeId(customer.id);
@@ -107,34 +98,77 @@ export class StripeCallbacksController extends Controller {
         // Handle the event
         switch (event.type) {
             case 'invoice.payment_action_required':
-            case 'invoice.payment_failed':
-                await this.paymentsService.setSubscriptionTier(user, 'free');
-                await this.paymentsService.checkSeatsExpiryStatuses(user);
+            case 'invoice.payment_failed': {
+                await this.subService.setDbSubscriptionTier(user, 'free', true);
+                await this.subService.checkProfilesForOverLimit(user.id);
+            }
                 break;
 
-            case 'customer.subscription.deleted':
+            case 'customer.subscription.deleted': {
                 // If the subscription was a downgrade, resubscribe, otherwise, cancel
-                let downgradePriceId = eventObject.metadata.downgrade;
-
-                if (downgradePriceId) {
-                    let selectedPrice = await this.stripe.prices.retrieve(downgradePriceId);
-
-                    if (selectedPrice?.nickname) {
-                        await this.paymentsService.setStripeSubscription(user, selectedPrice.nickname?.toLowerCase());
-                    }
-                } else {
-                    await this.paymentsService.setSubscriptionTier(user, 'free');
-                }
-
-                await this.paymentsService.checkSeatsExpiryStatuses(user);
+                await this.subService.setDbSubscriptionTier(user, 'free', true);
+                await this.subService.checkProfilesForOverLimit(user.id);
+            }
                 break;
 
             case 'customer.subscription.created':
-            case 'customer.subscription.updated':
-                let tier = eventObject.items.data[0].price.nickname.toLowerCase();
-                await this.paymentsService.setSubscriptionTier(user, tier, eventObject.id);
-                await this.paymentsService.checkSeatsExpiryStatuses(user);
+            case 'customer.subscription.updated': {
+                let item = eventObject.plan.product;
+                let product = await this.stripe.products.retrieve(item);
+
+                let tier = product?.metadata.permission;
+
+                if (tier) {
+                    await this.subService.setDbSubscriptionTier(user, tier, false, product.id);
+                    await this.subService.checkProfilesForOverLimit(user.id);
+                } else {
+                    console.error("[customer.subscription.updated] Couldn't set subscription for user: " + user.id + " to tier " + tier);
+                }
                 break;
+            }
+
+            case 'invoice.paid': {
+                let item = eventObject.lines.data[0].price.product;
+                let product = await this.stripe.products.retrieve(item);
+
+                let tier = product?.metadata.permission;
+
+                if (tier) {
+                    await this.subService.setDbSubscriptionTier(user, tier, true, product.id);
+                    await this.subService.checkProfilesForOverLimit(user.id);
+                } else {
+                    console.error("[invoice.paid] Couldn't set subscription for user: " + user.id + " to tier " + tier);
+                }
+            }
+                break;
+
+            // For cases where the product is a one-time payment
+            case 'checkout.session.completed': {
+                let dehydratedSession: any = event.data.object;
+
+                let session = await this.stripe.checkout.sessions.retrieve(dehydratedSession.id, {expand: ["line_items"]});
+
+                if (session.line_items) {
+                    let lineItem = session.line_items.data[0];
+                    let price = lineItem.price;
+                    let lineItemProduct = <string>price?.product;
+
+                    if (lineItemProduct && price) {
+                        let product = await this.stripe.products.retrieve(lineItemProduct);
+
+                        let tier = product?.metadata.permission;
+
+                        if (tier && price.type === 'one_time') {
+                            await PermissionUtils.addProductPurchase(user, tier, product.id);
+
+                            await this.subService.checkProfilesForOverLimit(user.id);
+                        }
+                    }
+                }
+
+                break;
+            }
+
         }
 
         // Return a response to acknowledge receipt of the event

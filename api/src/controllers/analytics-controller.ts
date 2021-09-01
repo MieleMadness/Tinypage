@@ -234,8 +234,10 @@ export class AnalyticsController extends Controller {
 
             let dayRange = request.body.dayRange || 30;
 
-            if (!await PermissionUtils.hasPermission(request.body.authUser.id, Permission.PRO)) {
-                dayRange = 30;
+            if (config.payments.stripeSecret) {
+                if (!await PermissionUtils.hasPermission(request.body.authUser.id, Permission.PRO)) {
+                    dayRange = 30;
+                }
             }
 
             return this.analyticsService.getProfileAnalyticsData(request.body.authProfile.id, dayRange);

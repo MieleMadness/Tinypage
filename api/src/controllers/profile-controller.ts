@@ -448,15 +448,18 @@ export class ProfileController extends Controller {
                 return;
             }
 
-            // Check for sub tier and limit published profile count
             let visibility = body.visibility as Visibility;
-            if (body.authProfile.visibility === "unpublished") {
-                let ownerId = body.authProfile.userId;
-                let permission = await PermissionUtils.getCurrentPermission(ownerId);
-                let published = await this.profileService.countPublishedProfiles(ownerId);
 
-                if (published > permission.pageCount) {
-                    visibility = "unpublished";
+            if (config.payments.stripeSecret) {
+                // Check for sub tier and limit published profile count
+                if (body.authProfile.visibility === "unpublished") {
+                    let ownerId = body.authProfile.userId;
+                    let permission = await PermissionUtils.getCurrentPermission(ownerId);
+                    let published = await this.profileService.countPublishedProfiles(ownerId);
+
+                    if (published > permission.pageCount) {
+                        visibility = "unpublished";
+                    }
                 }
             }
 

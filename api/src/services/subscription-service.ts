@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import {HttpError} from "../utils/http-error";
 import {StatusCodes} from "http-status-codes";
 import {Permission, PermissionUtils} from "../utils/permission-utils";
+import {config} from "../config/config";
 
 /**
  * Handles payment stuff.
@@ -128,57 +129,6 @@ export class SubscriptionService extends DatabaseService {
         }
 
         return paymentInfo;
-    }
-
-    /**
-     * Sets the billing information for a customer.
-     * billing.companyName and billing.phone are optional
-     * @param user
-     * @param billing
-     */
-    async setBillingInfo(user: SensitiveUser, billing: { fullName?: string; companyName?: string; phone?: string; address?: string; city?: string; zipCode?: string; country?: string } | undefined) {
-        if (!billing) {
-            throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing' cannot be undefined!");
-        } else if (billing) {
-
-            switch (billing) {
-                case !billing.fullName:
-                    throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing.fullName' cannot be undefined!");
-                case !billing.address:
-                    throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing.address' cannot be undefined!");
-                case !billing.city:
-                    throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing.city' cannot be undefined!");
-                case !billing.zipCode:
-                    throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing.zipCode' cannot be undefined!");
-                case !billing.country:
-                    throw new HttpError(StatusCodes.BAD_REQUEST, "The field 'billing.country' cannot be undefined!");
-            }
-
-            let customer = await this.getOrCreateStripeCustomer(user);
-
-            if (!customer)
-                throw new HttpError(StatusCodes.NOT_FOUND, "The customer data couldn't be found for this user!");
-
-            await this.setStripeId(user.id, customer.id);
-
-            let newCustomer = await this.stripe.customers.update(customer.id, {
-                name: billing.fullName,
-                address: billing.address ? <Stripe.AddressParam>{
-                    line1: billing.address,
-                    city: billing.city,
-                    postal_code: billing.zipCode,
-                    country: billing.country
-                } : undefined,
-                phone: billing.phone,
-                metadata: {
-                    product: "Tinypage Enterprise",
-                    company: billing.companyName ?? null
-                }
-            });
-
-            console.log("Customer billing info updated: " + newCustomer.id);
-            return;
-        }
     }
 
     async setCardInfo(user: SensitiveUser, card?: { number: string | null; expDate: string | null; cvc: string | null; }) {
@@ -400,6 +350,9 @@ export class SubscriptionService extends DatabaseService {
      * Checks profiles to make sure that the user doesn't have more profiles than permitted published.
      */
     async checkProfilesForOverLimit(userId: string) {
+        if (!config.payments.stripeSecret)
+            return;
+
         let perm = await PermissionUtils.getCurrentPermission(userId);
 
         if (perm.name === Permission.FREE.name) {

@@ -339,9 +339,6 @@ export class UserController extends Controller {
             if (!await Auth.checkProfileOwnership(this.userService, newProfile.id, user.id, true)) {
                 reply.status(StatusCodes.UNAUTHORIZED).send(ReplyUtils.error("The user is not a member of the profile."));
                 return;
-            } else if (user.id !== newProfile.userId) {
-                reply.status(StatusCodes.UNAUTHORIZED).send(ReplyUtils.error("The user doesn't own the profile."));
-                return;
             }
 
             if (this.mixpanel) {

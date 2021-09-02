@@ -98,13 +98,6 @@ export class DbTypeConverter {
         };
     }
 
-    static toProfileMember(member: DbProfileMember): DbProfileMember {
-        return {
-            handle: member.handle,
-            member: member.member
-        };
-    }
-
     static toLink(link: DbLink): Link {
         return {
             id: link.id,

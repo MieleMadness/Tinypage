@@ -22,6 +22,7 @@ import {MarketplaceController} from "./controllers/marketplace-controller";
 import {config} from "./config/config";
 import {ProfileSerializer} from "./utils/profile-serializer";
 import {PermissionUtils} from "./utils/permission-utils";
+import {TeamController} from "./controllers/team-controller";
 
 console.log("Initializing Tinypage Enterprise");
 
@@ -60,6 +61,7 @@ async function start() {
     server.addController(new ProfileController(server.fastify, database));
     server.addController(new ThemeController(server.fastify, database));
     server.addController(new UserController(server.fastify, database));
+    server.addController(new TeamController(server.fastify, database));
 
     // Management controllers
     server.addController(new MarketplaceController(server.fastify, database));

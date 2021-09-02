@@ -37,7 +37,7 @@ create table if not exists enterprise.profile_members
 (
     user_id    bigint references app.users (id),
     profile_id bigint references app.profiles (id),
-    role       text not null default 'member',
+    role       text not null default 'guest',
     unique (user_id, profile_id)
 );
 

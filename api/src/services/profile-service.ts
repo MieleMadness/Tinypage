@@ -150,7 +150,7 @@ export class ProfileService extends DatabaseService {
                 return DbTypeConverter.toProfile(x);
             });
         } else {
-            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.profile_members where user_id=$1)", [userId]);
+            let queryResult = await this.pool.query<DbProfile>("select * from app.profiles where user_id=$1 or exists(select 1 from enterprise.profile_members where user_id=$1 and profile_id=profiles.id)", [userId]);
 
             if (queryResult.rowCount < 1)
                 throw new HttpError(StatusCodes.NOT_FOUND, "The profiles couldn't be found.");

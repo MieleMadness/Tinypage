@@ -134,20 +134,7 @@ interface DbProfile {
 }
 
 interface DbSensitiveProfile extends DbProfile {
-    private_metadata: any
-}
-
-/**
- handle text not null,
- member text not null,
- unique (handle, member)
-
- create index if not exists profile_members_handle_index on app.profile_members (handle);
- create index if not exists profile_members_member_index on app.profile_members (member);
- */
-interface DbProfileMember {
-    handle: string,
-    member: string
+    private_metadata: any;
 }
 
 /**
@@ -180,7 +167,7 @@ interface DbLink {
 }
 
 interface DbSensitiveLink extends DbLink {
-    private_metadata: any
+    private_metadata: any;
 }
 
 /**
@@ -270,9 +257,8 @@ interface DbAddon {
 }
 
 interface DbSensitiveAddon extends DbAddon {
-    private_metadata: any
+    private_metadata: any;
 }
-
 
 interface DbAddonInstall {
     id: string,
@@ -293,4 +279,10 @@ interface DbIpLog {
     user_id: string,
     ip: string,
     created_on: string
+}
+
+interface DbProfileMember {
+    user_id: string,
+    profile_id: string,
+    role: string
 }

@@ -69,6 +69,12 @@ export class Permission {
                 return Permission.PRO;
             case "business":
                 return Permission.BUSINESS;
+            case "business2":
+                return Permission.BUSINESS2;
+            case "business3":
+                return Permission.BUSINESS3;
+            case "business4":
+                return Permission.BUSINESS4;
             case "godmode":
                 return Permission.GODMODE;
             case "admin":
@@ -92,6 +98,19 @@ export class PermissionUtils {
      */
     static initialize(pool: Pool) {
         this.pool = pool;
+    }
+
+    static async getRoleForMember(profileId: string, memberId: string) {
+        let queryResult = await this.pool.query<{ role: string }>("select role from enterprise.profile_members where user_id=$1 and profile_id=$2",
+            [
+                memberId,
+                profileId
+            ]);
+
+        if (queryResult.rowCount < 1)
+            return null;
+
+        return queryResult.rows[0].role;
     }
 
     /**

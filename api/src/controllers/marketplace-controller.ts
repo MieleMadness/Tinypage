@@ -364,7 +364,7 @@ export class MarketplaceController extends Controller {
 
             switch (addon.type) {
                 case "theme":
-                    if (!(await Auth.checkThemeOwnership(this.marketplaceService, addon.resourceId, request.body.authUser, false))) {
+                    if (!await Auth.checkThemeOwnership(this.marketplaceService, addon.resourceId, request.body.authUser, false)) {
                         return ReplyUtils.errorOnly(new HttpError(StatusCodes.UNAUTHORIZED, "The user isn't authorized to access the requested resource"));
                     }
                     break;
@@ -408,7 +408,7 @@ export class MarketplaceController extends Controller {
             // ignore userId field if set and replace with our own
             addon.userId = request.body.authUser.id;
 
-            if (!(await Auth.checkAddonOwnership(this.marketplaceService, addon.id, request.body.authUser))) {
+            if (!await Auth.checkAddonOwnership(this.marketplaceService, addon.id, request.body.authUser)) {
                 return ReplyUtils.errorOnly(new HttpError(StatusCodes.UNAUTHORIZED, "The user isn't authorized to access the requested resource"));
             }
 
@@ -445,7 +445,7 @@ export class MarketplaceController extends Controller {
             let user = request.body.authUser;
             let addonId = request.body.id;
 
-            if (!(await Auth.checkAddonOwnership(this.marketplaceService, addonId, user))) {
+            if (!await Auth.checkAddonOwnership(this.marketplaceService, addonId, user)) {
                 return ReplyUtils.errorOnly(new HttpError(StatusCodes.UNAUTHORIZED, "The user isn't authorized to access the requested resource"));
             }
 
@@ -495,7 +495,7 @@ export class MarketplaceController extends Controller {
             let profile = request.body.authProfile;
             let addonId = request.params.id;
 
-            if (!(await Auth.checkAddonPermission(this.marketplaceService, addonId, user))) {
+            if (!await Auth.checkAddonPermission(this.marketplaceService, addonId, user)) {
                 return ReplyUtils.errorOnly(new HttpError(StatusCodes.UNAUTHORIZED, "The user isn't authorized to access the requested resource"));
             }
 

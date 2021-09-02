@@ -64,7 +64,7 @@ export class SubscriptionService extends DatabaseService {
         let data = [];
 
         for (let product of products) {
-            if (product.metadata?.tinypage.toLowerCase() !== "true")
+            if (product.metadata?.tinypage?.toLowerCase() !== "true")
                 continue;
 
             let prices = (await this.stripe.prices.list({

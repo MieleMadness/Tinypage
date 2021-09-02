@@ -36,7 +36,7 @@
 
           <button
               v-if="loaded"
-              v-show="(subInfo.purchase_type === 'free' || selectedPurchaseType === 'one_time') && selectedProductId && selectedProductId !== subInfo.product_id"
+              v-show="(subInfo.purchase_type === 'free' || (subInfo.purchase_type === 'one_time' && selectedPurchaseType === 'recurring')) && selectedProductId && selectedProductId !== subInfo.product_id"
               class="w-full lg:w-auto flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
               type="button"
               @click="initCheckout"
@@ -73,59 +73,66 @@
           :key="member.id"
           class="flex flex-row py-2 px-8 w-full items-center justify-start hover:bg-opaqueBlack border border-gray-200 border-t-0 border-l-0 border-r-0"
       >
-        <div
-            class="w-12 h-12 rounded-full mr-6"
-            style="background:linear-gradient(146deg, rgba(0,255,240,1) 00%, rgba(173,255,0,1) 100%);box-shadow: inset 0 0 0 4px rgba(0,0,0,.15);"
-        />
         <p class="font-bold text-black text-lg mr-auto">
           {{ member.email }}
         </p>
+        <p class="font-bold text-black text-lg mr-auto">
+          {{ member.profileHandle }}
+        </p>
         <button
             class="py-1 px-2 mb-1 mr-2 rounded-full text-white bg-red-400 text-sm font-extrabold leading-tight grow"
-            @click="removeTeamMember(member.email)"
+            @click="removeTeamMember(member.email, member.profileId)"
         >
           Remove
         </button>
         <div
-            v-if="member.status === 'pending'"
-            class="py-1 px-2 mb-1 rounded-full text-gray-600 bg-opaqueBlack text-sm font-extrabold leading-tight grow"
-        >pending
-        </div>
-        <div
-            v-if="member.status === 'accepted'"
             class="py-1 px-2 mb-1 rounded-full text-green-500 bg-green-200 text-sm font-extrabold leading-tight grow"
-        >member
-        </div>
-        <div
-            v-if="member.status === 'upgraded'"
-            class="py-1 px-2 mb-1 rounded-full flex-row flex items-center text-gdp bg-opaqueIndigo text-sm font-extrabold leading-tight grow"
-        >admin
+        >
+          <select
+              v-model="member.role"
+              class="text-green-500 bg-green-200"
+              style="min-width: 120px; max-width: 161px;"
+              @change="onMemberRoleUpdate(member.email, member.role)"
+          >
+            <option value="editor" selected>Editor</option>
+          </select>
         </div>
       </div>
 
       <div class="flex flex-col mt-4 mb-2 w-full px-6 mt-6">
         <label v-if="!teamMembers || teamMembers.length <=1" class="font-bold text-black opacity-70 mb-3">Ready to add
           your first team
-          member? Provide an email to send the invite!</label>
-        <label v-else class="font-bold text-black opacity-70 mb-3">Want to add a new member? Provide an email to send
-          the invite!</label>
-        <div class="flex flex-col items-center justify-start space-y-4 w-full">
+          member? Add them here!</label>
+        <label v-else class="font-bold text-black opacity-70 mb-3">Want to add a new member? Add them here!</label>
+
+        <div class="flex flex-row items-center justify-start w-full">
+          <label class="mr-4">Email</label>
           <input
-              id="sendInvite"
               v-model="teamMemberEmail"
-              aria-label="password reset email"
-              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border w-full flex-grow"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border flex-grow"
               placeholder="e.g. jane@gmail.com"
               type="text"
           >
-          <button
-              class="w-full flex py-3 px-6 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
-              type="button"
-              @click="addTeamMember(teamMemberEmail)"
+
+          <label class="ml-4 mr-4">Role</label>
+          <select
+              v-model="teamMemberRole"
+              style="min-width: 120px; max-width: 220px;"
+              class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border flex-grow"
           >
-            Add team member
-          </button>
+            <!-- <option value="guest" disabled>Guest (View Only) [Coming Soon]</option>-->
+            <option value="editor" selected>Editor</option>
+          </select>
         </div>
+
+        <button
+            class="w-full flex py-3 px-6 mt-4 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold justify-center align-center"
+            type="button"
+            @click="addTeamMember(teamMemberEmail, teamMemberRole); teamMemberEmail = '';"
+        >
+          Add team member
+        </button>
+
       </div>
     </div>
 
@@ -373,44 +380,23 @@ export default Vue.extend({
         }
       },
 
+      teamMemberEmail: '',
+      teamMemberRole: 'editor',
+
       teamMembers: [
         {
-          id: '1',
-          email: '---',
-          sent: '4 days',
-          status: 'accepted'
-        },
-        {
-          id: '2',
-          email: '---',
-          sent: '6 days',
-          status: 'accepted'
-        },
-        {
-          id: '3',
-          email: '---',
-          sent: '7 days',
-          status: 'accepted'
-        },
-        {
-          id: '4',
-          email: '---',
-          sent: '9 days',
-          status: 'accepted'
-        },
-        {
-          id: '5',
-          email: '---',
-          sent: '11 days',
-          status: 'accepted'
-        },
+          userId: '0',
+          profileId: '0',
+          profileHandle: 'loading...',
+          email: 'loading...',
+          role: ''
+        }
       ],
 
       error: '',
       passwordError: '',
       passwordEmail: '' as string | null | undefined,
       resetNewEmail: '',
-      teamMemberEmail: '',
       showWatermarkNotice: false,
       app_name: process.env.APP_NAME,
 
@@ -440,7 +426,54 @@ export default Vue.extend({
     this.loaded = true;
   },
 
+  async mounted() {
+    this.getTeamMembers().catch();
+  },
+
   methods: {
+    async onMemberRoleUpdate(email: string, role: string) {
+
+      await this.addTeamMember(email, role);
+      await this.getTeamMembers();
+    },
+
+    async getTeamMembers() {
+      if (!this.teamMembers)
+        this.teamMembers = [];
+
+      this.teamMembers.length = 0;
+
+      const token = this.$store.getters['auth/getToken'];
+
+      this.teamMembers = (await this.$axios.post('/team', {
+        token
+      })).data;
+    },
+
+    async addTeamMember(email: string, role: string) {
+      const token = this.$store.getters['auth/getToken'];
+
+      await this.$axios.post('/team/add', {
+        token,
+        email,
+        role
+      });
+
+      await this.getTeamMembers();
+    },
+
+    async removeTeamMember(email: string, profileId: string) {
+      const token = this.$store.getters['auth/getToken'];
+
+      await this.$axios.post('/team/remove', {
+        token,
+        email,
+        profileId
+      });
+
+      await this.getTeamMembers();
+    },
+
     async initCheckout() {
       try {
         const token = this.$store.getters['auth/getToken'];
@@ -495,6 +528,11 @@ export default Vue.extend({
 
       this.availableSubscriptions = this.availableSubscriptions.filter(sub => {
         let permission = Permission.parse(sub.metadata.permission);
+
+        if (sub.price.type === 'recurring' && permission.permLevel === this.currentPermission.permLevel) {
+          return false;
+        }
+
         return this.currentPermission.permLevel <= permission.permLevel;
       });
 

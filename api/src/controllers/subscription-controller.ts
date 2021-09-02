@@ -70,18 +70,6 @@ export class SubscriptionController extends Controller {
         this.fastify.post<SensitiveAuthenticatedRequest>('/stripe/create-portal-session', Auth.ValidateSensitiveWithData, this.CreatePortalSession.bind(this));
 
         this.fastify.post<SensitiveAuthenticatedRequest>('/profile/allowed-pages', Auth.ValidateSensitiveWithData, this.GetProfileCount.bind(this));
-
-        // Seats
-        // this.fastify.post<UpdateSeatMemberRequest>('/seats/add', Auth.ValidateSensitiveWithData, this.AddSeat.bind(this));
-        // this.fastify.post<RemoveSeatMemberRequest>('/seats/remove', Auth.ValidateSensitiveWithData, this.RemoveSeat.bind(this));
-        // this.fastify.post<UpdateSeatMemberRequest>('/seats/set-role', Auth.ValidateSensitiveWithData, this.SetSeatRole.bind(this));
-        // this.fastify.post<AuthenticatedRequest>('/seats', Auth.ValidateWithData, this.ListSeats.bind(this));
-        // this.fastify.post<SensitiveAuthenticatedRequest>('/seats/total', Auth.ValidateSensitiveWithData, this.GetTotalSeats.bind(this));
-        // this.fastify.post<SensitiveAuthenticatedRequest>('/seats/remaining', Auth.ValidateSensitiveWithData, this.GetRemainingSeats.bind(this));
-        //
-        // this.fastify.post<BuySeatsRequest>('/seats/buy', Auth.ValidateSensitiveWithData, this.BuyAdditionalSeats.bind(this));
-        // this.fastify.post<CancelSeatsRequest>('/seats/cancel', Auth.ValidateSensitiveWithData, this.CancelAdditionalSeats.bind(this));
-        // this.fastify.post<ExpireSeatRequest>('/seats/set-expired', Auth.ValidateSensitiveWithData, this.ExpireSeatRequest.bind(this));
     }
 
     async GetProfileCount(request: FastifyRequest<SensitiveAuthenticatedRequest>, reply: FastifyReply) {

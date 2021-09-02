@@ -13,7 +13,7 @@ const defaultSettings: Partial<DbServerCustomization> = {
     },
     metaTitle: "Tinypage - Tiny, but mighty",
     metaDescription: "Tinypage allows personal brands and influencers to reach more people and gain followers. No fancy apps or code customization. But if you do code, you can go wild.",
-    metaImageUrl: "https://singlelink-22fp7.ondigitalocean.app/open-graph-image-v2.png",
+    metaImageUrl: "https://api.tinypage.app/profile/thumbnail/tinypage",
     colors: undefined,
     customHtml: undefined,
     customCss: undefined,

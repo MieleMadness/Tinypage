@@ -338,25 +338,6 @@
       </div>
     </div>
 
-    <!-- Delete site -->
-    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
-      <div class="flex flex-col mr-auto w-full lg:w-1/2">
-        <h2 class="text-black font-bold text-lg w-full">
-          Delete this page
-        </h2>
-        <p class="text-black opacity-70 font-semibold">Done with this page? Click the button on your right to delete
-          this page and all related content.</p>
-      </div>
-
-      <button
-          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
-          type="button"
-          @click="setDeleteProfileModalActive(true)"
-      >
-        Delete this page
-      </button>
-    </div>
-
     <!-- Import / Export Profile -->
     <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
       <div class="flex flex-col mr-auto w-full lg:w-1/2">

@@ -58,7 +58,7 @@ export class UserService extends DatabaseService {
      * @param email
      */
     async getUserByEmail(email: string): Promise<User> {
-        let queryResult = await this.pool.query<DbUser>("select id, email_hash, full_name, active_profile_id, inventory, metadata, created_on from app.users where email=$1", [email]);
+        let queryResult = await this.pool.query<DbUser>("select id, email_hash, full_name, active_profile_id, inventory, metadata, created_on from app.users where email ilike $1", [email]);
 
         if (queryResult.rowCount < 1)
             throw new HttpError(StatusCodes.NOT_FOUND, "The user couldn't be found.");
@@ -114,7 +114,7 @@ export class UserService extends DatabaseService {
      * @param email
      */
     async getSensitiveUserByEmail(email: string): Promise<SensitiveUser> {
-        let queryResult = await this.pool.query<DbSensitiveUser>("select id, email, email_hash, full_name, active_profile_id, inventory, metadata, created_on, private_metadata from app.users where email=$1", [email]);
+        let queryResult = await this.pool.query<DbSensitiveUser>("select id, email, email_hash, full_name, active_profile_id, inventory, metadata, created_on, private_metadata from app.users where email ilike $1", [email]);
 
         if (queryResult.rowCount < 1)
             throw new HttpError(StatusCodes.NOT_FOUND, "The user couldn't be found.");
@@ -170,7 +170,7 @@ export class UserService extends DatabaseService {
      * @param email
      */
     async getSensitiveUserWithPasswordByEmail(email: string): Promise<SensitiveUserWithPassword> {
-        let queryResult = await this.pool.query<DbSensitiveUserWithPassword>("select * from app.users where email=$1", [email]);
+        let queryResult = await this.pool.query<DbSensitiveUserWithPassword>("select * from app.users where email ilike $1", [email]);
 
         if (queryResult.rowCount < 1)
             throw new HttpError(StatusCodes.NOT_FOUND, "The user couldn't be found.");
@@ -297,7 +297,10 @@ export class UserService extends DatabaseService {
             throw new HttpError(StatusCodes.UNAUTHORIZED, "The password was incorrect.");
         }
 
-        let token = jwt.sign({userId: user.id, type: <TokenType>"auth"}, config.secret, {expiresIn: '168h'});
+        let token = jwt.sign({
+            userId: user.id,
+            type: <TokenType>"auth"
+        }, config.secret, {expiresIn: '168h'});
 
         return {
             user: {
@@ -328,7 +331,10 @@ export class UserService extends DatabaseService {
             activeProfile = DbTypeConverter.toProfile(profileQuery.rows[0]);
         }
 
-        let token = jwt.sign({userId: user.id, type: <TokenType>"auth"}, config.secret, {expiresIn: '168h'});
+        let token = jwt.sign({
+            userId: user.id,
+            type: <TokenType>"auth"
+        }, config.secret, {expiresIn: '168h'});
 
         return {
             user: {

@@ -25,6 +25,7 @@
         <input v-model="dayRange"
                type="number"
                class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+               style="max-width: 5rem"
                @blur="onDayRangeChange"
                :disabled="!hasPerms"
         >

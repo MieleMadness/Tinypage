@@ -11,7 +11,7 @@ const defaultSettings: Partial<DbServerCustomization> = {
         mainIcon: "/tinypage-logo.svg",
         favicon: "/tinypage-logo.svg"
     },
-    metaTitle: "Tinypage- Tiny, but mighty",
+    metaTitle: "Tinypage - Tiny, but mighty",
     metaDescription: "Tinypage allows personal brands and influencers to reach more people and gain followers. No fancy apps or code customization. But if you do code, you can go wild.",
     metaImageUrl: "https://singlelink-22fp7.ondigitalocean.app/open-graph-image-v2.png",
     colors: undefined,

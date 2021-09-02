@@ -118,13 +118,21 @@ export class ProfileService extends DatabaseService {
             throw new HttpError(StatusCodes.CONFLICT, "The profile couldn't be added because the handle is already being used.");
         }
 
-        let queryResult = await this.pool.query<DbProfile>("insert into app.profiles (handle, user_id, image_url, headline, subtitle) values ($1, $2, $3, $4, $5) on conflict do nothing returning *",
+        let queryResult = await this.pool.query<DbProfile>("insert into app.profiles (handle, user_id, image_url, headline, subtitle, metadata) values ($1, $2, $3, $4, $5, $6) on conflict do nothing returning *",
             [
                 handle,
                 userId,
                 imageUrl,
                 headline,
-                subtitle
+                subtitle,
+                {
+                    privacyMode: false,
+                    unlisted: false,
+                    coverImage: null,
+                    pageHtml: null,
+                    shareMenu: true,
+                    useGravatar: true
+                }
             ]);
 
         if (queryResult.rowCount < 1)

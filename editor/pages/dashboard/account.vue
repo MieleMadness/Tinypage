@@ -1,9 +1,9 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img alt="settings svg" class="w-8" src="/icons/Settings.svg">
+      <img alt="settings svg" class="w-8" src="/icons/Person.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        Account settings
+        Account Settings
       </h1>
     </div>
 
@@ -106,7 +106,7 @@
         <label v-else class="font-bold text-black opacity-70 mb-3">Want to add a new member? Add them here!</label>
 
         <div class="flex flex-row items-center justify-start w-full">
-          <label class="mr-4">Email</label>
+          <label class="mr-4 font-normal">Email</label>
           <input
               v-model="teamMemberEmail"
               class="px-2 py-3 text-sm border-solid border-gray-300 rounded-2xl border flex-grow"
@@ -114,7 +114,7 @@
               type="text"
           >
 
-          <label class="ml-4 mr-4">Role</label>
+          <label class="ml-4 mr-4 font-normal">Role</label>
           <select
               v-model="teamMemberRole"
               style="min-width: 120px; max-width: 220px;"
@@ -312,7 +312,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Account settings - ' + this.$customSettings.productName,
+      title: 'Account Settings - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'description',
@@ -327,12 +327,12 @@ export default Vue.extend({
         {
           hid: 'og:title',
           name: 'og:title',
-          content: 'Account settings - ' + this.$customSettings.productName
+          content: 'Account Settings - ' + this.$customSettings.productName
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: 'Account settings - ' + this.$customSettings.productName
+          content: 'Account Settings - ' + this.$customSettings.productName
         },
         {
           hid: 'og:description',

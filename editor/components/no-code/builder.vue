@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col justify-start items-start">
     <div class="flex flex-col flex-grow bg-gray-50 rounded-lg w-full">
+      <!-- Page styles-->
       <div
           class="flex flex-col justify-center w-full p-6 border border-t-0 border-l-0 border-r-0 border-gray-200 items-center"
       >
@@ -15,335 +16,342 @@
           ><span v-show="!drawer.page_styles">Expand</span><span v-show="drawer.page_styles">Collapse</span>
           </div>
         </div>
-        <!-- Drawer -->
-        <div
-            v-show="drawer.page_styles"
-            class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
-        >
+        <transition name="fade">
+          <!-- Drawer -->
+          <div
+              v-show="drawer.page_styles"
+              class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
+          >
           <span
               class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Page</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Max width</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.page_styles.max_width"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Max width</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.page_styles.max_width"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Padding</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.page_styles.padding"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Padding</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.page_styles.padding"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+
+            <span
+                class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
+            >Avatar</span>
+
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full mb-2">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Size (px)</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.page_styles.avatar_size"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border radius (px)</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.page_styles.avatar_radius"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="35px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
               </div>
             </div>
-          </div>
-          <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
-          >Avatar</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full mb-2">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Size (px)</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.page_styles.avatar_size"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
+
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border style</label>
+                <select
+                    v-model="meta.page_styles.avatar_border_type"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="none">
+                    No border
+                  </option>
+                  <option value="solid">
+                    Solid border
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border width (px)</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.page_styles.avatar_border_width"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="4px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.page_styles.avatar_border_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border radius (px)</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.page_styles.avatar_radius"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="35px"
-                    type="number"
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Box shadow</label>
+                <select
+                    v-model="meta.page_styles.avatar_shadow"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="none">
+                    None
+                  </option>
+                  <option value="0 1px 3px 0 rgba(0,0,0,.15)">
+                    Small
+                  </option>
+                  <option value="0 2px 5px 0 rgba(0,0,0,.2)">
+                    Medium
+                  </option>
+                  <option value="0 2px 15px 0 rgba(0,0,0,.12), 0 2px 5px 0 rgba(0,0,0,.25)">
+                    Large
+                  </option>
+                </select>
               </div>
             </div>
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border style</label>
-              <select
-                  v-model="meta.page_styles.avatar_border_type"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  No border
-                </option>
-                <option value="solid">
-                  Solid border
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border width (px)</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.page_styles.avatar_border_width"
-                    class="p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="4px"
-                    type="number"
+            <span
+                class="text-gray-800 font-bold text-xl mt-2 py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
+            >Background</span>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background type</label>
+                <select
+                    v-model="meta.page_styles.background_type"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="none">
+                    No background
+                  </option>
+                  <option value="solid">
+                    Solid color
+                  </option>
+                  <option value="image">
+                    Image
+                  </option>
+                  <option value="gradient">
+                    Gradient
+                  </option>
+                </select>
               </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border color</label>
-              <div class="relative">
-                <input
-                    v-model="meta.page_styles.avatar_border_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    :data-jscolor="jsColorOptions"
-                >
+              <div v-show="meta.page_styles.background_type==='solid'" class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.page_styles.background_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Box shadow</label>
-              <select
-                  v-model="meta.page_styles.avatar_shadow"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  None
-                </option>
-                <option value="0 1px 3px 0 rgba(0,0,0,.15)">
-                  Small
-                </option>
-                <option value="0 2px 5px 0 rgba(0,0,0,.2)">
-                  Medium
-                </option>
-                <option value="0 2px 15px 0 rgba(0,0,0,.12), 0 2px 5px 0 rgba(0,0,0,.25)">
-                  Large
-                </option>
-              </select>
-            </div>
-          </div>
-          <span
-              class="text-gray-800 font-bold text-xl mt-2 py-3 my-3 border border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
-          >Background</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background type</label>
-              <select
-                  v-model="meta.page_styles.background_type"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  No background
-                </option>
-                <option value="solid">
-                  Solid color
-                </option>
-                <option value="image">
-                  Image
-                </option>
-                <option value="gradient">
-                  Gradient
-                </option>
-              </select>
-            </div>
-            <div v-show="meta.page_styles.background_type==='solid'" class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background color</label>
-              <div class="relative w-full">
+              <div v-show="meta.page_styles.background_type==='image'" class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
                 <input
-                    v-model="meta.page_styles.background_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
+                    v-model="meta.page_styles.background_image"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="e.g. https://tinypage.app/og-image.png"
                     type="text"
-                    :data-jscolor="jsColorOptions"
                 >
               </div>
             </div>
-            <div v-show="meta.page_styles.background_type==='image'" class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
-              <input
-                  v-model="meta.page_styles.background_image"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="e.g. https://tinypage.app/og-image.png"
-                  type="text"
-              >
-            </div>
-          </div>
-          <div
-              v-show="meta.page_styles.background_type==='image'"
-              class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
-          >
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background size</label>
-              <select
-                  v-model="meta.page_styles.background_size"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="cover">
-                  Cover
-                </option>
-                <option value="contain">
-                  Contain
-                </option>
-                <option value="100% 100%">
-                  Stretch
-                </option>
-                <option value="auto">
-                  Auto
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background position</label>
-              <select
-                  v-model="meta.page_styles.background_position"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="top left">
-                  Top left
-                </option>
-                <option value="top center">
-                  Top center
-                </option>
-                <option value="top right">
-                  Top right
-                </option>
-                <option value="center left">
-                  Center left
-                </option>
-                <option value="center center">
-                  Center
-                </option>
-                <option value="center right">
-                  Center right
-                </option>
-                <option value="bottom left">
-                  Bottom left
-                </option>
-                <option value="bottom center">
-                  Bottom center
-                </option>
-                <option value="bottom right">
-                  Bottom right
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background repeat</label>
-              <select
-                  v-model="meta.page_styles.background_repeat"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="no-repeat">
-                  No repeat
-                </option>
-                <option value="repeat-x">
-                  Repeat X
-                </option>
-                <option value="repeat-y">
-                  Repeat Y
-                </option>
-                <option value="repeat">
-                  Repeat X & Y
-                </option>
-              </select>
-            </div>
-          </div>
-          <div
-              v-show="meta.page_styles.background_type==='gradient'"
-              class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
-          >
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Start color</label>
-              <div class="relative w-full">
-                <input
-                    v-model="meta.page_styles.background_gradient_start"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
+            <div
+                v-show="meta.page_styles.background_type==='image'"
+                class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
+            >
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background size</label>
+                <select
+                    v-model="meta.page_styles.background_size"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
+                  <option value="cover">
+                    Cover
+                  </option>
+                  <option value="contain">
+                    Contain
+                  </option>
+                  <option value="100% 100%">
+                    Stretch
+                  </option>
+                  <option value="auto">
+                    Auto
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background position</label>
+                <select
+                    v-model="meta.page_styles.background_position"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="top left">
+                    Top left
+                  </option>
+                  <option value="top center">
+                    Top center
+                  </option>
+                  <option value="top right">
+                    Top right
+                  </option>
+                  <option value="center left">
+                    Center left
+                  </option>
+                  <option value="center center">
+                    Center
+                  </option>
+                  <option value="center right">
+                    Center right
+                  </option>
+                  <option value="bottom left">
+                    Bottom left
+                  </option>
+                  <option value="bottom center">
+                    Bottom center
+                  </option>
+                  <option value="bottom right">
+                    Bottom right
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background repeat</label>
+                <select
+                    v-model="meta.page_styles.background_repeat"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="no-repeat">
+                    No repeat
+                  </option>
+                  <option value="repeat-x">
+                    Repeat X
+                  </option>
+                  <option value="repeat-y">
+                    Repeat Y
+                  </option>
+                  <option value="repeat">
+                    Repeat X & Y
+                  </option>
+                </select>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">End color</label>
-              <div class="relative w-full">
-                <input
-                    v-model="meta.page_styles.background_gradient_end"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
+            <div
+                v-show="meta.page_styles.background_type==='gradient'"
+                class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
+            >
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Start color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.page_styles.background_gradient_start"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">End color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.page_styles.background_gradient_end"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Direction</label>
+                <select
+                    v-model="meta.page_styles.background_gradient_direction"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
+                  <option value="to top">
+                    To top
+                  </option>
+                  <option value="to right">
+                    To right
+                  </option>
+                  <option value="to bottom">
+                    To bottom
+                  </option>
+                  <option value="to left">
+                    To left
+                  </option>
+                </select>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Direction</label>
-              <select
-                  v-model="meta.page_styles.background_gradient_direction"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="to top">
-                  To top
-                </option>
-                <option value="to right">
-                  To right
-                </option>
-                <option value="to bottom">
-                  To bottom
-                </option>
-                <option value="to left">
-                  To left
-                </option>
-              </select>
-            </div>
           </div>
-        </div>
-        <!-- End Drawer -->
+          <!-- End Drawer -->
+        </transition>
       </div>
+
+      <!-- Typography-->
       <div
           class="flex flex-col justify-center w-full p-6 border border-t-0 border-l-0 border-r-0 border-gray-200 items-center"
       >
@@ -359,261 +367,265 @@
               @click="drawer.typography = !drawer.typography"
           ><span v-show="!drawer.typography">Expand</span><span v-show="drawer.typography">Collapse</span></div>
         </div>
-        <!-- Drawer -->
-        <div
-            v-show="drawer.typography"
-            class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
-        >
+        <transition name="fade">
+          <!-- Drawer -->
+          <div
+              v-show="drawer.typography"
+              class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
+          >
           <span
               class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Headline</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font size</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.headline_size"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font size</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.headline_size"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font weight</label>
+                <select
+                    v-model="meta.typography.headline_weight"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="normal">
+                    Normal
+                  </option>
+                  <option value="bold">
+                    Bold
+                  </option>
+                  <option value="bolder">
+                    Bolder
+                  </option>
+                  <option value="lighter">
+                    lighter
+                  </option>
+                  <option value="100">
+                    100
+                  </option>
+                  <option value="200">
+                    200
+                  </option>
+                  <option value="300">
+                    300
+                  </option>
+                  <option value="400">
+                    400
+                  </option>
+                  <option value="500">
+                    500
+                  </option>
+                  <option value="600">
+                    600
+                  </option>
+                  <option value="700">
+                    700
+                  </option>
+                  <option value="800">
+                    800
+                  </option>
+                  <option value="900">
+                    900
+                  </option>
+                </select>
+              </div>
+              <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+              <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+              <!--              <select-->
+              <!--                v-model="meta.typography.headline_family"-->
+              <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+              <!--                disabled-->
+              <!--                placeholder="Coming soon..."-->
+              <!--              />-->
+              <!--            </div>-->
+            </div>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Line height</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.headline_height"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="135%"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >%</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.headline_spacing"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="3px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.typography.headline_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font weight</label>
-              <select
-                  v-model="meta.typography.headline_weight"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="normal">
-                  Normal
-                </option>
-                <option value="bold">
-                  Bold
-                </option>
-                <option value="bolder">
-                  Bolder
-                </option>
-                <option value="lighter">
-                  lighter
-                </option>
-                <option value="100">
-                  100
-                </option>
-                <option value="200">
-                  200
-                </option>
-                <option value="300">
-                  300
-                </option>
-                <option value="400">
-                  400
-                </option>
-                <option value="500">
-                  500
-                </option>
-                <option value="600">
-                  600
-                </option>
-                <option value="700">
-                  700
-                </option>
-                <option value="800">
-                  800
-                </option>
-                <option value="900">
-                  900
-                </option>
-              </select>
+            <span
+                class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
+            >Subtitle</span>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font size</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.subtitle_size"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font weight</label>
+                <select
+                    v-model="meta.typography.subtitle_weight"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="normal">
+                    Normal
+                  </option>
+                  <option value="bold">
+                    Bold
+                  </option>
+                  <option value="bolder">
+                    Bolder
+                  </option>
+                  <option value="lighter">
+                    lighter
+                  </option>
+                  <option value="100">
+                    100
+                  </option>
+                  <option value="200">
+                    200
+                  </option>
+                  <option value="300">
+                    300
+                  </option>
+                  <option value="400">
+                    400
+                  </option>
+                  <option value="500">
+                    500
+                  </option>
+                  <option value="600">
+                    600
+                  </option>
+                  <option value="700">
+                    700
+                  </option>
+                  <option value="800">
+                    800
+                  </option>
+                  <option value="900">
+                    900
+                  </option>
+                </select>
+              </div>
+              <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+              <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+              <!--              <select-->
+              <!--                v-model="meta.typography.subtitle_family"-->
+              <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+              <!--                disabled-->
+              <!--                placeholder="Coming soon..."-->
+              <!--              />-->
+              <!--            </div>-->
             </div>
-            <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
-            <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
-            <!--              <select-->
-            <!--                v-model="meta.typography.headline_family"-->
-            <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
-            <!--                disabled-->
-            <!--                placeholder="Coming soon..."-->
-            <!--              />-->
-            <!--            </div>-->
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Line height</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.subtitle_height"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="135%"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >%</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.typography.subtitle_spacing"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="3px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.typography.subtitle_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Line height</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.headline_height"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="135%"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >%</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.headline_spacing"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="3px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Color</label>
-              <div class="relative">
-                <input
-                    v-model="meta.typography.headline_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
-                >
-              </div>
-            </div>
-          </div>
-          <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
-          >Subtitle</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font size</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.subtitle_size"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font weight</label>
-              <select
-                  v-model="meta.typography.subtitle_weight"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="normal">
-                  Normal
-                </option>
-                <option value="bold">
-                  Bold
-                </option>
-                <option value="bolder">
-                  Bolder
-                </option>
-                <option value="lighter">
-                  lighter
-                </option>
-                <option value="100">
-                  100
-                </option>
-                <option value="200">
-                  200
-                </option>
-                <option value="300">
-                  300
-                </option>
-                <option value="400">
-                  400
-                </option>
-                <option value="500">
-                  500
-                </option>
-                <option value="600">
-                  600
-                </option>
-                <option value="700">
-                  700
-                </option>
-                <option value="800">
-                  800
-                </option>
-                <option value="900">
-                  900
-                </option>
-              </select>
-            </div>
-            <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
-            <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
-            <!--              <select-->
-            <!--                v-model="meta.typography.subtitle_family"-->
-            <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
-            <!--                disabled-->
-            <!--                placeholder="Coming soon..."-->
-            <!--              />-->
-            <!--            </div>-->
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Line height</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.subtitle_height"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="135%"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >%</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.typography.subtitle_spacing"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="3px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Color</label>
-              <div class="relative">
-                <input
-                    v-model="meta.typography.subtitle_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
-                >
-              </div>
-            </div>
-          </div>
-        </div>
+        </transition>
       </div>
+
+      <!-- Link styles-->
       <div
           class="flex flex-col justify-center w-full p-6 border border-t-0 border-l-0 border-r-0 border-gray-200 items-center"
       >
@@ -627,293 +639,297 @@
               @click="drawer.link_styles = !drawer.link_styles"
           ><span v-show="!drawer.link_styles">Expand</span><span v-show="drawer.link_styles">Collapse</span></div>
         </div>
-        <!-- Drawer -->
-        <div
-            v-show="drawer.link_styles"
-            class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
-        >
+        <transition name="fade">
+          <!-- Drawer -->
+          <div
+              v-show="drawer.link_styles"
+              class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
+          >
           <span
               class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Link block styles</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Padding</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.padding"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Padding</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.padding"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border radius</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.border_radius"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border radius</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.border_radius"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border style</label>
+                <select
+                    v-model="meta.link_styles.border_type"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="none">
+                    No border
+                  </option>
+                  <option value="solid">
+                    Solid border
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border width (px)</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.border_width"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="4px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Border color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.link_styles.border_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border style</label>
-              <select
-                  v-model="meta.link_styles.border_type"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  No border
-                </option>
-                <option value="solid">
-                  Solid border
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border width (px)</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.border_width"
-                    class="p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="4px"
-                    type="number"
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Box shadow</label>
+                <select
+                    v-model="meta.link_styles.box_shadow"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="none">
+                    None
+                  </option>
+                  <option value="0 1px 3px 0 rgba(0,0,0,.15)">
+                    Small
+                  </option>
+                  <option value="0 2px 5px 0 rgba(0,0,0,.2)">
+                    Medium
+                  </option>
+                  <option value="0 2px 15px 0 rgba(0,0,0,.12), 0 2px 5px 0 rgba(0,0,0,.25)">
+                    Large
+                  </option>
+                </select>
               </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Border color</label>
-              <div class="relative">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background type</label>
+                <select
+                    v-model="meta.link_styles.background_type"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="none">
+                    No background
+                  </option>
+                  <option value="solid">
+                    Solid color
+                  </option>
+                  <option value="image">
+                    Image
+                  </option>
+                  <option value="gradient">
+                    Gradient
+                  </option>
+                </select>
+              </div>
+              <div v-show="meta.link_styles.background_type==='solid'" class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.link_styles.background_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+              <div v-show="meta.link_styles.background_type==='image'" class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
                 <input
-                    v-model="meta.link_styles.border_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
+                    v-model="meta.link_styles.background_image"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="e.g. https://tinypage.app/og-image.png"
                     type="text"
-                    :data-jscolor="jsColorOptions"
                 >
               </div>
             </div>
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Box shadow</label>
-              <select
-                  v-model="meta.link_styles.box_shadow"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  None
-                </option>
-                <option value="0 1px 3px 0 rgba(0,0,0,.15)">
-                  Small
-                </option>
-                <option value="0 2px 5px 0 rgba(0,0,0,.2)">
-                  Medium
-                </option>
-                <option value="0 2px 15px 0 rgba(0,0,0,.12), 0 2px 5px 0 rgba(0,0,0,.25)">
-                  Large
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background type</label>
-              <select
-                  v-model="meta.link_styles.background_type"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="none">
-                  No background
-                </option>
-                <option value="solid">
-                  Solid color
-                </option>
-                <option value="image">
-                  Image
-                </option>
-                <option value="gradient">
-                  Gradient
-                </option>
-              </select>
-            </div>
-            <div v-show="meta.link_styles.background_type==='solid'" class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background color</label>
-              <div class="relative w-full">
-                <input
-                    v-model="meta.link_styles.background_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
+            <div
+                v-show="meta.link_styles.background_type==='image'"
+                class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
+            >
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background size</label>
+                <select
+                    v-model="meta.link_styles.background_size"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
+                  <option value="cover">
+                    Cover
+                  </option>
+                  <option value="contain">
+                    Contain
+                  </option>
+                  <option value="100% 100%">
+                    Stretch
+                  </option>
+                  <option value="auto">
+                    Auto
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background position</label>
+                <select
+                    v-model="meta.link_styles.background_position"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="top left">
+                    Top left
+                  </option>
+                  <option value="top center">
+                    Top center
+                  </option>
+                  <option value="top right">
+                    Top right
+                  </option>
+                  <option value="center left">
+                    Center left
+                  </option>
+                  <option value="center center">
+                    Center
+                  </option>
+                  <option value="center right">
+                    Center right
+                  </option>
+                  <option value="bottom left">
+                    Bottom left
+                  </option>
+                  <option value="bottom center">
+                    Bottom center
+                  </option>
+                  <option value="bottom right">
+                    Bottom right
+                  </option>
+                </select>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Background repeat</label>
+                <select
+                    v-model="meta.link_styles.background_repeat"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="no-repeat">
+                    No repeat
+                  </option>
+                  <option value="repeat-x">
+                    Repeat X
+                  </option>
+                  <option value="repeat-y">
+                    Repeat Y
+                  </option>
+                  <option value="repeat">
+                    Repeat X & Y
+                  </option>
+                </select>
               </div>
             </div>
-            <div v-show="meta.link_styles.background_type==='image'" class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background image URL</label>
-              <input
-                  v-model="meta.link_styles.background_image"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="e.g. https://tinypage.app/og-image.png"
-                  type="text"
-              >
-            </div>
-          </div>
-          <div
-              v-show="meta.link_styles.background_type==='image'"
-              class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
-          >
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background size</label>
-              <select
-                  v-model="meta.link_styles.background_size"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="cover">
-                  Cover
-                </option>
-                <option value="contain">
-                  Contain
-                </option>
-                <option value="100% 100%">
-                  Stretch
-                </option>
-                <option value="auto">
-                  Auto
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background position</label>
-              <select
-                  v-model="meta.link_styles.background_position"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="top left">
-                  Top left
-                </option>
-                <option value="top center">
-                  Top center
-                </option>
-                <option value="top right">
-                  Top right
-                </option>
-                <option value="center left">
-                  Center left
-                </option>
-                <option value="center center">
-                  Center
-                </option>
-                <option value="center right">
-                  Center right
-                </option>
-                <option value="bottom left">
-                  Bottom left
-                </option>
-                <option value="bottom center">
-                  Bottom center
-                </option>
-                <option value="bottom right">
-                  Bottom right
-                </option>
-              </select>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Background repeat</label>
-              <select
-                  v-model="meta.link_styles.background_repeat"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="no-repeat">
-                  No repeat
-                </option>
-                <option value="repeat-x">
-                  Repeat X
-                </option>
-                <option value="repeat-y">
-                  Repeat Y
-                </option>
-                <option value="repeat">
-                  Repeat X & Y
-                </option>
-              </select>
-            </div>
-          </div>
-          <div
-              v-show="meta.link_styles.background_type==='gradient'"
-              class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
-          >
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Start color</label>
-              <div class="relative w-full">
-                <input
-                    v-model="meta.link_styles.background_gradient_start"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
+            <div
+                v-show="meta.link_styles.background_type==='gradient'"
+                class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full"
+            >
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Start color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.link_styles.background_gradient_start"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">End color</label>
+                <div class="relative w-full">
+                  <input
+                      v-model="meta.link_styles.background_gradient_end"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Direction</label>
+                <select
+                    v-model="meta.link_styles.background_gradient_direction"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
+                  <option value="to top">
+                    To top
+                  </option>
+                  <option value="to right">
+                    To right
+                  </option>
+                  <option value="to bottom">
+                    To bottom
+                  </option>
+                  <option value="to left">
+                    To left
+                  </option>
+                </select>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">End color</label>
-              <div class="relative w-full">
-                <input
-                    v-model="meta.link_styles.background_gradient_end"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
-                >
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Direction</label>
-              <select
-                  v-model="meta.link_styles.background_gradient_direction"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="to top">
-                  To top
-                </option>
-                <option value="to right">
-                  To right
-                </option>
-                <option value="to bottom">
-                  To bottom
-                </option>
-                <option value="to left">
-                  To left
-                </option>
-              </select>
-            </div>
           </div>
-        </div>
+        </transition>
       </div>
+
+      <!-- Link typography-->
       <div
           class="flex flex-col justify-center w-full p-6 border-t-0 border-l-0 border-r-0 border-gray-200 items-center"
       >
@@ -928,260 +944,262 @@
           ><span v-show="!drawer.link_typography">Expand</span><span v-show="drawer.link_typography">Collapse</span>
           </div>
         </div>
-        <!-- Drawer -->
-        <div
-            v-show="drawer.link_typography"
-            class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
-        >
+        <transition name="fade">
+          <!-- Drawer -->
+          <div
+              v-show="drawer.link_typography"
+              class="w-full flex flex-col items-start justify-start mt-6 p-6 border border-l-0 border-r-0 border-b-0 border-gray-200"
+          >
           <span
               class="text-gray-800 font-bold text-xl pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
           >Link headline</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font size</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.headline_size"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font size</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.headline_size"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font weight</label>
+                <select
+                    v-model="meta.link_styles.headline_weight"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
                 >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
+                  <option value="normal">
+                    Normal
+                  </option>
+                  <option value="bold">
+                    Bold
+                  </option>
+                  <option value="bolder">
+                    Bolder
+                  </option>
+                  <option value="lighter">
+                    lighter
+                  </option>
+                  <option value="100">
+                    100
+                  </option>
+                  <option value="200">
+                    200
+                  </option>
+                  <option value="300">
+                    300
+                  </option>
+                  <option value="400">
+                    400
+                  </option>
+                  <option value="500">
+                    500
+                  </option>
+                  <option value="600">
+                    600
+                  </option>
+                  <option value="700">
+                    700
+                  </option>
+                  <option value="800">
+                    800
+                  </option>
+                  <option value="900">
+                    900
+                  </option>
+                </select>
+              </div>
+              <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+              <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+              <!--              <select-->
+              <!--                v-model="meta.link_styles.headline_family"-->
+              <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+              <!--                disabled-->
+              <!--                placeholder="Coming soon..."-->
+              <!--              />-->
+              <!--            </div>-->
+            </div>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Line height</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.headline_height"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="135%"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >%</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.headline_spacing"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="3px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.link_styles.headline_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
               </div>
             </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font weight</label>
-              <select
-                  v-model="meta.link_styles.headline_weight"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="normal">
-                  Normal
-                </option>
-                <option value="bold">
-                  Bold
-                </option>
-                <option value="bolder">
-                  Bolder
-                </option>
-                <option value="lighter">
-                  lighter
-                </option>
-                <option value="100">
-                  100
-                </option>
-                <option value="200">
-                  200
-                </option>
-                <option value="300">
-                  300
-                </option>
-                <option value="400">
-                  400
-                </option>
-                <option value="500">
-                  500
-                </option>
-                <option value="600">
-                  600
-                </option>
-                <option value="700">
-                  700
-                </option>
-                <option value="800">
-                  800
-                </option>
-                <option value="900">
-                  900
-                </option>
-              </select>
+            <span
+                class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
+            >Link subtitle</span>
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font size</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.subtitle_size"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="70px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Font weight</label>
+                <select
+                    v-model="meta.link_styles.subtitle_weight"
+                    class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                    placeholder="Select one..."
+                >
+                  <option value="normal">
+                    Normal
+                  </option>
+                  <option value="bold">
+                    Bold
+                  </option>
+                  <option value="bolder">
+                    Bolder
+                  </option>
+                  <option value="lighter">
+                    lighter
+                  </option>
+                  <option value="100">
+                    100
+                  </option>
+                  <option value="200">
+                    200
+                  </option>
+                  <option value="300">
+                    300
+                  </option>
+                  <option value="400">
+                    400
+                  </option>
+                  <option value="500">
+                    500
+                  </option>
+                  <option value="600">
+                    600
+                  </option>
+                  <option value="700">
+                    700
+                  </option>
+                  <option value="800">
+                    800
+                  </option>
+                  <option value="900">
+                    900
+                  </option>
+                </select>
+              </div>
+              <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
+              <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
+              <!--              <select-->
+              <!--                v-model="meta.link_styles.subtitle_family"-->
+              <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
+              <!--                disabled-->
+              <!--                placeholder="Coming soon..."-->
+              <!--              />-->
+              <!--            </div>-->
             </div>
-            <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
-            <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
-            <!--              <select-->
-            <!--                v-model="meta.link_styles.headline_family"-->
-            <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
-            <!--                disabled-->
-            <!--                placeholder="Coming soon..."-->
-            <!--              />-->
-            <!--            </div>-->
+            <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Line height</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.subtitle_height"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="135%"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >%</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
+                <div class="flex flex-row overflow-hidden rounded-lg items-center">
+                  <input
+                      v-model="meta.link_styles.subtitle_spacing"
+                      class="flex-grow p-3 bg-white text-sm text-gray-700"
+                      min="0"
+                      placeholder="3px"
+                      type="number"
+                  >
+                  <span
+                      class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
+                      style="height:46px;"
+                  >px</span>
+                </div>
+              </div>
+              <div class="flex flex-col mb-4 justify-start w-full">
+                <label class="font-semibold text-gray-700 mb-2">Color</label>
+                <div class="relative">
+                  <input
+                      v-model="meta.link_styles.subtitle_color"
+                      class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
+                      placeholder="e.g. #FFF"
+                      type="text"
+                      :data-jscolor="jsColorOptions"
+                  >
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Line height</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.headline_height"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="135%"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >%</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.headline_spacing"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="3px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Color</label>
-              <div class="relative">
-                <input
-                    v-model="meta.link_styles.headline_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
-                >
-              </div>
-            </div>
-          </div>
-          <span
-              class="text-gray-800 font-bold text-xl mt-2 pb-3 mb-3 border border-t-0 border-r-0 border-l-0 border-gray-200 w-full text-left justify-center flex flex-row"
-          >Link subtitle</span>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font size</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.subtitle_size"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="70px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Font weight</label>
-              <select
-                  v-model="meta.link_styles.subtitle_weight"
-                  class="p-3 rounded-lg bg-white text-sm text-gray-700"
-                  placeholder="Select one..."
-              >
-                <option value="normal">
-                  Normal
-                </option>
-                <option value="bold">
-                  Bold
-                </option>
-                <option value="bolder">
-                  Bolder
-                </option>
-                <option value="lighter">
-                  lighter
-                </option>
-                <option value="100">
-                  100
-                </option>
-                <option value="200">
-                  200
-                </option>
-                <option value="300">
-                  300
-                </option>
-                <option value="400">
-                  400
-                </option>
-                <option value="500">
-                  500
-                </option>
-                <option value="600">
-                  600
-                </option>
-                <option value="700">
-                  700
-                </option>
-                <option value="800">
-                  800
-                </option>
-                <option value="900">
-                  900
-                </option>
-              </select>
-            </div>
-            <!--            <div class="flex flex-col mb-4 justify-start w-full">-->
-            <!--              <label class="font-semibold text-gray-700 mb-2">Font family</label>-->
-            <!--              <select-->
-            <!--                v-model="meta.link_styles.subtitle_family"-->
-            <!--                class="p-3 rounded-lg bg-white text-sm text-gray-700"-->
-            <!--                disabled-->
-            <!--                placeholder="Coming soon..."-->
-            <!--              />-->
-            <!--            </div>-->
-          </div>
-          <div class="flex flex-col 3xl:flex-row space-y-4 3xl:space-y-0 3xl:space-x-4 w-full">
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Line height</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.subtitle_height"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="135%"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >%</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Letter spacing</label>
-              <div class="flex flex-row overflow-hidden rounded-lg items-center">
-                <input
-                    v-model="meta.link_styles.subtitle_spacing"
-                    class="flex-grow p-3 bg-white text-sm text-gray-700"
-                    min="0"
-                    placeholder="3px"
-                    type="number"
-                >
-                <span
-                    class="text-sm text-gray-600 font-medium bg-gray-200 shadow-inner p-3 leading-none flex items-center justify-center"
-                    style="height:46px;"
-                >px</span>
-              </div>
-            </div>
-            <div class="flex flex-col mb-4 justify-start w-full">
-              <label class="font-semibold text-gray-700 mb-2">Color</label>
-              <div class="relative">
-                <input
-                    v-model="meta.link_styles.subtitle_color"
-                    class="p-3 w-full rounded-lg bg-white text-sm text-gray-700"
-                    placeholder="e.g. #FFF"
-                    type="text"
-                    :data-jscolor="jsColorOptions"
-                >
-              </div>
-            </div>
-          </div>
-        </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -1992,3 +2010,13 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .25s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -54,10 +54,12 @@
             <h6 class="text-center">
               {{ showHTML ? 'Close Editor' : 'Open Editor' }}
             </h6>
-            <img :src="showHTML ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
-                 style="width: 20px; height: 20px;"
-                 alt="show hide HTML editor"
-            />
+            <transition name="fade">
+              <img :src="showHTML ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                   style="width: 20px; height: 20px;"
+                   alt="show hide HTML editor"
+              />
+            </transition>
           </div>
         </div>
 
@@ -103,10 +105,12 @@
             <h6 class="text-center">
               {{ showCSS ? 'Close Editor' : 'Open Editor' }}
             </h6>
-            <img :src="showCSS ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
-                 style="width: 20px; height: 20px;"
-                 alt="show hide CSS editor"
-            />
+            <transition name="fade">
+              <img :src="showCSS ? '/caret-up-outline.svg' : '/caret-down-outline.svg'"
+                   style="width: 20px; height: 20px;"
+                   alt="show hide CSS editor"
+              />
+            </transition>
           </div>
         </div>
 

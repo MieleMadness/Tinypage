@@ -15,14 +15,15 @@
       <label class="font-semibold mb-2">Link type</label>
       <select v-model="pendingLink.type" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
       >
-        <option disabled selected>Select a link type</option>
-        <option value="link">URL (default)</option>
-        <option value="social">Social Icon</option>
-        <option value="vcard">vCard/Add To Contacts</option>
-        <option value="image">Image</option>
+        <option disabled>Select a link type</option>
+
         <option value="divider">Divider</option>
-        <option value="text">Text</option>
         <option value="html">HTML Snippet</option>
+        <option value="image">Image</option>
+        <option value="social">Social Icon</option>
+        <option value="text">Text</option>
+        <option value="link" selected>URL (default)</option>
+        <option value="vcard">vCard/Add To Contacts</option>
         <option value="youtube">Youtube Video</option>
       </select>
     </div>
@@ -120,7 +121,7 @@
             <img src="/caret-down-outline.svg" style="width: 20px; height: 20px; filter: invert()" alt="move up"/>
           </button>
           <button
-              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl bg-red-400 hover:bg-red-500 mb-4 lg:mb-0 cursor-pointer"
+              class="text-sm px-2 py-2 ml-2 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 mb-4 lg:mb-0 cursor-pointer"
               style="align-self: flex-end"
               @click="deleteSocialIcon(index)"
           >
@@ -196,17 +197,17 @@
     </div>
 
     <!-- Button Image URL -->
-    <div v-if="intent!=='view' && (pendingLink.type === 'link' || pendingLink.type === 'vcard')"
-         class="flex flex-col mb-8 justify-start w-full"
-    >
-      <label class="font-semibold mb-2">Button Image URL</label>
+    <!--    <div v-if="intent!=='view' && (pendingLink.type === 'link' || pendingLink.type === 'vcard')"-->
+    <!--         class="flex flex-col mb-8 justify-start w-full"-->
+    <!--    >-->
+    <!--      <label class="font-semibold mb-2">Button Image URL</label>-->
 
-      <input v-model="buttonImageUrl"
-             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-             placeholder="e.g. https://exampleurl.com/example"
-             type="url"
-      />
-    </div>
+    <!--      <input v-model="buttonImageUrl"-->
+    <!--             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"-->
+    <!--             placeholder="e.g. https://exampleurl.com/example"-->
+    <!--             type="url"-->
+    <!--      />-->
+    <!--    </div>-->
 
     <!-- vCard -->
     <div v-show="intent!=='view' && pendingLink.type === 'vcard'"
@@ -556,8 +557,10 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
+  async mounted() {
     if (process.client) {
+      await new Promise(res => setTimeout(res, 200));
+
       this.$nextTick(() => {
         this.initColorPickers();
       });

@@ -3,7 +3,7 @@
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
       <img class="w-8" src="/icons/Settings.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        Site settings
+        Page Settings
       </h1>
     </div>
     <div class="flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-8">
@@ -146,34 +146,23 @@
         </div>
 
         <!-- Use Gravatar toggle -->
-        <div class="flex flex-row w-full mb-6 items-start">
-          <input
-              v-model="user.activeProfile.metadata.useGravatar"
-              aria-label="privacy mode"
-              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-              style="margin-top:3px;"
-              type="checkbox"
-          >
+        <transition name="fade">
+          <div v-if="!user.activeProfile.imageUrl" class="flex flex-row w-full mb-6 items-start">
+            <input
+                v-model="user.activeProfile.metadata.useGravatar"
+                aria-label="privacy mode"
+                class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                style="margin-top:3px;"
+                type="checkbox"
+            >
 
-          <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
-            Show Avatar (Hides avatar if disabled.)
-          </label>
-        </div>
-
-        <!-- Full Width toggle -->
-        <div class="flex flex-row w-full mb-6 items-start">
-          <input
-              v-model="user.activeProfile.metadata.fullWidth"
-              aria-label="privacy mode"
-              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-              style="margin-top:3px;"
-              type="checkbox"
-          >
-
-          <label class="ml-4 block text-sm leading-5 text-black font-bold opacity-70">
-            Full Width (The contents of the page won't be padded if enabled.)
-          </label>
-        </div>
+            <label
+                class="ml-4 block text-sm leading-5 text-black font-bold opacity-70"
+            >
+              Show Avatar (Avatar URL overrides this option.)
+            </label>
+          </div>
+        </transition>
 
         <!-- Watermark Toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
@@ -255,7 +244,7 @@
             </div>
           </div>
 
-          <label class="font-semibold mb-2 text-sm">Use for this HTML snippets like Facebook Pixel.</label>
+          <label class="font-normal mb-2 text-sm">Use for this HTML snippets like Facebook Pixel.</label>
 
           <a class="text-gray-500 text-xs hover:underline hover:text-gray-600 mb-1"
              href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"
@@ -301,6 +290,24 @@
       </p>
     </div>
 
+    <!-- Delete site -->
+    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col mr-auto w-full lg:w-1/2">
+        <h2 class="text-black font-bold text-lg w-full">
+          Delete this page
+        </h2>
+        <p class="text-black opacity-70 font-semibold">Done with this page? Click the button on your right to delete
+          this page and all related content.</p>
+      </div>
+      <button
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
+          type="button"
+          @click="setDeleteProfileModalActive(true)"
+      >
+        Delete this page
+      </button>
+    </div>
+
     <!-- Manage SSO -->
     <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
       <div class="flex flex-col mr-auto w-full lg:w-1/2">
@@ -331,9 +338,28 @@
       </div>
     </div>
 
+    <!-- Delete site -->
+    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col mr-auto w-full lg:w-1/2">
+        <h2 class="text-black font-bold text-lg w-full">
+          Delete this page
+        </h2>
+        <p class="text-black opacity-70 font-semibold">Done with this page? Click the button on your right to delete
+          this page and all related content.</p>
+      </div>
+
+      <button
+          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
+          type="button"
+          @click="setDeleteProfileModalActive(true)"
+      >
+        Delete this page
+      </button>
+    </div>
+
     <!-- Import / Export Profile -->
-    <div class="flex flex-col lg:flex-col p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
-      <div class="flex flex-col w-full">
+    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
+      <div class="flex flex-col mr-auto w-full lg:w-1/2">
         <h2 class="text-black font-bold text-lg w-full">
           Import/Export profile data
         </h2>
@@ -341,42 +367,29 @@
           Importing profile data will completely replace this profile with the data you import.
         </p>
       </div>
-      <div class="flex flex-row justify-center items-center space-x-4 w-full">
-        <label for="importProfileButton"
-               class="mt-4 p-3 flex-grow text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
-        >Import</label>
-        <input
-            id="importProfileButton"
-            type="file"
-            hidden
-            @change="importProfile"
-        >
+
+      <div class="flex flex-col space-y-2">
+        <div>
+          <label for="importProfileButton"
+                 class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-1/3 justify-center align-center"
+          >Import</label>
+
+          <input
+              id="importProfileButton"
+              type="file"
+              hidden
+              @change="importProfile"
+          >
+        </div>
+
         <button
-            class="mt-4 p-3 flex-grow text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold"
+            class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-1/3 justify-center align-center"
             type="button"
             @click="exportProfile"
         >
           Export
         </button>
       </div>
-    </div>
-
-    <!-- Delete site -->
-    <div class="flex flex-col lg:flex-row p-6 bg-white shadow rounded-2xl justify-center items-center w-full mb-8">
-      <div class="flex flex-col mr-auto w-full lg:w-1/2">
-        <h2 class="text-black font-bold text-lg w-full">
-          Delete this site
-        </h2>
-        <p class="text-black opacity-70 font-semibold">Done with this site? Click the button on your right to delete
-          this site and all related content.</p>
-      </div>
-      <button
-          class="w-full lg:w-auto mt-4 lg:mt-0 ml-2 flex p-3 px-6 text-white text-center bg-red-600 hover:bg-red-700 rounded-2xl font-bold w-1/3 justify-center align-center"
-          type="button"
-          @click="setDeleteProfileModalActive(true)"
-      >
-        Delete this site
-      </button>
     </div>
 
     <!-- Import from Linktree -->
@@ -404,7 +417,7 @@
         </div>
         <button
             v-if="alerts.linktreeImported === null"
-            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-auto max-w-xs justify-center align-center"
+            class="mt-4 inline-flex p-3 text-white text-center bg-gdp hover:bg-blue-400 rounded-2xl font-bold w-auto justify-center align-center"
             type="button"
             @click="importLinktree"
         >
@@ -507,7 +520,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Site settings - ' + this.$customSettings.productName,
+      title: 'Page Settings - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'description',
@@ -522,12 +535,12 @@ export default Vue.extend({
         {
           hid: 'og:title',
           name: 'og:title',
-          content: 'Site settings - ' + this.$customSettings.productName
+          content: 'Page Settings - ' + this.$customSettings.productName
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: 'Site settings - ' + this.$customSettings.productName
+          content: 'Page Settings - ' + this.$customSettings.productName
         },
         {
           hid: 'og:description',
@@ -560,12 +573,12 @@ export default Vue.extend({
           visibility: '',
           showWatermark: false,
           metadata: {
-            privacyMode: false,
-            unlisted: false,
-            coverImage: null,
-            pageHtml: null,
-            shareMenu: true,
-            useGravatar: true
+            privacyMode: false as boolean | null | undefined,
+            unlisted: false as boolean | null | undefined,
+            coverImage: null as boolean | null | undefined,
+            pageHtml: null as boolean | null | undefined,
+            shareMenu: true as boolean | null | undefined,
+            useGravatar: true as boolean | null | undefined
           },
         }
       },
@@ -784,7 +797,7 @@ export default Vue.extend({
       });
 
       window.location.assign(response.data);
-    }
+    },
   }
 });
 </script>

@@ -1,9 +1,9 @@
 <template>
   <section class="flex flex-col p-8 items-center overflow-x-hidden overflow-y-scroll">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img class="w-8" src="/icons/Person.svg">
+      <img class="w-8" src="/icons/High%20voltage.svg">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        Admin dashboard
+        Admin Settings
       </h1>
     </div>
 
@@ -221,7 +221,7 @@ export default Vue.extend({
 
   head() {
     return {
-      title: 'Admin - ' + this.$customSettings.productName,
+      title: 'Admin Settings - ' + this.$customSettings.productName,
       meta: [
         {
           hid: 'robots',

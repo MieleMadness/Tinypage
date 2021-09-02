@@ -164,7 +164,7 @@ export class SingleLinkServer {
           <p class="ml-auto text-gray-500 text-sm">100% Uptime</p></div>
       </section>
       <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.</br>Copyright ©2020
-        Neutron Creative Inc.
+        Tinypage.app
       </section>
       </body>
       </html>

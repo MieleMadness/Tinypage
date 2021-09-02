@@ -12,7 +12,7 @@ create table if not exists enterprise.stripe_history_events
 
 create table if not exists enterprise.subscriptions
 (
-    user_id      bigint unique references app.users (id),
+    user_id      bigint unique references app.users (id) on delete cascade,
     tier         text,
     product_id   text unique,
     created_on   timestamp not null default current_timestamp,
@@ -24,7 +24,7 @@ create index if not exists enterprise_subscriptions_index on enterprise.subscrip
 
 create table if not exists enterprise.products
 (
-    user_id    bigint references app.users (id),
+    user_id    bigint references app.users (id) on delete cascade,
     tier       text,
     product_id text unique,
     created_on timestamp not null default current_timestamp
@@ -35,15 +35,15 @@ create index if not exists enterprise_products_index on enterprise.products (pro
 
 create table if not exists enterprise.profile_members
 (
-    user_id    bigint references app.users (id),
-    profile_id bigint references app.profiles (id),
+    user_id    bigint references app.users (id) on delete cascade,
+    profile_id bigint references app.profiles (id) on delete cascade,
     role       text not null default 'guest',
     unique (user_id, profile_id)
 );
 
 create table if not exists enterprise.god_mode
 (
-    user_id bigint references app.users (id) primary key
+    user_id bigint references app.users (id) on delete cascade primary key
 );
 
 create table if not exists enterprise.customization

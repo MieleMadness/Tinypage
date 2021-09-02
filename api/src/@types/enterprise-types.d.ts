@@ -15,13 +15,6 @@ interface DbProduct {
     purchase_type?: 'one_time' | 'recurring' | 'free'
 }
 
-interface DbSeat {
-    owner_user_id: string,
-    seat_member_user_id: string,
-    role: string,
-    expired: boolean
-}
-
 interface DbServerCustomization {
     title: string,
     brandName: string,

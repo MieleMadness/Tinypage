@@ -4,7 +4,9 @@
   >
     <div class="flex flex-col lg:flex-row justify-start lg:justify-between items-center mb-4 w-full">
       <h1 class="text-gray-800 font-extrabold tracking-tight text-3xl">
-        <span v-if="intent==='create'">Create</span><span v-if="intent==='edit'">Edit</span> theme
+        <span v-if="intent==='create'">Create</span>
+        <span v-if="intent==='edit'">Edit</span>
+        theme
       </h1>
     </div>
     <div v-if="intent!=='view'" class="flex flex-col mb-4 justify-start w-full">
@@ -44,14 +46,12 @@
             target="_blank"
         >Need help? Read our documentation</a>
       </div>
-      <client-only>
-        <textarea
-            v-model="theme.customHtml"
-            class="border border-2 text-white p-2"
-            style="font-family: monospace; background-color: #1E1E1E"
-            rows="12"
-        />
-      </client-only>
+      <textarea
+          v-model="theme.customHtml"
+          class="border border-2 text-white p-2"
+          style="font-family: monospace; background-color: #1E1E1E"
+          rows="12"
+      />
     </div>
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-lg w-full">
       <div
@@ -66,14 +66,12 @@
             target="_blank"
         >Need help? Read our documentation</a>
       </div>
-      <client-only>
-        <textarea
-            v-model="editorCss"
-            class="border border-2 text-white p-2"
-            style="font-family: monospace; background-color: #1E1E1E"
-            rows="12"
-        />
-      </client-only>
+      <textarea
+          v-model="editorCss"
+          class="border border-2 text-white p-2"
+          style="font-family: monospace; background-color: #1E1E1E"
+          rows="12"
+      />
     </div>
 
     <div class="flex flex-col lg:flex-row items-center justify-start w-full mt-4">
@@ -144,7 +142,7 @@ export default Vue.extend({
     };
   },
 
-  beforeMount() {
+  mounted() {
     this.id = this.$route.path.replace('/dashboard/appearance/theme/', '');
     if (this.id !== 'create') {
       this.loadThemes();
@@ -153,6 +151,7 @@ export default Vue.extend({
       this.builderLoaded = true;
     }
   },
+
   methods: {
     async loadThemes() {
       try {

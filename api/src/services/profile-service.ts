@@ -7,7 +7,8 @@ import {StatusCodes} from "http-status-codes";
 import {StringUtils} from "../utils/string-utils";
 import {QueryResult} from "pg";
 import {DatabaseError} from 'pg-protocol/dist/messages';
-import {ScreenshotOptions, ScreenshotUtils} from "../utils/screenshot-utils";
+import {ScreenshotUtils} from "../utils/screenshot-utils";
+import {Options as PageresOptions} from "pageres";
 
 /**
  * This service takes care of transactional tasks related to Profiles.
@@ -60,7 +61,7 @@ export class ProfileService extends DatabaseService {
     }
 
     /**
-     * Uses Neutron Capture to generate a thumbnail image of a profile.
+     * Generates a thumbnail image of a profile.
      *
      * @param handle
      */
@@ -78,16 +79,71 @@ export class ProfileService extends DatabaseService {
         };
 
         try {
-            let screenshotOptions = new ScreenshotOptions();
-            screenshotOptions.scale = scale;
-            screenshotOptions.crop = true;
+            let screenshotOptions: PageresOptions = {
+                scale: scale,
+                crop: true,
+                hide: [
+                    '.share-menu-container',
+                ],
+                css: "img.nc-avatar {margin-top: 10px !important;}",
+                launchOptions: {
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox'
+                    ]
+                }
+            };
             let url = `${config.rendererUrl}/${handle}`;
-
-            console.log("Renderer URL: " + url);
 
             return await ScreenshotUtils.getOrCreateScreenshot(
                 url,
                 [`${resolution.x}x${resolution.y}`],
+                ScreenshotUtils.DEFAULT_TTL,
+                false,
+                screenshotOptions
+            );
+        } catch (err) {
+            console.error(err);
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "An internal error occurred while fetching the thumbnail.");
+        }
+    }
+
+    /**
+     * Generates a thumbnail image of a profile.
+     *
+     * @param handle
+     * @param token
+     */
+    async getImagePreviewByHandle(handle: string, token: string | undefined | null): Promise<Buffer> {
+        let final_size = {
+            x: 592,
+            y: 1184
+        };
+
+        if (token) {
+            token = `?token=${token}`;
+        } else {
+            token = "";
+        }
+
+        try {
+            let screenshotOptions: PageresOptions = {
+                crop: true,
+                hide: [
+                    '.share-menu-container'
+                ],
+                launchOptions: {
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox'
+                    ]
+                }
+            };
+            let url = `${config.rendererUrl}/${handle}${token}`;
+
+            return await ScreenshotUtils.getOrCreateScreenshot(
+                url,
+                [`${final_size.x}x${final_size.y}`],
                 ScreenshotUtils.DEFAULT_TTL,
                 false,
                 screenshotOptions

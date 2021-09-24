@@ -1,9 +1,9 @@
 <template>
   <section class="flex flex-col items-center h-full  flex-shrink-0">
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
-      <img alt="House icon" class="w-8" src="/icons/House.svg">
+      <img alt="House icon" class="w-8" :src="`${$customSettings.icons.mainIcon}`" style="width:65px;height:65px;">
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        Site links
+        Tinypage
       </h1>
     </div>
     <div class="flex flex-col max-w-2xl items-center justify-center w-full flex-shrink-0">
@@ -19,7 +19,7 @@
           to="/dashboard/link/"
           type="button"
       >
-        Add new link
+        Add new element
       </n-link>
 
       <draggable
@@ -167,7 +167,7 @@
                 type="button"
                 @click="deleteLink"
             >
-              Delete link
+              Delete element
             </button>
           </div>
 

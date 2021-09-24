@@ -8,12 +8,6 @@
         class="flex flex-row w-full py-6 justify-between relative"
         style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
-
-      <n-link to="/dashboard"><img
-          :src="`${$customSettings.icons.mainIcon}`" alt="main icon"
-          class="w-20 logo" style="filter: drop-shadow(0px 10px 25px #478ecc);"
-      >
-      </n-link>
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
       <!--           style="border: solid 2px rgba(0,0,0,.15);">-->
       <!--        <img src="/icons/Compass.svg" style="width: 16px;height:auto;"/>-->
@@ -170,8 +164,8 @@
 
             <div class="flex flex-col">
               <n-link :class="getActiveStyles('dashboard')" to="/dashboard/">
-                <img src="/icons/House.svg" style="width:24px;height:24px;">
-                <span class="ml-4 font-extrabold">Links</span>
+                <img :src="`${$customSettings.icons.mainIcon}`" style="width:32px;height:32px;">
+                <span class="ml-4 font-extrabold">Tinypage</span>
               </n-link>
 
               <n-link :class="getActiveStyles('dashboard-appearance')" to="/dashboard/appearance">
@@ -253,6 +247,26 @@
       </div>
 
       <div v-if="preview" class="relative ml-8 hidden lg:flex xl:mb-20" style="width:286px;height:592px;">
+
+        <div class="preview-menu">
+          <div class="sbutton"
+               style="display: flex; align-items: center; justify-content: center;"
+               @click="onClickDownloadPreviewImage()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 32px; height: 32px;" viewBox="0 0 512 512">
+              <title>
+                Download Preview Image
+              </title>
+              <path d="M336 176h40a40 40 0 0140 40v208a40 40 0 01-40 40H136a40 40 0 01-40-40V216a40 40 0 0140-40h40"
+                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+              />
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                    d="M176 272l80 80 80-80M256 48v288"
+              />
+            </svg>
+          </div>
+        </div>
+
         <div
             class="p-3 bg-white absolute my-auto"
             style="top:0;left:0;border-radius: 50px; overflow:hidden;box-shadow:0 10px 15px -3px rgb(0 0 0), 0 4px 6px -2px rgb(0 0 0), inset 0 0 5px 0 rgba(0,0,0,.1);"
@@ -609,9 +623,7 @@ export default Vue.extend({
 
           if (this.$route.path.includes('/dashboard/appearance')) {
             this.active = "dashboard-appearance";
-
-            if (!this.$route.path.includes('/dashboard/appearance/theme'))
-              this.preview = true;
+            this.preview = true;
           } else if (this.$route.path.includes('/dashboard/settings')) {
             this.active = "dashboard-settings";
             this.preview = true;
@@ -771,6 +783,39 @@ export default Vue.extend({
       }
 
       this.selectingProfile = false;
+    },
+
+    async onClickDownloadPreviewImage() {
+      if (process.client) {
+        let token = this.$store.getters['auth/getToken'];
+
+        const response = await this.$axios.get('/profile/preview-image/' + this.originalHandle, {
+          responseType: "blob"
+        }, {
+          token
+        });
+
+        let filename = "preview-image.png";
+        const disposition = response.headers['content-disposition'];
+        if (disposition && disposition.indexOf('filename') !== -1) {
+          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          const matches = filenameRegex.exec(disposition);
+          if (matches != null && matches[1]) {
+            filename = matches[1].replace(/['"]/g, '');
+          }
+        }
+
+        const blob = new Blob([response.data], {type: 'image/png'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+      }
     }
   },
 });
@@ -1063,5 +1108,30 @@ html {
   top: 0;
   left: 0;
   position: absolute;
+}
+
+.preview-menu {
+  position: relative;
+  bottom: 65px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.sbutton {
+  display: flex;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  text-align: center;
+  margin: 5px auto 0;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5px 11px -2px rgb(0 0 0 / 50%), 0 4px 12px -7px rgb(0 0 0 / 15%);
+  cursor: pointer;
+  -webkit-transition: all .1s ease-out;
+  transition: all .1s ease-out;
+  position: relative;
+  z-index: 3;
 }
 </style>

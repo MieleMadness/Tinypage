@@ -62,7 +62,7 @@
     "mixpanel": "^0.13.0",
     "node-cron": "^3.0.0",
     "object-hash": "^2.2.0",
-    "pageres": "github:neutron-creative/pageres#master",
+    "pageres": "^6.2.3",
     "pg": "^8.6.0",
     "stripe": "^8.171.0"
   },

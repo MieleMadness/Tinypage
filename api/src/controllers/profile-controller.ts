@@ -29,6 +29,15 @@ interface ProfileHandleRequest extends RequestGenericInterface {
     }
 }
 
+interface ProfilePreviewImageRequest extends RequestGenericInterface {
+    Params: {
+        handle?: string
+    },
+    Body: {
+        token?: string
+    }
+}
+
 interface GetTopProfilesRequest extends RequestGenericInterface {
     Params: {
         limit?: number
@@ -133,6 +142,7 @@ export class ProfileController extends Controller {
         // Unauthenticated controllers
         this.fastify.all<ProfileHandleRequest>('/profile/:handle', this.GetProfile.bind(this));
         this.fastify.all<ProfileHandleRequest>('/profile/thumbnail/:handle', this.GetProfileThumbnail.bind(this));
+        this.fastify.all<ProfilePreviewImageRequest>('/profile/preview-image/:handle', this.GetProfilePreviewImage.bind(this));
 
         this.fastify.post<GetTopProfilesRequest>('/profile/leaderboards/top/', getTopProfilesRequestRateLimit, this.GetTopProfiles.bind(this));
         this.fastify.post<GetTopProfilesRequest>('/profile/leaderboards/top/:limit', getTopProfilesRequestRateLimit, this.GetTopProfiles.bind(this));
@@ -270,6 +280,40 @@ export class ProfileController extends Controller {
             });
 
             reply.send(thumbnail);
+            return;
+        } catch (e) {
+            if (e instanceof HttpError) {
+                reply.code(e.statusCode);
+                return ReplyUtils.error(e.message, e);
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Route for /profile/preview-image/:handle
+     *
+     * @param request
+     * @param reply
+     */
+    async GetProfilePreviewImage(request: FastifyRequest<ProfilePreviewImageRequest>, reply: FastifyReply) {
+        try {
+            let params = request.params;
+
+            if (!params.handle) {
+                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("No handle was provided."));
+                return;
+            }
+
+            let profilePreview = await this.profileService.getImagePreviewByHandle(params.handle, request.body?.token);
+
+            reply.code(StatusCodes.OK).headers({
+                "Content-Type": "image/png",
+                "Content-Length": profilePreview.byteLength
+            });
+
+            reply.send(profilePreview);
             return;
         } catch (e) {
             if (e instanceof HttpError) {

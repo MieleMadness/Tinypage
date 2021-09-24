@@ -5,6 +5,7 @@ import {StatusCodes} from "http-status-codes";
 import {HttpError} from "./http-error";
 import * as fs from "fs";
 import Pageres from "pageres";
+import {Options as PageresOptions} from "pageres";
 
 /**
  * This represents a query coming in from a user.
@@ -50,7 +51,7 @@ export class ScreenshotUtils {
      * @param noCache Whether we should cache the screenshot or not
      * @param options The screenshot options
      */
-    static async getOrCreateScreenshot(url: string, sizes: string[], ttl: number = ScreenshotUtils.DEFAULT_TTL, noCache: boolean = false, options: ScreenshotOptions): Promise<Buffer> {
+    static async getOrCreateScreenshot(url: string, sizes: string[], ttl: number = ScreenshotUtils.DEFAULT_TTL, noCache: boolean = false, options: PageresOptions): Promise<Buffer> {
         let hash1 = ObjectHash.sha1(url);
         let hash2 = ObjectHash.sha1(options);
         let hash = ObjectHash.sha1(hash1 + hash2);
@@ -84,13 +85,13 @@ export class ScreenshotUtils {
             }
         }
 
-        let screenshot = (await new Pageres(options.asObject())
+        let screenshot = (await new Pageres(options)
             .src(url, sizes)
             .dest("captures")
             .run())[0];
 
         try {
-            console.log(`Generated screenshot ${screenshot.filename} ${hash} of length ${screenshot.byteLength}`);
+            console.log(`Generated screenshot ${hash} of length ${screenshot.byteLength}`);
 
             if (!noCache && this.bucketEnabled && this.minio) {
                 console.log("Caching to S3 Bucket");
@@ -122,31 +123,5 @@ export class ScreenshotUtils {
                     console.error("Error unlinking file: " + err);
             });
         }
-    }
-}
-
-/**
- * This class is a 1:1 mapping of the documentation of options from https://github.com/sindresorhus/pageres
- */
-export class ScreenshotOptions {
-    delay: number = 0;
-    timeout: number = 60;
-    crop: boolean = false;
-    css: string = "";
-    script: string = "";
-    cookies: Array<string | object> = new Array<string | object>();
-    filename: string = "";
-    incrementalName: boolean = false;
-    selector: string = "";
-    hide: string[] = [];
-    username: string = "";
-    password: string = "";
-    scale: number = 1;
-    format: string = "png";
-    userAgent: string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
-    transparent: boolean = false;
-
-    asObject(): Object {
-        return Object.assign({}, this);
     }
 }

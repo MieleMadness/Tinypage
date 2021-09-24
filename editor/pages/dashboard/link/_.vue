@@ -3,8 +3,8 @@
     <div class="flex flex-row items-center justify-start mb-4 space-x-4 mb-4">
       <img class="w-8" src="/icons/Pencil.svg"/>
       <h1 class="text-black font-extrabold tracking-tight text-3xl w-full flex flex-row items-start lg:items-center">
-        <span v-if="intent==='create'">Create link</span>
-        <span v-if="intent==='edit'">Edit link</span>
+        <span v-if="intent==='create'">Create element</span>
+        <span v-if="intent==='edit'">Edit element</span>
       </h1>
     </div>
 
@@ -12,10 +12,10 @@
     <div v-show="intent !=='view'"
          class="flex flex-col mb-4 justify-start w-full"
     >
-      <label class="font-semibold mb-2">Link type</label>
+      <label class="font-semibold mb-2">Element type</label>
       <select v-model="pendingLink.type" class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
       >
-        <option disabled>Select a link type</option>
+        <option disabled>Select an element type</option>
 
         <option value="divider">Divider</option>
         <option value="html">HTML Snippet</option>
@@ -399,7 +399,7 @@
            class="flex-grow text-center text-lg px-8 py-4 font-bold text-white rounded-2xl hover:bg-red-500 bg-red-600 cursor-pointer"
            @click="deleteLink"
       >
-        Delete link
+        Delete element
       </div>
     </div>
 

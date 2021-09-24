@@ -91,6 +91,13 @@
       </div>
       <div
           v-if="intent==='edit'"
+          class="px-6 py-3 font-semibold text-white rounded-lg bg-gdp hover:bg-blue-300 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
+          @click="applyChanges"
+      >
+        Apply changes
+      </div>
+      <div
+          v-if="intent==='edit'"
           class="px-6 py-3 font-semibold text-white rounded-lg hover:bg-red-500 bg-red-600 cursor-pointer"
           @click="deleteTheme"
       >
@@ -231,6 +238,35 @@ export default Vue.extend({
         } */
 
         window.location.replace("/dashboard/appearance");
+        return;
+      } catch (error) {
+        console.log(error);
+        this.error = 'Failed to edit theme';
+        console.log('Failed to edit theme');
+      }
+    },
+    async applyChanges() {
+      try {
+        const response = await this.$axios.$post('/theme/update', {
+          token: this.$store.getters['auth/getToken'],
+          id: this.theme.id,
+          label: this.theme.label,
+          customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
+          customHtml: this.theme.customHtml,
+        });
+        /* const themeId = response.id;
+        const index = this.themes.findIndex(x => x.id === themeId);
+        this.themes[index] = this.theme;
+        if (this.theme.global) {
+            const token = this.$store.getters['auth/getToken'];
+            await this.$axios.$post('theme/admin/set-global', {
+                token,
+                id: response.id,
+                global: this.theme.global
+            });
+        } */
+
+        this.$root.$emit('refreshUserProfileView');
         return;
       } catch (error) {
         console.log(error);

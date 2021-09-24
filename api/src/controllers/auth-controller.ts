@@ -122,7 +122,10 @@ export class AuthController extends Controller {
      */
     async GetGoogleRequestLoginLink(request: FastifyRequest, reply: FastifyReply) {
         let nonce = SecurityUtils.generateNonce();
-        let token = jwt.sign({nonce: nonce, type: <TokenType>"google_oauth"}, config.secret, {expiresIn: '15m'});
+        let token = jwt.sign({
+            nonce: nonce,
+            type: <TokenType>"google_oauth"
+        }, config.secret, {expiresIn: '15m'});
 
         await SecurityUtils.recordNonce(nonce);
 
@@ -132,7 +135,10 @@ export class AuthController extends Controller {
             scope: [
                 'https://www.googleapis.com/auth/userinfo.profile'
             ],
-            state: JSON.stringify({"mode": "request-login", "token": token})
+            state: JSON.stringify({
+                "mode": "request-login",
+                "token": token
+            })
         });
     }
 
@@ -145,7 +151,10 @@ export class AuthController extends Controller {
      */
     async GetGoogleCreateLink(request: FastifyRequest, reply: FastifyReply) {
         let nonce = SecurityUtils.generateNonce();
-        let token = jwt.sign({nonce: nonce, type: <TokenType>"google_oauth"}, config.secret, {expiresIn: '15m'});
+        let token = jwt.sign({
+            nonce: nonce,
+            type: <TokenType>"google_oauth"
+        }, config.secret, {expiresIn: '15m'});
 
         await SecurityUtils.recordNonce(nonce);
 
@@ -156,7 +165,10 @@ export class AuthController extends Controller {
                 'https://www.googleapis.com/auth/userinfo.email',
                 'https://www.googleapis.com/auth/userinfo.profile'
             ],
-            state: JSON.stringify({"mode": "create", "token": token})
+            state: JSON.stringify({
+                "mode": "create",
+                "token": token
+            })
         });
     }
 
@@ -185,7 +197,10 @@ export class AuthController extends Controller {
             scope: [
                 'https://www.googleapis.com/auth/userinfo.profile'
             ],
-            state: JSON.stringify({"mode": "assign", "token": token})
+            state: JSON.stringify({
+                "mode": "assign",
+                "token": token
+            })
         });
     }
 
@@ -266,22 +281,22 @@ export class AuthController extends Controller {
 
                     // language=HTML
                     return `
-            <html lang="en">
-            <head>
-              <meta http-equiv="refresh" content="0;url=${url}"/>
-              <meta charset="UTF-8">
-              <title>Tinypage - Redirecting</title>
-            </head>
-            <body>
-            <p>
-              Redirecting...<br>
-              <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-            </p>
-            </body>
-            <script>
+                        <html lang="en">
+                        <head>
+                            <meta http-equiv="refresh" content="0;url=${url}"/>
+                            <meta charset="UTF-8">
+                            <title>Tinypage - Redirecting</title>
+                        </head>
+                        <body>
+                        <p>
+                            Redirecting...<br>
+                            <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                        </p>
+                        </body>
+                        <script>
 
-            </script>
-            </html>`;
+                        </script>
+                        </html>`;
                 } catch (e) {
                     if (e instanceof HttpError) {
                         reply.type("text/html").code(e.statusCode);
@@ -289,25 +304,25 @@ export class AuthController extends Controller {
 
                         // language=HTML
                         return `
-              <html lang="en">
-              <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Tinypage - Error!</title>
-              </head>
-              <body>
-              <p>
-                ${e.statusCode === 404 ?
-                            `You haven't linked your account to Google yet! You must do that in your settings first before logging in with Google.` :
-                            `Error: ${s}`} <br>
-                Redirecting in 5 seconds...<br>
-                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-              </p>
-              </body>
-              <script>
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
+                                <title>Tinypage - Error!</title>
+                            </head>
+                            <body>
+                            <p>
+                                ${e.statusCode === 404 ?
+                                        `You haven't linked your account to Google yet! You must do that in your settings first before logging in with Google.` :
+                                        `Error: ${s}`} <br>
+                                Redirecting in 5 seconds...<br>
+                                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                            </p>
+                            </body>
+                            <script>
 
-              </script>
-              </html>`;
+                            </script>
+                            </html>`;
                     }
 
                     throw e;
@@ -351,22 +366,22 @@ export class AuthController extends Controller {
 
                     // language=HTML
                     return `
-            <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <meta http-equiv="refresh" content="0;url=${url}"/>
-              <title>Tinypage - Redirecting</title>
-            </head>
-            <body>
-            <p>
-              Redirecting...<br>
-              <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-            </p>
-            </body>
-            <script>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="refresh" content="0;url=${url}"/>
+                            <title>Tinypage - Redirecting</title>
+                        </head>
+                        <body>
+                        <p>
+                            Redirecting...<br>
+                            <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                        </p>
+                        </body>
+                        <script>
 
-            </script>
-            </html>`;
+                        </script>
+                        </html>`;
                 } catch (e) {
                     if (e instanceof HttpError) {
                         reply.type("text/html").code(e.statusCode);
@@ -374,20 +389,20 @@ export class AuthController extends Controller {
 
                         // language=HTML
                         return `
-              <html lang="en">
-              <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Tinypage - Error!</title>
-              </head>
-              <body>
-              <p>
-                Error: ${s} <br>
-                Redirecting in 5 seconds...<br>
-                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-              </p>
-              </body>
-              </html>`;
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
+                                <title>Tinypage - Error!</title>
+                            </head>
+                            <body>
+                            <p>
+                                Error: ${s} <br>
+                                Redirecting in 5 seconds...<br>
+                                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                            </p>
+                            </body>
+                            </html>`;
                     }
 
                     throw e;
@@ -423,21 +438,22 @@ export class AuthController extends Controller {
 
                     // language=HTML
                     return `
-            <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <meta http-equiv="refresh"
-                    content="0;url=${config.editorUrl}/dashboard/settings/?googleLinked=${result}"/>
-              <title>Tinypage - Redirecting...</title>
-            </head>
-            <body>
-            <p>
-              Google enabled: ${result} <br>
-              Redirecting...<br>
-              <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-            </p>
-            </body>
-            </html>`;
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta http-equiv="refresh"
+                                  content="0;url=${config.editorUrl}/dashboard/settings/?googleLinked=${result}"
+                            />
+                            <title>Tinypage - Redirecting...</title>
+                        </head>
+                        <body>
+                        <p>
+                            Google enabled: ${result} <br>
+                            Redirecting...<br>
+                            <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                        </p>
+                        </body>
+                        </html>`;
 
                 } catch (e) {
                     if (e instanceof HttpError) {
@@ -446,20 +462,20 @@ export class AuthController extends Controller {
 
                         // language=HTML
                         return `
-              <html lang="en">
-              <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
-                <title>Tinypage - Error!</title>
-              </head>
-              <body>
-              <p>
-                Error: ${s} <br>
-                Redirecting in 5 seconds...<br>
-                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
-              </p>
-              </body>
-              </html>`;
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta http-equiv="refresh" content="5;url=${config.editorUrl}"/>
+                                <title>Tinypage - Error!</title>
+                            </head>
+                            <body>
+                            <p>
+                                Error: ${s} <br>
+                                Redirecting in 5 seconds...<br>
+                                <a href="${config.editorUrl}">Click here if you aren't automatically redirected.</a>
+                            </p>
+                            </body>
+                            </html>`;
                     }
 
                     throw e;
@@ -642,7 +658,10 @@ export class AuthController extends Controller {
             let profile = await this.profileService.createProfile(user.id, body.handle);
             await this.userService.setActiveProfile(user.id, profile.id);
 
-            let token = jwt.sign({userId: user.id, type: <TokenType>"auth"}, config.secret, {expiresIn: '168h'});
+            let token = jwt.sign({
+                userId: user.id,
+                type: <TokenType>"auth"
+            }, config.secret, {expiresIn: '168h'});
 
             let ip = IpUtils.GetFirstIp(IpUtils.GrabIps(request));
 

@@ -59,6 +59,7 @@ export class RouteHandler {
             let response: AxiosResponse<{ profile: Profile, links: Link[], user: User, theme: Theme }> | undefined;
 
             const scrolling = request.query.scrolling === undefined || request.query.scrolling === "true";
+            let isPreview = false;
 
             try {
                 // Fetch profile from API
@@ -67,6 +68,8 @@ export class RouteHandler {
                     response = await axios.post<{ profile: Profile, links: Link[], user: User, theme: Theme }>(`${config.apiUrl}/profile/${handle}`, {
                         token: request.query.token
                     });
+
+                    isPreview = true;
                 } else {
                     response = await axios.get<{ profile: Profile, links: Link[], user: User, theme: Theme }>(`${config.apiUrl}/profile/${handle}`);
                 }
@@ -698,7 +701,18 @@ export class RouteHandler {
             }
 
             let shareMenuHtml = "";
-            if (profile.metadata?.shareMenu) {
+            if (profile.metadata?.shareMenu && !isPreview) {
+
+                let lookup: any = {
+                    '&': "&amp;",
+                    '"': "&quot;",
+                    '\'': "&apos;",
+                    '<': "&lt;",
+                    '>': "&gt;"
+                };
+
+                let profileHeadline = profile.headline.replace(/[&"'<>]/g, c => lookup[c]);
+                let profileSubtitle = profile.subtitle.replace(/[&"'<>]/g, c => lookup[c]);
 
                 // language=HTML
                 shareMenuHtml += `
@@ -743,8 +757,14 @@ export class RouteHandler {
                             let qrCodeElem = w.document.getElementById("qrcode");
                             qrCodeElem.src = toDataURL;
 
-                            let profileHandleElem = w.document.getElementById('profileHandle');
-                            profileHandleElem.innerHTML = '${profile.handle}';
+                            let ph = w.document.getElementById('profileHeadline');
+                            ph.innerHTML = '${profileHeadline}';
+
+                            let pb = w.document.getElementById('profileSubtitle');
+                            pb.innerHTML = '${profileSubtitle}';
+
+                            let pUrl = w.document.getElementById('profileURL');
+                            pUrl.innerHTML = '<a href=\\'' + window.location.href + '\\'>' + window.location.href + '</a>';
 
                             w.document.close();
                         }

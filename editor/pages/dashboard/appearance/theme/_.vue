@@ -1,6 +1,6 @@
 <template>
   <section
-      class="flex flex-shrink-0 flex-col p-8 items-center bg-gray-100 flex-grow overflow-x-hidden overflow-y-scroll"
+      class="flex flex-shrink-0 flex-col p-8 items-center flex-grow overflow-x-hidden overflow-y-scroll"
   >
     <div class="flex flex-col lg:flex-row justify-start lg:justify-between items-center mb-4 w-full">
       <h1 class="text-gray-800 font-extrabold tracking-tight text-3xl">
@@ -13,7 +13,7 @@
       <label class="font-semibold mb-2">Display name</label>
       <input
           v-model="theme.label"
-          class="p-3 rounded-lg bg-white text-sm text-gray-700"
+          class="p-3 p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
           placeholder="e.g. My beautiful theme"
           type="text"
       >
@@ -90,7 +90,6 @@
         Save changes
       </div>
       <div
-          v-if="intent==='edit'"
           class="px-6 py-3 font-semibold text-white rounded-lg bg-gdp hover:bg-blue-300 lg:mr-4 mb-4 lg:mb-0 cursor-pointer"
           @click="applyChanges"
       >

@@ -501,7 +501,7 @@ export class ProfileController extends Controller {
                     let permission = await PermissionUtils.getCurrentPermission(ownerId);
                     let published = await this.profileService.countPublishedProfiles(ownerId);
 
-                    if (published > permission.pageCount) {
+                    if (published >= permission.pageCount) {
                         visibility = "unpublished";
                     }
                 }

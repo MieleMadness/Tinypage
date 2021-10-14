@@ -139,6 +139,7 @@ export class SubscriptionController extends Controller {
                     quantity: 1
                 }],
                 mode: mode,
+                allow_promotion_codes: true,
                 success_url: `${config.editorUrl}/dashboard/account`,
                 cancel_url: `${config.editorUrl}/dashboard/account`,
             });

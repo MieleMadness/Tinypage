@@ -23,8 +23,9 @@ export class ProfileService extends DatabaseService {
      * Gets a profile by id.
      *
      * @param profileId
+     * @param checkVisibility
      */
-    async getProfile(profileId: string): Promise<Profile> {
+    async getProfile(profileId: string, checkVisibility: boolean = false): Promise<Profile> {
         let profileResult = await this.pool.query<DbProfile>("select * from app.profiles where id=$1", [profileId]);
 
         if (profileResult.rowCount < 1) {
@@ -32,6 +33,12 @@ export class ProfileService extends DatabaseService {
         }
 
         let profileRow = profileResult.rows[0];
+
+        if (checkVisibility) {
+            if (profileRow.visibility === 'unpublished') {
+                throw new HttpError(StatusCodes.FORBIDDEN, "This profile is unpublished.");
+            }
+        }
 
         return DbTypeConverter.toProfile(profileRow);
     }

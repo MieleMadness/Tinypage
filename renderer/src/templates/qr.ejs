@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>QR Code Template</title>
+    <title><%= `${profile.headline} - QR Code` %></title>
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
@@ -96,6 +96,8 @@
             margin-bottom: 5px;
         }
     </style>
+
+    <script src="/js/qrious.min.js"></script>
 </head>
 <body>
 <img id="qrcode" src="" alt="qr code">
@@ -120,10 +122,26 @@
 </button>
 
 <div style="display: flex; flex-direction: column; align-items: center; vertical-align: center;">
-    <h1 id="profileHeadline" style="margin-top: 40px">Headline</h1>
-    <h2 id="profileSubtitle">Subtitle</h2>
-    <h3 id="profileURL">URL</h3>
+    <h1 id="profileHeadline" style="margin-top: 40px"><%= profile.headline ?? "" %></h1>
+    <h2 id="profileSubtitle"><%= profile.subtitle ?? "" %></h2>
+    <h3 id="profileURL"><%= url ?? "" %></h3>
 </div>
 
+<script>
+    const qr = new QRious({
+        background: 'white',
+        backgroundAlpha: 1,
+        foreground: 'black',
+        foregroundAlpha: 1,
+        level: 'H',
+        padding: 0,
+        size: 512,
+        value: window.location.origin + "<%= `/qr/redirect/${profile.id}` %>"
+    });
+
+    let toDataURL = qr.toDataURL();
+    let qrCodeElem = document.getElementById("qrcode");
+    qrCodeElem.src = toDataURL;
+</script>
 </body>
 </html>

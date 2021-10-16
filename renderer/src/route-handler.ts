@@ -1,14 +1,28 @@
-import fs from "fs";
 import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
 import chalk from "chalk";
 import axios, {AxiosResponse} from "axios";
 import config from "./config/config";
 import {StatusCodes} from "http-status-codes";
+import ejs from "ejs";
+
+import fs, {promises as fsPromises} from "fs";
 
 interface MicrositeRequest extends FastifyRequest {
     Querystring: {
         token?: string,
         scrolling: string
+    };
+}
+
+interface QRCodeRequest extends FastifyRequest {
+    Params: {
+        profileId: string
+    };
+}
+
+interface QRCodeRedirectRequest extends FastifyRequest {
+    Params: {
+        profileId: string
     };
 }
 
@@ -38,6 +52,39 @@ export class RouteHandler {
             // Get requested profile handle from URL
             const handle = request.url.replace('/u/', '');
             reply.redirect(StatusCodes.PERMANENT_REDIRECT, '/' + handle);
+        });
+
+        this.fastify.get("/qr/:profileId/redirect", async (request: FastifyRequest<QRCodeRedirectRequest>, reply) => {
+            let profileId = request.params.profileId;
+
+            let response = await axios.get<any>(`${config.apiUrl}/profile/qr/${profileId}`);
+
+            if (!response.data?.id) {
+                reply.status(404).send("Not found.");
+                return;
+            }
+
+            reply.redirect(StatusCodes.PERMANENT_REDIRECT, '/u/' + response.data.handle);
+        });
+
+        this.fastify.get("/qr/:profileId", async (request: FastifyRequest<QRCodeRequest>, reply) => {
+            let profileId = request.params.profileId;
+
+            let response = await axios.get<any>(`${config.apiUrl}/profile/qr/${profileId}`);
+
+            if (!response.data?.id) {
+                reply.status(404).send("Not found.");
+                return;
+            }
+
+            const text = (await fsPromises.readFile(`${__dirname}/templates/qr.ejs`)).toString();
+
+            let html = ejs.render(text, {
+                profile: response.data,
+                url: `${config.hostname}/u/${response.data.handle}`
+            });
+
+            reply.status(StatusCodes.OK).type("text/html").send(html);
         });
 
         /*
@@ -702,18 +749,6 @@ export class RouteHandler {
 
             let shareMenuHtml = "";
             if (profile.metadata?.shareMenu && !isPreview) {
-
-                let lookup: any = {
-                    '&': "&amp;",
-                    '"': "&quot;",
-                    '\'': "&apos;",
-                    '<': "&lt;",
-                    '>': "&gt;"
-                };
-
-                let profileHeadline = profile.headline.replace(/[&"'<>]/g, c => lookup[c]);
-                let profileSubtitle = profile.subtitle.replace(/[&"'<>]/g, c => lookup[c]);
-
                 // language=HTML
                 shareMenuHtml += `
                     <div id="qrcode"></div>
@@ -733,40 +768,7 @@ export class RouteHandler {
                         }
 
                         async function onClickQRCode() {
-                            let text = window.location.href;
-                            const qr = new QRious({
-                                background: 'white',
-                                backgroundAlpha: 1,
-                                foreground: 'black',
-                                foregroundAlpha: 1,
-                                level: 'H',
-                                padding: 0,
-                                size: 512,
-                                value: text
-                            });
-
-                            let toDataURL = qr.toDataURL();
-
-                            let response = await fetch('/html/qr.html');
-                            let html = await response.text();
-
-                            const w = window.open("");
-                            w.document.write(html);
-                            w.document.title = document.title + " - QR Code"
-
-                            let qrCodeElem = w.document.getElementById("qrcode");
-                            qrCodeElem.src = toDataURL;
-
-                            let ph = w.document.getElementById('profileHeadline');
-                            ph.innerHTML = '${profileHeadline}';
-
-                            let pb = w.document.getElementById('profileSubtitle');
-                            pb.innerHTML = '${profileSubtitle}';
-
-                            let pUrl = w.document.getElementById('profileURL');
-                            pUrl.innerHTML = '<a href=\\'' + window.location.href + '\\'>' + window.location.href + '</a>';
-
-                            w.document.close();
+                            window.open('/qr/${profile.id}', '_blank').focus();
                         }
                     </script>
 
@@ -852,7 +854,6 @@ export class RouteHandler {
                     <link rel="icon" type="image/png" href="/favicon.png"/>
 
                     <link rel="stylesheet" href="/css/quill.core.min.css"/>
-                    <script src="/js/qrious.min.js" async></script>
 
                     <!-- Tailwind CSS Embedded Styles -->
                     <style>

@@ -20,6 +20,12 @@ import {ProfileSerializer} from "../utils/profile-serializer";
 import {Readable} from "stream";
 import {PermissionUtils} from "../utils/permission-utils";
 
+interface ProfileQRCodeUrlRequest extends RequestGenericInterface {
+    Params: {
+        profileId?: string
+    };
+}
+
 interface ProfileHandleRequest extends RequestGenericInterface {
     Params: {
         handle?: string
@@ -146,6 +152,8 @@ export class ProfileController extends Controller {
 
         this.fastify.post<GetTopProfilesRequest>('/profile/leaderboards/top/', getTopProfilesRequestRateLimit, this.GetTopProfiles.bind(this));
         this.fastify.post<GetTopProfilesRequest>('/profile/leaderboards/top/:limit', getTopProfilesRequestRateLimit, this.GetTopProfiles.bind(this));
+
+        this.fastify.all<ProfileQRCodeUrlRequest>('/profile/qr/:profileId', this.ResolveQRCodeURL.bind(this));
 
         // Authenticated
         this.fastify.post<AuthenticatedRequest>('/profile/preview', Auth.ValidateWithData, this.GetProfilePreview.bind(this));
@@ -780,6 +788,26 @@ export class ProfileController extends Controller {
             }
 
             return theme;
+        } catch (e) {
+            if (e instanceof HttpError) {
+                reply.code(e.statusCode);
+                return ReplyUtils.error(e.message, e);
+            }
+
+            throw e;
+        }
+    }
+
+    async ResolveQRCodeURL(request: FastifyRequest<ProfileQRCodeUrlRequest>, reply: FastifyReply) {
+        try {
+            const profileId = request.params.profileId;
+
+            if (profileId === undefined || profileId === null) {
+                reply.status(StatusCodes.BAD_REQUEST).send(ReplyUtils.error("No profile id was provided."));
+                return;
+            }
+
+            return await this.profileService.getProfile(profileId, true);
         } catch (e) {
             if (e instanceof HttpError) {
                 reply.code(e.statusCode);

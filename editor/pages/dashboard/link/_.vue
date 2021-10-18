@@ -753,7 +753,7 @@ export default Vue.extend({
       }
     },
 
-    onSocialIconTypeChange(event: Event, siSettings: { url: string }) {
+    onSocialIconTypeChange(event: Event, siSettings: { type: string, color: string, scale: number, label: string, labelColor: string, customSvg: string, url: string }) {
       let selectElement = event.target as HTMLSelectElement;
 
       if (!selectElement)
@@ -787,6 +787,8 @@ export default Vue.extend({
         default:
           break;
       }
+
+      siSettings.label = selectElement.options[selectElement.selectedIndex].text;
     },
 
     addSocialIcon() {

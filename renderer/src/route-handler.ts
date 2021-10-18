@@ -364,6 +364,9 @@ export class RouteHandler {
                                     case "zoom":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-zoom.svg`).toString('utf-8');
                                         break;
+                                    case "cuplr":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-cuplr.svg`).toString('utf-8');
+                                        break;
                                     case "custom":
                                         if (siSettings.customSvg)
                                             svgData = siSettings.customSvg;
@@ -1179,7 +1182,7 @@ export class RouteHandler {
 
                         .social-button {
                             display: inline-block;
-                            padding: 1rem;
+                            padding: .85rem;
                             cursor: pointer;
                             transition: all .15s ease-in-out;
                         }

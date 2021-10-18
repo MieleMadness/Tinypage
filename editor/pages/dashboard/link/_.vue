@@ -140,6 +140,7 @@
           <option value="email">Email</option>
 
           <option value="applemusic">Apple Music</option>
+          <option value="cuplr">Cuplr</option>
           <option value="discord">Discord</option>
           <option value="facebook">Facebook</option>
           <option value="instagram">Instagram</option>

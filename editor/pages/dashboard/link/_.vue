@@ -793,7 +793,7 @@ export default Vue.extend({
       this.socialIcons.push({
         color: "rgba(0, 0, 0, 1)",
         scale: 40,
-        type: "twitter",
+        type: "custom",
         url: "",
         label: "",
         labelColor: "rgba(0, 0, 0, 1)",

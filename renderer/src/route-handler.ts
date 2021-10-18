@@ -1178,7 +1178,6 @@ export class RouteHandler {
                             margin: 0 auto;
                             width: 300px;
                             list-style: none;
-                            margin-bottom: 1rem;
                         }
 
                         .social-button {

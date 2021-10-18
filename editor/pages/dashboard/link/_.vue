@@ -255,17 +255,17 @@
     </div>
 
     <!-- Button Image URL -->
-    <!--    <div v-if="intent!=='view' && (pendingLink.type === 'link' || pendingLink.type === 'vcard')"-->
-    <!--         class="flex flex-col mb-8 justify-start w-full"-->
-    <!--    >-->
-    <!--      <label class="font-semibold mb-2">Button Image URL</label>-->
+    <div v-if="intent!=='view' && (pendingLink.type === 'link' || pendingLink.type === 'vcard')"
+         class="flex flex-col mb-8 justify-start w-full"
+    >
+      <label class="font-semibold mb-2">Button Image URL</label>
 
-    <!--      <input v-model="buttonImageUrl"-->
-    <!--             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"-->
-    <!--             placeholder="e.g. https://exampleurl.com/example"-->
-    <!--             type="url"-->
-    <!--      />-->
-    <!--    </div>-->
+      <input v-model="buttonImageUrl"
+             class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+             placeholder="e.g. https://exampleurl.com/example"
+             type="url"
+      />
+    </div>
 
     <!-- vCard -->
     <div v-show="intent!=='view' && pendingLink.type === 'vcard'"
@@ -340,20 +340,6 @@
         </client-only>
       </div>
     </div>
-
-    <!-- No Code Builder-->
-    <!--    <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-2xl w-full mb-6">-->
-    <!--      <div-->
-    <!--          class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full mb-2">-->
-    <!--        <h2 class="text-gray-800 font-semibold text-lg">-->
-    <!--          Customization-->
-    <!--        </h2>-->
-    <!--        <a href="https://www.notion.so/neutroncreative/Customizing-your-Singlelink-profile-ab34c4a8e3174d66835fa460774e7432"-->
-    <!--           target="_blank" class="text-gray-500 text-xs hover:underline hover:text-gray-600">Need help? Read our-->
-    <!--          documentation</a>-->
-    <!--      </div>-->
-    <!--      <Builder v-if="builderCssLoaded" v-model="builderCss"/>-->
-    <!--    </div>-->
 
     <!-- Inline Style CSS -->
     <div class="hidden lg:flex flex-col p-6 bg-white shadow rounded-xl w-full mb-8">
@@ -807,7 +793,7 @@ export default Vue.extend({
       this.socialIcons.push({
         color: "rgba(0, 0, 0, 1)",
         scale: 40,
-        type: "email",
+        type: "twitter",
         url: "",
         label: "",
         labelColor: "rgba(0, 0, 0, 1)",

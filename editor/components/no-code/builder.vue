@@ -1315,14 +1315,14 @@ export default Vue.extend({
           avatar_radius: null as string | null | undefined,
           avatar_shadow: null as string | null | undefined,
           avatar_border_type: null as string | null | undefined,
-          avatar_border_color: '#ffffff' as string | null | undefined,
+          avatar_border_color: 'rgba(255,255,255,1)' as string | null | undefined,
           avatar_border_width: null as string | null | undefined,
           background_type: null as string | null | undefined,
           background_image: null as string | null | undefined,
           background_size: null as string | null | undefined,
           background_repeat: null as string | null | undefined,
           background_position: null as string | null | undefined,
-          background_color: '#ffffff' as string | null | undefined,
+          background_color: 'rgba(255,255,255,1)' as string | null | undefined,
           background_gradient_start: null as string | null | undefined,
           background_gradient_end: null as string | null | undefined,
           background_gradient_direction: null as string | null | undefined
@@ -1517,11 +1517,13 @@ export default Vue.extend({
       }
 
       // Page background
-      if (this.jsonPackage.children['body'].attributes['background']) {
-        if (this.jsonPackage.children['body'].attributes['background'].includes('linear-gradient')) {
+      let backgroundAttribute = this.jsonPackage.children['body'].attributes['background'];
+
+      if (backgroundAttribute) {
+        if (backgroundAttribute.includes('linear-gradient')) {
           // Is linear gradient
           this.meta.page_styles.background_type = 'gradient';
-          const gradient = this.jsonPackage.children['body'].attributes['background'].replace('linear-gradient(', '').replace(')', '').split(',');
+          const gradient = backgroundAttribute.substring(backgroundAttribute.indexOf('(') + 1, backgroundAttribute.lastIndexOf(')')).split(/,(?![^(]*\))(?![^"']*["'](?:[^"']*["'][^"']*["'])*[^"']*$)/);
           if (gradient.length === 3) {
             this.meta.page_styles.background_gradient_direction = gradient[0];
             this.meta.page_styles.background_gradient_start = gradient[1];
@@ -1529,10 +1531,10 @@ export default Vue.extend({
           } else {
             delete this.jsonPackage.children['body'].attributes['background'];
           }
-        } else if (this.jsonPackage.children['body'].attributes['background'].includes('url')) {
+        } else if (backgroundAttribute.includes('url')) {
           // Is image
           this.meta.page_styles.background_type = 'image';
-          this.meta.page_styles.background_image = this.jsonPackage.children['body'].attributes['background'].replace('url(', '').replace(')', '');
+          this.meta.page_styles.background_image = backgroundAttribute.replace('url(', '').replace(')', '');
           // Image size
           if (this.jsonPackage.children['body'].attributes['background-size']) {
             this.meta.page_styles.background_size = this.jsonPackage.children['body'].attributes['background-size'];
@@ -1548,7 +1550,7 @@ export default Vue.extend({
         } else {
           // Is solid color
           this.meta.page_styles.background_type = 'solid';
-          this.meta.page_styles.background_color = this.jsonPackage.children['body'].attributes['background'];
+          this.meta.page_styles.background_color = backgroundAttribute;
         }
       }
       // Typography
@@ -1614,11 +1616,13 @@ export default Vue.extend({
       }
 
       // Link background
-      if (this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background']) {
-        if (this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'].includes('linear-gradient')) {
+      let linkBackground = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'];
+
+      if (linkBackground) {
+        if (linkBackground.includes('linear-gradient')) {
           // Is linear gradient
           this.meta.link_styles.background_type = 'gradient';
-          const gradient = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'].replace('linear-gradient(', '').replace(')', '').split(',');
+          const gradient = linkBackground.substring(linkBackground.indexOf('(') + 1, linkBackground.lastIndexOf(')')).split(/,(?![^(]*\))(?![^"']*["'](?:[^"']*["'][^"']*["'])*[^"']*$)/);
           if (gradient.length === 3) {
             this.meta.link_styles.background_gradient_direction = gradient[0];
             this.meta.link_styles.background_gradient_start = gradient[1];
@@ -1626,10 +1630,10 @@ export default Vue.extend({
           } else {
             delete this.jsonPackage.children['a div.sl-item.nc-link']?.attributes['background'];
           }
-        } else if (this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'].includes('url')) {
+        } else if (linkBackground.includes('url')) {
           // Is image
           this.meta.link_styles.background_type = 'image';
-          this.meta.link_styles.background_image = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'].replace('url(', '').replace(')', '');
+          this.meta.link_styles.background_image = linkBackground.replace('url(', '').replace(')', '');
           // Image size
           if (this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background-size']) {
             this.meta.link_styles.background_size = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background-size'];
@@ -1645,7 +1649,7 @@ export default Vue.extend({
         } else {
           // Is solid color
           this.meta.link_styles.background_type = 'solid';
-          this.meta.link_styles.background_color = this.jsonPackage.children['a div.sl-item.nc-link'].attributes['background'];
+          this.meta.link_styles.background_color = linkBackground;
         }
       }
 

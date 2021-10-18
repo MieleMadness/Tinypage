@@ -1129,6 +1129,7 @@ export class RouteHandler {
                         .button-image {
                             position: relative;
                             border-radius: 1rem;
+                            max-height: 84px;
                         }
                     </style>
 

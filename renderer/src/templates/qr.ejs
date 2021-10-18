@@ -136,7 +136,7 @@
         level: 'H',
         padding: 0,
         size: 512,
-        value: window.location.origin + "<%= `/qr/redirect/${profile.id}` %>"
+        value: window.location.origin + "<%= `/qr/${profile.id}/redirect` %>"
     });
 
     let toDataURL = qr.toDataURL();

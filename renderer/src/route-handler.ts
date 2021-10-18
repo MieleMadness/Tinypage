@@ -253,10 +253,12 @@ export class RouteHandler {
                         let buttonImage = link.metadata?.buttonImageUrl;
 
                         let buttonImageHtml = '';
+                        let buttonImageSupportCss = '';
 
                         if (buttonImage) {
                             // language=HTML
                             buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                            buttonImageSupportCss = 'overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;';
                         }
 
                         // language=HTML
@@ -277,7 +279,7 @@ export class RouteHandler {
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"
-                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
+                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; ${buttonImageSupportCss}">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
                                 </div>
                             </a>
                         `;
@@ -487,7 +489,7 @@ export class RouteHandler {
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"
-                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
+                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
                                 </div>
                             </a>
                         `;
@@ -722,10 +724,10 @@ export class RouteHandler {
                 //language=HTML
                 watermarkHtml += `
                     <div style="color:rgba(0,0,0,1);max-width:230px;" class="mx-auto text-sm">
-                        <a href="${config.editorUrl}">Proudly built with ${config.appName}</a>
+                        <a href="${config.watermarkUrl}">Proudly built with ${config.appName}</a>
                     </div>`;
 
-                if (config.freeSignup) {
+                if (config.showWatermark) {
                     // language=HTML
                     watermarkHtml += `
                         <a class="text-blue-600 hover-underline text-sm" href="${config.editorUrl}/create-account"
@@ -1110,7 +1112,7 @@ export class RouteHandler {
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
-                            background: rgba(255, 255, 255, .5);
+                            background: rgba(255, 255, 255, 1);
                             border-radius: 1rem;
                             padding-left: 1rem;
                             padding-right: 1rem;

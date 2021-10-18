@@ -14,7 +14,10 @@ let config = {
     appName: process.env.APP_NAME ?? 'Tinypage',
 
     // Define free signup
-    freeSignup: process.env.FREE_SIGNUP === "true",
+    showWatermark: process.env.SHOW_WATERMARK === "true",
+
+    // Watermark URL
+    watermarkUrl: process.env.WATERMARK_URL ?? "https://tinypage.app/home",
 
     // Define hostname
     hostname: process.env.HOSTNAME ?? 'tinypage.app',

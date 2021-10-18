@@ -721,7 +721,7 @@ export class RouteHandler {
 
                 //language=HTML
                 watermarkHtml += `
-                    <div style="color:rgba(0,0,0,1);max-width:230px;" class="mt-4 mb-2 mx-auto text-sm">
+                    <div style="color:rgba(0,0,0,1);max-width:230px;" class="mx-auto text-sm">
                         <a href="${config.editorUrl}">Proudly built with ${config.appName}</a>
                     </div>`;
 
@@ -1106,11 +1106,16 @@ export class RouteHandler {
                         }
 
                         .sl-watermark {
-                            background: rgba(1, 1, 1, .5);
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            background: rgba(255, 255, 255, .5);
                             border-radius: 1rem;
                             padding-left: 1rem;
                             padding-right: 1rem;
                             text-align: center;
+                            margin-top: 1.1rem;
                         }
 
                         body {

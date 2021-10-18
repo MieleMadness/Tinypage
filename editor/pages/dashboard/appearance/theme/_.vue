@@ -155,6 +155,18 @@ export default Vue.extend({
     } else {
       this.intent = 'create';
       this.builderLoaded = true;
+
+      if (process.client) {
+        let copyToNewThemeRaw = localStorage.getItem("copyToNewTheme");
+
+        if (copyToNewThemeRaw) {
+          let copyToNewTheme: { builderCss: string } = JSON.parse(copyToNewThemeRaw);
+          this.builderCss = copyToNewTheme.builderCss;
+
+          this.theme.label = "Appearance Theme (Cloned)";
+          localStorage.removeItem("copyToNewTheme");
+        }
+      }
     }
   },
 

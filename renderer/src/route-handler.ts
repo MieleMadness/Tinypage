@@ -200,10 +200,10 @@ export class RouteHandler {
                 customHtml: '',
             };
 
-            let gravatarEnabled = profile.metadata?.useGravatar;
+            let avatarEnabled = profile.metadata?.showAvatar;
 
             // Define Avatar image
-            const imageUrl = profile.imageUrl || (gravatarEnabled ? `https://www.gravatar.com/avatar/${user.emailHash}` : null);
+            const imageUrl = avatarEnabled ? profile.imageUrl : null;
 
             let avatarHtml = '';
 
@@ -212,7 +212,7 @@ export class RouteHandler {
                 avatarHtml = `<img class="nc-avatar mb-2" src="${imageUrl}" alt="avatar"/>`;
             } else if (profile.metadata?.coverImage) {
                 // language=HTML
-                avatarHtml = `<img class="nc-avatar mb-2" src="https://www.gravatar.com/avatar/${user.emailHash}"
+                avatarHtml = `<img class="nc-avatar mb-2" src=""
                                    alt="avatar"
                                    style="visibility: hidden; margin-top: min(calc(56.25vw - 65px), 130px);"
                 />`;
@@ -272,12 +272,12 @@ export class RouteHandler {
                                     target="_blank"
                             >
                                 <div
-                                        class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="position: relative; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
+                                        class="rounded-2xl shadow bg-white w-full font-medium mb-3 nc-link sl-item flex items-center justify-center"
+                                        style="position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"
-                                    >${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span>
+                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
                                 </div>
                             </a>
                         `;
@@ -288,7 +288,7 @@ export class RouteHandler {
                             break;
 
                         try {
-                            let socialIcons: { type: string, color: string, scale: number, url: string }[] = link.metadata?.socialIcons ?? [];
+                            let socialIcons: { type: string, color: string, scale: number, label: string, labelColor: string, customSvg: string, url: string }[] = link.metadata?.socialIcons ?? [];
 
                             if (socialIcons.length > 0) {
                                 let style = link.style ?? '';
@@ -313,6 +313,7 @@ export class RouteHandler {
                                     siSettings.scale = 40;
 
                                 let svgData = "";
+                                let labelData = "";
 
                                 switch (siSettings.type) {
                                     case "email":
@@ -363,10 +364,31 @@ export class RouteHandler {
                                     case "zoom":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-zoom.svg`).toString('utf-8');
                                         break;
+                                    case "custom":
+                                        if (siSettings.customSvg)
+                                            svgData = siSettings.customSvg;
+                                        else
+                                            svgData = fs.readFileSync(`${__dirname}/static/icons/question-mark.svg`).toString('utf-8');
                                 }
 
                                 let scale = null;
                                 scale = siSettings.scale;
+
+                                if (siSettings.label) {
+                                    // language=HTML
+                                    labelData = `
+                                        <div class="sl-link-subtitle"
+                                             style="color: ${siSettings.labelColor ?? 'inherit'}"
+                                        >
+                                            ${siSettings.label}
+                                        </div>`;
+                                } else {
+                                    // language=HTML
+                                    labelData = `
+                                        <div class="sl-link-subtitle">
+                                            &nbsp;
+                                        </div>`;
+                                }
 
                                 // language=HTML
                                 linkHtml += `
@@ -380,7 +402,10 @@ export class RouteHandler {
                                          fetch(recordUrl, {method: 'POST'});
                                        }"
                                     >
-                                        ${svgData}
+                                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                            ${svgData}
+                                            ${labelData}
+                                        </div>
                                         <script>
                                             {
                                                 let svgElement = document.querySelector("#sl-item-a-${link.id}-${i} svg");
@@ -454,12 +479,12 @@ export class RouteHandler {
                                        }"
                             >
                                 <div
-                                        class="rounded-2xl shadow bg-white p-4 w-full font-medium mb-3 nc-link sl-item  flex items-center justify-center flex-col"
-                                        style="position: relative; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
+                                        class="rounded-2xl shadow bg-white w-full font-medium mb-3 nc-link sl-item flex items-center justify-center"
+                                        style="position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"
-                                    >${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span>
+                                    ><span style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%">${link.label}${subtitleHtml ? `<br>${subtitleHtml}` : ''}</span></span>
                                 </div>
                             </a>
                         `;
@@ -1056,7 +1081,6 @@ export class RouteHandler {
                         }
 
                         .nc-link {
-                            padding: 1rem;
                             cursor: pointer;
                             transition: transform .15s ease-in-out;
                         }
@@ -1067,6 +1091,12 @@ export class RouteHandler {
 
                         .nc-link:active {
                             transform: scale(1);
+                        }
+
+                        .sl-label {
+                            margin: 1rem;
+                            flex-grow: 1;
+                            text-align: center;
                         }
 
                         body {
@@ -1094,10 +1124,7 @@ export class RouteHandler {
                         }
 
                         .button-image {
-                            position: absolute;
-                            width: 84px;
-                            top: 0;
-                            left: 0;
+                            position: relative;
                             border-radius: 1rem;
                         }
                     </style>
@@ -1152,7 +1179,6 @@ export class RouteHandler {
 
                         .social-button {
                             display: inline-block;
-                            margin: 15px auto;
                             padding: 1rem;
                             cursor: pointer;
                             transition: all .15s ease-in-out;
@@ -1214,6 +1240,30 @@ export class RouteHandler {
                         .sbutton:hover {
                             box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
                             cursor: pointer;
+                        }
+
+                        h1 {
+                            font-size: 2em;
+                        }
+
+                        h2 {
+                            font-size: 1.5em;
+                        }
+
+                        h3 {
+                            font-size: 1.17em;
+                        }
+
+                        h4 {
+                            font-size: 1em;
+                        }
+
+                        h5 {
+                            font-size: .83em;
+                        }
+
+                        h6 {
+                            font-size: .67em;
                         }
                     </style>
                 </head>

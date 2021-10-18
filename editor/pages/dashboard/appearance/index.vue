@@ -21,13 +21,26 @@
         >Need help? Read our documentation</a>
       </div>
       <Builder v-if="builderCssLoaded" v-model="builderCss"/>
-      <button
-          class="inline-flex mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-auto max-w-xs justify-center align-center"
-          type="button"
-          @click="saveChanges"
-      >
-        Save changes
-      </button>
+
+      <div class="flex flex-row justify-center items-center flex-grow space-x-2">
+        <button
+            class="mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-full"
+            style="max-width: 19rem;"
+            type="button"
+            @click="saveChanges"
+        >
+          Save changes
+        </button>
+
+        <button
+            class="mt-4 p-3 text-sm text-white text-center bg-gdp hover:bg-blue-400 rounded-xl font-semibold w-full"
+            style="max-width: 19rem;"
+            type="button"
+            @click="copyToNewTheme"
+        >
+          Copy to New Theme
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Warning -->
@@ -199,6 +212,7 @@ export default Vue.extend({
       customHtml: '',
       modalActive: false,
       modalIntent: 'create' as ThemeModalIntent,
+
       pendingTheme: {
         id: '',
         label: '',
@@ -206,7 +220,9 @@ export default Vue.extend({
         customCss: undefined,
         customHtml: undefined,
       } as EditorTheme,
+
       userId: '',
+
       customization: {
         background: null,
         header: {
@@ -232,6 +248,7 @@ export default Vue.extend({
           },
         }
       },
+
       isAdmin: false,
       builderCssLoaded: false
     };
@@ -310,6 +327,15 @@ export default Vue.extend({
         this.$root.$emit('refreshUserProfileView');
       } catch (err) {
         console.log(err);
+      }
+    },
+
+    copyToNewTheme() {
+      if (process.client) {
+        localStorage.setItem("copyToNewTheme", JSON.stringify({
+          builderCss: this.builderCss
+        }));
+        location.replace('/dashboard/appearance/theme/create');
       }
     },
 

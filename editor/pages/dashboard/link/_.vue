@@ -131,6 +131,7 @@
 
         <select v-model="siSettings.type"
                 class="p-2 mt-2 w-full text-sm border-solid border-gray-300 rounded-2xl border"
+                @change="onSocialIconTypeChange($event, siSettings)"
         >
           <option disabled selected>Select an icon</option>
 
@@ -151,6 +152,7 @@
           <option value="twitter">Twitter</option>
           <option value="youtube">YouTube</option>
           <option value="zoom">Zoom</option>
+          <option value="custom">Custom</option>
         </select>
 
         <div class="mt-2">
@@ -162,22 +164,77 @@
           />
         </div>
 
-        <label class="font-semibold mb-2 mt-2">Icon Color</label>
-        <input
-            v-model="siSettings.color"
-            class="p-3 mt-4 mb-2 rounded-lg bg-white text-sm text-gray-700"
-            placeholder="e.g. #FFF"
-            :data-jscolor="jsColorOptions"
-        >
+        <div class="flex flex-row">
+          <div class="flex flex-row mt-3 mb-3">
+            <label class="font-semibold mt-2 mb-2 mr-2">Scale (px)</label>
+            <input
+                v-model="siSettings.scale"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                type="number"
+            >
+          </div>
 
-        <div class="flex flex-row mt-3 mb-3">
-          <label class="font-semibold mt-2 mb-2 mr-2">Scale (px)</label>
-          <input
-              v-model="siSettings.scale"
-              class="p-3 rounded-lg bg-white text-sm text-gray-700"
-              type="number"
-          >
+          <div class="flex flex-row mt-3 mb-3 ml-2">
+            <label class="font-semibold mt-2 mb-2 mr-2">Icon Color</label>
+            <input
+                v-model="siSettings.color"
+                class="rounded-lg bg-white text-sm text-gray-700"
+                placeholder="e.g. #FFF"
+                :data-jscolor="jsColorOptions"
+            >
+          </div>
         </div>
+
+
+        <div class="flex flex-row">
+          <div class="flex flex-row mt-3 mb-3">
+            <label class="font-semibold mt-2 mb-2 mr-2">Label</label>
+            <input
+                v-model="siSettings.label"
+                class="p-3 rounded-lg bg-white text-sm text-gray-700"
+                type="text"
+            >
+          </div>
+
+          <div class="flex flex-row mt-3 mb-3 ml-2 end">
+            <label class="font-semibold mt-2 mb-2 mr-2">Label Color</label>
+            <input
+                v-model="siSettings.labelColor"
+                class="rounded-lg bg-white text-sm text-gray-700"
+                placeholder="e.g. #FFF"
+                :data-jscolor="jsColorOptions"
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-row" v-if="siSettings.type === 'custom'">
+          <div class="flex flex-row mt-3 mb-3">
+            <label class="font-semibold mt-2 mb-2 mr-2">Custom SVG</label>
+            <textarea
+                v-model="siSettings.customSvg"
+                class="border border-2 text-white"
+                style="font-family: monospace; background-color: #1E1E1E"
+                rows="2"
+            >
+            </textarea>
+          </div>
+
+          <div
+              class="flex flex-row justify-center items-center ml-2 mt-3 mb-3 p-3 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
+          >
+            <label :for="'importCustomSVG' + index" class="cursor-pointer text-center text-xl font-semibold">
+              Import SVG
+            </label>
+            <input
+                :id="'importCustomSVG' + index"
+                type="file"
+                accept=".svg"
+                hidden
+                @change="importCustomSVG($event, siSettings)"
+            >
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -473,7 +530,7 @@ export default Vue.extend({
     };
 
     return {
-      jsColorOptions: "{alphaChannel: true, format: 'hexa'}",
+      jsColorOptions: "{alphaChannel: true, format: 'rgba'}",
 
       id: '',
       links: new Array<EditorLink>(),
@@ -502,7 +559,7 @@ export default Vue.extend({
 
       buttonImageUrl: '',
 
-      socialIcons: [] as { type: string, color: string, scale: number, url: string }[],
+      socialIcons: [] as { type: string, color: string, scale: number, label: string, labelColor: string, customSvg: string, url: string }[],
 
       sortedLinks: new Array<EditorLink>()
     };
@@ -559,7 +616,7 @@ export default Vue.extend({
 
   async mounted() {
     if (process.client) {
-      await new Promise(res => setTimeout(res, 200));
+      await new Promise(res => setTimeout(res, 1000));
 
       this.$nextTick(() => {
         this.initColorPickers();
@@ -709,12 +766,51 @@ export default Vue.extend({
       }
     },
 
+    onSocialIconTypeChange(event: Event, siSettings: { url: string }) {
+      let selectElement = event.target as HTMLSelectElement;
+
+      if (!selectElement)
+        return;
+
+      let val = selectElement.value;
+
+      function removePrefix() {
+        if (!siSettings.url)
+          siSettings.url = "";
+        else
+          siSettings.url = siSettings.url
+              .replace("tel:", "")
+              .replace("sms:", "")
+              .replace("mailto:", "");
+      }
+
+      switch (val) {
+        case "phone":
+          removePrefix();
+          siSettings.url = "tel:" + siSettings.url;
+          break;
+        case "text":
+          removePrefix();
+          siSettings.url = "sms:" + siSettings.url;
+          break;
+        case "email":
+          removePrefix();
+          siSettings.url = "mailto:" + siSettings.url;
+          break;
+        default:
+          break;
+      }
+    },
+
     addSocialIcon() {
       this.socialIcons.push({
-        color: "#000000FF",
+        color: "rgba(0, 0, 0, 1)",
         scale: 40,
         type: "email",
         url: "",
+        label: "",
+        labelColor: "rgba(0, 0, 0, 1)",
+        customSvg: ""
       });
 
       this.$nextTick(() => {
@@ -763,6 +859,18 @@ export default Vue.extend({
       let file = files[0];
 
       this.vCard = await file.text();
+    },
+
+    async importCustomSVG(event: Event, siSettings: { customSvg: string }) {
+      let htmlInputEvent = event.target as HTMLInputElement;
+      const files = htmlInputEvent.files;
+
+      if (!files || files.length < 1)
+        return;
+
+      let file = files[0];
+
+      siSettings.customSvg = await file.text();
     },
 
     showOption(linkType: LinkType, field: LinkField): boolean {

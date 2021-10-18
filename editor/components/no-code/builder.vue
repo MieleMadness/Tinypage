@@ -1221,7 +1221,7 @@ export default Vue.extend({
 
   data() {
     return {
-      jsColorOptions: "{alphaChannel: true, format: 'hexa'}",
+      jsColorOptions: "{alphaChannel: true, format: 'rgba'}",
       importedCSS: this.value as string | null | undefined,
       jsonPackage: {
         children: {
@@ -1707,8 +1707,10 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
+  async mounted() {
     if (process.client) {
+      await new Promise(res => setTimeout(res, 1000));
+
       this.$nextTick(() => {
         this.initColorPickers();
       });

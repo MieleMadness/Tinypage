@@ -6,7 +6,7 @@
 
     <div
         class="flex flex-row w-full py-6 justify-between relative"
-        style="z-index:2;background:linear-gradient(180deg, #FFF 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
+        style="z-index:2;background:linear-gradient(180deg, rgba(255,255,255) 60%, rgba(255,255,255,.65) 80%, rgba(255,255,255,0) 100%);max-width:1520px;"
     >
       <!--      <div class="flex flex-row items-center justify-start bg-opaqueBlack px-4 py-1 rounded-full w-full max-w-md"-->
       <!--           style="border: solid 2px rgba(0,0,0,.15);">-->
@@ -72,7 +72,7 @@
                     </div>
                     <div
                         class="py-1 px-2 mb-1 rounded-full text-sm font-extrabold leading-tight cursor-pointer grow"
-                        style="color:#6c6c6c;background:rgba(108,108,108,.1);"
+                        style="color:rgb(108,108,108);background:rgba(108,108,108,.1);"
                         @click="toggleProfileSelect"
                     >manage pages
                     </div>

@@ -1,6 +1,6 @@
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 import {config} from "../config/config";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import AWS from "aws-sdk";
 import {DatabaseManager} from "../data/database-manager";
 import {DatabaseService} from "./database-service";
@@ -291,7 +291,7 @@ export class UserService extends DatabaseService {
             activeProfile = DbTypeConverter.toProfile(profileQuery.rows[0]);
         }
 
-        let valid = bcrypt.compare(password, user.passHash);
+        let valid = await bcrypt.compare(password, user.passHash);
 
         if (!valid) {
             throw new HttpError(StatusCodes.UNAUTHORIZED, "The password was incorrect.");

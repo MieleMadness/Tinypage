@@ -146,23 +146,21 @@
         </div>
 
         <!-- Use Gravatar toggle -->
-        <transition name="fade">
-          <div v-if="!user.activeProfile.imageUrl" class="flex flex-row w-full mb-6 items-start">
-            <input
-                v-model="user.activeProfile.metadata.useGravatar"
-                aria-label="privacy mode"
-                class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-                style="margin-top:3px;"
-                type="checkbox"
-            >
+        <div class="flex flex-row w-full mb-6 items-start">
+          <input
+              v-model="user.activeProfile.metadata.showAvatar"
+              aria-label="show avatar"
+              class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+              style="margin-top:3px;"
+              type="checkbox"
+          >
 
-            <label
-                class="ml-4 block text-sm leading-5 text-black font-bold opacity-70"
-            >
-              Show Avatar (Avatar URL overrides this option.)
-            </label>
-          </div>
-        </transition>
+          <label
+              class="ml-4 block text-sm leading-5 text-black font-bold opacity-70"
+          >
+            Show Avatar
+          </label>
+        </div>
 
         <!-- Watermark Toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
@@ -559,7 +557,7 @@ export default Vue.extend({
             coverImage: null as boolean | null | undefined,
             pageHtml: null as boolean | null | undefined,
             shareMenu: true as boolean | null | undefined,
-            useGravatar: true as boolean | null | undefined
+            showAvatar: true as boolean | null | undefined
           },
         }
       },

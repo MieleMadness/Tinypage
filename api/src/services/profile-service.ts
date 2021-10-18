@@ -194,7 +194,7 @@ export class ProfileService extends DatabaseService {
                     coverImage: null,
                     pageHtml: null,
                     shareMenu: true,
-                    useGravatar: true
+                    showAvatar: true
                 }
             ]);
 

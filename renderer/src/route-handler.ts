@@ -381,14 +381,14 @@ export class RouteHandler {
                                     // language=HTML
                                     labelData = `
                                         <div class="sl-link-subtitle"
-                                             style="color: ${siSettings.labelColor ?? 'inherit'}"
+                                             style="color: ${siSettings.labelColor ?? 'inherit'}; white-space: nowrap;"
                                         >
                                             ${siSettings.label}
                                         </div>`;
                                 } else {
                                     // language=HTML
                                     labelData = `
-                                        <div class="sl-link-subtitle">
+                                        <div class="sl-link-subtitle" style="white-space: nowrap;">
                                             &nbsp;
                                         </div>`;
                                 }
@@ -715,12 +715,15 @@ export class RouteHandler {
             let watermarkHtml = '';
 
             if (profile.showWatermark) {
-                watermarkHtml += `<div id="sl-watermark" class="flex flex-col items-center justify-center">`;
-
+                //language=HTML
                 watermarkHtml += `
-        <div v-else style="color:rgba(0,0,0,1);max-width:230px;" class="mt-4 mb-2 mx-auto text-sm">
-          Proudly built with ${config.appName}
-        </div>`;
+                    <div id="sl-watermark" class="sl-watermark flex flex-col items-center justify-center">`;
+
+                //language=HTML
+                watermarkHtml += `
+                    <div style="color:rgba(0,0,0,1);max-width:230px;" class="mt-4 mb-2 mx-auto text-sm">
+                        <a href="${config.editorUrl}">Proudly built with ${config.appName}</a>
+                    </div>`;
 
                 if (config.freeSignup) {
                     // language=HTML
@@ -1099,6 +1102,14 @@ export class RouteHandler {
                         .sl-label {
                             margin: 1rem;
                             flex-grow: 1;
+                            text-align: center;
+                        }
+
+                        .sl-watermark {
+                            background: rgba(1, 1, 1, .5);
+                            border-radius: 1rem;
+                            padding-left: 1rem;
+                            padding-right: 1rem;
                             text-align: center;
                         }
 

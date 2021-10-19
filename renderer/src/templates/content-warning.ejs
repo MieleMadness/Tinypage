@@ -8,45 +8,44 @@
 
     <style>
         .content-warning {
-            display: flex;
-            justify-items: center;
-            height: 100%;
-            width: 100%;
-            background-color: rgba(243, 244, 246, 1);
+        }
+
+        @media (orientation: portrait) {
+            .content-warning {
+                transform: scale(2);
+            }
         }
     </style>
 </head>
 <body>
-<div class="content-warning">
-    <section
-            class="fixed top-0 left-0 right-0 z-10 flex flex-col items-center justify-center w-screen h-screen"
-            style="box-shadow: rgba(0, 0, 0, .65) 0  0 10px 5px inset;"
+<section
+        class="content-warning fixed top-0 left-0 right-0 z-10 flex flex-col items-center justify-center w-screen h-screen"
+        style="box-shadow: rgba(0, 0, 0, .65) 0  0 10px 5px inset;"
+>
+    <div
+            class="flex flex-col w-full h-full text-center items-center justify-center p-8"
+            style="background:rgba(0,0,0,.8);backdrop-filter:saturate(180%) blur(10px)"
     >
-        <div
-                class="flex flex-col w-full h-full text-center items-center justify-center p-8"
-                style="background:rgba(0,0,0,.8);backdrop-filter:saturate(180%) blur(10px)"
-        >
-            <span class="text-white text-2xl mb-2">Warning: 18+ only</span>
-            <span class="text-gray-200 text-lg mb-4">To continue, please confirm your age below.</span>
-            <div class="flex flex-col">
-                <button
-                        class="w-full mb-4 uppercase rounded p-4 pl-4 pr-4 bg-indigo-600 hover:bg-indigo-500 cursor-pointer font-medium text-sm tracking-wide shadow text-white"
-                        @click="acceptAgeVerification"
-                        onclick="acceptAgeVerification()"
-                >
-                    Continue, I am 18+
-                </button>
-                <button
-                        style="background:#e74c3c;"
-                        class="w-full uppercase rounded p-4 pl-4 pr-4 cursor-pointer font-medium text-sm tracking-wide shadow text-white mr-2"
-                        onclick="rejectAgeVerification()"
-                >
-                    Go back, I'm under 18
-                </button>
-            </div>
+        <span class="text-white text-2xl mb-2">Warning: 18+ only</span>
+        <span class="text-gray-200 text-lg mb-4">To continue, please confirm your age below.</span>
+        <div class="flex flex-col">
+            <button
+                    class="w-full mb-4 uppercase rounded p-4 pl-4 pr-4 bg-indigo-600 hover:bg-indigo-500 cursor-pointer font-medium text-sm tracking-wide shadow text-white"
+                    @click="acceptAgeVerification"
+                    onclick="acceptAgeVerification()"
+            >
+                Continue, I am 18+
+            </button>
+            <button
+                    style="background:#e74c3c;"
+                    class="w-full uppercase rounded p-4 pl-4 pr-4 cursor-pointer font-medium text-sm tracking-wide shadow text-white mr-2"
+                    onclick="rejectAgeVerification()"
+            >
+                Go back, I'm under 18
+            </button>
         </div>
-    </section>
-</div>
+    </div>
+</section>
 
 <script>
     function acceptAgeVerification() {

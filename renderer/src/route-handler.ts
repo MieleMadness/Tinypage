@@ -14,7 +14,7 @@ interface MicrositeRequest extends FastifyRequest {
     };
 }
 
-interface QRCodeRequest extends FastifyRequest {
+interface ProfileRequest extends FastifyRequest {
     Params: {
         profileId: string
     };
@@ -64,10 +64,10 @@ export class RouteHandler {
                 return;
             }
 
-            reply.redirect(StatusCodes.PERMANENT_REDIRECT, '/u/' + response.data.handle);
+            reply.redirect(StatusCodes.PERMANENT_REDIRECT, '/' + response.data.handle);
         });
 
-        this.fastify.get("/qr/:profileId", async (request: FastifyRequest<QRCodeRequest>, reply) => {
+        this.fastify.get("/qr/:profileId", async (request: FastifyRequest<ProfileRequest>, reply) => {
             let profileId = request.params.profileId;
 
             let response = await axios.get<any>(`${config.apiUrl}/profile/qr/${profileId}`);
@@ -82,6 +82,34 @@ export class RouteHandler {
             let html = ejs.render(text, {
                 profile: response.data,
                 url: `${config.hostname}/u/${response.data.handle}`
+            });
+
+            reply.status(StatusCodes.OK).type("text/html").send(html);
+        });
+
+        this.fastify.get("/content-warning/:profileId", async (request: FastifyRequest<ProfileRequest>, reply) => {
+            let profileId = request.params.profileId;
+
+            let response = await axios.get<Profile>(`${config.apiUrl}/profile/qr/${profileId}`);
+
+            let profile = response.data;
+
+            if (!profile?.id) {
+                reply.status(404).send("Not found.");
+                return;
+            }
+
+            if (profile.visibility !== 'published-18+') {
+                reply.redirect(StatusCodes.TEMPORARY_REDIRECT, `${config.hostname}/${response.data.handle}`);
+                return;
+            }
+
+            const text = (await fsPromises.readFile(`${__dirname}/templates/content-warning.ejs`)).toString();
+
+            let html = ejs.render(text, {
+                profile: profile,
+                acceptUrl: `//${config.hostname}/${response.data.handle}`,
+                rejectUrl: config.editorUrl
             });
 
             reply.status(StatusCodes.OK).type("text/html").send(html);
@@ -165,9 +193,6 @@ export class RouteHandler {
                         <h1 class="header">404 - Not Found</h1>
                         <h3 class="message">We couldn't find what you were looking for, sorry!</h3>
                     </div>
-                    <link rel="stylesheet"
-                          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.4/tailwind.min.css"
-                    />
                     <style>
                         @import url('https://rsms.me/inter/inter.css');
 
@@ -191,14 +216,20 @@ export class RouteHandler {
             profile.headline = profile.headline ?? '';
             profile.subtitle = profile.subtitle ?? '';
 
-            // Define user
-            const user = response.data.user;
-
             // Define theme = response.data.theme;
             const theme = response.data.theme ?? {
                 customCss: '',
                 customHtml: '',
             };
+
+            if (!request.query.token && profile.visibility === "published-18+") {
+                let warningAccepted = request.cookies.warningAccepted;
+
+                if (!warningAccepted) {
+                    reply.redirect(StatusCodes.TEMPORARY_REDIRECT, `//${config.hostname}/content-warning/${profile.id}`);
+                    return;
+                }
+            }
 
             let avatarEnabled = profile.metadata?.showAvatar;
 

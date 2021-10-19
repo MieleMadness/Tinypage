@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import fastifyInit from "fastify";
 import fastify_static from "fastify-static";
+import cookie, {FastifyCookieOptions} from 'fastify-cookie';
 import config from "./config/config";
 import {RouteHandler} from "./route-handler";
 import path from "path";
@@ -15,6 +16,10 @@ fastify.register(fastify_static, {
     list: false,
     wildcard: false
 });
+
+fastify.register(cookie, {
+    parseOptions: {}
+} as FastifyCookieOptions);
 
 // Run the server!
 async function start() {

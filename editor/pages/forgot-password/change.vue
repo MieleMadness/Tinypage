@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
     <section class="flex items-center justify-center flex-col mt-auto w-screen">
-      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon">
+      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon" style="max-width: 100px;">
       <h1 class="font-semibold text-3xl mt-2">
         Set your new password
       </h1>
@@ -9,8 +9,8 @@
         Remember: Don't share passwords!
       </p>
       <div
-        v-if="error"
-        class="flex flex-row p-2 mt-4 mb-2 bg-orange-200 text-orange-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border border-orange-300 shadow-sm"
+          v-if="error"
+          class="flex flex-row p-2 mt-4 mb-2 bg-orange-200 text-orange-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border border-orange-300 shadow-sm"
       >
         <img alt="caution" src="/icons/caution.svg" style="width: 12px;">
         <div class="flex flex-col ml-2">
@@ -18,8 +18,8 @@
         </div>
       </div>
       <div
-        v-if="message"
-        class="flex flex-row p-2 mt-4 mb-2 bg-green-200 text-green-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border text-center border-green-300 shadow-sm"
+          v-if="message"
+          class="flex flex-row p-2 mt-4 mb-2 bg-green-200 text-green-600 rounded w-11/12 max-w-sm justify-center items-center text-sm border text-center border-green-300 shadow-sm"
       >
         <div class="flex flex-col ml-2">
           {{ message }}
@@ -29,33 +29,33 @@
         <div class="flex flex-col mb-4">
           <label class="font-medium text-sm">Password</label>
           <input
-            v-model="password"
-            aria-label="password"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
-            placeholder="e.g. Your secure password"
-            type="password"
+              v-model="password"
+              aria-label="password"
+              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
+              placeholder="e.g. Your secure password"
+              type="password"
           >
         </div>
         <div class="flex flex-col mb-4">
           <label class="font-medium text-sm">Confirm password</label>
           <input
-            v-model="passwordConfirmation"
-            aria-label="password confirmation"
-            class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
-            placeholder="e.g. Your secure password"
-            type="password"
+              v-model="passwordConfirmation"
+              aria-label="password confirmation"
+              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded border"
+              placeholder="e.g. Your secure password"
+              type="password"
           >
         </div>
         <button
-          class="mt-2 w-full p-3 text-center text-sm text-white bg-blue-600 hover:bg-blue-400 rounded font-semibold"
-          type="button"
-          @click="resetPassword"
+            class="mt-2 w-full p-3 text-center text-sm text-white bg-blue-600 hover:bg-blue-400 rounded font-semibold"
+            type="button"
+            @click="resetPassword"
         >
           Reset password
         </button>
       </form>
     </section>
-    <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2020
+    <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2021
       {{ $customSettings.company }}
     </section>
   </div>

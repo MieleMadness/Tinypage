@@ -181,7 +181,7 @@
     </div>
     <section
       class="flex text-center items-center justify-center lg:justify-start lg:text-left text-gray-600 text-xs lg:text-sm mt-auto mb-4 pt-20 w-full max-w-2xl px-8"
-    >Copyright ©2020
+    >Copyright ©2021
       {{ $customSettings.company }}<span
         class="lg:flex hidden mr-2"
       >,</span> <br class="flex lg:hidden">All rights reserved.

@@ -37,8 +37,6 @@ export class TeamController extends Controller {
         this.userService = new UserService(databaseManager);
         this.profileService = new ProfileService(databaseManager);
         this.teamService = new TeamService(databaseManager);
-
-        console.log("Stripe subscription controller enabled");
     }
 
     registerRoutes(): void {

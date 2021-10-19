@@ -42,7 +42,11 @@
               />
 
               <div class="flex flex-col justify-start">
-                <span class="font-extrabold text-2xl leading-tight mt-4 mb-1">{{ user.activeProfile.headline }}</span>
+                <span class="font-extrabold text-2xl leading-tight mt-4 mb-1"
+                      style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                >
+                  {{ user.activeProfile.headline }}
+                </span>
                 <div class="flex flex-row items-center justify-start flex-wrap" style="max-width:300px;">
                   <div class="mb-1">
                     <span

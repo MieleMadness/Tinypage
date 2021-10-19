@@ -50,7 +50,7 @@
               <nobr>Remember me?</nobr>
             </label>
           </div>
-          <a class="text-blue-500 hover:underline ml-auto font-bold" href="#">Forgot your password?</a>
+          <a class="text-blue-500 hover:underline ml-auto font-bold" href="/forgot-password">Forgot your password?</a>
         </div>
         <div class="button cursor-pointer" @click="attemptEmailLogin()">Login to your account</div>
         <div v-if="error" class="error">

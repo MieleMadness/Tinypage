@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
     <section class="flex items-center justify-center flex-col mt-auto w-screen">
-      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon">
+      <img :src="`${$customSettings.icons.mainIcon}`" alt="icon" style="max-width: 100px;">
       <h1 class="font-semibold text-3xl mt-2">
         Request a password reset
       </h1>
@@ -47,7 +47,7 @@
         </button>
       </form>
     </section>
-    <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2020
+    <section class="flex text-center text-gray-600 text-sm mt-auto mb-4">All rights reserved.<br>Copyright ©2021
       {{ $customSettings.company }}
     </section>
   </div>

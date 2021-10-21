@@ -133,7 +133,7 @@ export default Vue.extend({
 
   data() {
     return {
-      id: null,
+      id: null as string | null,
       themes: [] as EditorTheme[],
       builderCss: '',
       editorCss: '',
@@ -258,13 +258,26 @@ export default Vue.extend({
     },
     async applyChanges() {
       try {
-        const response = await this.$axios.$post('/theme/update', {
-          token: this.$store.getters['auth/getToken'],
-          id: this.theme.id,
-          label: this.theme.label,
-          customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
-          customHtml: this.theme.customHtml,
-        });
+        if (this.intent === 'create') {
+          const response = await this.$axios.$post('/theme/create', {
+            token: this.$store.getters['auth/getToken'],
+            label: this.theme.label,
+            customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
+            customHtml: this.theme.customHtml,
+          });
+
+          let href = window.location.href;
+          window.location.replace(href.replace("/create", `/${response.id}`));
+        } else {
+          const response = await this.$axios.$post('/theme/update', {
+            token: this.$store.getters['auth/getToken'],
+            id: this.theme.id,
+            label: this.theme.label,
+            customCss: this.editorCss + '/* SL-NO-CODE */' + this.builderCss,
+            customHtml: this.theme.customHtml,
+          });
+        }
+
         /* const themeId = response.id;
         const index = this.themes.findIndex(x => x.id === themeId);
         this.themes[index] = this.theme;

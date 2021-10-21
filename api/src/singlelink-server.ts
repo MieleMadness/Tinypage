@@ -125,7 +125,7 @@ export class SingleLinkServer {
      * @constructor
      */
     async Index(request: FastifyRequest, reply: FastifyReply) {
-        reply.type('text/html').code(200);
+        reply.type('text/html').status(200);
 
         // language=HTML
         return `

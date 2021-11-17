@@ -14,7 +14,7 @@ create table if not exists enterprise.subscriptions
 (
     user_id      bigint unique references app.users (id) on delete cascade,
     tier         text,
-    product_id   text unique,
+    product_id   text,
     created_on   timestamp not null default current_timestamp,
     last_updated timestamp not null default current_timestamp
 );
@@ -26,7 +26,7 @@ create table if not exists enterprise.products
 (
     user_id    bigint references app.users (id) on delete cascade,
     tier       text,
-    product_id text unique,
+    product_id text,
     created_on timestamp not null default current_timestamp
 );
 

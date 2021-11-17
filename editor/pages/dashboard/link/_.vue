@@ -266,6 +266,15 @@
              placeholder="e.g. https://exampleurl.com/example"
              type="url"
       />
+
+      <div v-show="buttonImageUrl" class="mt-4">
+        <label class="font-semibold mb-2">Button Image Full Width?</label>
+        <br>
+        <input v-model="buttonImageFullWidth"
+               class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
+               type="checkbox"
+        >
+      </div>
     </div>
 
     <!-- vCard -->
@@ -279,7 +288,7 @@
             class="flex flex-row justify-center items-center pl-4 pr-4 text-sm rounded-lg border border-blue-600 text-blue-500 bg-blue-200"
         >
         <span class="text-center">
-             <a class="font-semibold mb-2 text-xl" href="https://vcardmaker.com/"
+             <a class="font-semibold text-xl" href="https://vcardmaker.com/"
                 target="_blank"
              >
             Create a .vcf file
@@ -546,6 +555,7 @@ export default Vue.extend({
       vCard: '',
 
       buttonImageUrl: '',
+      buttonImageFullWidth: false,
 
       socialIcons: [] as { type: string, color: string, scale: number, label: string, labelColor: string, customSvg: string, url: string }[],
 
@@ -599,6 +609,7 @@ export default Vue.extend({
 
     if (this.pendingLink.type === 'link' || this.pendingLink.type === 'vcard') {
       this.buttonImageUrl = this.pendingLink.metadata.buttonImageUrl ?? '';
+      this.buttonImageFullWidth = this.pendingLink.metadata.buttonImageFullWidth ?? false;
     }
   },
 
@@ -712,8 +723,10 @@ export default Vue.extend({
       if (this.pendingLink.type === 'vcard')
         this.pendingLink.metadata.vCard = this.vCard;
 
-      if (this.pendingLink.type === 'link' || this.pendingLink.type === 'vcard')
+      if (this.pendingLink.type === 'link' || this.pendingLink.type === 'vcard') {
         this.pendingLink.metadata.buttonImageUrl = this.buttonImageUrl;
+        this.pendingLink.metadata.buttonImageFullWidth = this.buttonImageFullWidth;
+      }
     },
 
     async addNewLink(): Promise<boolean> {

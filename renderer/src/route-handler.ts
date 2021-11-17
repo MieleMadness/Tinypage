@@ -281,15 +281,22 @@ export class RouteHandler {
                         }
                         let style = link.style ?? '';
                         let customCss = link.customCss ?? '';
+
                         let buttonImage = link.metadata?.buttonImageUrl;
+                        let buttonImageFullWidth = link.metadata?.buttonImageFullWidth;
 
                         let buttonImageHtml = '';
+                        let buttonImageFullWidthCss = '';
                         let buttonImageSupportCss = '';
 
                         if (buttonImage) {
-                            // language=HTML
-                            buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
-                            buttonImageSupportCss = 'overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;';
+                            if (!buttonImageFullWidth) {
+                                // language=HTML
+                                buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                                buttonImageSupportCss = 'overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;';
+                            } else {
+                                buttonImageFullWidthCss = `overflow: hidden; background-size: cover; background-position: center; background-image: url('${buttonImage}');`;
+                            }
                         }
 
                         // language=HTML
@@ -306,7 +313,7 @@ export class RouteHandler {
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white w-full font-medium mb-3 nc-link sl-item flex items-center justify-center"
-                                        style="position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
+                                        style="${buttonImageFullWidthCss} position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"
@@ -483,12 +490,18 @@ export class RouteHandler {
                         let dataUrl = 'data:text/x-vcard;urlencoded,' + encodedVCard;
 
                         let buttonImage = link.metadata?.buttonImageUrl;
+                        let buttonImageFullWidth = link.metadata?.buttonImageFullWidth;
 
                         let buttonImageHtml = '';
+                        let buttonImageFullWidthCss = '';
 
                         if (buttonImage) {
-                            // language=HTML
-                            buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                            if (!buttonImageFullWidth) {
+                                // language=HTML
+                                buttonImageHtml = `<img src="${buttonImage}" class="button-image" alt="button image">`;
+                            } else {
+                                buttonImageFullWidthCss = `overflow: hidden; background-size: cover; background-position: center; background-image: url('${buttonImage}');`;
+                            }
                         }
 
                         let subtitleHtml = '';
@@ -519,7 +532,7 @@ export class RouteHandler {
                             >
                                 <div
                                         class="rounded-2xl shadow bg-white w-full font-medium mb-3 nc-link sl-item flex items-center justify-center"
-                                        style="position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
+                                        style="${buttonImageFullWidthCss} position: relative; display: flex; flex-direction: row; justify-content: start; align-items: stretch; ${!subtitleHtml && buttonImageHtml ? 'min-height: 84px;' : ''} ${style}"
                                 >
                                     ${buttonImageHtml}
                                     <span class="font-medium text-gray-900 sl-label"

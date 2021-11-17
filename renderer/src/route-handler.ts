@@ -400,6 +400,9 @@ export class RouteHandler {
                                     case "cuplr":
                                         svgData = fs.readFileSync(`${__dirname}/static/icons/logo-cuplr.svg`).toString('utf-8');
                                         break;
+                                    case "whatsapp":
+                                        svgData = fs.readFileSync(`${__dirname}/static/icons/logo-whatsapp.svg`).toString('utf-8');
+                                        break;
                                     case "custom":
                                         if (siSettings.customSvg)
                                             svgData = siSettings.customSvg;

@@ -151,6 +151,7 @@
           <option value="tiktok">Tiktok</option>
           <option value="twitch">Twitch</option>
           <option value="twitter">Twitter</option>
+          <option value="whatsapp">WhatsApp</option>
           <option value="youtube">YouTube</option>
           <option value="zoom">Zoom</option>
           <option value="custom">Custom</option>

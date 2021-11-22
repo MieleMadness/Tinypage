@@ -81,7 +81,7 @@ export class RouteHandler {
 
             let html = ejs.render(text, {
                 profile: response.data,
-                url: `${config.hostname}/u/${response.data.handle}`
+                url: `${config.hostname}/${response.data.handle}`
             });
 
             reply.status(StatusCodes.OK).type("text/html").send(html);
@@ -164,8 +164,8 @@ export class RouteHandler {
                     <head>
                         <title>${config.appName} Web Client</title>
                         <meta charset="UTF-8">
-                        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
-                        <link rel="icon" type="image/png" href="/favicon.png"/>
+                        <link rel="icon" type="image/x-icon" href="/tinypage-logo.svg"/>
+                        <link rel="icon" type="image/png" href="/tinypage-logo.svg"/>
                         <style>
                             .text {
                                 display: flex;
@@ -930,8 +930,8 @@ export class RouteHandler {
                     <meta name="twitter:image" content="${config.apiUrl}/profile/thumbnail/${handle}">
                     <meta name="twitter:card" content="summary_large_image">
 
-                    <link rel="icon" type="image/x-icon" href="/favicon.png"/>
-                    <link rel="icon" type="image/png" href="/favicon.png"/>
+                    <link rel="icon" type="image/x-icon" href="/tinypage-logo.svg"/>
+                    <link rel="icon" type="image/png" href="/tinypage-logo.svg"/>
 
                     <link rel="stylesheet" href="/css/quill.core.min.css"/>
 

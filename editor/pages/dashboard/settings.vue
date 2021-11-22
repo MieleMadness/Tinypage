@@ -115,35 +115,35 @@
           </div>
         </div>
 
-        <div class="flex flex-col w-full mb-6">
-          <!-- Custom domain-->
-          <div
-              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full"
-          >
-            <label class="font-bold text-sm text-black opacity-70" for="custom_domain">Custom domain</label>
-            <a
-                class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"
-                href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"
-            >Need help? Read our documentation</a>
-          </div>
+        <!--        <div class="flex flex-col w-full mb-6">-->
+        <!--          &lt;!&ndash; Custom domain&ndash;&gt;-->
+        <!--          <div-->
+        <!--              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 items-start lg:justify-between lg:items-center w-full"-->
+        <!--          >-->
+        <!--            <label class="font-bold text-sm text-black opacity-70" for="custom_domain">Custom domain</label>-->
+        <!--            <a-->
+        <!--                class="text-black font-bold opacity-50 text-xs hover:underline hover:opacity-80"-->
+        <!--                href="https://www.notion.so/neutroncreative/Setting-up-your-custom-domain-907421b1ac3841dbbd8d9a7d41d17f9a"-->
+        <!--            >Need help? Read our documentation</a>-->
+        <!--          </div>-->
 
-          <input
-              id="custom_domain"
-              v-model="user.activeProfile.customDomain"
-              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"
-              placeholder="e.g. neutroncreative.com (no http/https)"
-              type="text"
-          >
+        <!--          <input-->
+        <!--              id="custom_domain"-->
+        <!--              v-model="user.activeProfile.customDomain"-->
+        <!--              class="p-2 mt-2 text-sm border-solid border-gray-300 rounded-2xl border"-->
+        <!--              placeholder="e.g. neutroncreative.com (no http/https)"-->
+        <!--              type="text"-->
+        <!--          >-->
 
-          <div
-              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 p-4 items-start lg:justify-between lg:items-center w-full"
-          >
-            <label class="font-bold text-sm text-black opacity-70" for="custom_domain">
-              Make sure you set this TXT Record in your DNS options.<br>
-              <span class="bg-blue-200">{{ getTXTRecord }}</span>
-            </label>
-          </div>
-        </div>
+        <!--          <div-->
+        <!--              class="flex flex-col lg:flex-row space-y-1 lg:space-y-0 p-4 items-start lg:justify-between lg:items-center w-full"-->
+        <!--          >-->
+        <!--            <label class="font-bold text-sm text-black opacity-70" for="custom_domain">-->
+        <!--              Make sure you set this TXT Record in your DNS options.<br>-->
+        <!--              <span class="bg-blue-200">{{ getTXTRecord }}</span>-->
+        <!--            </label>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
         <!-- Use Gravatar toggle -->
         <div class="flex flex-row w-full mb-6 items-start">
